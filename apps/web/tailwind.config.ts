@@ -7,6 +7,9 @@ const config: Pick<Config, "content" | "presets" | "theme"> = {
   content: ["./src/**/*.tsx"],
   presets: [sharedConfig],
   theme: {
+    fontFamily: {
+      sukhumvit: ["var(--sukhumvit-set-font)", "sans-serif"],
+    },
     extend: {
       colors: {
         intania: "#5E1018",
