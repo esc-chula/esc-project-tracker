@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -23,9 +24,6 @@ export class Project {
 
   @Column()
   detail: string;
-
-  // TODO: MANY TO MANY to USER
-  //****** */
 
   @Column()
   reserDate: Date;

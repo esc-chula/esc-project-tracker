@@ -2,21 +2,28 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { DocStatus, DocType } from '../constant/enum';
+import { Project } from './project.entity';
 
 @Entity()
 export class Document {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ManyToOne(() => Project, {
+    onDelete: 'CASCADE',
+  })
+  project: Project;
+
   @Column()
   name: string;
 
   @Column()
-  dCode: string;
+  dCode: string; // <== คือไรนะ
 
   @Column({
     type: 'enum',
@@ -25,10 +32,7 @@ export class Document {
   status: DocStatus;
 
   @Column()
-  pCode: string;
-
-  //TODO: MANY TO ONE to PROJECT
-  //****** */
+  pCode: string; // <== คือไรนะ
 
   @Column({
     type: 'enum',
