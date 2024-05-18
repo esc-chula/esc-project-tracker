@@ -2,21 +2,24 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { DocStatus, DocType } from '../constant/enum';
+import { DocStatus } from '../constant/enum';
+import { Project } from './project.entity';
 
 @Entity()
 export class Document {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  docID: string;
 
   @Column()
   name: string;
 
   @Column()
-  dCode: string;
+  Code: string;
 
   @Column({
     type: 'enum',
@@ -25,16 +28,10 @@ export class Document {
   status: DocStatus;
 
   @Column()
-  pCode: string;
+  projectCode: string;
 
-  //TODO: MANY TO ONE to PROJECT
-  //****** */
-
-  @Column({
-    type: 'enum',
-    enum: DocType,
-  })
-  type: DocType;
+  @Column()
+  type: number;
 
   @Column()
   detail: string;
@@ -44,6 +41,13 @@ export class Document {
 
   @Column()
   docLink: string;
+
+  @Column()
+  projectID: string;
+
+  @ManyToOne(() => Project, { cascade: true })
+  @JoinColumn({ name: 'projectID', referencedColumnName: 'projectID' })
+  project: Project;
 
   @CreateDateColumn()
   createdAt: Date;

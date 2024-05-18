@@ -2,30 +2,34 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProjectStatus, ProjectType } from '../constant/enum';
+import { ProjectStatus } from '../constant/enum';
+import { DocType } from './docType.entity';
+import { Document } from './document.entity';
+import { UserProj } from './userProj.entity';
 
 @Entity()
 export class Project {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  projectID: string;
 
   @Column()
   name: string;
 
-  @Column({
-    type: 'enum',
-    enum: ProjectType,
-  })
-  type: ProjectType;
+  @Column()
+  code: string;
+
+  @Column()
+  type: number;
 
   @Column()
   detail: string;
-
-  // TODO: MANY TO MANY to USER
-  //****** */
 
   @Column()
   reserDate: Date;
@@ -35,6 +39,15 @@ export class Project {
     enum: ProjectStatus,
   })
   status: ProjectStatus;
+
+  @OneToMany(() => UserProj, (userProj) => userProj.project)
+  userProj: UserProj[];
+
+  @OneToMany(() => Document, (document) => document.project)
+  documents: Document[];
+
+  @OneToOne(() => DocType, { cascade: true })
+  docType: DocType;
 
   @CreateDateColumn()
   createdAt: Date;
