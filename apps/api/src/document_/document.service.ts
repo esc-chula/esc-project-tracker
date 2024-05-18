@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Document } from '../entities/document.entity';
 import { Repository } from 'typeorm';
@@ -14,7 +14,12 @@ export class DocumentService {
     private readonly userService: UserService,
   ) {}
 
-  findByDocID(docID: string): Promise<Document> | undefined {
-    return this.documentRepository.findOne({ where: { docID } });
+  findByDocID(docID: string): Promise<Document> {
+    const document = this.documentRepository.findOne({ where: { docID } });
+    if (!document) {
+      throw new BadRequestException('Document not found');
+    }
+
+    return document;
   }
 }
