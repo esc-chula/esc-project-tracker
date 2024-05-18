@@ -5,6 +5,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TrpcModule } from './trpc/trpc.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { UserService } from './user_/user.service';
+import { UserController } from './user_/user.controller';
+import { UserModule } from './user_/user.module';
+import { DocumentModule } from './document_/document.module';
+import { ProjectModule } from './project_/project_.module';
 
 @Module({
   imports: [
@@ -18,13 +23,16 @@ import { join } from 'path';
           type: 'postgres',
           url: configService.get('DATABASE_URL'),
           entities: [join(__dirname, '**/*.entity.{ts,js}')],
-          synchronize: false,
+          synchronize: true,
         };
       },
       inject: [ConfigService],
     }),
 
     TrpcModule,
+    UserModule,
+    DocumentModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
