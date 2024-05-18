@@ -5,36 +5,45 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProjectStatus, ProjectType } from '../constant/enum';
+import { DocStatus, DocType } from '../constant/enum';
 
 @Entity()
-export class Project {
+export class Document {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   name: string;
 
+  @Column()
+  dCode: string;
+
   @Column({
     type: 'enum',
-    enum: ProjectType,
+    enum: DocStatus,
   })
-  type: ProjectType;
+  status: DocStatus;
+
+  @Column()
+  pCode: string;
+
+  //TODO: MANY TO ONE to PROJECT
+  //****** */
+
+  @Column({
+    type: 'enum',
+    enum: DocType,
+  })
+  type: DocType;
 
   @Column()
   detail: string;
 
-  // TODO: MANY TO MANY to USER
-  //****** */
+  @Column()
+  pdfLink: string;
 
   @Column()
-  reserDate: Date;
-
-  @Column({
-    type: 'enum',
-    enum: ProjectStatus,
-  })
-  status: ProjectStatus;
+  docLink: string;
 
   @CreateDateColumn()
   createdAt: Date;
