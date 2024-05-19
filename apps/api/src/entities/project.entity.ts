@@ -26,7 +26,7 @@ export class Project {
   detail: string;
 
   @Column()
-  reserDate: Date;
+  reserDate: Date; // what is raser na
 
   @Column({
     type: 'enum',
