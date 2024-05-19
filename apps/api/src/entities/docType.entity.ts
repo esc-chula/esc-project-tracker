@@ -1,10 +1,24 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Project } from './project.entity';
 
 @Entity()
 export class DocType {
-  @PrimaryColumn('uuid')
-  projectID: string;
+  // @PrimaryColumn('uuid')
+  // projectID: string;
+
+  @PrimaryGeneratedColumn()
+  id: string;
+
+  @OneToOne(() => Project)
+  @JoinColumn({ name: 'id' })
+  project: Project;
 
   @Column()
   index_0: number;
@@ -35,8 +49,4 @@ export class DocType {
 
   @Column()
   index_9: number;
-
-  @OneToOne(() => Project)
-  @JoinColumn({ name: 'projectID', referencedColumnName: 'projectID' })
-  project: Project;
 }

@@ -12,8 +12,8 @@ export class ProjectService {
     private readonly projectRepository: Repository<Project>,
   ) {}
 
-  findByProjectID(projectID: string): Promise<Project> {
-    const project = this.projectRepository.findOne({ where: { projectID } });
+  findByProjectID(id: string): Promise<Project> {
+    const project = this.projectRepository.findOne({ where: { id } });
     if (!project) {
       throw new BadRequestException('Project not found');
     }

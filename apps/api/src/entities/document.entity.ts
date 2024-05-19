@@ -13,13 +13,13 @@ import { Project } from './project.entity';
 @Entity()
 export class Document {
   @PrimaryGeneratedColumn('uuid')
-  docID: string;
+  id: string;
 
   @Column()
   name: string;
 
   @Column()
-  Code: string;
+  documentCode: string;
 
   @Column({
     type: 'enum',
@@ -42,11 +42,7 @@ export class Document {
   @Column()
   docLink: string;
 
-  @Column()
-  projectID: string;
-
   @ManyToOne(() => Project, { cascade: true })
-  @JoinColumn({ name: 'projectID', referencedColumnName: 'projectID' })
   project: Project;
 
   @CreateDateColumn()

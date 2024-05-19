@@ -14,8 +14,8 @@ export class DocumentService {
     private readonly userService: UserService,
   ) {}
 
-  findByDocID(docID: string): Promise<Document> {
-    const document = this.documentRepository.findOne({ where: { docID } });
+  findByDocID(id: string): Promise<Document> {
+    const document = this.documentRepository.findOne({ where: { id } });
     if (!document) {
       throw new BadRequestException('Document not found');
     }

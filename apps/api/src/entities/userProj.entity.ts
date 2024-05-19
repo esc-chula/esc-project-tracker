@@ -11,19 +11,14 @@ import { Project } from './project.entity';
 
 @Entity()
 export class UserProj {
-  @PrimaryColumn('uuid')
-  userID: string;
-
-  @PrimaryColumn('uuid')
-  projectID: string;
+  @PrimaryGeneratedColumn()
+  id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userID', referencedColumnName: 'userID' })
   user: User;
 
   @ManyToOne(() => Project, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'projectID', referencedColumnName: 'projectID' })
   project: Project;
 }

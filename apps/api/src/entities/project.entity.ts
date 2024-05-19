@@ -17,7 +17,7 @@ import { UserProj } from './userProj.entity';
 @Entity()
 export class Project {
   @PrimaryGeneratedColumn('uuid')
-  projectID: string;
+  id: string;
 
   @Column()
   name: string;
@@ -32,7 +32,7 @@ export class Project {
   detail: string;
 
   @Column()
-  reserDate: Date;
+  reserveDate: Date;
 
   @Column({
     type: 'enum',
@@ -40,13 +40,8 @@ export class Project {
   })
   status: ProjectStatus;
 
-  @OneToMany(() => UserProj, (userProj) => userProj.project)
-  userProj: UserProj[];
-
-  @OneToMany(() => Document, (document) => document.project)
-  documents: Document[];
-
   @OneToOne(() => DocType, { cascade: true })
+  @JoinColumn({ name: 'id' })
   docType: DocType;
 
   @CreateDateColumn()

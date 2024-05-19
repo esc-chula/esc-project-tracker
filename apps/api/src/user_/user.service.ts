@@ -9,8 +9,8 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  findByUserID(userID: string): Promise<User> {
-    const user = this.userRepository.findOne({ where: { userID } });
+  findByUserID(id: string): Promise<User> {
+    const user = this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new BadRequestException('User not found');
     }
