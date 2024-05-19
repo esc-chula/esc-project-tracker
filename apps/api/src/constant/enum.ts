@@ -38,3 +38,8 @@ export enum ProjectStatus {
   MOCK2 = 'MOCK2',
   MOCK3 = 'MOCK3',
 }
+
+export enum UserType {
+  Client = 'Client',
+  Admin = 'Admin',
+}
