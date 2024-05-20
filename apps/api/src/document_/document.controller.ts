@@ -10,4 +10,9 @@ export class DocumentController {
   getByProjectID(@Param('docID') docID: string) {
     return this.documentService.getByProjectID(docID);
   }
+
+  @Get('getByUserID/:userID')
+  getByUserID(@Param('userID') userID: string) {
+    return this.documentService.getByUserID(userID);
+  }
 }

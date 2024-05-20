@@ -13,7 +13,6 @@ export class DocumentService {
     @InjectRepository(Document)
     private readonly documentRepository: Repository<Document>,
     private readonly projectService: ProjectService,
-    private readonly userService: UserService,
   ) {}
 
   findByDocID(id: string): Promise<Document> {
@@ -34,6 +33,25 @@ export class DocumentService {
       .innerJoin(Project, 'project', 'document.projectId = project.id')
       .where('project.id = :pid', { pid: id })
       .getMany();
+
+    return documents;
+  }
+
+  async getByUserID(id: string): Promise<Document[]> {
+    if (!isUUID(id)) {
+      throw new BadRequestException('Id is not in UUID format');
+    }
+
+    const projects = await this.projectService.getByUserID(id);
+
+    let documents: Document[] = [];
+
+    for (const project of projects) {
+      const doc = await this.getByProjectID(project.id);
+      documents = [...doc, ...documents];
+    }
+
+    console.log(documents);
 
     return documents;
   }
