@@ -10,5 +10,6 @@ import { UserProj } from '../entities/userProj.entity';
   imports: [TypeOrmModule.forFeature([Project, UserProj]), UserModule],
   providers: [ProjectService],
   controllers: [ProjectController],
+  exports: [ProjectService],
 })
 export class ProjectModule {}

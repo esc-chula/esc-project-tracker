@@ -1,23 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { DocStatus } from '../constant/enum';
+import { DocumentService } from './document.service';
 
 @Controller('document')
 export class DocumentController {
-  name: string;
+  constructor(private readonly documentService: DocumentService) {}
 
-  Code: string;
-
-  status: DocStatus;
-
-  projectCode: string;
-
-  type: number;
-
-  detail: string;
-
-  pdfLink: string;
-
-  docLink: string;
-
-  projectID: string;
+  @Get('getByProjID/:docID')
+  getByProjectID(@Param('docID') docID: string) {
+    return this.documentService.getByProjectID(docID);
+  }
 }
