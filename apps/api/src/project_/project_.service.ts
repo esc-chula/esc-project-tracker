@@ -20,7 +20,7 @@ export class ProjectService {
     return project;
   }
 
-  async GetByUserID(id: string): Promise<Project[]> {
+  async getByUserID(id: string): Promise<Project[]> {
     const foundUser = await this.userService.findByUserID(id);
     if (!foundUser) {
       throw new BadRequestException('User not found');
