@@ -11,8 +11,6 @@ import {
 } from 'typeorm';
 import { ProjectStatus } from '../constant/enum';
 import { DocType } from './docType.entity';
-import { Document } from './document.entity';
-import { UserProj } from './userProj.entity';
 
 @Entity()
 export class Project {
@@ -40,8 +38,8 @@ export class Project {
   })
   status: ProjectStatus;
 
-  @OneToOne(() => DocType, { cascade: true })
-  @JoinColumn({ name: 'id' })
+  @OneToOne(() => DocType, { onDelete: 'CASCADE' })
+  @JoinColumn()
   docType: DocType;
 
   @CreateDateColumn()

@@ -10,15 +10,8 @@ import { Project } from './project.entity';
 
 @Entity()
 export class DocType {
-  // @PrimaryColumn('uuid')
-  // projectID: string;
-
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @OneToOne(() => Project)
-  @JoinColumn({ name: 'id' })
-  project: Project;
 
   @Column()
   index_0: number;

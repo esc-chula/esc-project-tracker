@@ -23,7 +23,7 @@ import { ProjectModule } from './project_/project_.module';
           type: 'postgres',
           url: configService.get('DATABASE_URL'),
           entities: [join(__dirname, '**/*.entity.{ts,js}')],
-          synchronize: true,
+          synchronize: false,
         };
       },
       inject: [ConfigService],
