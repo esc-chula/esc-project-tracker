@@ -5,7 +5,7 @@ import { ProjectService } from './project_.service';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  // TEST API
+  // JUST TEST FUNC
   @Get('findByUid/:uid')
   findByUserId(@Param('uid') uid: string) {
     return this.projectService.findByUserID(uid);

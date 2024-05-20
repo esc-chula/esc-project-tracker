@@ -21,6 +21,11 @@ export class ProjectService {
   }
 
   async findByUserID(id: string): Promise<Project[]> {
+    const foundUser = await this.userService.findByUserID(id);
+    if (!foundUser) {
+      throw new BadRequestException('User not found');
+    }
+
     const projects = await this.projectRepository
       .createQueryBuilder('project')
       .innerJoin(UserProj, 'userProj', 'project.id = userProj.projectId')
