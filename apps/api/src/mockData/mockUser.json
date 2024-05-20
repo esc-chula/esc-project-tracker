@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "username": "johndoe",
+    "studentId": "123456",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "username": "janedoe",
+    "studentId": "654321",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  },
+  {
+    "id": 3,
+    "name": "John Smith",
+    "username": "johnsmith",
+    "studentId": "123",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  },
+  {
+    "id": 4,
+    "name": "Jane Smith",
+    "username": "janesmith",
+    "studentId": "321",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  },
+  {
+    "id": 5,
+    "name": "John Doe",
+    "username": "johndoe",
+    "studentId": "123456",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  },
+  {
+    "id": 6,
+    "name": "Jane Doe",
+    "username": "janedoe",
+    "studentId": "654321",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  },
+  {
+    "id": 7,
+    "name": "John Smith",
+    "username": "johnsmith",
+    "studentId": "123",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  },
+  {
+    "id": 8,
+    "name": "Jane Smith",
+    "username": "janesmith",
+    "studentId": "321",
+    "password": "password123",
+    "createdAt": "2022-01-01T00:00:00Z",
+    "updatedAt": "2022-01-01T00:00:00Z"
+  }
+]
