@@ -15,11 +15,6 @@ export class DocumentService {
   ) {}
 
   findByDocID(id: string): Promise<Document> {
-    const document = this.documentRepository.findOne({ where: { id } });
-    if (!document) {
-      throw new BadRequestException('Document not found');
-    }
-
-    return document;
+    return this.documentRepository.findOne({ where: { id } });
   }
 }
