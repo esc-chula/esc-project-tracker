@@ -8,6 +8,6 @@ export class ProjectController {
   // JUST TEST FUNC
   @Get('getByUid/:uid')
   getByUserId(@Param('uid') uid: string) {
-    return this.projectService.getByUserID(uid);
+    return this.projectService.findByUserID(uid);
   }
 }

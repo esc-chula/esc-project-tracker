@@ -11,7 +11,7 @@ import { Project } from './project.entity';
 
 @Entity()
 export class UserProj {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })

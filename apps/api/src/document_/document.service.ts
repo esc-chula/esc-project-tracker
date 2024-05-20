@@ -42,7 +42,7 @@ export class DocumentService {
       throw new BadRequestException('Id is not in UUID format');
     }
 
-    const projects = await this.projectService.getByUserID(id);
+    const projects = await this.projectService.findByUserID(id);
 
     let documents: Document[] = [];
 

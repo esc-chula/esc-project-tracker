@@ -20,7 +20,7 @@ export class ProjectService {
     return project;
   }
 
-  async getByUserID(id: string): Promise<Project[]> {
+  async findByUserID(id: string): Promise<Project[]> {
     const foundUser = await this.userService.findByUserID(id);
     if (!foundUser) {
       throw new BadRequestException('User not found');
@@ -32,6 +32,19 @@ export class ProjectService {
       .where('userProj.userId = :uid', { uid: id })
       .getMany();
 
+    return projects;
+  }
+
+  async findByNameOrCode(
+    { page, limit }: { page: number; limit: number },
+    name?: string,
+    code?: string,
+  ): Promise<Project[]> {
+    const projects = await this.projectRepository.find({
+      where: [{ name }, { code }],
+      take: limit,
+      skip: (page - 1) * limit,
+    });
     return projects;
   }
 }
