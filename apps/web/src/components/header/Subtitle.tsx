@@ -19,8 +19,8 @@ export default function Subtitle({
 }) {
   return (
     <>
-      <div className="flex flex-col gap-7">
-        <ChevronLeft size={24} />
+      <div className="flex flex-col gap-8">
+        {/* <ChevronLeft size={24} /> */}
         <Breadcrumb>
           <BreadcrumbList className="text-2xl flex-nowrap">
             <BreadcrumbItem>
@@ -34,19 +34,23 @@ export default function Subtitle({
                 <BreadcrumbItem>
                   <BreadcrumbLink
                     href={"/" + projectId}
-                    className="text-black font-semibold line-clamp-1 max-w-52">
+                    className="text-black font-semibold line-clamp-1 max-w-56 leading-10">
                     {project}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="text-black" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-semibold text-red">{document}</BreadcrumbPage>
+                  <BreadcrumbPage className="font-semibold text-red line-clamp-1 leading-10">
+                    {document}
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
               </>
             ) : (
               <>
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-semibold text-red">{project}</BreadcrumbPage>
+                  <BreadcrumbPage className="font-semibold text-red line-clamp-1 leading-10">
+                    {project}
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
               </>
             )}
