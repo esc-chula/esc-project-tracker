@@ -34,13 +34,13 @@ export default function Subtitle({
                 <BreadcrumbItem>
                   <BreadcrumbLink
                     href={"/" + projectId}
-                    className="text-black font-semibold line-clamp-1 max-w-56 leading-10">
+                    className="text-black font-semibold leading-10 max-w-24 line-clamp-1">
                     {project}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="text-black" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-semibold text-red line-clamp-1 leading-10">
+                  <BreadcrumbPage className="font-semibold text-red leading-10 min-w-36 max-w-96 line-clamp-1">
                     {document}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
