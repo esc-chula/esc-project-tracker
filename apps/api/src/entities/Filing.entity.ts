@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Project } from "./Project.entity";
 import { DocStatus } from "../constant/enum";
+import { User } from "./User.entity";
 
 @Entity()
 export class Filing {
@@ -9,6 +10,9 @@ export class Filing {
 
     @OneToOne(() => Project, { onDelete: 'CASCADE' })
     project: Project
+
+    @OneToOne(() => User, { onDelete: 'CASCADE' })
+    user: User
 
     @Column(
         {
