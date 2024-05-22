@@ -30,6 +30,7 @@ const config = {
         red: "#C22231",
         lightpink: "#FFF0F0",
         pink: "#E59DA4",
+        rejected: "#FF7985",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
