@@ -9,11 +9,8 @@ import {
 export default function SelectType({ title }: { title: string }) {
   return (
     <Select>
-      <SelectTrigger className="rounded-full border-black h-8 w-auto space-x-2 text-sm focus:shadow-none focus:outline-none">
-        <SelectValue
-          placeholder={title}
-          className="focus:outline-none focus:shadow-none"
-        />
+      <SelectTrigger className="rounded-full border-black h-8 w-auto space-x-2 text-sm focus:shadow-none">
+        <SelectValue placeholder={title} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="light">ประเภท1</SelectItem>

@@ -12,10 +12,10 @@ export default function LastestPanel() {
     <div className="flex flex-col">
       <div className="text-black font-bold">ล่าสุด</div>
       <div
-        className="bg-[#D9D9D9] bg-opacity-20 p-8 rounded-lg overflow-hidden w-[60vw]"
+        className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden w-[50vw]"
         ref={carouselRef}
       >
-        <div className="flex space-x-10">
+        <div className="flex space-x-8">
           <LastestItem projectCode="8888" projectName="โครงการอบรมเด็กยากไร้" />
           <LastestItem
             projectCode="5555"
