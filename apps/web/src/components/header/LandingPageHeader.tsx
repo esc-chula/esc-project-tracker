@@ -5,7 +5,7 @@ import Link from "next/link"
 export default function LandingPageHeader() {
   return (
     <>
-      <header className="flex h-[74px] justify-between mt-16 px-20">
+      <header className="flex h-[74px] justify-between mt-14 px-20">
         <div className="w-[62.11px]" />
         <Image src="/icons/esc-red.svg" alt="logo" width={42} height={62} />
         <Link href="#">
