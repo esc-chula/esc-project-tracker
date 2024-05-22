@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { projectId: string } }) {
             // document="9025-1111 (ชื่อโครงการ)หยก่เห่เดนำว่"
           />
         </Header>
-        Main Content
+        <div className="h-12 bg-red">Search zone</div>
         <AllDocumentPanel />
       </main>
     </>
