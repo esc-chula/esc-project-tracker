@@ -1,5 +1,5 @@
 "use client";
-import LastestItem from "./lastest-item";
+import LastestItem from "./lastestItem";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 

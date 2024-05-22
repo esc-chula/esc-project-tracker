@@ -2,7 +2,8 @@ import { Folders } from "lucide-react";
 import Header from "../../../components/header/Header";
 import Title from "@/src/components/header/Title";
 import Subtitle from "@/src/components/header/Subtitle";
-import LastestPanel from "@/src/components/my-projects/lastest-panel";
+import LastestPanel from "@/src/components/my-projects/lastestPanel";
+import AllProjecPanel from "@/src/components/my-projects/allProjectPanel";
 
 export default function Page() {
   return (
@@ -18,6 +19,7 @@ export default function Page() {
         </Header>
         Main Content
         <LastestPanel />
+        <AllProjecPanel />
       </main>
     </>
   );
