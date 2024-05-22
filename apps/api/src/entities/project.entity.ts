@@ -20,7 +20,7 @@ export class Project {
   name: string;
 
   @Column()
-  code: string;
+  projectCode: string;
 
   @Column()
   type: number;
@@ -40,6 +40,6 @@ export class Project {
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true, default: null })
   updatedAt: Date;
 }

@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { DocStatus } from '../constant/enum';
-import { Project } from './Project.entity';
 
 @Entity()
 export class Document {
@@ -17,9 +16,6 @@ export class Document {
   @Column()
   name: string;
 
-  @Column()
-  documentCode: string;
-
   @Column({
     type: 'enum',
     enum: DocStatus,
@@ -28,6 +24,9 @@ export class Document {
 
   @Column()
   projectCode: string;
+
+  @Column()
+  documentCode: string;
 
   @Column()
   type: number;
@@ -41,12 +40,9 @@ export class Document {
   @Column()
   docLink: string;
 
-  @ManyToOne(() => Project, { cascade: true })
-  project: Project;
-
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true, default: null })
   updatedAt: Date;
 }
