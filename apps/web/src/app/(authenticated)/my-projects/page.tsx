@@ -1,14 +1,13 @@
 import { Folders } from "lucide-react";
 import Header from "../../../components/header/Header";
 import Title from "@/src/components/header/Title";
-import Subtitle from "@/src/components/header/Subtitle";
-import LastestPanel from "@/src/components/my-projects/lastestPanel";
-import AllProjecPanel from "@/src/components/my-projects/allProjectPanel";
+
+import NoProject from "@/src/components/my-projects/noProject";
 
 export default function Page() {
   return (
     <>
-      <main className="w-full pl-15 pr-5 pt-[68px] space-y-5">
+      <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh]">
         <Header>
           <Title icon={<Folders size={40} />}>โครงการของฉัน</Title>
           {/*<Subtitle
@@ -18,8 +17,11 @@ export default function Page() {
         />*/}
         </Header>
         <div className="h-12 bg-red">Search zone</div>
+
+        {/*<div className="h-12 bg-red">Search zone</div>
         <LastestPanel />
-        <AllProjecPanel />
+      <AllProjecPanel />*/}
+        {<NoProject />}
       </main>
     </>
   );

@@ -1,10 +1,7 @@
-import { Folders } from "lucide-react";
 import Header from "../../../../components/header/Header";
-import Title from "@/src/components/header/Title";
 import Subtitle from "@/src/components/header/Subtitle";
-import LastestPanel from "@/src/components/my-projects/lastestPanel";
-import AllProjecPanel from "@/src/components/my-projects/allProjectPanel";
-import AllDocumentPanel from "@/src/components/my-projects/allDocumentPanel";
+
+import NoDocument from "@/src/components/my-projects/noDocument";
 
 export default function Page({ params }: { params: { projectId: string } }) {
   return (
@@ -18,7 +15,8 @@ export default function Page({ params }: { params: { projectId: string } }) {
           />
         </Header>
         <div className="h-12 bg-red">Search zone</div>
-        <AllDocumentPanel />
+        {/*<AllDocumentPanel />*/}
+        <NoDocument />
       </main>
     </>
   );
