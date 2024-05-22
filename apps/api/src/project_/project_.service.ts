@@ -13,7 +13,7 @@ export class ProjectService {
     @InjectRepository(UserProj)
     private readonly userProjRepository: Repository<UserProj>,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   findByProjectID(id: string): Promise<Project> {
     const project = this.projectRepository.findOne({ where: { id } });
@@ -38,10 +38,10 @@ export class ProjectService {
   async findByNameOrCode(
     { page, limit }: { page: number; limit: number },
     name?: string,
-    code?: string,
+    projectCode?: string,
   ): Promise<Project[]> {
     const projects = await this.projectRepository.find({
-      where: [{ name }, { code }],
+      where: [{ name }, { projectCode }],
       take: limit,
       skip: (page - 1) * limit,
     });
