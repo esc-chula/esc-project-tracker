@@ -2,13 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { DocStatus } from '../constant/enum';
-import { Project } from './project.entity';
+import { Project } from './Project.entity';
 
 @Entity()
 export class Document {

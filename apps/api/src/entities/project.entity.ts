@@ -10,7 +10,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ProjectStatus } from '../constant/enum';
-import { DocType } from './docType.entity';
 
 @Entity()
 export class Project {
@@ -37,10 +36,6 @@ export class Project {
     enum: ProjectStatus,
   })
   status: ProjectStatus;
-
-  @OneToOne(() => DocType, { onDelete: 'CASCADE' })
-  @JoinColumn()
-  docType: DocType;
 
   @CreateDateColumn()
   createdAt: Date;

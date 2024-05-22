@@ -6,8 +6,8 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Project } from './project.entity';
+import { User } from './User.entity';
+import { Project } from './Project.entity';
 
 @Entity()
 export class UserProj {
