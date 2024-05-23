@@ -9,6 +9,7 @@ import { join } from 'path';
 import { UserModule } from './user_/user.module';
 import { DocumentModule } from './document_/document.module';
 import { ProjectModule } from './project_/project_.module';
+import { FilingModule } from './filing/filing.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ProjectModule } from './project_/project_.module';
     UserModule,
     DocumentModule,
     ProjectModule,
+    FilingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
