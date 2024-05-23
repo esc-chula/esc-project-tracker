@@ -3,6 +3,8 @@ import Header from "../../../components/header/Header";
 import Title from "@/src/components/header/Title";
 
 import NoProject from "@/src/components/my-projects/noProject";
+import LastestPanel from "@/src/components/my-projects/lastestPanel";
+import AllProjecPanel from "@/src/components/my-projects/allProjectPanel";
 
 export default function Page() {
   return (
@@ -18,10 +20,9 @@ export default function Page() {
         </Header>
         <div className="h-12 bg-red">Search zone</div>
 
-        {/*<div className="h-12 bg-red">Search zone</div>
         <LastestPanel />
-      <AllProjecPanel />*/}
-        {<NoProject />}
+        <AllProjecPanel />
+        {/*<NoProject />*/}
       </main>
     </>
   );
