@@ -4,6 +4,14 @@
 
 @layer base {
   :root {
+    --intania: #5e1018;
+    --red: #c22231;
+    --lightpink: #fff0f0;
+    --pink: #e59da4;
+    --rejected: #ff7985;
+    --accepted: #49e66b;
+    --pending: #ffbd5b;
+
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
 
