@@ -7,7 +7,7 @@ export class ProjectController {
 
   // JUST TEST FUNC
   @Get('getByUid/:uid')
-  getByUserId(@Param('uid') uid: string) {
+  findByUserId(@Param('uid') uid: string) {
     return this.projectService.findByUserID(uid);
   }
 }

@@ -13,7 +13,7 @@ export class ProjectService {
     @InjectRepository(UserProj)
     private readonly userProjRepository: Repository<UserProj>,
     private readonly userService: UserService,
-  ) { }
+  ) {}
 
   findByProjectID(id: string): Promise<Project> {
     const project = this.projectRepository.findOne({ where: { id } });

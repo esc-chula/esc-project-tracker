@@ -5,13 +5,13 @@ import { DocumentService } from './document.service';
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}
 
-  @Get('getByProjID/:docID')
-  getByProjectID(@Param('docID') docID: string) {
-    return this.documentService.getByProjectID(docID);
+  @Get('findByProjID/:docID')
+  findByProjectID(@Param('docID') docID: string) {
+    return this.documentService.findByProjectID(docID);
   }
 
-  @Get('getByUserID/:userID')
-  getByUserID(@Param('userID') userID: string) {
-    return this.documentService.getByUserID(userID);
+  @Get('findByUserID/:userID')
+  findByUserID(@Param('userID') userID: string) {
+    return this.documentService.findByUserID(userID);
   }
 }

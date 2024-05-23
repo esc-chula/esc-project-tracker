@@ -19,7 +19,11 @@ export class DocumentService {
     return this.documentRepository.findOne({ where: { id } });
   }
 
-  async getByProjectID(id: string): Promise<Document[]> {
+  async findByProjectID(id: string): Promise<Document[]> {
+    // if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format');
+    // const foundProject = await this.projectService.findByProjectID(id);
+    // if (!foundProject) throw new BadRequestException("Project Not Found!");
+
     if (!isUUID(id)) {
       throw new BadRequestException('Id is not in UUID format');
     }
@@ -37,7 +41,7 @@ export class DocumentService {
     return documents;
   }
 
-  async getByUserID(id: string): Promise<Document[]> {
+  async findByUserID(id: string): Promise<Document[]> {
     if (!isUUID(id)) {
       throw new BadRequestException('Id is not in UUID format');
     }
@@ -47,7 +51,7 @@ export class DocumentService {
     let documents: Document[] = [];
 
     for (const project of projects) {
-      const doc = await this.getByProjectID(project.id);
+      const doc = await this.findByProjectID(project.id);
       documents = [...doc, ...documents];
     }
 
