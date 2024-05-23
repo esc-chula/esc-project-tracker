@@ -11,7 +11,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/my-projects/EditDeleteButton.tsx"
+    "src/components/my-projects/optionButton.tsx"
   ],
   "exclude": ["node_modules"]
 }

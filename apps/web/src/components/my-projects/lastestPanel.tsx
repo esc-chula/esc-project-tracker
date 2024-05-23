@@ -10,7 +10,7 @@ export default function LastestPanel() {
 
   return (
     <div className="flex flex-col">
-      <div className="text-black font-bold">ล่าสุด</div>
+      <div className="font-sukhumvit font-bold">ล่าสุด</div>
       <div
         className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden w-[50vw]"
         ref={carouselRef}

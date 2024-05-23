@@ -1,34 +1,25 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog";
 import { EllipsisVertical } from "lucide-react";
-import PopoverComponent from "./EditDeleteButton.tsx";
-import EditDeleteButton from "./EditDeleteButton.tsx";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.tsx";
+import PopoverEditDocument from "./PopoverEditDocument.tsx";
+import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
 
 export default function AllDocumentCard() {
   return (
     <div className="bg-background shadow-xl rounded-lg space-y-14 pt-2">
       <div className="flex justify-end">
-        {/*<Dialog>
-          <DialogTrigger>
+        <Popover>
+          <PopoverTrigger>
             <EllipsisVertical />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>*/}
-        <EditDeleteButton />
+          </PopoverTrigger>
+          <PopoverContent
+            side="left"
+            align="start"
+            className="w-auto flex flex-col"
+          >
+            <PopoverEditDocument />
+            <PopoverDeleteDocument />
+          </PopoverContent>
+        </Popover>
       </div>
       <div className="text-2xl font-bold text-center">ตัวอย่างเอกสาร</div>
       <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-lg">

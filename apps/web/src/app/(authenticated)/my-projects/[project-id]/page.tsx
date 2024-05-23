@@ -1,5 +1,6 @@
 import Header from "../../../../components/header/Header";
 import Subtitle from "@/src/components/header/Subtitle";
+import AllDocumentPanel from "@/src/components/my-projects/allDocumentPanel";
 
 import NoDocument from "@/src/components/my-projects/noDocument";
 
@@ -15,8 +16,8 @@ export default function Page({ params }: { params: { projectId: string } }) {
           />
         </Header>
         <div className="h-12 bg-red">Search zone</div>
-        {/*<AllDocumentPanel />*/}
-        <NoDocument />
+        <AllDocumentPanel />
+        {/*<NoDocument />*/}
       </main>
     </>
   );
