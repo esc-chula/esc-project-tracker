@@ -5,6 +5,7 @@ import Title from "@/src/components/header/Title";
 import NoProject from "@/src/components/my-projects/noProject";
 import LastestPanel from "@/src/components/my-projects/lastestPanel";
 import AllProjecPanel from "@/src/components/my-projects/allProjectPanel";
+import SearchBar from "@/src/components/searchbar/searchBar";
 
 export default function Page() {
   return (
@@ -13,7 +14,7 @@ export default function Page() {
         <Header>
           <Title icon={<Folders size={40} />}>โครงการของฉัน</Title>
         </Header>
-        <div className="h-12 bg-red">Search zone</div>
+        <SearchBar />
 
         <LastestPanel />
         <AllProjecPanel />
