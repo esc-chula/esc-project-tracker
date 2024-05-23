@@ -6,21 +6,11 @@ import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { FaFolder } from "react-icons/fa6";
 import { InputAdornment } from "@mui/material";
+import { mockProjects } from "@/src/mock/data";
+import { MockProject } from "@/src/mock/type";
 
-const top100Films: Film[] = [
-  { title: "The Shawshank Redemption", year: "1994", filmId: "555" },
-  { title: "The Godfather", year: "1972", filmId: "555s" },
-  { title: "The Godfather: Part II", year: "1974", filmId: "555d" },
-  { title: "The Dark Knight", year: "2008", filmId: "555f" },
-  { title: "12 Angry Men", year: "1957", filmId: "555g" },
-  { title: "Schindler's List", year: "1993", filmId: "555h" },
-  { title: "Pulp Fiction", year: "1994", filmId: "555j" },
-  {
-    title: "The Lord of the Rings: The Return of the King",
-    year: "2003",
-    filmId: "555k",
-  },
-];
+//MOCK DATA
+const projects: MockProject[] = mockProjects;
 
 interface Film {
   title: string;
@@ -36,23 +26,23 @@ export default function SearchBar() {
   }, [value]);
 
   return (
-    <div>
+    <div className="min-w-[40vw] max-w-full">
       <Autocomplete
         freeSolo
         value={value}
-        options={top100Films}
+        options={mockProjects}
         getOptionLabel={(option) =>
           typeof option === "string"
             ? option
-            : `${option.title}     ${option.year}`
+            : `${option.code}     ${option.name}`
         }
         disableClearable
         renderOption={(props, option) => (
-          <li {...props} className="flex flex-row px-5 space-x-10">
+          <li {...props} className="flex flex-row px-5 space-x-10 mb-3">
             <FaFolder size={20} color="#747474" style={{ marginRight: 10 }} />
-            <span>{option.title}</span>
+            <span>{option.name}</span>
             <span style={{ marginLeft: "auto", color: "gray" }}>
-              {option.year}
+              {option.code}
             </span>
           </li>
         )}
