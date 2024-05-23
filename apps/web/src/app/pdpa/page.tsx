@@ -1,13 +1,7 @@
-"use client"
-
+import AcceptPDPA from "@/src/components/AcceptPDPA"
 import OnboardingPageHeader from "@/src/components/header/OnboardingPageHeader"
-import { Button } from "@/src/components/ui/button"
-import { Checkbox } from "@/src/components/ui/checkbox"
-import Link from "next/link"
-import { useState } from "react"
 
 export default function Page() {
-  const [isAccepted, setIsAccepted] = useState(false)
   return (
     <>
       <main className="flex flex-col items-center">
@@ -30,23 +24,7 @@ export default function Page() {
           sapiente? Tenetur asperiores velit quae fugit iste, veritatis aperiam ullam nisi
           voluptatum natus excepturi ea non illo ratione cupiditate, assumenda adipisci.
         </div>
-        <div className="flex gap-5 items-center pt-6 pb-5">
-          <Checkbox
-            id="terms"
-            className="w-7 h-7 rounded-full"
-            onClick={() => setIsAccepted(!isAccepted)}
-          />
-          <label htmlFor="terms" className="text-xl leading-none">
-            ฉันยอมรับเงื่อนไขและยินยอมให้เปิดเผยข้อมูลส่วนบุคคล
-          </label>
-        </div>
-        <Link href="#">
-          <Button
-            className="rounded-[80px] bg-gradient-red text-2xl font-bold px-12 py-[10px] h-16"
-            disabled={!isAccepted}>
-            รับทราบและยินยอม
-          </Button>
-        </Link>
+        <AcceptPDPA />
       </main>
     </>
   )

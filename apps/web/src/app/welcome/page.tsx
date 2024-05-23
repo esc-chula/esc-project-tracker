@@ -9,21 +9,18 @@ export default function Page() {
       <main className="flex flex-col items-center">
         <OnboardingPageHeader showAdminPortal />
         <Image
-          alt="main-logo"
-          src="/main-logo.webp"
-          width={566}
-          height={564}
-          className="w-[35vh] mt-10 mb-6 aspect-auto"
+          alt="badge-check"
+          src="/icons/badge-check.svg"
+          width={154}
+          height={154}
+          className="mt-14 mb-6 aspect-auto"
         />
-        <h1 className="text-5xl font-bold mb-4">ESC Project Tracker</h1>
-        <h2 className="text-2xl mb-6">
-          write down some information that is nesessary to know about this website
-        </h2>
-
+        <h1 className="text-4xl font-bold mb-4">สร้างบัญชีใหม่แล้ว!</h1>
+        <h2 className="text-xl mb-8">เริ่มต้นใช้งานระบบเอกสารกันเลย!</h2>
         <Button
           className="rounded-[80px] bg-gradient-red text-2xl font-bold px-12 py-[10px] h-16"
           asChild>
-          <Link href="#">เข้าสู่ระบบ</Link>
+          <Link href="/home">เริ่มต้น</Link>
         </Button>
       </main>
     </>
