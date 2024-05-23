@@ -1,0 +1,60 @@
+import { Project } from "./type";
+
+export const mockProjects: Project[] = [
+  {
+    id: "1",
+    name: "Mock Project 1",
+    type: "Development",
+    status: "Active",
+    createdAt: "2023-01-01T00:00:00Z",
+    updatedAt: "2023-05-01T00:00:00Z",
+  },
+  {
+    id: "2",
+    name: "Mock Project 2",
+    type: "Research",
+    status: "Completed",
+    createdAt: "2023-02-15T00:00:00Z",
+    updatedAt: "2023-06-20T00:00:00Z",
+  },
+  {
+    id: "3",
+    name: "Mock Project 3",
+    type: "Marketing",
+    status: "Active",
+    createdAt: "2023-03-10T00:00:00Z",
+    updatedAt: "2023-07-05T00:00:00Z",
+  },
+  {
+    id: "4",
+    name: "Mock Project 4",
+    type: "Design",
+    status: "Pending",
+    createdAt: "2023-04-01T00:00:00Z",
+    updatedAt: "2023-08-01T00:00:00Z",
+  },
+  {
+    id: "5",
+    name: "Mock Project 5",
+    type: "Development",
+    status: "Inactive",
+    createdAt: "2023-05-20T00:00:00Z",
+    updatedAt: "2023-09-15T00:00:00Z",
+  },
+  {
+    id: "6",
+    name: "Mock Project 6",
+    type: "Research",
+    status: "Active",
+    createdAt: "2023-06-05T00:00:00Z",
+    updatedAt: "2023-10-10T00:00:00Z",
+  },
+  {
+    id: "7",
+    name: "Mock Project 7",
+    type: "Marketing",
+    status: "Completed",
+    createdAt: "2023-07-25T00:00:00Z",
+    updatedAt: "2023-11-01T00:00:00Z",
+  },
+];

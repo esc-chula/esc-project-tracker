@@ -1,6 +1,6 @@
 import { EllipsisVertical } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.tsx";
-import PopoverEditDocument from "./PopoverEditDocument.tsx";
+import PopoverEditDocument from "./popoverEditDocument.tsx";
 import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
 
 export default function AllDocumentCard() {
