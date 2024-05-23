@@ -22,26 +22,26 @@ export class TrpcRouter {
         return `Hello ${input.name ? input.name : `World`}`;
       }),
 
-    // // Get Documents By UserID -> Document[]
-    // findDocumentsByUserId: this.trpc.procedure
-    //   .input(z.object({ userId: z.string() }))
-    //   .query(({ input }) => {
-    //     return this.documentService.findByUserID(input.userId);
-    //   }),
+    // Get Documents By UserID -> Document[]
+    findDocumentsByUserId: this.trpc.procedure
+      .input(z.object({ userId: z.string() }))
+      .query(({ input }) => {
+        return this.documentService.findByUserID(input.userId);
+      }),
 
-    // // Get Documents By ProjectID -> Document[]
-    // findDocumentsByProjectId: this.trpc.procedure
-    //   .input(z.object({ projectId: z.string() }))
-    //   .query(({ input }) => {
-    //     return this.documentService.findByProjectID(input.projectId);
-    //   }),
+    // Get Documents By ProjectID -> Document[]
+    findDocumentsByProjectId: this.trpc.procedure
+      .input(z.object({ projectId: z.string() }))
+      .query(({ input }) => {
+        return this.documentService.findByProjectID(input.projectId);
+      }),
 
-    // // Get Projects By UserID -> Project[]
-    // findProjectsByUserId: this.trpc.procedure
-    //   .input(z.object({ userId: z.string() }))
-    //   .query(({ input }) => {
-    //     return this.projectService.findByUserID(input.userId);
-    //   }),
+    // Get Projects By UserID -> Project[]
+    findProjectsByUserId: this.trpc.procedure
+      .input(z.object({ userId: z.string() }))
+      .query(({ input }) => {
+        return this.projectService.findByUserID(input.userId);
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {

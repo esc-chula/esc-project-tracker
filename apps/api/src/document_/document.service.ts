@@ -6,6 +6,7 @@ import { Project } from '../entities/Project.entity';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { validate as isUUID } from 'uuid';
+import { Filing } from '../entities/Filing.entity';
 
 @Injectable()
 export class DocumentService {
@@ -13,6 +14,7 @@ export class DocumentService {
     @InjectRepository(Document)
     private readonly documentRepository: Repository<Document>,
     private readonly projectService: ProjectService,
+    private readonly userService: UserService,
   ) {}
 
   findByDocID(id: string): Promise<Document> {
@@ -20,21 +22,14 @@ export class DocumentService {
   }
 
   async findByProjectID(id: string): Promise<Document[]> {
-    // if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format');
-    // const foundProject = await this.projectService.findByProjectID(id);
-    // if (!foundProject) throw new BadRequestException("Project Not Found!");
-
-    if (!isUUID(id)) {
-      throw new BadRequestException('Id is not in UUID format');
-    }
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
     const foundProject = await this.projectService.findByProjectID(id);
-    if (!foundProject) {
-      throw new BadRequestException('Project not found');
-    }
+    if (!foundProject) throw new BadRequestException('Project Not Found!');
 
     const documents = await this.documentRepository
       .createQueryBuilder('document')
-      .innerJoin(Project, 'project', 'document.projectId = project.id')
+      .innerJoin(Filing, 'filing', 'document.filingId = filing.id')
+      .innerJoin(Project, 'project', 'filing.projectId = project.id')
       .where('project.id = :pid', { pid: id })
       .getMany();
 
@@ -42,20 +37,20 @@ export class DocumentService {
   }
 
   async findByUserID(id: string): Promise<Document[]> {
-    if (!isUUID(id)) {
-      throw new BadRequestException('Id is not in UUID format');
-    }
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
+    const foundUser = await this.userService.findByUserID(id);
+    if (!foundUser) throw new BadRequestException('User Not Found!');
 
     const projects = await this.projectService.findByUserID(id);
-
-    let documents: Document[] = [];
-
-    for (const project of projects) {
-      const doc = await this.findByProjectID(project.id);
-      documents = [...doc, ...documents];
+    if (projects.length === 0) {
+      return [];
     }
 
-    console.log(documents);
+    const documentPromises = projects.map((project) =>
+      this.findByProjectID(project.id),
+    );
+    const documentsArrays = await Promise.all(documentPromises);
+    const documents = documentsArrays.flat();
 
     return documents;
   }
