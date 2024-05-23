@@ -65,9 +65,10 @@ const config = {
         },
       },
       backgroundImage: {
-        "gradient-red": "linear-gradient(180deg, #5E1018 0%, #C22231 100%)",
+        "gradient-red": "linear-gradient(68.65deg, #5E1018 -74.42%, #C22231 75.84%)",
         "gradient-pink": "linear-gradient(180deg, #E59DA4 0%, #FFF0F0 100%)",
       },
+
       padding: {
         15: "3.75rem",
       },
