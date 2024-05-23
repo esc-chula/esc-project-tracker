@@ -40,10 +40,8 @@ export default function SearchBar() {
         renderOption={(props, option) => (
           <li {...props} className="flex flex-row px-5 space-x-10 mb-3">
             <FaFolder size={20} color="#747474" style={{ marginRight: 10 }} />
+            <span>{option.code}</span>
             <span>{option.name}</span>
-            <span style={{ marginLeft: "auto", color: "gray" }}>
-              {option.code}
-            </span>
           </li>
         )}
         renderInput={(params) => (
@@ -69,6 +67,7 @@ export default function SearchBar() {
                 backgroundColor: "#E3E3E3",
                 paddingLeft: "16px",
                 boxShadow: "none",
+                height: "40px",
                 "&:hover .MuiOutlinedInput-notchedOutline": {
                   borderColor: "transparent",
                 },
@@ -90,7 +89,8 @@ export default function SearchBar() {
                 "& input::placeholder": {
                   color: "gray",
                   opacity: 1,
-                  fontWeight: "bold",
+                  fontWeight: "semibold",
+                  fontSize: "14px",
                 },
               },
             }}
