@@ -3,6 +3,7 @@ import Subtitle from "@/src/components/header/Subtitle";
 import MyDocumentData from "@/src/components/my-projects/myDocumentData";
 import { mockProject } from "@/src/mock/data";
 import { MockProject } from "@/src/mock/type";
+import { ChevronLeft } from "lucide-react";
 
 const project: MockProject = mockProject;
 

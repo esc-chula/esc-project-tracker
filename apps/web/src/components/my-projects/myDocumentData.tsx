@@ -5,18 +5,19 @@ import { FileText } from "lucide-react";
 import NoDocument from "./noDocument";
 import AllDocumentPanel from "./allDocumentPanel";
 import PopoverAddDocument from "./popoverAddDocument";
+import SearchDocument from "../searchbar/searchDocument";
 
 const fillings: MockFilling[] = mockFillings;
 
 export default function MyDocumentData() {
   return (
-    <div>
+    <div className="">
       <div className="w-[50vw] flex flex-row space-x-4">
         <div className="font-sukhumvit text-lg flex items-center font-bold">
           <FileText style={{ marginRight: "10" }} />
           เอกสาร
         </div>
-        <SearchBar />
+        <SearchDocument />
         <div className="flex items-center">
           <PopoverAddDocument />
         </div>
@@ -24,9 +25,7 @@ export default function MyDocumentData() {
       {fillings.length === 0 ? (
         <NoDocument />
       ) : (
-        <>
-          <AllDocumentPanel fillings={fillings} />
-        </>
+        <AllDocumentPanel fillings={fillings} />
       )}
     </div>
   );

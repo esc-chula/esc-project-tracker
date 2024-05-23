@@ -4,17 +4,19 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
+import { IoDocumentText } from "react-icons/io5";
+
 import { FaFolder } from "react-icons/fa6";
 import { InputAdornment } from "@mui/material";
-import { mockProjects } from "@/src/mock/data";
-import { MockProject } from "@/src/mock/type";
+import { mockFillings, mockProjects } from "@/src/mock/data";
+import { MockFilling, MockProject } from "@/src/mock/type";
 import { autocompleteStyles } from "@/src/styles/autocompleteStype";
 
 //MOCK DATA
-const projects: MockProject[] = mockProjects;
+const documents: MockFilling[] = mockFillings;
 
-export default function SearchBar() {
-  const [value, setValue] = useState<string>("");
+export default function SearchDocument() {
+  const [value, setValue] = useState<MockFilling | undefined>(undefined);
 
   useEffect(() => {
     console.log(value);
@@ -23,30 +25,35 @@ export default function SearchBar() {
   return (
     <div className="min-w-[40vw] max-w-full">
       <Autocomplete
-        freeSolo
+        disablePortal
+        noOptionsText="ไม่พบเอกสาร"
         value={value}
-        options={mockProjects}
+        options={documents}
+        disableClearable
+        onChange={(event, newValue) => {
+          if (typeof newValue !== "string") {
+            setValue(newValue);
+          }
+        }}
         getOptionLabel={(option) =>
           typeof option === "string"
             ? option
             : `${option.code}     ${option.name}`
         }
-        disableClearable
         renderOption={(props, option) => (
-          <li
-            {...props}
-            className="flex flex-row px-3 py-1 space-x-4 hover:cursor-default hover:bg-gray-100 text-sm font-sukhumvit"
-          >
-            <FaFolder size={20} color="#747474" style={{ marginRight: 2 }} />
-            <span>{option.code}</span>
-            <span>{option.name}</span>
+          <li {...props}>
+            <div className="px-2 w-full flex text-sm font-sukhumvit space-x-6">
+              <IoDocumentText size={20} color="#747474" />
+              <span>{option.code}</span>
+              <span>{option.name}</span>
+            </div>
           </li>
         )}
         renderInput={(params) => (
           <TextField
             {...params}
             InputLabelProps={{ shrink: true }}
-            placeholder="ค้นหาโครงการหรือเอกสาร"
+            placeholder="ค้นหาเอกสาร"
             InputProps={{
               ...params.InputProps,
               type: "search",

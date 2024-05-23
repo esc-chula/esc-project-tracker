@@ -1,6 +1,6 @@
 import { MockProject } from "@/src/mock/type";
 import SearchBar from "../searchbar/searchBar";
-import { mockProjects } from "@/src/mock/data";
+import { mockProjects, noMockProjects } from "@/src/mock/data";
 import LastestPanel from "./lastestPanel";
 import AllProjecPanel from "./allProjectPanel";
 import NoProject from "./noProject";

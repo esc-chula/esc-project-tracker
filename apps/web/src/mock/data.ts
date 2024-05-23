@@ -79,7 +79,7 @@ export const mockProjects: MockProject[] = [
   },
 ];
 
-const noMockProjects: MockProject[] = [];
+export const noMockProjects: MockProject[] = [];
 
 // mock more filling
 export const mockFillings: MockFilling[] = [
