@@ -1,3 +1,4 @@
+"use client";
 import { MockFilling, MockProject } from "@/src/mock/type";
 import SearchBar from "../searchbar/searchBar";
 import { mockFillings } from "@/src/mock/data";
@@ -5,7 +6,7 @@ import { FileText } from "lucide-react";
 import NoDocument from "./noDocument";
 import AllDocumentPanel from "./allDocumentPanel";
 import PopoverAddDocument from "./popoverAddDocument";
-import SearchDocument from "../searchbar/searchDocument";
+import { useRouter } from "next/navigation";
 
 const fillings: MockFilling[] = mockFillings;
 
@@ -17,7 +18,13 @@ export default function MyDocumentData() {
           <FileText style={{ marginRight: "10" }} />
           เอกสาร
         </div>
-        <SearchDocument />
+        <SearchBar
+          fillings={fillings}
+          projects={[]}
+          placeholder="ค้นหาเอกสาร"
+          projectFunc={() => {}}
+          fillingFunc={() => {}}
+        />
         <div className="flex items-center">
           <PopoverAddDocument />
         </div>

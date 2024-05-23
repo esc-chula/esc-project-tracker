@@ -6,6 +6,7 @@ export interface MockProject {
   name: string;
   type: string;
   status: string;
+  objectType: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -14,6 +15,7 @@ export interface MockFilling {
   id: string;
   name: string;
   code: string;
+  objectType: string;
   status: FillingStatus;
   createdAt: string;
 }
