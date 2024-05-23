@@ -1,5 +1,4 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { DocStatus } from '../constant/enum';
 import { DocumentService } from './document.service';
 
 @Controller('document')
