@@ -6,7 +6,7 @@ export default function OnboardingPageHeader({ showAdminPortal }: { showAdminPor
   return (
     <>
       <header
-        className={`flex h-[74px] mt-14 px-20 ${showAdminPortal ? "justify-between" : "justify-center"}`}>
+        className={`w-full flex h-[74px] mt-14 px-20 ${showAdminPortal ? "justify-between" : "justify-center"}`}>
         {showAdminPortal && <div className="w-[62.11px]" />}
         <Image src="/icons/esc-red.svg" alt="logo" width={42} height={62} />
         {showAdminPortal && (
