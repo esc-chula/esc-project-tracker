@@ -2,6 +2,7 @@ import { Radio } from "lucide-react"
 import Header from "../../../components/header/Header"
 import Title from "@/src/components/header/Title"
 import DocumentStatusStepper from "@/src/components/status/StatusStepper"
+import { StatusTable } from "@/src/components/status/StatusTable"
 
 export default function Page() {
   return (
@@ -17,6 +18,7 @@ export default function Page() {
           <h3 className="mb-8 text-2xl text-intania font-bold">ขั้นตอนการส่งเอกสาร</h3>
           <DocumentStatusStepper status="DEFAULT" />
         </div>
+        <StatusTable />
       </main>
     </>
   )
