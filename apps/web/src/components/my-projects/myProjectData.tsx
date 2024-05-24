@@ -19,6 +19,7 @@ export default function MyProjectData() {
   };
 
   const [projects, setProjects] = useState<ProjectType[]>([]);
+  const [isFetched, setIsFetched] = useState<boolean>(false);
 
   //TODO : Change the userId to the actual userId
   useEffect(() => {
@@ -26,8 +27,8 @@ export default function MyProjectData() {
       const data = await getProjectByUserId(
         "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
       );
-      console.log(data);
       setProjects(data);
+      setIsFetched(true);
     };
     fetchProjects();
   }, []);
@@ -43,12 +44,16 @@ export default function MyProjectData() {
           fillingFunc={() => {}}
         />
       </div>
-      {projects.length === 0 ? (
-        <NoProject />
-      ) : (
+      {isFetched && (
         <>
-          <LastestPanel />
-          <AllProjecPanel projects={projects} />
+          {projects.length === 0 ? (
+            <NoProject />
+          ) : (
+            <>
+              <LastestPanel />
+              <AllProjecPanel projects={projects} />
+            </>
+          )}
         </>
       )}
     </>
