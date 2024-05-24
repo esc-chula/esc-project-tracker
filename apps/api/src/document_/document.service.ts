@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Document } from '../entities/Document.entity';
+import { Document } from '../entities/document.entity';
 import { Repository } from 'typeorm';
-import { Project } from '../entities/Project.entity';
+import { Project } from '../entities/project.entity';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { validate as isUUID } from 'uuid';
-import { Filing } from '../entities/Filing.entity';
+import { Filing } from '../entities/filing.entity';
 
 @Injectable()
 export class DocumentService {

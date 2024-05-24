@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Project } from '../entities/Project.entity';
+import { Project } from '../entities/project.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
-import { UserProj } from '../entities/UserProj.entity';
+import { UserProj } from '../entities/userProj.entity';
 
 @Injectable()
 export class ProjectService {
