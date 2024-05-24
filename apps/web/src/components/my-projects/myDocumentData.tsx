@@ -12,7 +12,7 @@ const fillings: MockFilling[] = mockFillings;
 
 export default function MyDocumentData() {
   return (
-    <div className="">
+    <div className="space-y-4">
       <div className="w-[50vw] flex flex-row space-x-4">
         <div className="font-sukhumvit text-lg flex items-center font-bold">
           <FileText style={{ marginRight: "10" }} />

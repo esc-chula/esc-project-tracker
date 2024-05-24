@@ -10,7 +10,7 @@ const project: MockProject = mockProject;
 export default function Page({ params }: { params: { projectId: string } }) {
   return (
     <>
-      <main className="w-full pl-15 pr-5 pt-[68px]">
+      <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh] ">
         <Header>
           <Subtitle
             project={`${project.code} ${project.name}`}

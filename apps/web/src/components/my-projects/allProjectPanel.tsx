@@ -10,7 +10,7 @@ export default function AllProjectPanel({
 }) {
   return (
     <div className="space-y-5 pt-5 pb-10 ">
-      <div className="font-sukhumvit font-bold">ทั้งหมด</div>
+      <div className="font-sukhumvit font-bold text-lg">ทั้งหมด</div>
       <div className="flex flex-row space-x-5">
         <SelectType title="ประเภท" />
         <SelectType title="บุคคล" />
