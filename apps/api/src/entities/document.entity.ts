@@ -20,7 +20,7 @@ export class Document {
   name: string;
 
   @Column()
-  projectCode: string;
+  activity: string;
 
   @Column()
   detail: string;
