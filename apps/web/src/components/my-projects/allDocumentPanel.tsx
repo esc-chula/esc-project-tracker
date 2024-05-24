@@ -41,7 +41,8 @@ export default function AllDocumentPanel({
           <AllDocumentCard
             key={filling.id}
             fillingId={filling.id}
-            fillingCode={filling.projectCode}
+            projectCode={filling.projectCode}
+            fillingCode={filling.fillingCode}
             fillingName={filling.name}
             fillingStatus={filling.status}
           />

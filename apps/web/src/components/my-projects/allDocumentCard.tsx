@@ -9,11 +9,13 @@ import { buttonColors, TextMyProject } from "@/src/styles/enumMap";
 
 export default function AllDocumentCard({
   fillingId,
+  projectCode,
   fillingCode,
   fillingName,
   fillingStatus,
 }: {
   fillingId: string;
+  projectCode: string;
   fillingCode: string;
   fillingName: string;
   fillingStatus: FillingStatus;
@@ -45,13 +47,13 @@ export default function AllDocumentCard({
       <div className="text-2xl font-bold text-center">ตัวอย่างเอกสาร</div>
       <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-lg">
         <div className="text-2xl font-bold text-start">
-          {fillingCode}
-          <div className="font-medium text-sm overflow-hidden whitespace-nowrap text-ellipsis">
+          {projectCode} - {fillingCode}
+          <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
             {fillingName}
           </div>
         </div>
         <div
-          className={`inline-block rounded-lg text-center py-1 px-3 text-sm font-bold font-sukhumvit min-w-[60%] ${buttonColors[fillingStatus]}`}
+          className={`inline-block rounded-lg text-center py-2 px-3 text-sm font-bold font-sukhumvit min-w-[60%] ${buttonColors[fillingStatus]}`}
         >
           {TextMyProject[fillingStatus]}
         </div>
