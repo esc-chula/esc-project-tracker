@@ -6,12 +6,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserProj } from './userProj.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  userID: string;
+  id: string;
 
   @Column()
   name: string;
@@ -20,22 +19,14 @@ export class User {
   username: string;
 
   @Column()
-  studentID: string;
+  studentId: string;
 
   @Column()
   password: string;
 
-  @OneToMany(
-    () => UserProj,
-    (userProj) => {
-      userProj.user;
-    },
-  )
-  userProj: UserProj[];
-
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true, default: null })
   updatedAt: Date;
 }
