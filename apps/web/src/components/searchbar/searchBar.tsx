@@ -8,13 +8,12 @@ import { FaFolder } from "react-icons/fa6";
 import { IoDocumentText } from "react-icons/io5";
 
 import { InputAdornment } from "@mui/material";
-import { mockFillings, mockProjects } from "@/src/mock/data";
 import { autocompleteStyles } from "@/src/styles/autocompleteStype";
-import { MockFilling, MockProject } from "@/src/mock/type";
+import { ProjectType, DocumentType, FilingType } from "../../../../shared/type";
 
 //MOCK DATA
-//const projects: MockProject[] = mockProjects;
-//const fillings: MockFilling[] = mockFillings;
+//const projects: ProjectType[] = ProjectTypes;
+//const fillings: FilingType[] = FilingTypes;
 
 export default function SearchBar({
   placeholder,
@@ -24,18 +23,18 @@ export default function SearchBar({
   fillingFunc,
 }: {
   placeholder: string;
-  projects: MockProject[];
-  fillings: MockFilling[];
-  projectFunc: (project: MockProject | MockFilling) => any;
-  fillingFunc: (filling: MockProject | MockFilling) => any;
+  projects: ProjectType[];
+  fillings: FilingType[];
+  projectFunc: (project: ProjectType | FilingType) => any;
+  fillingFunc: (filling: ProjectType | FilingType) => any;
 }) {
-  const [value, setValue] = useState<MockProject | MockFilling | null>(null);
+  const [value, setValue] = useState<ProjectType | FilingType | null>(null);
 
   useEffect(() => {
     console.log(value);
   }, [value]);
 
-  const handleSelect = (option: MockProject | MockFilling | null) => {
+  const handleSelect = (option: ProjectType | FilingType | null) => {
     setValue(option);
     if (option !== null) {
       setValue(option);

@@ -1,6 +1,5 @@
 import { MockFilling, MockProject } from "./type";
-import { FillingStatus } from "../constant/enum";
-
+import { FillingStatus } from "../../../shared/constant/enum";
 // ADD code
 
 export const mockProject: MockProject = {
@@ -103,7 +102,7 @@ export const mockFillings: MockFilling[] = [
   {
     id: "2",
     name: "Mock Filling 2",
-    status: FillingStatus.REJECTED,
+    status: FillingStatus.RETURNED,
     code: "9000-0002",
     objectType: "filling",
     createdAt: "2023-02-15T00:00:00Z",
@@ -111,7 +110,7 @@ export const mockFillings: MockFilling[] = [
   {
     id: "3",
     name: "Mock Filling 3",
-    status: FillingStatus.DRAFT,
+    status: FillingStatus.WAIT_FOR_SECRETARY,
     code: "9000-0003",
     objectType: "filling",
     createdAt: "2023-03-10T00:00:00Z",
@@ -119,7 +118,7 @@ export const mockFillings: MockFilling[] = [
   {
     id: "4",
     name: "Mock Filling 4",
-    status: FillingStatus.SECRETARY,
+    status: FillingStatus.WAIT_FOR_STUDENT_AFFAIR,
     objectType: "filling",
     code: "9000-0004",
     createdAt: "2023-04-01T00:00:00Z",
@@ -127,7 +126,7 @@ export const mockFillings: MockFilling[] = [
   {
     id: "5",
     name: "Mock Filling 5",
-    status: FillingStatus.REJECTED,
+    status: FillingStatus.RETURNED,
     objectType: "filling",
     code: "9000-0005",
     createdAt: "2023-05-20T00:00:00Z",
@@ -136,7 +135,7 @@ export const mockFillings: MockFilling[] = [
     id: "6",
     name: "Mock Filling 6",
     objectType: "filling",
-    status: FillingStatus.DRAFT,
+    status: FillingStatus.WAIT_FOR_SECRETARY,
     code: "9000-0006",
     createdAt: "2023-06-05T00:00:00Z",
   },

@@ -23,12 +23,6 @@ export class Document {
   projectCode: string;
 
   @Column()
-  documentCode: string;
-
-  @Column()
-  type: number;
-
-  @Column()
   detail: string;
 
   @Column()

@@ -1,11 +1,12 @@
 import { MockProject } from "@/src/mock/type";
 import AllProjectCard from "./allProjectCard";
 import SelectType from "./selectType";
+import { ProjectType } from "@/src/interface/project";
 
 export default function AllProjectPanel({
   projects,
 }: {
-  projects: MockProject[];
+  projects: ProjectType[];
 }) {
   return (
     <div className="space-y-5 pt-5 pb-10 ">
@@ -20,7 +21,7 @@ export default function AllProjectPanel({
           <AllProjectCard
             key={project.id}
             projectId={project.id}
-            projectCode={project.code}
+            projectCode={project.projectCode}
             projectName={project.name}
           />
         ))}

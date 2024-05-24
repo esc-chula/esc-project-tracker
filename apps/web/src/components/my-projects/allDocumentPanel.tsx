@@ -1,17 +1,17 @@
 "use cliet";
-import { MockFilling } from "@/src/mock/type";
 import AllDocumentCard from "./allDocumentCard";
 import SelectType from "./selectType";
 import { filterStatus } from "@/src/constant/enumMap";
 import { useState, useEffect } from "react";
+import { FillingType } from "@/src/interface/filling";
 
 export default function AllDocumentPanel({
   fillings,
 }: {
-  fillings: MockFilling[];
+  fillings: FillingType[];
 }) {
   const [filteredFillings, setFilteredFillings] =
-    useState<MockFilling[]>(fillings);
+    useState<FillingType[]>(fillings);
   const [status, setStatus] = useState<string>("all");
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function AllDocumentPanel({
           <AllDocumentCard
             key={filling.id}
             fillingId={filling.id}
-            fillingCode={filling.code}
+            fillingCode={filling.projectCode}
             fillingName={filling.name}
             fillingStatus={filling.status}
           />
