@@ -37,9 +37,8 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           placeholder="ค้นหาเอกสาร"
           fillingFunc={() => {}}
         />
-        <div className="flex items-center">
-          <PopoverAddDocument />
-        </div>
+
+        <PopoverAddDocument />
       </div>
       {isFetched && (
         <>
