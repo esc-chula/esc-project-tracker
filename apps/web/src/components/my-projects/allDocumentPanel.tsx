@@ -55,7 +55,7 @@ export default function AllDocumentPanel({
           }}
         />
       </div>
-      <div className="grid lg:grid-cols-3 md:grid-col-2 w-[55vw] gid-row-2 gap-x-4 gap-y-4 pr-8">
+      <div className="grid lg:grid-cols-3 md:grid-col-2 gid-row-2 gap-x-4 gap-y-4 pr-8">
         {filteredFillings.map((filling) => (
           <AllDocumentCard
             key={filling.id}

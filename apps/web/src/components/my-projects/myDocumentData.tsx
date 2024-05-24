@@ -25,8 +25,8 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
   }, []);
 
   return (
-    <div className="space-y-4">
-      <div className="w-[50vw] flex flex-row space-x-4">
+    <div className="space-y-4 w-[65%]">
+      <div className=" flex flex-row space-x-4">
         <div className="font-sukhumvit text-lg flex items-center font-bold">
           <FileText style={{ marginRight: "10" }} />
           เอกสาร
@@ -35,7 +35,6 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           fillings={fillings}
           projects={[]}
           placeholder="ค้นหาเอกสาร"
-          projectFunc={() => {}}
           fillingFunc={() => {}}
         />
         <div className="flex items-center">
