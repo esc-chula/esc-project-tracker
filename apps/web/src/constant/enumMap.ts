@@ -13,3 +13,27 @@ export const TextMyProject = {
   [FillingStatus.REJECTED]: "เอกสารถูกตีกลับ",
   [FillingStatus.SECRETARY]: "ส่งให้เลขาตรวจสอบ",
 };
+
+//Filtering
+export const filterStatus = [
+  {
+    label: "ทั้งหมด",
+    value: "all",
+  },
+  {
+    label: "ฉบับร่าง",
+    value: "DRAFT",
+  },
+  {
+    label: "ส่งให้เลขาตรวจสอบ",
+    value: "SECRETARY",
+  },
+  {
+    label: "ส่งให้กิจการนิสิตแล้ว",
+    value: "APPROVED",
+  },
+  {
+    label: "เอกสารถูกตีกลับ",
+    value: "REJECTED",
+  },
+];
