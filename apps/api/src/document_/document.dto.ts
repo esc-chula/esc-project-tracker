@@ -1,13 +1,10 @@
 import { Controller } from '@nestjs/common';
-import { DocStatus } from '../constant/enum';
 
 @Controller('document')
 export class DocumentController {
   name: string;
 
   Code: string;
-
-  status: DocStatus;
 
   projectCode: string;
 

@@ -1,18 +1,17 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { DocStatus } from '../constant/enum';
 import { DocumentService } from './document.service';
 
 @Controller('document')
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}
 
-  @Get('getByProjID/:docID')
-  getByProjectID(@Param('docID') docID: string) {
-    return this.documentService.getByProjectID(docID);
+  @Get('/findByProjID/:ProjID')
+  findByProjectID(@Param('ProjID') ProjID: string) {
+    return this.documentService.findByProjectID(ProjID);
   }
 
-  @Get('getByUserID/:userID')
-  getByUserID(@Param('userID') userID: string) {
-    return this.documentService.getByUserID(userID);
+  @Get('/findByUserID/:userID')
+  findByUserID(@Param('userID') userID: string) {
+    return this.documentService.findByUserID(userID);
   }
 }

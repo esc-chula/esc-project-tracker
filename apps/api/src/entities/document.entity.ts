@@ -6,21 +6,18 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { DocStatus } from '../constant/enum';
+import { Filing } from './filing.entity';
 
 @Entity()
 export class Document {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ManyToOne(() => Filing, { onDelete: 'CASCADE' })
+  filingId: Filing;
+
   @Column()
   name: string;
-
-  @Column({
-    type: 'enum',
-    enum: DocStatus,
-  })
-  status: DocStatus;
 
   @Column()
   projectCode: string;
