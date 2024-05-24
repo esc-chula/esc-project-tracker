@@ -12,7 +12,7 @@ import {
 export default function Header({ children }: { children?: React.ReactNode }) {
   return (
     <>
-      <div className="min-h-[50px] flex justify-between gap-3.5 pr-5">
+      <header className="min-h-[50px] flex justify-between gap-3.5 pr-5">
         {children}
         <div className="h-12 w-[284px] flex items-center ml-auto">
           <div className="pr-4 border-r border-black mr-4 h-full flex items-center">
@@ -41,7 +41,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             </DropdownMenu>
           </div>
         </div>
-      </div>
+      </header>
     </>
   )
 }

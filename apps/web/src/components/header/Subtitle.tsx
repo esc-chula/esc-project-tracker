@@ -12,10 +12,12 @@ export default function Subtitle({
   project,
   document,
   projectId,
+  origin,
 }: {
   project: string
   document?: string
   projectId?: string
+  origin?: string
 }) {
   return (
     <>
@@ -24,7 +26,7 @@ export default function Subtitle({
         <Breadcrumb>
           <BreadcrumbList className="text-2xl flex-nowrap">
             <BreadcrumbItem>
-              <BreadcrumbLink href="/projects" className="text-black font-semibold">
+              <BreadcrumbLink href={origin ?? "/projects"} className="text-black font-semibold">
                 โครงการ
               </BreadcrumbLink>
             </BreadcrumbItem>
