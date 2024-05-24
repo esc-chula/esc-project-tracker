@@ -6,24 +6,19 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Project } from './project.entity';
+import { User } from './User.entity';
+import { Project } from './Project.entity';
 
 @Entity()
 export class UserProj {
-  @PrimaryColumn('uuid')
-  userID: string;
-
-  @PrimaryColumn('uuid')
-  projectID: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userID', referencedColumnName: 'userID' })
   user: User;
 
   @ManyToOne(() => Project, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'projectID', referencedColumnName: 'projectID' })
   project: Project;
 }
