@@ -10,17 +10,20 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ProjectStatus } from '../constant/enum';
+import { DocType } from './docType.entity';
+import { Document } from './document.entity';
+import { UserProj } from './userProj.entity';
 
 @Entity()
 export class Project {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  projectID: string;
 
   @Column()
   name: string;
 
   @Column()
-  projectCode: string;
+  code: string;
 
   @Column()
   type: number;
@@ -29,7 +32,7 @@ export class Project {
   detail: string;
 
   @Column()
-  reserveDate: Date;
+  reserDate: Date;
 
   @Column({
     type: 'enum',
@@ -37,9 +40,18 @@ export class Project {
   })
   status: ProjectStatus;
 
+  @OneToMany(() => UserProj, (userProj) => userProj.project)
+  userProj: UserProj[];
+
+  @OneToMany(() => Document, (document) => document.project)
+  documents: Document[];
+
+  @OneToOne(() => DocType, { cascade: true })
+  docType: DocType;
+
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true, default: null })
+  @UpdateDateColumn()
   updatedAt: Date;
 }

@@ -2,28 +2,33 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Filing } from './Filing.entity';
+import { DocStatus } from '../constant/enum';
+import { Project } from './project.entity';
 
 @Entity()
 export class Document {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @ManyToOne(() => Filing, { onDelete: 'CASCADE' })
-  filingId: Filing;
+  docID: string;
 
   @Column()
   name: string;
 
   @Column()
-  projectCode: string;
+  Code: string;
+
+  @Column({
+    type: 'enum',
+    enum: DocStatus,
+  })
+  status: DocStatus;
 
   @Column()
-  documentCode: string;
+  projectCode: string;
 
   @Column()
   type: number;
@@ -37,9 +42,16 @@ export class Document {
   @Column()
   docLink: string;
 
+  @Column()
+  projectID: string;
+
+  @ManyToOne(() => Project, { cascade: true })
+  @JoinColumn({ name: 'projectID', referencedColumnName: 'projectID' })
+  project: Project;
+
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true, default: null })
+  @UpdateDateColumn()
   updatedAt: Date;
 }

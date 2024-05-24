@@ -1,13 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { ProjectService } from './project_.service';
+import { Controller } from '@nestjs/common';
 
-@Controller('project')
-export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
-
-  // JUST TEST FUNC
-  @Get('findByUid/:uid')
-  findByUserId(@Param('uid') uid: string) {
-    return this.projectService.findByUserID(uid);
-  }
-}
+@Controller('project-')
+export class ProjectController {}
