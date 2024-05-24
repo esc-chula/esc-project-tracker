@@ -33,6 +33,7 @@ const config = {
         rejected: "var(--rejected)",
         accepted: "var(--accepted)",
         pending: "var(--pending)",
+        disabled: "var(--disabled)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

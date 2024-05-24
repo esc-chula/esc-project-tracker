@@ -15,7 +15,7 @@ export default function Page() {
 
         <div className="bg-lightpink flex flex-col pt-12 pb-5 items-center mt-5 w-full">
           <h3 className="mb-8 text-2xl text-intania font-bold">ขั้นตอนการส่งเอกสาร</h3>
-          <DocumentStatusStepper />
+          <DocumentStatusStepper status="DEFAULT" />
         </div>
       </main>
     </>
