@@ -34,8 +34,8 @@ export default function MyProjectData() {
   }, []);
 
   return (
-    <>
-      <div className="w-[50vw]">
+    <div className="w-[65%]">
+      <div className="mb-5">
         <SearchBar
           fillings={mockFillings}
           projects={projects}
@@ -56,6 +56,6 @@ export default function MyProjectData() {
           )}
         </>
       )}
-    </>
+    </div>
   );
 }

@@ -54,7 +54,7 @@ export default function AllProjectPanel({
           }}
         />
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-col-2 max-w-[50vw] grid-row-2 gap-x-8 gap-y-10 ">
+      <div className="grid lg:grid-cols-4 md:grid-col-2 grid-row-2 gap-x-8 gap-y-10 ">
         {usedProjects.map((project) => (
           <AllProjectCard
             key={project.id}

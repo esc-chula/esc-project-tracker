@@ -9,10 +9,10 @@ export default function LastestPanel() {
   ]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-w-[60vw]">
       <div className="font-sukhumvit font-bold text-lg">ล่าสุด</div>
       <div
-        className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden w-[50vw]"
+        className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden"
         ref={carouselRef}
       >
         <div className="flex space-x-8">
