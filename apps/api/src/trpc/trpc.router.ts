@@ -16,6 +16,7 @@ export class TrpcRouter {
     private readonly documentService: DocumentService,
     private readonly filingService: FilingService,
   ) {}
+  'test';
 
   appRouter = this.trpc.router({
     hello: this.trpc.procedure
