@@ -38,4 +38,4 @@ import { FilingModule } from './filing/filing.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

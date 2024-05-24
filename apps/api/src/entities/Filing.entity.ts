@@ -31,6 +31,12 @@ export class Filing {
   @Column()
   projectCode: string;
 
+  @Column()
+  documentCode: string;
+
+  @Column()
+  type: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

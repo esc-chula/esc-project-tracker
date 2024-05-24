@@ -20,13 +20,7 @@ export class Document {
   name: string;
 
   @Column()
-  projectCode: string;
-
-  @Column()
-  documentCode: string;
-
-  @Column()
-  type: number;
+  activity: string;
 
   @Column()
   detail: string;
