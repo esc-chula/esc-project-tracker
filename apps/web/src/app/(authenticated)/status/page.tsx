@@ -1,7 +1,7 @@
 import { Radio } from "lucide-react"
 import Header from "../../../components/header/Header"
 import Title from "@/src/components/header/Title"
-import DocumentStatusStepper from "@/src/components/DocumentStatusStepper"
+import DocumentStatusStepper from "@/src/components/status/StatusStepper"
 
 export default function Page() {
   return (

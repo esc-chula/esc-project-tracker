@@ -1,11 +1,11 @@
 "use client"
 
-import { Step1, Step2, Step3, Step4, Step5 } from "@/src/components/DocumentStatusSvg"
+import { Step1, Step2, Step3, Step4, Step5 } from "@/src/components/status/StatusSvg"
 import Stepper from "@mui/joy/Stepper"
 import Step, { stepClasses } from "@mui/joy/Step"
 import StepIndicator from "@mui/joy/StepIndicator"
-import { FillingStatus } from "../constant/enum"
-import { FillingStatusToStepper } from "../constant/enumMap"
+import { FillingStatus } from "../../constant/enum"
+import { FillingStatusToStepper } from "../../constant/enumMap"
 
 const steps = [
   { no: "1", children: <>ขอเลขรัน</> },
