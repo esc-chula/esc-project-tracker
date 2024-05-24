@@ -92,3 +92,74 @@ export const filterType = [
     value: "9",
   },
 ];
+
+// PROJECt
+export const filterProjectStatus = [
+  {
+    label: "ทั้งหมด",
+    value: "all",
+  },
+  {
+    label: "กำลังดำเนินการ",
+    value: "CONTINUE",
+  },
+  {
+    label: "รอปิดโครงการ",
+    value: "WAIT_FOR_CLOSE",
+  },
+  {
+    label: "ปิดโครงการ",
+    value: "CLOSED",
+  },
+];
+
+export const filterProjectType = [
+  {
+    label: "ทั้งหมด",
+    value: "0",
+  },
+  {
+    label: "โครงการฝ่ายกิจการภายใน",
+    value: "10",
+  },
+  {
+    label: "โครงการฝ่ายศิลปะและวัฒนธรรม",
+    value: "11",
+  },
+  {
+    label: "โครงการฝ่ายกีฬา",
+    value: "12",
+  },
+  {
+    label: "โครงการฝ่ายกิจการภายนอก",
+    value: "20",
+  },
+  {
+    label: "โครงการฝ่ายนิสิตสัมพันธ์",
+    value: "30",
+  },
+  {
+    label: "โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์",
+    value: "40",
+  },
+  {
+    label: "โครงการฝ่ายพัฒนาองค์กร",
+    value: "50",
+  },
+  {
+    label: "โครงการฝ่ายสนับสนุน",
+    value: "60",
+  },
+  {
+    label: "โครงการฝ่ายสื่อสารองค์กร",
+    value: "70",
+  },
+  {
+    label: "โครงการอื่นๆของกวศ.",
+    value: "80",
+  },
+  {
+    label: "โครงการฝ่ายวิชาการ",
+    value: "90",
+  },
+];

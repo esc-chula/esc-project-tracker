@@ -1,23 +1,61 @@
-import { MockProject } from "@/src/mock/type";
 import AllProjectCard from "./allProjectCard";
 import SelectType from "./selectType";
 import { ProjectType } from "@/src/interface/project";
+import { filterProjectStatus, filterProjectType } from "@/src/styles/enumMap";
+import { useState, useEffect } from "react";
 
 export default function AllProjectPanel({
   projects,
 }: {
   projects: ProjectType[];
 }) {
+  const [usedProjects, setUsedProjects] = useState<ProjectType[]>(projects);
+  const [projectState, setProjectState] = useState<string>("all");
+  const [projectType, setProjectType] = useState<string>("0");
+
+  useEffect(() => {
+    if (projectState === "all" && projectType === "0") {
+      setUsedProjects(projects);
+    } else if (projectState === "all") {
+      setUsedProjects(
+        projects.filter((project) => project.type.toString() === projectType)
+      );
+    } else if (projectType === "0") {
+      setUsedProjects(
+        projects.filter((project) => project.status === projectState)
+      );
+    } else {
+      setUsedProjects(
+        projects.filter(
+          (project) =>
+            project.status === projectState &&
+            project.type.toString() === projectType
+        )
+      );
+    }
+  }, [projectState, projectType]);
+
   return (
     <div className="space-y-5 pt-5 pb-10 ">
       <div className="font-sukhumvit font-bold text-lg">ทั้งหมด</div>
       <div className="flex flex-row space-x-5">
-        <SelectType title="ประเภท" items={[]} sendValue={() => {}} />
-        <SelectType title="บุคคล" items={[]} sendValue={() => {}} />
-        <SelectType title="ทั้งหมด" items={[]} sendValue={() => {}} />
+        <SelectType
+          title="สถานะ"
+          items={filterProjectStatus}
+          sendValue={(value) => {
+            setProjectState(value);
+          }}
+        />
+        <SelectType
+          title="ประเภท"
+          items={filterProjectType}
+          sendValue={(value) => {
+            setProjectType(value);
+          }}
+        />
       </div>
       <div className="grid lg:grid-cols-4 md:grid-col-2 max-w-[50vw] grid-row-2 gap-x-8 gap-y-10 ">
-        {projects.map((project) => (
+        {usedProjects.map((project) => (
           <AllProjectCard
             key={project.id}
             projectId={project.id}

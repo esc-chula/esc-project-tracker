@@ -13,11 +13,13 @@ import getFillingByProjectId from "@/src/service/getFillingByProjectId";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [fillings, setFillings] = useState<FillingType[]>([]);
+  const [isFetched, setIsFetched] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchFillings = async () => {
       const data = await getFillingByProjectId({ projectId });
       setFillings(data);
+      setIsFetched(true);
     };
     fetchFillings();
   }, []);
@@ -40,10 +42,14 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           <PopoverAddDocument />
         </div>
       </div>
-      {fillings.length === 0 ? (
-        <NoDocument />
-      ) : (
-        <AllDocumentPanel fillings={fillings} />
+      {isFetched && (
+        <>
+          {fillings.length === 0 ? (
+            <NoDocument />
+          ) : (
+            <AllDocumentPanel fillings={fillings} />
+          )}
+        </>
       )}
     </div>
   );
