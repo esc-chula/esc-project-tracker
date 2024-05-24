@@ -58,6 +58,12 @@ export class TrpcRouter {
       .query(({ input }) => {
         return this.filingService.findByProjectID(input.projectId);
       }),
+
+    getProjectByProjectId: this.trpc.procedure
+      .input(z.object({ projectId: z.string() }))
+      .query(({ input }) => {
+        return this.projectService.findByProjectID(input.projectId);
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {

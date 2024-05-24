@@ -1,24 +1,29 @@
 "use client";
+import { trpc } from "@/src/app/trpc";
 import Header from "../../../../components/header/Header";
 import Subtitle from "@/src/components/header/Subtitle";
 import MyDocumentData from "@/src/components/my-projects/myDocumentData";
-import { mockProject } from "@/src/mock/data";
 import { ProjectType } from "@/src/interface/project";
+import { useEffect, useState } from "react";
+import getProjectByProjectId from "@/src/service/getProjectByProjectId";
 
 //TODO: Change this to the actual project
-const project: ProjectType = mockProject;
 
-export default function Page({
-  params,
-}: {
-  params: { projectId: string; projectName: string; projectCode: string };
-}) {
+export default function Page({ params }: { params: { projectId: string } }) {
+  const [project, setProject] = useState<ProjectType | null>(null);
+  useEffect(() => {
+    const fetchProject = async () => {
+      const data = await getProjectByProjectId(params.projectId);
+      setProject(data);
+    };
+    fetchProject();
+  });
   return (
     <>
       <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh] ">
         <Header>
           <Subtitle
-            project={`${project.projectCode} ${project.name}`}
+            project={`${project?.projectCode} ${project?.name}`}
             projectId={params.projectId as string}
           />
         </Header>
