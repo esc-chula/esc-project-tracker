@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import { ProjectType } from "@/src/interface/project";
 import { FillingType } from "@/src/interface/filling";
 import getProjectByUserId from "@/src/service/getProjectByUserId";
+import SearchBar from "../searchbar/searchBar";
+
+import { mockFillings } from "@/src/mock/data";
 
 export default function MyProjectData() {
   const router = useRouter();
@@ -32,13 +35,13 @@ export default function MyProjectData() {
   return (
     <>
       <div className="w-[50vw]">
-        {/*<SearchBar
-          fillings={allFilling}
+        <SearchBar
+          fillings={mockFillings}
           projects={projects}
           placeholder="ค้นหาโครงการหรือเอกสาร"
           projectFunc={redirectToProject}
           fillingFunc={() => {}}
-        />*/}
+        />
       </div>
       {projects.length === 0 ? (
         <NoProject />

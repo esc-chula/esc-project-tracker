@@ -1,7 +1,7 @@
 "use cliet";
 import AllDocumentCard from "./allDocumentCard";
 import SelectType from "./selectType";
-import { filterStatus } from "@/src/constant/enumMap";
+import { filterStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { FillingType } from "@/src/interface/filling";
 

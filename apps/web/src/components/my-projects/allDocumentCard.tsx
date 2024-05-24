@@ -5,7 +5,7 @@ import PopoverEditDocument from "./popoverEditDocument.tsx";
 import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
 import { useRouter } from "next/navigation";
 import { FillingStatus } from "@/src/constant/enum.ts";
-import { buttonColors, TextMyProject } from "@/src/constant/enumMap.ts";
+import { buttonColors, TextMyProject } from "@/src/styles/enumMap";
 
 export default function AllDocumentCard({
   fillingId,
