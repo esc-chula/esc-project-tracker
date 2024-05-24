@@ -10,13 +10,21 @@ import {
 import { IoIosAlert } from "react-icons/io";
 import { HiDocumentAdd } from "react-icons/hi";
 
-export default function PopoverAddDocument() {
+export default function PopoverAddDocument({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex items-center text-red hover:cursor-pointer">
-          <HiDocumentAdd size={30} />
-        </div>
+        {children ? (
+          children
+        ) : (
+          <div className="flex items-center text-red hover:cursor-pointer">
+            <HiDocumentAdd size={30} />
+          </div>
+        )}
       </DialogTrigger>
 
       <DialogContent>
