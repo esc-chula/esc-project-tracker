@@ -11,18 +11,26 @@ import {
   Trash2,
   MessageSquareWarning,
 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import NavbarItem from "./NavbarItem"
 import { usePathname } from "next/navigation"
 
 export default function Navbar() {
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(false)
+  useEffect(() => {
+    const expandedDefault =
+      typeof window !== "undefined" ? localStorage.getItem("navbarExpanded") : "false"
+    setExpanded(expandedDefault === "true")
+  })
   const pathname = usePathname()
   return (
     <aside className="h-screen bg-intania flex-none sticky top-0">
       <button
-        onClick={() => setExpanded((curr) => !curr)}
+        onClick={() => {
+          localStorage.setItem("navbarExpanded", String(!expanded))
+          setExpanded((curr) => !curr)
+        }}
         className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14">
         {expanded ? <ChevronFirst /> : <ChevronLast />}
       </button>
