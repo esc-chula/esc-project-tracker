@@ -15,12 +15,12 @@ import { mockFillings } from "@/src/mock/data";
 export default function MyProjectData() {
   const router = useRouter();
   const redirectToProject = (project: ProjectType | FillingType) => {
-    //if (project instanceof ProjectType) {
     router.push(`/my-projects/${project.id}`);
-    //}
   };
+
   const [projects, setProjects] = useState<ProjectType[]>([]);
 
+  //TODO : Change the userId to the actual userId
   useEffect(() => {
     const fetchProjects = async () => {
       const data = await getProjectByUserId(
