@@ -1,7 +1,7 @@
 "use cliet";
 import AllDocumentCard from "./allDocumentCard";
 import SelectType from "./selectType";
-import { filterStatus } from "@/src/styles/enumMap";
+import { filterStatus, filterType } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { FillingType } from "@/src/interface/filling";
 
@@ -13,17 +13,29 @@ export default function AllDocumentPanel({
   const [filteredFillings, setFilteredFillings] =
     useState<FillingType[]>(fillings);
   const [status, setStatus] = useState<string>("all");
+  const [type, setType] = useState<string>("11");
 
   useEffect(() => {
-    if (status === "all") {
+    if (status === "all" && type === "11") {
       setFilteredFillings(fillings);
-    } else {
+    } else if (status === "all") {
+      setFilteredFillings(
+        fillings.filter((filling) => filling.type.toString() === type)
+      );
+    } else if (type === "11") {
       setFilteredFillings(
         fillings.filter((filling) => filling.status === status)
       );
+    } else {
+      setFilteredFillings(
+        fillings.filter(
+          (filling) =>
+            filling.status === status && filling.type.toString() === type
+        )
+      );
     }
     console.log(status);
-  }, [status]);
+  }, [status, type]);
 
   return (
     <div className="space-y-5 pt-5 pb-10">
@@ -33,6 +45,13 @@ export default function AllDocumentPanel({
           items={filterStatus}
           sendValue={(value) => {
             setStatus(value);
+          }}
+        />
+        <SelectType
+          title="ประเภท"
+          items={filterType}
+          sendValue={(value) => {
+            setType(value);
           }}
         />
       </div>

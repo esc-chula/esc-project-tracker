@@ -1,4 +1,4 @@
-import { FillingStatus } from "../../../shared/constant/enum";
+import { FillingStatus } from "../constant/enum";
 
 export interface FillingType {
   id: string;
@@ -7,6 +7,7 @@ export interface FillingType {
   name: string;
   fillingCode: string;
   status: FillingStatus;
+  type: number;
   projectCode: string;
   createdAt: string;
   updatedAt: string;
