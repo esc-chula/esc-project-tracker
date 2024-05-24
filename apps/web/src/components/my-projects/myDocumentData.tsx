@@ -9,15 +9,15 @@ import PopoverAddDocument from "./popoverAddDocument";
 import { useEffect, useState } from "react";
 import { FillingType } from "@/src/interface/filling";
 import { trpc } from "@/src/app/trpc";
+import getFillingByProjectId from "@/src/service/getFillingByProjectId";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [fillings, setFillings] = useState<FillingType[]>([]);
 
   useEffect(() => {
     const fetchFillings = async () => {
-      await trpc.findFillingsByProjectId.query({ projectId }).then((data) => {
-        setFillings(data);
-      });
+      const data = await getFillingByProjectId({ projectId });
+      setFillings(data);
     };
     fetchFillings();
   }, []);

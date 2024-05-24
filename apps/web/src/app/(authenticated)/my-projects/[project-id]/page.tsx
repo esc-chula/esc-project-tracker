@@ -13,6 +13,7 @@ const project: ProjectType = mockProject;
 
 export default function Page() {
   const router = useRouter();
+  // TODO ใช้เป็น dynamic
   const projectId = "bddd6d85-d61a-4331-84f8-63ad43d000c4";
 
   useEffect(() => {}, [projectId]);

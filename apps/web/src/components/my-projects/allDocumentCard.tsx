@@ -50,11 +50,11 @@ export default function AllDocumentCard({
             {fillingName}
           </div>
         </div>
-        {/*<div
+        <div
           className={`inline-block rounded-lg text-center py-1 px-3 text-sm font-bold font-sukhumvit min-w-[60%] ${buttonColors[fillingStatus]}`}
         >
           {TextMyProject[fillingStatus]}
-        </div>*/}
+        </div>
       </div>
     </div>
   );
