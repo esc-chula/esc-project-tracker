@@ -16,7 +16,16 @@ export default function Page({ params }: { params: { projectId: string } }) {
         const data = await getProjectByProjectId(params.projectId);
         setProject(data);
       };
+
+      //TODO : Change the userId to the actual userId
+      const updateLastOpen = async () => {
+        await trpc.updateUserProjLastOpen.query({
+          userId: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
+          projectId: params.projectId,
+        });
+      };
       fetchProject();
+      updateLastOpen();
     }
   }, [params]);
 
