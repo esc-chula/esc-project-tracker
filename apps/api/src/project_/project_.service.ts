@@ -4,6 +4,7 @@ import { Project } from '../entities/project.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
+import { ProjectWithLastOpenDTO } from './project_.dto';
 
 @Injectable()
 export class ProjectService {
@@ -20,7 +21,7 @@ export class ProjectService {
     return project;
   }
 
-  async findByUserID(id: string): Promise<Project[]> {
+  async findByUserID(id: string): Promise<ProjectWithLastOpenDTO[]> {
     const foundUser = await this.userService.findByUserID(id);
     if (!foundUser) {
       throw new BadRequestException('User not found');
@@ -30,9 +31,17 @@ export class ProjectService {
       .createQueryBuilder('project')
       .innerJoin(UserProj, 'userProj', 'project.id = userProj.projectId')
       .where('userProj.userId = :uid', { uid: id })
-      .getMany();
+      .select(['project', 'userProj.lastOpen'])
+      .getRawAndEntities();
 
-    return projects;
+    const projectWithLastOpenDTOs = projects.raw.map((rawProject, index) => {
+      const projectWithLastOpenDTO = new ProjectWithLastOpenDTO();
+      projectWithLastOpenDTO.project = projects.entities[index];
+      projectWithLastOpenDTO.lastOpen = rawProject.userProj_lastOpen;
+      return projectWithLastOpenDTO;
+    });
+
+    return projectWithLastOpenDTOs;
   }
 
   async findByNameOrCode(

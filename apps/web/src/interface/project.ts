@@ -11,3 +11,8 @@ export interface ProjectType {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ProjectWithLastOpenType {
+  project: ProjectType;
+  lastOpen: string;
+}

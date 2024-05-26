@@ -5,7 +5,7 @@ import AllProjecPanel from "./allProjectPanel";
 import NoProject from "./noProject";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ProjectType } from "@/src/interface/project";
+import { ProjectType, ProjectWithLastOpenType } from "@/src/interface/project";
 import { FilingType } from "@/src/interface/filing";
 import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
@@ -16,6 +16,9 @@ export default function MyProjectData() {
     router.push(`/project/${project.id}`);
   };
 
+  const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
+    ProjectWithLastOpenType[]
+  >([]);
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
@@ -25,7 +28,9 @@ export default function MyProjectData() {
       const data = await getProjectsByUserId(
         "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
       );
-      setProjects(data);
+      setProjectsWithLastOpen(data);
+      setProjects(data.map((project) => project.project));
+      console.log("This is data", data);
       setIsFetched(true);
     };
     fetchProjects();
@@ -48,7 +53,7 @@ export default function MyProjectData() {
             <NoProject />
           ) : (
             <>
-              <LastestPanel />
+              <LastestPanel projectsWithLastOpen={projectsWithLastOpen} />
               <AllProjecPanel projects={projects} />
             </>
           )}

@@ -42,8 +42,8 @@ export class FilingService {
       return [];
     }
 
-    const filingPromises = projects.map((project) =>
-      this.findByProjectID(project.id),
+    const filingPromises = projects.map((projectWithLastOpen) =>
+      this.findByProjectID(projectWithLastOpen.project.id),
     );
     const filingsArrays = await Promise.all(filingPromises);
     const filings = filingsArrays.flat();

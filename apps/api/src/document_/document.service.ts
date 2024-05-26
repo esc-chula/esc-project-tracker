@@ -46,8 +46,8 @@ export class DocumentService {
       return [];
     }
 
-    const documentPromises = projects.map((project) =>
-      this.findByProjectID(project.id),
+    const documentPromises = projects.map((projectWithLastOpen) =>
+      this.findByProjectID(projectWithLastOpen.project.id),
     );
     const documentsArrays = await Promise.all(documentPromises);
     const documents = documentsArrays.flat();
