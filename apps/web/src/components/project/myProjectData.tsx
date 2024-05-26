@@ -9,16 +9,18 @@ import { ProjectType, ProjectWithLastOpenType } from "@/src/interface/project";
 import { FilingType } from "@/src/interface/filing";
 import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
+import getFilingByUserId from "@/src/service/getFilingByUserId";
 
 export default function MyProjectData() {
   const router = useRouter();
   const redirectToProject = (project: ProjectType | FilingType) => {
-    router.push(`/project/${project.id}`);
+    router.push(`/my-projects/${project.id}`);
   };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpenType[]
   >([]);
+  const [filing, setFiling] = useState<FilingType[]>([]);
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
@@ -30,17 +32,24 @@ export default function MyProjectData() {
       );
       setProjectsWithLastOpen(data);
       setProjects(data.map((project) => project.project));
-      console.log("This is data", data);
       setIsFetched(true);
     };
+    const fetchFiling = async () => {
+      //TODO : Change the userId to the actual userId
+      const data = await getFilingByUserId(
+        "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
+      );
+      setFiling(data);
+    };
     fetchProjects();
+    fetchFiling();
   }, []);
 
   return (
     <div className="w-[65%]">
       <div className="mb-5">
         <SearchBar
-          Filings={[]}
+          Filings={filing}
           projects={projects}
           placeholder="ค้นหาโครงการหรือเอกสาร"
           projectFunc={redirectToProject}
