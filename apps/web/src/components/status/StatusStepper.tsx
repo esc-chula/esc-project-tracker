@@ -83,6 +83,7 @@ export default function DocumentStatusStepper({ status }: { status: FillingStatu
         {stepStatuses.map((stepStatus, index) => {
           return (
             <Step
+              key={index}
               orientation="vertical"
               disabled={stepStatus[0] === "disabled"}
               sx={{
