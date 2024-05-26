@@ -1,12 +1,12 @@
-import { FillingStatus } from "../constant/enum";
+import { FilingStatus } from "../constant/enum";
 
-export interface FillingType {
+export interface FilingType {
   id: string;
   project: any;
   user: any;
   name: string;
-  fillingCode: string;
-  status: FillingStatus;
+  FilingCode: string;
+  status: FilingStatus;
   type: number;
   projectCode: string;
   createdAt: string;

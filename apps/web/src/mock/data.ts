@@ -1,5 +1,5 @@
-import { FillingStatus } from "../constant/enum";
-import { FillingType } from "../interface/filling";
+import { FilingStatus } from "../constant/enum";
+import { FilingType } from "../interface/filing";
 import { ProjectType } from "../interface/project";
 // ADD code
 
@@ -92,41 +92,41 @@ export const mockProjects: ProjectType[] = [
 */
 export const noMockProjects: ProjectType[] = [];
 
-// mock more filling
-export const mockFillings: FillingType[] = [
+// mock more Filing
+export const mockFilings: FilingType[] = [
   {
     id: "1",
-    name: "Mock Filling 1",
-    fillingCode: "9000-0001",
+    name: "Mock Filing 1",
+    FilingCode: "9000-0001",
     user: "1",
     project: "1",
-    status: FillingStatus.WAIT_FOR_SECRETARY,
+    status: FilingStatus.WAIT_FOR_SECRETARY,
     projectCode: "9000",
     updatedAt: "2023-05-01T00:00:00Z",
     createdAt: "2023-01-01T00:00:00Z",
   },
   {
     id: "1",
-    name: "Mock Filling 1",
-    fillingCode: "9000-0001",
+    name: "Mock Filing 1",
+    FilingCode: "9000-0001",
     user: "1",
     project: "1",
-    status: FillingStatus.WAIT_FOR_SECRETARY,
+    status: FilingStatus.WAIT_FOR_SECRETARY,
     projectCode: "9000",
     updatedAt: "2023-05-01T00:00:00Z",
     createdAt: "2023-01-01T00:00:00Z",
   },
   {
     id: "1",
-    name: "Mock Filling 1",
-    fillingCode: "9000-0001",
+    name: "Mock Filing 1",
+    FilingCode: "9000-0001",
     user: "1",
     project: "1",
-    status: FillingStatus.WAIT_FOR_SECRETARY,
+    status: FilingStatus.WAIT_FOR_SECRETARY,
     projectCode: "9000",
     updatedAt: "2023-05-01T00:00:00Z",
     createdAt: "2023-01-01T00:00:00Z",
   },
 ];
 
-export const noMockFilling: FillingType[] = [];
+export const noMockFiling: FilingType[] = [];

@@ -2,7 +2,7 @@
 import { trpc } from "@/src/app/trpc";
 import Header from "../../../../components/header/Header";
 import Subtitle from "@/src/components/header/Subtitle";
-import MyDocumentData from "@/src/components/my-projects/myDocumentData";
+import MyDocumentData from "@/src/components/project/myDocumentData";
 import { ProjectType } from "@/src/interface/project";
 import { useEffect, useState } from "react";
 import getProjectByProjectId from "@/src/service/getProjectByProjectId";

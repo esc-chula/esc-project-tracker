@@ -4,21 +4,21 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.tsx";
 import PopoverEditDocument from "./popoverEditDocument.tsx";
 import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
 import { useRouter } from "next/navigation";
-import { FillingStatus } from "@/src/constant/enum.ts";
+import { FilingStatus } from "@/src/constant/enum.ts";
 import { buttonColors, TextMyProject } from "@/src/styles/enumMap";
 
 export default function AllDocumentCard({
-  fillingId,
+  FilingId,
   projectCode,
-  fillingCode,
-  fillingName,
-  fillingStatus,
+  FilingCode,
+  FilingName,
+  FilingStatus,
 }: {
-  fillingId: string;
+  FilingId: string;
   projectCode: string;
-  fillingCode: string;
-  fillingName: string;
-  fillingStatus: FillingStatus;
+  FilingCode: string;
+  FilingName: string;
+  FilingStatus: FilingStatus;
 }) {
   const router = useRouter();
 
@@ -47,15 +47,15 @@ export default function AllDocumentCard({
       <div className="text-2xl font-bold text-center">ตัวอย่างเอกสาร</div>
       <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-lg">
         <div className="text-2xl font-bold text-start">
-          {projectCode} - {fillingCode}
+          {projectCode} - {FilingCode}
           <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
-            {fillingName}
+            {FilingName}
           </div>
         </div>
         <div
-          className={`inline-block rounded-lg text-center py-2 px-3 text-sm font-bold font-sukhumvit min-w-[60%] ${buttonColors[fillingStatus]}`}
+          className={`inline-block rounded-lg text-center py-2 px-3 text-sm font-bold font-sukhumvit min-w-[60%] ${buttonColors[FilingStatus]}`}
         >
-          {TextMyProject[fillingStatus]}
+          {TextMyProject[FilingStatus]}
         </div>
       </div>
     </div>

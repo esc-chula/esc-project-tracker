@@ -8,28 +8,28 @@ import { IoDocumentText } from "react-icons/io5";
 import { InputAdornment } from "@mui/material";
 import { autocompleteStyles } from "@/src/styles/autocompleteStype";
 import { ProjectType } from "@/src/interface/project";
-import { FillingType } from "@/src/interface/filling";
+import { FilingType } from "@/src/interface/filing";
 
 export default function SearchBar({
   placeholder,
   projects,
-  fillings,
+  Filings,
   projectFunc,
-  fillingFunc,
+  FilingFunc,
 }: {
   placeholder: string;
   projects: ProjectType[];
-  fillings: FillingType[];
-  projectFunc?: (project: ProjectType | FillingType) => any; // Make functions optional
-  fillingFunc?: (filling: ProjectType | FillingType) => any;
+  Filings: FilingType[];
+  projectFunc?: (project: ProjectType | FilingType) => any; // Make functions optional
+  FilingFunc?: (Filing: ProjectType | FilingType) => any;
 }) {
-  const [value, setValue] = useState<ProjectType | FillingType | null>(null);
+  const [value, setValue] = useState<ProjectType | FilingType | null>(null);
 
   useEffect(() => {
     console.log(value);
   }, [value]);
 
-  const handleSelect = (option: ProjectType | FillingType | null) => {
+  const handleSelect = (option: ProjectType | FilingType | null) => {
     setValue(option);
     if (option !== null) {
       setValue(option);
@@ -40,8 +40,8 @@ export default function SearchBar({
           console.log("No function to call");
         }
       } else {
-        if (fillingFunc) {
-          fillingFunc(option);
+        if (FilingFunc) {
+          FilingFunc(option);
         } else {
           console.log("No function to call");
         }
@@ -53,7 +53,7 @@ export default function SearchBar({
     <div className="min-w-[40vw] max-w-full">
       <Autocomplete
         value={value}
-        options={[...fillings, ...projects]}
+        options={[...Filings, ...projects]}
         noOptionsText="ไม่พบข้อมูล"
         onChange={(event, newValue) => handleSelect(newValue)}
         getOptionLabel={(option) =>

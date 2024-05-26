@@ -6,16 +6,14 @@ import NoProject from "./noProject";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ProjectType } from "@/src/interface/project";
-import { FillingType } from "@/src/interface/filling";
-import getProjectByUserId from "@/src/service/getProjectByUserId";
+import { FilingType } from "@/src/interface/filing";
+import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
-
-import { mockFillings } from "@/src/mock/data";
 
 export default function MyProjectData() {
   const router = useRouter();
-  const redirectToProject = (project: ProjectType | FillingType) => {
-    router.push(`/my-projects/${project.id}`);
+  const redirectToProject = (project: ProjectType | FilingType) => {
+    router.push(`/project/${project.id}`);
   };
 
   const [projects, setProjects] = useState<ProjectType[]>([]);
@@ -24,7 +22,7 @@ export default function MyProjectData() {
   //TODO : Change the userId to the actual userId
   useEffect(() => {
     const fetchProjects = async () => {
-      const data = await getProjectByUserId(
+      const data = await getProjectsByUserId(
         "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
       );
       setProjects(data);
@@ -37,11 +35,11 @@ export default function MyProjectData() {
     <div className="w-[65%]">
       <div className="mb-5">
         <SearchBar
-          fillings={mockFillings}
+          Filings={[]}
           projects={projects}
           placeholder="ค้นหาโครงการหรือเอกสาร"
           projectFunc={redirectToProject}
-          fillingFunc={() => {}}
+          FilingFunc={() => {}}
         />
       </div>
       {isFetched && (

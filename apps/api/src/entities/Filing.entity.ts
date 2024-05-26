@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Project } from './project.entity';
-import { FillingStatus } from '../constant/enum';
+import { FilingStatus } from '../constant/enum';
 import { User } from './user.entity';
 
 @Entity()
@@ -27,12 +27,12 @@ export class Filing {
 
   @Column({
     type: 'enum',
-    enum: FillingStatus,
+    enum: FilingStatus,
   })
-  status: FillingStatus;
+  status: FilingStatus;
 
   @Column()
-  fillingCode: string;
+  FilingCode: string;
 
   @Column()
   type: number;

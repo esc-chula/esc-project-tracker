@@ -9,7 +9,7 @@ export class createProjectDTO {
 
   detail: string;
 
-  reserDate: Date;
+  reserveDate: Date;
 
   status: ProjectStatus;
 }

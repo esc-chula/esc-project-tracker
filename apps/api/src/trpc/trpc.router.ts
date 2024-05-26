@@ -46,14 +46,14 @@ export class TrpcRouter {
       }),
 
     // Get Filings By UserID -> Filing[]
-    findFillingsByUserId: this.trpc.procedure
+    findFilingsByUserId: this.trpc.procedure
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByUserID(input.userId);
       }),
 
     // Get Filings By ProjectID -> Filing[]
-    findFillingsByProjectId: this.trpc.procedure
+    findFilingsByProjectId: this.trpc.procedure
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByProjectID(input.projectId);

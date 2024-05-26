@@ -1,3 +1,5 @@
+import { ProjectStatus } from "../constant/enum";
+
 export interface ProjectType {
   id: string;
   name: string;
@@ -5,7 +7,7 @@ export interface ProjectType {
   type: number;
   detail: string;
   reserveDate: string;
-  status: string;
+  status: ProjectStatus;
   createdAt: string;
   updatedAt: string;
 }

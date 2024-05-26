@@ -1,5 +1,5 @@
 //DOCUMENT
-export enum FillingStatus {
+export enum FilingStatus {
   APPROVED = 'APPROVED',
   WAIT_FOR_STUDENT_AFFAIR = 'WAIT_FOR_STUDENT_AFFAIR',
   WAIT_FOR_SECRETARY = 'WAIT_FOR_SECRETARY',

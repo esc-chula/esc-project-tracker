@@ -1,27 +1,27 @@
 "use client";
-import { MockFilling, MockProject } from "@/src/mock/type";
+import { MockFiling, MockProject } from "@/src/mock/type";
 import SearchBar from "../searchbar/searchBar";
-import { mockFillings } from "@/src/mock/data";
+import { mockFilings } from "@/src/mock/data";
 import { FileText } from "lucide-react";
 import NoDocument from "./noDocument";
 import AllDocumentPanel from "./allDocumentPanel";
 import PopoverAddDocument from "./popoverAddDocument";
 import { useEffect, useState } from "react";
-import { FillingType } from "@/src/interface/filling";
+import { FilingType } from "@/src/interface/filing";
 import { trpc } from "@/src/app/trpc";
-import getFillingByProjectId from "@/src/service/getFillingByProjectId";
+import getFilingByProjectId from "@/src/service/getFilingByProjectId";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
-  const [fillings, setFillings] = useState<FillingType[]>([]);
+  const [Filings, setFilings] = useState<FilingType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchFillings = async () => {
-      const data = await getFillingByProjectId({ projectId });
-      setFillings(data);
+    const fetchFilings = async () => {
+      const data = await getFilingByProjectId({ projectId });
+      setFilings(data);
       setIsFetched(true);
     };
-    fetchFillings();
+    fetchFilings();
   }, []);
 
   return (
@@ -32,20 +32,20 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           เอกสาร
         </div>
         <SearchBar
-          fillings={fillings}
+          Filings={Filings}
           projects={[]}
           placeholder="ค้นหาเอกสาร"
-          fillingFunc={() => {}}
+          FilingFunc={() => {}}
         />
 
         <PopoverAddDocument />
       </div>
       {isFetched && (
         <>
-          {fillings.length === 0 ? (
+          {Filings.length === 0 ? (
             <NoDocument />
           ) : (
-            <AllDocumentPanel fillings={fillings} />
+            <AllDocumentPanel Filings={Filings} />
           )}
         </>
       )}
