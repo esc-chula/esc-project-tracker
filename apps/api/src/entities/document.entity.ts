@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Filing } from './Filing.entity';
+import { Filing } from './filing.entity';
 
 @Entity()
 export class Document {
@@ -20,13 +20,7 @@ export class Document {
   name: string;
 
   @Column()
-  projectCode: string;
-
-  @Column()
-  documentCode: string;
-
-  @Column()
-  type: number;
+  activity: string;
 
   @Column()
   detail: string;

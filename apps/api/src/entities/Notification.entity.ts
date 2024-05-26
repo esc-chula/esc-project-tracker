@@ -1,26 +1,33 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./User.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Notification {
-    @PrimaryGeneratedColumn('uuid')
-    id: String;
+  @PrimaryGeneratedColumn('uuid')
+  id: String;
 
-    @Column()
-    isRead: Boolean;
+  @Column()
+  isRead: Boolean;
 
-    @ManyToOne(() => User, { onDelete: 'CASCADE' })
-    user: User
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  user: User;
 
-    @Column()
-    title: String
+  @Column()
+  title: String;
 
-    @Column()
-    message: String
+  @Column()
+  message: String;
 
-    @CreateDateColumn()
-    createdAt: Date
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn({ nullable: true, default: null })
-    updatedAt: Date
+  @UpdateDateColumn({ nullable: true, default: null })
+  updatedAt: Date;
 }

@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Project } from './Project.entity';
+import { Project } from './project.entity';
 import { FilingStatus } from '../constant/enum';
-import { User } from './User.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Filing {
@@ -30,6 +30,12 @@ export class Filing {
 
   @Column()
   projectCode: string;
+
+  @Column()
+  documentCode: string;
+
+  @Column()
+  type: number;
 
   @CreateDateColumn()
   createdAt: Date;
