@@ -26,7 +26,7 @@ export default function SelectType({
         sendValue(value);
       }}
     >
-      <SelectTrigger className="rounded-full border-black h-8 w-auto space-x-2 text-sm focus:shadow-none">
+      <SelectTrigger className="rounded-full border-black h-8 w-auto space-x-2 text-sm focus:shadow-none text-ellipsis max-w-60">
         <SelectValue placeholder={title} />
       </SelectTrigger>
       <SelectContent>

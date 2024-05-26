@@ -5,3 +5,9 @@ export enum FilingStatus {
   RETURNED = "RETURNED",
   DRAFT = "DRAFT",
 }
+
+export enum ProjectStatus {
+  CONTINUE = "CONTINUE",
+  WAIT_FOR_CLOSE = "WAIT_FOR_CLOSE",
+  CLOSED = "CLOSED",
+}

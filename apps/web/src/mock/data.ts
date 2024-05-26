@@ -1,20 +1,22 @@
-import { MockFilling, MockProject } from "./type";
-import { FillingStatus } from "../constant/enum";
-
+import { FilingStatus } from "../constant/enum";
+import { FilingType } from "../interface/filing";
+import { ProjectType } from "../interface/project";
 // ADD code
 
-export const mockProject: MockProject = {
+export const mockProject: ProjectType = {
   id: "1",
-  code: "9000",
+  projectCode: "9000",
   name: "โครงการดูแลเด็กยากไร้ ประจำปีการศึกษา 2555",
-  type: "Development",
-  objectType: "project",
+  type: 1,
+  detail: "kkk",
   status: "Active",
+  reserveDate: "2023-01-01T00:00:00Z",
   createdAt: "2023-01-01T00:00:00Z",
   updatedAt: "2023-05-01T00:00:00Z",
 };
+/*
 
-export const mockProjects: MockProject[] = [
+export const mockProjects: ProjectType[] = [
   {
     id: "1",
     code: "9000",
@@ -87,67 +89,44 @@ export const mockProjects: MockProject[] = [
     updatedAt: "2023-11-01T00:00:00Z",
   },
 ];
+*/
+export const noMockProjects: ProjectType[] = [];
 
-export const noMockProjects: MockProject[] = [];
-
-// mock more filling
-export const mockFillings: MockFilling[] = [
+// mock more Filing
+export const mockFilings: FilingType[] = [
   {
     id: "1",
-    name: "Mock Filling 1",
-    status: FillingStatus.APPROVED,
-    objectType: "filling",
-    code: "9000-0001",
+    name: "Mock Filing 1",
+    FilingCode: "9000-0001",
+    user: "1",
+    project: "1",
+    status: FilingStatus.WAIT_FOR_SECRETARY,
+    projectCode: "9000",
+    updatedAt: "2023-05-01T00:00:00Z",
     createdAt: "2023-01-01T00:00:00Z",
   },
   {
-    id: "2",
-    name: "Mock Filling 2",
-    status: FillingStatus.REJECTED,
-    code: "9000-0002",
-    objectType: "filling",
-    createdAt: "2023-02-15T00:00:00Z",
+    id: "1",
+    name: "Mock Filing 1",
+    FilingCode: "9000-0001",
+    user: "1",
+    project: "1",
+    status: FilingStatus.WAIT_FOR_SECRETARY,
+    projectCode: "9000",
+    updatedAt: "2023-05-01T00:00:00Z",
+    createdAt: "2023-01-01T00:00:00Z",
   },
   {
-    id: "3",
-    name: "Mock Filling 3",
-    status: FillingStatus.DRAFT,
-    code: "9000-0003",
-    objectType: "filling",
-    createdAt: "2023-03-10T00:00:00Z",
-  },
-  {
-    id: "4",
-    name: "Mock Filling 4",
-    status: FillingStatus.SECRETARY,
-    objectType: "filling",
-    code: "9000-0004",
-    createdAt: "2023-04-01T00:00:00Z",
-  },
-  {
-    id: "5",
-    name: "Mock Filling 5",
-    status: FillingStatus.REJECTED,
-    objectType: "filling",
-    code: "9000-0005",
-    createdAt: "2023-05-20T00:00:00Z",
-  },
-  {
-    id: "6",
-    name: "Mock Filling 6",
-    objectType: "filling",
-    status: FillingStatus.DRAFT,
-    code: "9000-0006",
-    createdAt: "2023-06-05T00:00:00Z",
-  },
-  {
-    id: "7",
-    name: "Mock Filling 7",
-    objectType: "filling",
-    status: FillingStatus.APPROVED,
-    code: "9000-0007",
-    createdAt: "2023-07-25T00:00:00Z",
+    id: "1",
+    name: "Mock Filing 1",
+    FilingCode: "9000-0001",
+    user: "1",
+    project: "1",
+    status: FilingStatus.WAIT_FOR_SECRETARY,
+    projectCode: "9000",
+    updatedAt: "2023-05-01T00:00:00Z",
+    createdAt: "2023-01-01T00:00:00Z",
   },
 ];
 
-export const noMockFilling: MockFilling[] = [];
+export const noMockFiling: FilingType[] = [];

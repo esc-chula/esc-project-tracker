@@ -1,7 +1,6 @@
 import { trpc } from "./trpc";
 
 export default function Home(): JSX.Element {
-  //const response = await trpc.findDocumentsByProjectId
   return (
     <div className="flex flex-wrap ml-9 my-5">
       <div className="w-full max-w-full sm:w-1/4 mx-auto text-center">

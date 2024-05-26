@@ -22,6 +22,9 @@ export class Filing {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
+  @Column()
+  name: string;
+
   @Column({
     type: 'enum',
     enum: FilingStatus,
@@ -29,13 +32,13 @@ export class Filing {
   status: FilingStatus;
 
   @Column()
-  projectCode: string;
-
-  @Column()
-  documentCode: string;
+  FilingCode: string;
 
   @Column()
   type: number;
+
+  @Column()
+  projectCode: string;
 
   @CreateDateColumn()
   createdAt: Date;

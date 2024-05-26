@@ -21,4 +21,7 @@ export class UserProj {
     onDelete: 'CASCADE',
   })
   project: Project;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  lastOpen: Date;
 }

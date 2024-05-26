@@ -1,5 +1,3 @@
-"use client";
-
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useState, useEffect } from "react";
@@ -8,41 +6,45 @@ import { FaFolder } from "react-icons/fa6";
 import { IoDocumentText } from "react-icons/io5";
 
 import { InputAdornment } from "@mui/material";
-import { mockFillings, mockProjects } from "@/src/mock/data";
 import { autocompleteStyles } from "@/src/styles/autocompleteStype";
-import { MockFilling, MockProject } from "@/src/mock/type";
-
-//MOCK DATA
-//const projects: MockProject[] = mockProjects;
-//const fillings: MockFilling[] = mockFillings;
+import { ProjectType } from "@/src/interface/project";
+import { FilingType } from "@/src/interface/filing";
 
 export default function SearchBar({
   placeholder,
   projects,
-  fillings,
+  Filings,
   projectFunc,
-  fillingFunc,
+  FilingFunc,
 }: {
   placeholder: string;
-  projects: MockProject[];
-  fillings: MockFilling[];
-  projectFunc: (project: MockProject | MockFilling) => any;
-  fillingFunc: (filling: MockProject | MockFilling) => any;
+  projects: ProjectType[];
+  Filings: FilingType[];
+  projectFunc?: (project: ProjectType | FilingType) => any; // Make functions optional
+  FilingFunc?: (Filing: ProjectType | FilingType) => any;
 }) {
-  const [value, setValue] = useState<MockProject | MockFilling | null>(null);
+  const [value, setValue] = useState<ProjectType | FilingType | null>(null);
 
   useEffect(() => {
     console.log(value);
   }, [value]);
 
-  const handleSelect = (option: MockProject | MockFilling | null) => {
+  const handleSelect = (option: ProjectType | FilingType | null) => {
     setValue(option);
     if (option !== null) {
       setValue(option);
-      if (option.objectType == "project") {
-        projectFunc(option);
-      } else if (option.objectType == "filling") {
-        fillingFunc(option);
+      if (projectFunc && "reserveDate" in option) {
+        if (projectFunc) {
+          projectFunc(option);
+        } else {
+          console.log("No function to call");
+        }
+      } else {
+        if (FilingFunc) {
+          FilingFunc(option);
+        } else {
+          console.log("No function to call");
+        }
       }
     }
   };
@@ -51,23 +53,23 @@ export default function SearchBar({
     <div className="min-w-[40vw] max-w-full">
       <Autocomplete
         value={value}
-        options={[...fillings, ...projects]}
+        options={[...Filings, ...projects]}
         noOptionsText="ไม่พบข้อมูล"
         onChange={(event, newValue) => handleSelect(newValue)}
         getOptionLabel={(option) =>
           typeof option === "string"
             ? option
-            : `${option.code}     ${option.name}`
+            : `${option.projectCode || "1111-1111"}     ${option.name}`
         }
         renderOption={(props, option) => (
           <li {...props}>
             <div className="px-2 w-full flex text-sm font-sukhumvit space-x-6">
-              {option.objectType == "filling" ? (
-                <IoDocumentText size={20} color="#747474" />
-              ) : (
+              {"reserveDate" in option ? (
                 <FaFolder size={20} color="#747474" />
+              ) : (
+                <IoDocumentText size={20} color="#747474" />
               )}
-              <span className="w-20">{option.code}</span>
+              <span className="w-20">{option.projectCode || "1111-1111"}</span>
               <span>{option.name}</span>
             </div>
           </li>

@@ -1,4 +1,4 @@
-import { FillingStatus } from "../constant/enum";
+import { FilingStatus } from "../constant/enum";
 
 export interface MockProject {
   id: string;
@@ -11,11 +11,11 @@ export interface MockProject {
   updatedAt: string;
 }
 
-export interface MockFilling {
+export interface MockFiling {
   id: string;
   name: string;
   code: string;
   objectType: string;
-  status: FillingStatus;
+  status: FilingStatus;
   createdAt: string;
 }

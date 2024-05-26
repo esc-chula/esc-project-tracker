@@ -1,15 +1,6 @@
-import { ProjectStatus } from '../constant/enum';
+import { Project } from '../entities/project.entity';
 
-export class createProjectDTO {
-  name: string;
-
-  code: string;
-
-  type: number;
-
-  detail: string;
-
-  reserDate: Date;
-
-  status: ProjectStatus;
+export class ProjectWithLastOpenDTO {
+  project: Project;
+  lastOpen: Date;
 }
