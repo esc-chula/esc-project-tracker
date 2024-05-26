@@ -18,7 +18,7 @@ export default function AllProjectCard({
     <div
       className="bg-background border-black border-2 rounded-lg space-y-14 p-5 hover:cursor-pointer hover:shadow-2xl duration-300"
       onClick={() => {
-        router.push(`/project/${projectId}`);
+        router.push(`/my-projects/${projectId}`);
       }}
     >
       <div

@@ -38,6 +38,7 @@ export default function LastestPanel({
             {sortedProjects.map((project) => (
               <LastestItem
                 key={project.project.id}
+                projectId={project.project.id}
                 projectCode={project.project.projectCode}
                 projectName={project.project.name}
               />
