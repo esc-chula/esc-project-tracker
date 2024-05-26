@@ -6,7 +6,7 @@ import { Project } from '../entities/project.entity';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { validate as isUUID } from 'uuid';
-import { Filing } from '../entities/filing.entity';
+import { Filing } from '../entities/Filing.entity';
 
 @Injectable()
 export class DocumentService {
