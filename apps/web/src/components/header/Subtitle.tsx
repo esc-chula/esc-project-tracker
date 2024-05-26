@@ -35,7 +35,7 @@ export default function Subtitle({
               <>
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    href={"/" + projectId}
+                    href={"/project/" + projectId}
                     className="text-black font-semibold leading-10 max-w-24 line-clamp-1">
                     {project}
                   </BreadcrumbLink>
