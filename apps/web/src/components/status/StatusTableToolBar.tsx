@@ -1,5 +1,4 @@
 import { InputAdornment, TextField } from "@mui/material"
-import { FilingMock } from "./StatusTable"
 import { ChevronDown, Search } from "lucide-react"
 import {
   DropdownMenu,
@@ -9,8 +8,9 @@ import {
 } from "@/src/components/ui/dropdown-menu"
 import { Button } from "../ui/button"
 import { Table } from "@tanstack/react-table"
+import { FilingType } from "@/src/interface/filing"
 
-export default function StatusTableToolBar({ table }: { table: Table<FilingMock> }) {
+export default function StatusTableToolBar({ table }: { table: Table<FilingType> }) {
   return (
     <div className="flex items-center py-4 gap-4">
       <TextField

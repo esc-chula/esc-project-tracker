@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { FilingMock } from "./StatusTable"
 import { DataTableColumnHeader } from "./DataTableColumnHeader"
 import { TextMyProject, buttonColors } from "@/src/styles/enumMap"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { FilingStatus } from "@/src/constant/enum"
+import { FilingType } from "@/src/interface/filing"
 
-export const columns: ColumnDef<FilingMock>[] = [
+export const columns: ColumnDef<FilingType>[] = [
   {
     accessorKey: "updatedAt",
     header: ({ column }) => {
@@ -24,7 +24,7 @@ export const columns: ColumnDef<FilingMock>[] = [
   },
   {
     accessorKey: "รหัสเอกสาร",
-    accessorFn: (row) => row.projectCode + "-" + row.documentCode,
+    accessorFn: (row) => row.projectCode + "-" + row.FilingCode,
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="รหัสเอกสาร" />
     },
@@ -54,10 +54,11 @@ export const columns: ColumnDef<FilingMock>[] = [
     },
   },
   {
-    accessorKey: "id",
+    accessorKey: "detailsPath",
+    accessorFn: (row) => "/project/" + row.project.id + "/" + row.id,
     header: () => null,
     cell: ({ row }) => (
-      <Link href={"/project/projectId/" + row.getValue("id")}>
+      <Link href={row.getValue("detailsPath")}>
         <Button variant="link" className="underline">
           ดูรายละเอียด
         </Button>

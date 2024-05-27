@@ -21,75 +21,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table"
-import { FilingStatus } from "@/src/constant/enum"
 import { columns } from "./StatusTableColumns"
 import StatusTableToolBar from "./StatusTableToolBar"
+import { FilingType } from "@/src/interface/filing"
 
-const data: FilingMock[] = [
-  {
-    id: "m5gr84i91",
-    status: FilingStatus.DRAFT,
-    name: "Filing 1 weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh",
-    projectCode: "1001",
-    documentCode: "9001",
-    type: 9,
-    createdAt: new Date("2021-08-01T19:11:00"),
-    updatedAt: new Date("2021-08-01T19:11:00"),
-  },
-  {
-    id: "m5gr84i92",
-    status: FilingStatus.WAIT_FOR_SECRETARY,
-    name: "Filing 2",
-    projectCode: "1001",
-    documentCode: "9002",
-    type: 9,
-    createdAt: new Date("2021-08-01T19:11:00"),
-    updatedAt: new Date("2021-08-01T19:11:00"),
-  },
-  {
-    id: "m5gr84i93",
-    status: FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
-    name: "Filing 3",
-    projectCode: "1001",
-    documentCode: "9003",
-    type: 9,
-    createdAt: new Date("2021-08-01T19:11:00"),
-    updatedAt: new Date("2021-08-01T19:11:00"),
-  },
-  {
-    id: "m5gr84i94",
-    status: FilingStatus.RETURNED,
-    name: "Filing 4",
-    projectCode: "1001",
-    documentCode: "9004",
-    type: 9,
-    createdAt: new Date("2021-08-01T19:11:00"),
-    updatedAt: new Date("2021-08-01T19:11:00"),
-  },
-  {
-    id: "m5gr84i95",
-    status: FilingStatus.APPROVED,
-    name: "Filing 5",
-    projectCode: "1001",
-    documentCode: "9005",
-    type: 9,
-    createdAt: new Date("2021-08-01T19:11:00"),
-    updatedAt: new Date("2021-08-01T19:11:00"),
-  },
-]
-
-export type FilingMock = {
-  id: string
-  status: FilingStatus
-  name: string
-  projectCode: string
-  documentCode: string
-  type: number
-  createdAt: Date
-  updatedAt: Date
-}
-
-export function StatusTable() {
+export function StatusTable({ data }: { data: FilingType[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -144,7 +80,7 @@ export function StatusTable() {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                ไม่พบข้อมูล
               </TableCell>
             </TableRow>
           )}
