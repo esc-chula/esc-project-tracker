@@ -1,4 +1,3 @@
-import { ChevronLeft } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,16 +5,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/src/components/ui/breadcrumb";
+} from "@/src/components/ui/breadcrumb"
 
 export default function Subtitle({
   project,
   document,
   projectId,
+  origin,
 }: {
-  project: string;
-  document?: string;
-  projectId?: string;
+  project: string
+  document?: string
+  projectId?: string
+  origin?: string
 }) {
   return (
     <>
@@ -24,10 +25,7 @@ export default function Subtitle({
         <Breadcrumb>
           <BreadcrumbList className="text-2xl flex-nowrap">
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href="/projects"
-                className="text-black font-semibold"
-              >
+              <BreadcrumbLink href={origin ?? "/projects"} className="text-black font-semibold">
                 โครงการ
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -36,9 +34,8 @@ export default function Subtitle({
               <>
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    href={"/" + projectId}
-                    className="text-black font-semibold leading-10 max-w-24 line-clamp-1"
-                  >
+                    href={"/project/" + projectId}
+                    className="text-black font-semibold leading-10 max-w-24 line-clamp-1">
                     {project}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -62,5 +59,5 @@ export default function Subtitle({
         </Breadcrumb>
       </div>
     </>
-  );
+  )
 }
