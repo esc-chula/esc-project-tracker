@@ -17,7 +17,7 @@ export class UserProjService {
   }: {
     userId: string;
     projectId: string;
-  }): Promise<UserProj> {
+  }) {
     if (!isUUID(userId) || !isUUID(projectId)) {
       throw new BadRequestException('Id is not in UUID format');
     }

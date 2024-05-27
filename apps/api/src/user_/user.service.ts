@@ -11,7 +11,7 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  findByUserID(id: string): Promise<User> {
+  findByUserID(id: string) {
     if (!isUUID(id)) {
       throw new BadRequestException('Id is not in UUID format');
     }

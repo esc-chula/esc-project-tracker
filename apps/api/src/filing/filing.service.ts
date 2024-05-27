@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Filing } from '../entities/filing.entity';
+import { Filing } from '../entities/Filing.entity';
 import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
@@ -16,7 +16,7 @@ export class FilingService {
     private readonly userService: UserService,
   ) {}
 
-  findByFilingID(id: string): Promise<Filing> {
+  findByFilingID(id: string) {
     return this.filingRepository.findOne({ where: { id } });
   }
 

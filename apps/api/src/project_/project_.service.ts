@@ -16,7 +16,7 @@ export class ProjectService {
     private readonly userService: UserService,
   ) {}
 
-  findByProjectID(id: string): Promise<Project> {
+  findByProjectID(id: string) {
     const project = this.projectRepository.findOne({ where: { id } });
     return project;
   }
