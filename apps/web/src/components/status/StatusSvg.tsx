@@ -7,7 +7,7 @@ export function Step1({ fill, className }: { fill: string; className?: string })
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}>
-      <ellipse cx="77" cy="47.1367" rx="47" ry="46.5" className={fill} />
+      <ellipse cx="77" cy="47.1367" rx="47" ry="46.5" fill={`var(--${fill})`} />
       <rect
         x="59"
         y="14.6367"
@@ -50,7 +50,7 @@ export function Step2({ fill, className }: { fill: string; className?: string })
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       className={className}>
-      <ellipse cx="62" cy="56.1367" rx="47" ry="46.5" className={fill} />
+      <ellipse cx="62" cy="56.1367" rx="47" ry="46.5" fill={`var(--${fill})`} />
       <rect
         x="25.918"
         y="0.545898"
@@ -88,7 +88,7 @@ export function Step3({ fill, className }: { fill: string; className?: string })
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       className={className}>
-      <circle cx="46.5" cy="51.1367" r="46.5" className={fill} />
+      <circle cx="46.5" cy="51.1367" r="46.5" fill={`var(--${fill})`} />
       <path
         d="M14.7249 31.056C14.1314 22.4496 26.3486 18.5668 32.5314 17.7012C44.1056 17.7012 49.7195 26.6044 51.0797 31.056L49.2249 39.5883C49.7195 40.3302 50.783 42.2592 51.0797 44.0399C51.3765 45.8205 48.2356 47.5022 46.6281 48.1205L40.3217 55.1689V61.4754L54.7894 67.0399C63.3959 66.7431 64.0636 82.9915 63.3217 91.1528H2.48298C2.11201 85.8356 1.88943 74.3108 3.96685 70.7496C6.04427 67.1883 18.9292 63.8248 25.112 62.5883V56.2818C23.8755 53.685 20.7346 48.4173 18.0636 48.1205C14.7249 47.7496 15.4669 41.8141 14.7249 31.056Z"
         fill="white"
@@ -127,7 +127,7 @@ export function Step4({ fill, className }: { fill: string; className?: string })
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       className={className}>
-      <ellipse cx="50.3086" cy="58.6372" rx="46.5" ry="47" className={fill} />
+      <ellipse cx="50.3086" cy="58.6372" rx="46.5" ry="47" fill={`var(--${fill})`} />
       <rect
         y="30.3403"
         width="86.3266"
@@ -164,7 +164,7 @@ export function Step5({ fill, className }: { fill: string; className?: string })
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       className={className}>
-      <ellipse cx="47" cy="47.1367" rx="47" ry="46.5" className={fill} />
+      <ellipse cx="47" cy="47.1367" rx="47" ry="46.5" fill={`var(--${fill})`} />
       <rect x="4" y="0.636719" width="85" height="85" fill="url(#pattern0_667_5273)" />
       <defs>
         <pattern

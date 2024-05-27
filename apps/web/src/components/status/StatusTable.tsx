@@ -2,7 +2,6 @@
 
 import React from "react"
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -13,15 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ChevronDown } from "lucide-react"
 import { Button } from "@/src/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu"
-import { Input } from "@/src/components/ui/input"
 import {
   Table,
   TableBody,
@@ -30,15 +21,60 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table"
-import { DataTableColumnHeader } from "./DataTableColumnHeader"
 import { FilingStatus } from "@/src/constant/enum"
+import { columns } from "./StatusTableColumns"
+import StatusTableToolBar from "./StatusTableToolBar"
 
 const data: FilingMock[] = [
   {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
+    id: "m5gr84i91",
+    status: FilingStatus.DRAFT,
+    name: "Filing 1 weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh",
+    projectCode: "1001",
+    documentCode: "9001",
+    type: 9,
+    createdAt: new Date("2021-08-01T19:11:00"),
+    updatedAt: new Date("2021-08-01T19:11:00"),
+  },
+  {
+    id: "m5gr84i92",
+    status: FilingStatus.WAIT_FOR_SECRETARY,
+    name: "Filing 2",
+    projectCode: "1001",
+    documentCode: "9002",
+    type: 9,
+    createdAt: new Date("2021-08-01T19:11:00"),
+    updatedAt: new Date("2021-08-01T19:11:00"),
+  },
+  {
+    id: "m5gr84i93",
+    status: FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
+    name: "Filing 3",
+    projectCode: "1001",
+    documentCode: "9003",
+    type: 9,
+    createdAt: new Date("2021-08-01T19:11:00"),
+    updatedAt: new Date("2021-08-01T19:11:00"),
+  },
+  {
+    id: "m5gr84i94",
+    status: FilingStatus.RETURNED,
+    name: "Filing 4",
+    projectCode: "1001",
+    documentCode: "9004",
+    type: 9,
+    createdAt: new Date("2021-08-01T19:11:00"),
+    updatedAt: new Date("2021-08-01T19:11:00"),
+  },
+  {
+    id: "m5gr84i95",
+    status: FilingStatus.APPROVED,
+    name: "Filing 5",
+    projectCode: "1001",
+    documentCode: "9005",
+    type: 9,
+    createdAt: new Date("2021-08-01T19:11:00"),
+    updatedAt: new Date("2021-08-01T19:11:00"),
   },
 ]
 
@@ -52,40 +88,6 @@ export type FilingMock = {
   createdAt: Date
   updatedAt: Date
 }
-
-export const columns: ColumnDef<FilingMock>[] = [
-  {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Status" />
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Email" />
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Amount" />
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
-    },
-  },
-]
 
 export function StatusTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -111,94 +113,58 @@ export function StatusTable() {
 
   return (
     <div className="w-full pl-15 pr-5">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
+      <StatusTableToolBar table={table} />
+      <Table className="rounded-xl overflow-hidden text-base">
+        <TableHeader className="bg-lightpink">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
                 return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
+                  <TableHead key={header.id} className="text-black px-3">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
                 )
               })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="px-3 py-1">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}>
-            Previous
+            ย้อนหลัง
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}>
-            Next
+            ถัดไป
           </Button>
         </div>
       </div>

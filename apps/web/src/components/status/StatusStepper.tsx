@@ -4,8 +4,7 @@ import { Step1, Step2, Step3, Step4, Step5 } from "@/src/components/status/Statu
 import Stepper from "@mui/joy/Stepper"
 import Step, { stepClasses } from "@mui/joy/Step"
 import StepIndicator from "@mui/joy/StepIndicator"
-import { FillingStatus } from "../../constant/enum"
-import { FillingStatusToStepper } from "../../constant/enumMap"
+import { FilingStatus } from "../../constant/enum"
 
 const steps = [
   { no: "1", children: <>ขอเลขรัน</> },
@@ -43,8 +42,44 @@ const steps = [
     ),
   },
 ]
-
-export default function DocumentStatusStepper({ status }: { status: FillingStatus | "DEFAULT" }) {
+const FilingStatusToStepper = {
+  [FilingStatus.APPROVED]: [
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted"],
+  ],
+  [FilingStatus.DRAFT]: [
+    ["accepted", "accepted"],
+    ["accepted", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  [FilingStatus.RETURNED]: [
+    ["accepted", "accepted"],
+    ["accepted", "rejected"],
+    ["rejected", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  [FilingStatus.WAIT_FOR_SECRETARY]: [
+    ["accepted", "accepted"],
+    ["accepted", "pending"],
+    ["pending", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: [
+    ["accepted", "accepted"],
+    ["accepted", "pending"],
+    ["pending", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+}
+export default function DocumentStatusStepper({ status }: { status: FilingStatus | "DEFAULT" }) {
   const stepStatuses =
     status === "DEFAULT"
       ? [
@@ -54,17 +89,16 @@ export default function DocumentStatusStepper({ status }: { status: FillingStatu
           ["rejected", "rejected"],
           ["rejected"],
         ]
-      : FillingStatusToStepper[status]
-  console.log(stepStatuses)
+      : FilingStatusToStepper[status]
 
   return (
     <>
       <div className="flex w-full justify-around px-5 items-center mb-5">
-        <Step1 fill={`fill-${stepStatuses[0][0]}`} className="w-[20%]" />
-        <Step2 fill={`fill-${stepStatuses[1][0]}`} className="w-[20%]" />
-        <Step3 fill={`fill-${stepStatuses[2][0]}`} className="w-[20%]" />
-        <Step4 fill={`fill-${stepStatuses[3][0]}`} className="w-[20%]" />
-        <Step5 fill={`fill-${stepStatuses[4][0]}`} className="w-[20%]" />
+        <Step1 fill={stepStatuses[0][0]} className="w-[20%]" />
+        <Step2 fill={stepStatuses[1][0]} className="w-[20%]" />
+        <Step3 fill={stepStatuses[2][0]} className="w-[20%]" />
+        <Step4 fill={stepStatuses[3][0]} className="w-[20%]" />
+        <Step5 fill={stepStatuses[4][0]} className="w-[20%]" />
       </div>
       <Stepper
         orientation="horizontal"

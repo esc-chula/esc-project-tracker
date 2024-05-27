@@ -1,0 +1,67 @@
+import { ColumnDef } from "@tanstack/react-table"
+import { FilingMock } from "./StatusTable"
+import { DataTableColumnHeader } from "./DataTableColumnHeader"
+import { TextMyProject, buttonColors } from "@/src/styles/enumMap"
+import Link from "next/link"
+import { Button } from "../ui/button"
+import { FilingStatus } from "@/src/constant/enum"
+
+export const columns: ColumnDef<FilingMock>[] = [
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="วันที่ดำเนินการ" />
+    },
+    cell: ({ row }) => (
+      <div className="capitalize w-36">
+        {new Date(row.getValue("updatedAt")).toLocaleTimeString("th-TH", {
+          year: "2-digit",
+          month: "short",
+          day: "2-digit",
+        })}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "รหัสเอกสาร",
+    accessorFn: (row) => row.projectCode + "-" + row.documentCode,
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="รหัสเอกสาร" />
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("รหัสเอกสาร")}</div>,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="ชื่อเอกสาร" />
+    },
+    cell: ({ row }) => <div className="lowercase w-60 line-clamp-1">{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="สถานะ" />
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("status") as FilingStatus
+
+      return (
+        <div
+          className={`w-36 inline-block rounded-lg text-center py-2 px-4 text-xs font-bold min-w-[60%] ${buttonColors[status]}`}>
+          {TextMyProject[status]}
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "id",
+    header: () => null,
+    cell: ({ row }) => (
+      <Link href={"/project/projectId/" + row.getValue("id")}>
+        <Button variant="link" className="underline">
+          ดูรายละเอียด
+        </Button>
+      </Link>
+    ),
+  },
+]
