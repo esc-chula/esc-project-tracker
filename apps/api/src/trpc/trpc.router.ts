@@ -6,6 +6,7 @@ import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { DocumentService } from '../document_/document.service';
 import { FilingService } from '../filing/filing.service';
+import { UserProjService } from '../user-proj/user-proj.service';
 
 @Injectable()
 export class TrpcRouter {
@@ -15,6 +16,7 @@ export class TrpcRouter {
     private readonly projectService: ProjectService,
     private readonly documentService: DocumentService,
     private readonly filingService: FilingService,
+    private readonly userProjService: UserProjService,
   ) {}
 
   appRouter = this.trpc.router({
@@ -63,6 +65,20 @@ export class TrpcRouter {
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.projectService.findByProjectID(input.projectId);
+      }),
+
+    updateUserProjLastOpen: this.trpc.procedure
+      .input(
+        z.object({
+          userId: z.string(),
+          projectId: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.userProjService.updateUserProjLastOpen({
+          userId: input.userId,
+          projectId: input.projectId,
+        });
       }),
   });
 

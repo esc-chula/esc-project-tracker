@@ -15,7 +15,7 @@ export class FilingService {
     private readonly userService: UserService,
   ) {}
 
-  findByFilingID(id: string): Promise<Filing> {
+  findByFilingID(id: string) {
     return this.filingRepository.findOne({ where: { id } });
   }
 

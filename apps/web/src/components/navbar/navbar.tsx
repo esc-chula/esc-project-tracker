@@ -1,4 +1,5 @@
-"use client";
+"use client"
+
 import {
   ChevronLast,
   ChevronFirst,
@@ -9,26 +10,32 @@ import {
   FilePlus,
   Trash2,
   MessageSquareWarning,
-} from "lucide-react";
-import { useState } from "react";
-import Image from "next/image";
-import NavbarItem from "./NavbarItem";
-import { usePathname } from "next/navigation";
+} from "lucide-react"
+import { useEffect, useState } from "react"
+import Image from "next/image"
+import NavbarItem from "./navbar-item"
+import { usePathname } from "next/navigation"
 
 export default function Navbar() {
-  const [expanded, setExpanded] = useState(true);
-  const pathname = usePathname();
+  const [expanded, setExpanded] = useState(false)
+  useEffect(() => {
+    const expandedDefault =
+      typeof window !== "undefined" ? localStorage.getItem("navbarExpanded") : "false"
+    setExpanded(expandedDefault === "true")
+  })
+  const pathname = usePathname()
   return (
     <aside className="h-screen bg-intania flex-none sticky top-0">
       <button
-        onClick={() => setExpanded((curr) => !curr)}
-        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14"
-      >
+        onClick={() => {
+          localStorage.setItem("navbarExpanded", String(!expanded))
+          setExpanded((curr) => !curr)
+        }}
+        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14">
         {expanded ? <ChevronFirst /> : <ChevronLast />}
       </button>
       <nav
-        className={`h-full flex flex-col max-w-60 justify-between overflow-x-hidden transition-all overflow-y-scroll no-scrollbar py-14 ${expanded ? "px-10" : "px-4"}`}
-      >
+        className={`h-full flex flex-col max-w-60 justify-between overflow-x-hidden transition-all overflow-y-scroll no-scrollbar py-14 ${expanded ? "px-10" : "px-4"}`}>
         <div className="flex flex-col justify-between items-center gap-3.5 px-2">
           <Image
             src="/icons/esc.svg"
@@ -38,8 +45,7 @@ export default function Navbar() {
             alt="logo"
           />
           <span
-            className={`text-white text-sm text-center font-semibold overflow-hidden text-nowrap ${expanded ? "w-full" : "w-0"}`}
-          >
+            className={`text-white text-sm text-center font-semibold overflow-hidden text-nowrap ${expanded ? "w-full" : "w-0"}`}>
             Document System
           </span>
           <hr className="w-full bg-white my-5" />
@@ -49,13 +55,13 @@ export default function Navbar() {
             icon={<Home size={20} />}
             text="หน้าหลัก"
             expanded={expanded}
-            active={pathname === "/home"}
+            active={pathname.startsWith("/home")}
             href="/home"
           />
           <NavbarItem
             icon={<FileSearch size={20} />}
             text="โครงการทั้งหมด"
-            active={pathname === "/projects"}
+            active={pathname.startsWith("/projects")}
             href="/projects"
             expanded={expanded}
           />
@@ -63,21 +69,21 @@ export default function Navbar() {
             icon={<Folders size={20} />}
             text="โครงการของฉัน"
             expanded={expanded}
-            active={pathname === "/project"}
-            href="/project"
+            active={pathname.startsWith("/my-projects")}
+            href="/my-projects"
           />
           <NavbarItem
             icon={<Radio size={20} />}
             text="ติดตามสถานะ"
             expanded={expanded}
-            active={pathname === "/status"}
+            active={pathname.startsWith("/status")}
             href="/status"
           />
           <NavbarItem
             icon={<FilePlus size={20} />}
             text="Gen Doc"
             expanded={expanded}
-            active={pathname === "/gendoc"}
+            active={pathname.startsWith("/gendoc")}
             href="/gendoc"
           />
         </ul>
@@ -92,19 +98,19 @@ export default function Navbar() {
               icon={<Trash2 size={20} />}
               text="ถังขยะ"
               expanded={expanded}
-              active={pathname === "/trash"}
+              active={pathname.startsWith("/trash")}
               href="/trash"
             />
             <NavbarItem
               icon={<MessageSquareWarning size={20} />}
               text="แจ้งปัญหา"
               expanded={expanded}
-              active={pathname === "/report"}
+              active={pathname.startsWith("/report")}
               href="/report"
             />
           </ul>
         </div>
       </nav>
     </aside>
-  );
+  )
 }

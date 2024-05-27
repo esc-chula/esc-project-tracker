@@ -17,7 +17,7 @@ export class DocumentService {
     private readonly userService: UserService,
   ) {}
 
-  findByDocID(id: string): Promise<Document> {
+  findByDocID(id: string) {
     return this.documentRepository.findOne({ where: { id } });
   }
 
