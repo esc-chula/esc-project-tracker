@@ -5,6 +5,7 @@ import Stepper from "@mui/joy/Stepper"
 import Step, { stepClasses } from "@mui/joy/Step"
 import StepIndicator from "@mui/joy/StepIndicator"
 import { FilingStatus } from "../../constant/enum"
+import { FilingStatusToStepper } from "@/src/styles/enumMap"
 
 const steps = [
   { no: "1", children: <>ขอเลขรัน</> },
@@ -42,43 +43,7 @@ const steps = [
     ),
   },
 ]
-const FilingStatusToStepper = {
-  [FilingStatus.APPROVED]: [
-    ["accepted", "accepted"],
-    ["accepted", "accepted"],
-    ["accepted", "accepted"],
-    ["accepted", "accepted"],
-    ["accepted"],
-  ],
-  [FilingStatus.DRAFT]: [
-    ["accepted", "accepted"],
-    ["accepted", "disabled"],
-    ["disabled", "disabled"],
-    ["disabled", "disabled"],
-    ["disabled"],
-  ],
-  [FilingStatus.RETURNED]: [
-    ["accepted", "accepted"],
-    ["accepted", "rejected"],
-    ["rejected", "disabled"],
-    ["disabled", "disabled"],
-    ["disabled"],
-  ],
-  [FilingStatus.WAIT_FOR_SECRETARY]: [
-    ["accepted", "accepted"],
-    ["accepted", "pending"],
-    ["pending", "disabled"],
-    ["disabled", "disabled"],
-    ["disabled"],
-  ],
-  [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: [
-    ["accepted", "accepted"],
-    ["accepted", "pending"],
-    ["pending", "disabled"],
-    ["disabled", "disabled"],
-    ["disabled"],
-  ],
-}
+
 export default function DocumentStatusStepper({ status }: { status: FilingStatus | "DEFAULT" }) {
   const stepStatuses =
     status === "DEFAULT"
