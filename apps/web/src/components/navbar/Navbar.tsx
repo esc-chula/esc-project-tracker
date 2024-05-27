@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import NavbarItem from "./NavbarItem"
+import NavbarItem from "./navbar-item"
 import { usePathname } from "next/navigation"
 
 export default function Navbar() {

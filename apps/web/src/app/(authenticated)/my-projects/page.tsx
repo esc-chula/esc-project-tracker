@@ -1,7 +1,5 @@
-import { Folders } from "lucide-react"
-import Header from "../../../components/header/Header"
-import Title from "@/src/components/header/Title"
-import Subtitle from "@/src/components/header/Subtitle"
+import Header from "../../../components/header/header"
+import Subtitle from "@/src/components/header/subtitle"
 
 export default function Page() {
   return (
