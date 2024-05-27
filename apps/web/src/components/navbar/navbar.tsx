@@ -1,4 +1,5 @@
 "use client"
+
 import {
   ChevronLast,
   ChevronFirst,
@@ -8,20 +9,28 @@ import {
   Radio,
   FilePlus,
   Trash2,
-  Info,
+  MessageSquareWarning,
 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
-import NavbarItem from "./NavbarItem"
+import NavbarItem from "./navbar-item"
 import { usePathname } from "next/navigation"
 
 export default function Navbar() {
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(false)
+  useEffect(() => {
+    const expandedDefault =
+      typeof window !== "undefined" ? localStorage.getItem("navbarExpanded") : "false"
+    setExpanded(expandedDefault === "true")
+  })
   const pathname = usePathname()
   return (
-    <aside className="h-screen bg-intania flex-none relative">
+    <aside className="h-screen bg-intania flex-none sticky top-0">
       <button
-        onClick={() => setExpanded((curr) => !curr)}
+        onClick={() => {
+          localStorage.setItem("navbarExpanded", String(!expanded))
+          setExpanded((curr) => !curr)
+        }}
         className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14">
         {expanded ? <ChevronFirst /> : <ChevronLast />}
       </button>
@@ -39,20 +48,20 @@ export default function Navbar() {
             className={`text-white text-sm text-center font-semibold overflow-hidden text-nowrap ${expanded ? "w-full" : "w-0"}`}>
             Document System
           </span>
-          <hr className="w-full bg-white my-8" />
+          <hr className="w-full bg-white my-5" />
         </div>
         <ul className="flex-1 flex gap-2.5 flex-col">
           <NavbarItem
             icon={<Home size={20} />}
             text="หน้าหลัก"
             expanded={expanded}
-            active={pathname === "/home"}
+            active={pathname.startsWith("/home")}
             href="/home"
           />
           <NavbarItem
             icon={<FileSearch size={20} />}
             text="โครงการทั้งหมด"
-            active={pathname === "/projects"}
+            active={pathname.startsWith("/projects")}
             href="/projects"
             expanded={expanded}
           />
@@ -60,21 +69,21 @@ export default function Navbar() {
             icon={<Folders size={20} />}
             text="โครงการของฉัน"
             expanded={expanded}
-            active={pathname === "/my-projects"}
+            active={pathname.startsWith("/my-projects")}
             href="/my-projects"
           />
           <NavbarItem
             icon={<Radio size={20} />}
             text="ติดตามสถานะ"
             expanded={expanded}
-            active={pathname === "/status"}
+            active={pathname.startsWith("/status")}
             href="/status"
           />
           <NavbarItem
             icon={<FilePlus size={20} />}
             text="Gen Doc"
             expanded={expanded}
-            active={pathname === "/gendoc"}
+            active={pathname.startsWith("/gendoc")}
             href="/gendoc"
           />
         </ul>
@@ -89,14 +98,14 @@ export default function Navbar() {
               icon={<Trash2 size={20} />}
               text="ถังขยะ"
               expanded={expanded}
-              active={pathname === "/trash"}
+              active={pathname.startsWith("/trash")}
               href="/trash"
             />
             <NavbarItem
-              icon={<Info size={20} />}
+              icon={<MessageSquareWarning size={20} />}
               text="แจ้งปัญหา"
               expanded={expanded}
-              active={pathname === "/report"}
+              active={pathname.startsWith("/report")}
               href="/report"
             />
           </ul>

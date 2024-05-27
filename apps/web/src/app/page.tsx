@@ -1,3 +1,5 @@
+import { trpc } from "./trpc";
+
 export default function Home(): JSX.Element {
   return (
     <div className="flex flex-wrap ml-9 my-5">
@@ -5,5 +7,5 @@ export default function Home(): JSX.Element {
         <p className="text-lg text-slate-500 py-1">ESC Project Tracker</p>
       </div>
     </div>
-  )
+  );
 }

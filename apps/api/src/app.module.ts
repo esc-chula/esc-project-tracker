@@ -5,11 +5,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TrpcModule } from './trpc/trpc.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { UserService } from './user_/user.service';
-import { UserController } from './user_/user.controller';
+
 import { UserModule } from './user_/user.module';
 import { DocumentModule } from './document_/document.module';
 import { ProjectModule } from './project_/project_.module';
+import { FilingModule } from './filing/filing.module';
+import { UserProjService } from './user-proj/user-proj.service';
+import { UserProjController } from './user-proj/user-proj.controller';
+import { UserProjModule } from './user-proj/user-proj.module';
 
 @Module({
   imports: [
@@ -23,7 +26,7 @@ import { ProjectModule } from './project_/project_.module';
           type: 'postgres',
           url: configService.get('DATABASE_URL'),
           entities: [join(__dirname, '**/*.entity.{ts,js}')],
-          synchronize: true,
+          synchronize: false,
         };
       },
       inject: [ConfigService],
@@ -33,6 +36,8 @@ import { ProjectModule } from './project_/project_.module';
     UserModule,
     DocumentModule,
     ProjectModule,
+    FilingModule,
+    UserProjModule,
   ],
   controllers: [AppController],
   providers: [AppService],

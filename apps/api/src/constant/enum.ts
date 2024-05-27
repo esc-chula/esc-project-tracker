@@ -1,14 +1,15 @@
 //DOCUMENT
-export enum DocStatus {
-  MOCK1 = 'MOCK1',
-  MOCK2 = 'MOCK2',
-  MOCK3 = 'MOCK3',
-  MOCK4 = 'MOCK4',
+export enum FilingStatus {
+  APPROVED = 'APPROVED',
+  WAIT_FOR_STUDENT_AFFAIR = 'WAIT_FOR_STUDENT_AFFAIR',
+  WAIT_FOR_SECRETARY = 'WAIT_FOR_SECRETARY',
+  RETURNED = 'RETURNED',
+  DRAFT = 'DRAFT',
 }
 
 //PROJECT
 export enum ProjectStatus {
-  MOCK1 = 'MOCK1',
-  MOCK2 = 'MOCK2',
-  MOCK3 = 'MOCK3',
+  CONTINUE = 'CONTINUE',
+  WAIT_FOR_CLOSE = 'WAIT_FOR_CLOSE',
+  CLOSED = 'CLOSED',
 }
