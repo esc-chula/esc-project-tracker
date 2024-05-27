@@ -55,13 +55,13 @@ export default function Navbar() {
             icon={<Home size={20} />}
             text="หน้าหลัก"
             expanded={expanded}
-            active={pathname === "/home"}
+            active={pathname.startsWith("/home")}
             href="/home"
           />
           <NavbarItem
             icon={<FileSearch size={20} />}
             text="โครงการทั้งหมด"
-            active={pathname === "/projects"}
+            active={pathname.startsWith("/projects")}
             href="/projects"
             expanded={expanded}
           />
@@ -69,21 +69,21 @@ export default function Navbar() {
             icon={<Folders size={20} />}
             text="โครงการของฉัน"
             expanded={expanded}
-            active={pathname === "/my-projects"}
+            active={pathname.startsWith("/my-projects")}
             href="/my-projects"
           />
           <NavbarItem
             icon={<Radio size={20} />}
             text="ติดตามสถานะ"
             expanded={expanded}
-            active={pathname === "/status"}
+            active={pathname.startsWith("/status")}
             href="/status"
           />
           <NavbarItem
             icon={<FilePlus size={20} />}
             text="Gen Doc"
             expanded={expanded}
-            active={pathname === "/gendoc"}
+            active={pathname.startsWith("/gendoc")}
             href="/gendoc"
           />
         </ul>
@@ -98,14 +98,14 @@ export default function Navbar() {
               icon={<Trash2 size={20} />}
               text="ถังขยะ"
               expanded={expanded}
-              active={pathname === "/trash"}
+              active={pathname.startsWith("/trash")}
               href="/trash"
             />
             <NavbarItem
               icon={<MessageSquareWarning size={20} />}
               text="แจ้งปัญหา"
               expanded={expanded}
-              active={pathname === "/report"}
+              active={pathname.startsWith("/report")}
               href="/report"
             />
           </ul>
