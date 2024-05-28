@@ -1,4 +1,4 @@
-import { FilingStatus } from "@/src/constant/enum.ts";
+import { FilingStatus } from "@/src/constant/enum.ts"
 
 export const buttonColors = {
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "bg-[#49E66B] text-white",
@@ -6,7 +6,7 @@ export const buttonColors = {
   [FilingStatus.APPROVED]: "bg-[#49E66B] text-white",
   [FilingStatus.WAIT_FOR_SECRETARY]: "bg-[#ECC700] text-[#FBF2A0]",
   [FilingStatus.DRAFT]: "bg-[#C0C0C0] text-white",
-};
+}
 
 export const TextMyProject = {
   [FilingStatus.APPROVED]: "เรียบร้อย",
@@ -14,7 +14,7 @@ export const TextMyProject = {
   [FilingStatus.WAIT_FOR_SECRETARY]: "ส่งให้เลขาตรวจสอบ",
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "ส่งให้กิจการนิสิตแล้ว",
   [FilingStatus.DRAFT]: "ฉบับร่าง",
-};
+}
 
 //Filing
 export const filterStatus = [
@@ -42,7 +42,7 @@ export const filterStatus = [
     label: "เอกสารถูกตีกลับ",
     value: "REJECTED",
   },
-];
+]
 
 export const filterType = [
   {
@@ -71,8 +71,7 @@ export const filterType = [
     value: "4",
   },
   {
-    label:
-      "เอกสารในโครงการ : จดหมายทั่วไปในคณะ / ทั่วไปนอกคณะ / เชิญวิทยากร / ขอบคุณวิทยากร",
+    label: "เอกสารในโครงการ : จดหมายทั่วไปในคณะ / ทั่วไปนอกคณะ / เชิญวิทยากร / ขอบคุณวิทยากร",
     value: "5",
   },
   {
@@ -91,7 +90,7 @@ export const filterType = [
     label: "เอกสารนอกโครงการ",
     value: "9",
   },
-];
+]
 
 // PROJECt
 export const filterProjectStatus = [
@@ -111,7 +110,7 @@ export const filterProjectStatus = [
     label: "ปิดโครงการ",
     value: "CLOSED",
   },
-];
+]
 
 export const filterProjectType = [
   {
@@ -155,11 +154,11 @@ export const filterProjectType = [
     value: "70",
   },
   {
-    label: "โครงการอื่นๆของกวศ.",
+    label: "โครงการอื่น ๆ ของกวศ.",
     value: "80",
   },
   {
     label: "โครงการฝ่ายวิชาการ",
     value: "90",
   },
-];
+]
