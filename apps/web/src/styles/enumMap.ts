@@ -78,7 +78,7 @@ export const filterStatus = [
   },
   {
     label: "เอกสารถูกตีกลับ",
-    value: "REJECTED",
+    value: "RETURNED",
   },
 ]
 

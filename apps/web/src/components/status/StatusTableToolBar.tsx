@@ -1,14 +1,9 @@
 import { InputAdornment, TextField } from "@mui/material"
-import { ChevronDown, Search } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu"
-import { Button } from "../ui/button"
+import { Search } from "lucide-react"
 import { Table } from "@tanstack/react-table"
 import { FilingType } from "@/src/interface/filing"
+import { filterStatus } from "@/src/styles/enumMap"
+import { DataTableFacetedFilter } from "./StatusTableFacetedFilter"
 
 export default function StatusTableToolBar({ table }: { table: Table<FilingType> }) {
   return (
@@ -56,29 +51,11 @@ export default function StatusTableToolBar({ table }: { table: Table<FilingType>
           },
         }}
       />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
-            Columns <ChevronDown className="ml-2 h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter((column) => column.getCanHide())
-            .map((column) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              )
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <DataTableFacetedFilter
+        column={table.getColumn("status")}
+        title="สถานะ"
+        options={filterStatus.filter((status) => status.value !== "all")}
+      />
     </div>
   )
 }

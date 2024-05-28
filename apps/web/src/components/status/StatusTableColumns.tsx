@@ -28,17 +28,20 @@ export const columns: ColumnDef<FilingType>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="รหัสเอกสาร" />
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("รหัสเอกสาร")}</div>,
+    cell: ({ row }) => <div>{row.getValue("รหัสเอกสาร")}</div>,
   },
   {
     accessorKey: "name",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="ชื่อเอกสาร" />
     },
-    cell: ({ row }) => <div className="lowercase w-60 line-clamp-1">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="w-60 line-clamp-1">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "status",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="สถานะ" />
     },
