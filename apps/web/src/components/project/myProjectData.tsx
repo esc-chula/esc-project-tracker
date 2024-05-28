@@ -9,7 +9,7 @@ import { ProjectType, ProjectWithLastOpenType } from "@/src/interface/project";
 import { FilingType } from "@/src/interface/filing";
 import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
-import getFilingByUserId from "@/src/service/getFilingByUserId";
+import getFilingByUserId from "@/src/service/getFilingsByUserId";
 
 export default function MyProjectData() {
   const router = useRouter();

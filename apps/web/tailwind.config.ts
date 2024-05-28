@@ -26,10 +26,14 @@ const config = {
     },
     extend: {
       colors: {
-        intania: "#5E1018",
-        red: "#C22231",
-        lightpink: "#FFF0F0",
-        pink: "#E59DA4",
+        intania: "var(--intania)",
+        red: "var(--red)",
+        lightpink: "var(--lightpink)",
+        pink: "var(--pink)",
+        rejected: "var(--rejected)",
+        accepted: "var(--accepted)",
+        pending: "var(--pending)",
+        disabled: "var(--disabled)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
