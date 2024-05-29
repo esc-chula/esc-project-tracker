@@ -1,12 +1,13 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 import { TrpcService } from './trpc.service';
-import { string, z } from 'zod';
+import { optional, string, z } from 'zod';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { DocumentService } from '../document_/document.service';
 import { FilingService } from '../filing/filing.service';
 import { UserProjService } from '../user-proj/user-proj.service';
+import { FilingStatus } from '../constant/enum';
 
 @Injectable()
 export class TrpcRouter {
@@ -99,18 +100,28 @@ export class TrpcRouter {
       }),
 
     //Update filing name
+
     updateFilingName: this.trpc.procedure
       .input(
         z.object({
           filingId: z.string(),
-          filingName: z.string(),
+          filingName: z.string().optional(),
+          FilingStatus: z
+            .enum([
+              FilingStatus.APPROVED,
+              FilingStatus.DRAFT,
+              FilingStatus.RETURNED,
+              FilingStatus.WAIT_FOR_SECRETARY,
+              FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
+            ])
+            .optional(),
         }),
       )
       .query(({ input }) => {
-        return this.filingService.updateFilingName(
-          input.filingId,
-          input.filingName,
-        );
+        return this.filingService.updateFiling(input.filingId, {
+          name: input.filingName,
+          status: input.FilingStatus,
+        });
       }),
   });
 

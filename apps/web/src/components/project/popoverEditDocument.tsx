@@ -1,7 +1,7 @@
 "use client";
 import { EllipsisVertical, SquarePen } from "lucide-react";
 import { useState } from "react";
-import updateFilingName from "@/src/service/updateFilingName";
+import updateFilingName from "@/src/service/updateFiling";
 import {
   Dialog,
   DialogContent,
@@ -28,7 +28,10 @@ export default function PopoverEditDocument({
       alert("กรุณากรอกชื่อเอกสาร");
       return;
     }
-    const data = await updateFilingName(filingId, name);
+    const data = await updateFilingName({
+      filingId,
+      filingName: name,
+    });
     if (data) {
       alert("Update Success");
       setNewNameParentFunc(data.name);

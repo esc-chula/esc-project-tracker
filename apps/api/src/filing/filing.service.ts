@@ -83,12 +83,11 @@ export class FilingService {
     return this.filingRepository.save(newFiling);
   }
 
-  async updateFilingName(id: string, filingName: string) {
+  async updateFiling(id: string, filing: Partial<Filing>) {
     if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
     const foundFiling = await this.findByFilingID(id);
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
 
-    foundFiling.name = filingName;
-    return this.filingRepository.save(foundFiling);
+    return this.filingRepository.save({ ...foundFiling, ...filing });
   }
 }
