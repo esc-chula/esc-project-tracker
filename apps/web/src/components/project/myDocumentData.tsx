@@ -24,6 +24,10 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
     fetchFilings();
   }, []);
 
+  useEffect(() => {
+    console.log(Filings);
+  }, [Filings]);
+
   return (
     <div className="space-y-4 w-[65%]">
       <div className=" flex flex-row space-x-4">
@@ -38,12 +42,22 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           FilingFunc={() => {}}
         />
 
-        <PopoverAddDocument projectId={projectId} />
+        <PopoverAddDocument
+          projectId={projectId}
+          addFilingToParent={(filing: FilingType) => {
+            setFilings((prevFilings) => [...prevFilings, filing]);
+          }}
+        />
       </div>
       {isFetched && (
         <>
           {Filings.length === 0 ? (
-            <NoDocument projectId={projectId} />
+            <NoDocument
+              projectId={projectId}
+              setNewFilingToParent={(filing: FilingType) => {
+                setFilings((prevFilings) => [...prevFilings, filing]);
+              }}
+            />
           ) : (
             <AllDocumentPanel Filings={Filings} />
           )}

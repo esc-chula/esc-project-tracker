@@ -6,7 +6,6 @@ export default async function getFilingByUserId(userId: string) {
       userId,
     });
 
-    console.log("This is fillings", fillings);
     return fillings;
   } catch (err) {
     alert(err);

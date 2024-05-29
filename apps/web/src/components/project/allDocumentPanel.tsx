@@ -33,7 +33,7 @@ export default function AllDocumentPanel({
       );
     }
     console.log(status);
-  }, [status, type]);
+  }, [status, type, Filings]);
 
   return (
     <div className="space-y-5 pt-5 pb-10">

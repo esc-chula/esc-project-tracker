@@ -10,26 +10,30 @@ import { HiDocumentAdd } from "react-icons/hi";
 import { filingTypeMap } from "@/src/constant/type";
 import { useState } from "react";
 import createFiling from "@/src/service/createFiling";
+import { FilingType } from "@/src/interface/filing";
 
 export default function PopoverAddDocument({
   children,
   projectId,
+  addFilingToParent,
 }: {
   children?: React.ReactNode;
   projectId: string;
+  addFilingToParent: (filing: FilingType) => void;
 }) {
   const [filingType, setFilingType] = useState<number>(0);
   const [filingName, setFilingName] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
 
   const submitCreate = async () => {
     if (filingName !== "") {
-      const success = await createFiling(projectId, filingName, filingType);
+      const data = await createFiling(projectId, filingName, filingType);
 
-      if (success) {
+      if (data) {
+        addFilingToParent(data);
+
         alert("เพิ่มเอกสารสำเร็จ");
-        setOpen(true);
+        setOpen(false);
       }
     } else {
       alert("กรุณากรอกชื่อเอกสาร");

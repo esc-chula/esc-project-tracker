@@ -1,10 +1,11 @@
 import { trpc } from "../app/trpc";
+import { FilingType } from "../interface/filing";
 
 export default async function createFiling(
   projectId: string,
   filingName: string,
   filingType: number
-): Promise<boolean> {
+): Promise<FilingType | null> {
   console.log(projectId, filingName, filingType);
   console.log("TEST HI");
   try {
@@ -13,9 +14,10 @@ export default async function createFiling(
       filingName,
       filingType,
     });
-    return true;
+
+    return data;
   } catch (err) {
     alert(err);
-    return false;
+    return null;
   }
 }

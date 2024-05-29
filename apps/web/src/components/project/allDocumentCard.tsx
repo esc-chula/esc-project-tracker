@@ -45,11 +45,11 @@ export default function AllDocumentCard({
         </Popover>
       </div>
       <div className="text-2xl font-bold text-center">ตัวอย่างเอกสาร</div>
-      <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-lg">
+      <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-lg ">
         <div className="text-2xl font-bold text-start">
           {projectCode} - {FilingCode}
           <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
-            {FilingName}
+            {FilingName || "-- ไม่มีชื่อ --"}
           </div>
         </div>
         <div
