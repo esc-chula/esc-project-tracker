@@ -4,7 +4,6 @@ import { Filing } from '../entities/Filing.entity';
 import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
-import { Project } from '../entities/project.entity';
 import { UserService } from '../user_/user.service';
 
 @Injectable()
