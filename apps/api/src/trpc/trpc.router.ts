@@ -97,6 +97,21 @@ export class TrpcRouter {
           input.filingType,
         );
       }),
+
+    //Update filing name
+    updateFilingName: this.trpc.procedure
+      .input(
+        z.object({
+          filingId: z.string(),
+          filingName: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.filingService.updateFilingName(
+          input.filingId,
+          input.filingName,
+        );
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {

@@ -6,6 +6,7 @@ import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
 import { useRouter } from "next/navigation";
 import { FilingStatus } from "@/src/constant/enum.ts";
 import { buttonColors, TextMyProject } from "@/src/styles/enumMap";
+import { useState } from "react";
 
 export default function AllDocumentCard({
   FilingId,
@@ -21,6 +22,7 @@ export default function AllDocumentCard({
   FilingStatus: FilingStatus;
 }) {
   const router = useRouter();
+  const [fName, setFName] = useState<string>(FilingName);
 
   return (
     <div className="bg-background shadow-xl rounded-lg space-y-14 pt-2 hover:cursor-pointer hover:shadow-2xl duration-300">
@@ -39,7 +41,13 @@ export default function AllDocumentCard({
             align="start"
             className="w-auto flex flex-col"
           >
-            <PopoverEditDocument />
+            <PopoverEditDocument
+              oldFilingName={FilingName}
+              filingId={FilingId}
+              setNewNameParentFunc={(newName) => {
+                setFName(newName);
+              }}
+            />
             <PopoverDeleteDocument />
           </PopoverContent>
         </Popover>
@@ -49,7 +57,7 @@ export default function AllDocumentCard({
         <div className="text-2xl font-bold text-start">
           {projectCode} - {FilingCode}
           <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
-            {FilingName || "-- ไม่มีชื่อ --"}
+            {fName || "-- ไม่มีชื่อ --"}
           </div>
         </div>
         <div
