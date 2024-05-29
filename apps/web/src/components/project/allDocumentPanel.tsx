@@ -1,9 +1,10 @@
 "use client";
 import AllDocumentCard from "./allDocumentCard";
 import SelectType from "./selectType";
-import { filterStatus, filterType } from "@/src/styles/enumMap";
+import { filterStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { FilingType } from "@/src/interface/filing";
+import { filingTypeMap, projectTypeMap } from "@/src/constant/type";
 
 export default function AllDocumentPanel({
   Filings,
@@ -12,10 +13,10 @@ export default function AllDocumentPanel({
 }) {
   const [filteredFilings, setFilteredFilings] = useState<FilingType[]>(Filings);
   const [status, setStatus] = useState<string>("all");
-  const [type, setType] = useState<string>("11");
+  const [type, setType] = useState<string>("all");
 
   useEffect(() => {
-    if (status === "all" && type === "11") {
+    if (status === "all" && type === "all") {
       setFilteredFilings(Filings);
     } else if (status === "all") {
       setFilteredFilings(
@@ -46,7 +47,7 @@ export default function AllDocumentPanel({
         />
         <SelectType
           title="ประเภท"
-          items={filterType}
+          items={filingTypeMap}
           sendValue={(value) => {
             setType(value);
           }}

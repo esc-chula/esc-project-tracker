@@ -9,6 +9,7 @@ import {
 } from "../ui/dialog";
 import { IoIosAlert } from "react-icons/io";
 import { HiDocumentAdd } from "react-icons/hi";
+import { filingTypeMap } from "@/src/constant/type";
 
 export default function PopoverAddDocument({
   children,
@@ -44,19 +45,12 @@ export default function PopoverAddDocument({
               id="documentType"
               className="border-black border-2 w-full p-2 rounded-lg"
             >
-              <option value="10">10 โครงการฝ่ายกิจการภายใน</option>
-              <option value="11">11 โครงการฝ่ายศิลปะและวัฒนธรรม</option>
-              <option value="12">12 โครงการฝ่ายกีฬา</option>
-              <option value="20">20 โครงการฝ่ายกิจการภายนอก</option>
-              <option value="30">30 โครงการฝ่ายนิสิตสัมพันธ์</option>
-              <option value="40">
-                40 โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์
-              </option>
-              <option value="50">50 โครงการฝ่ายพัฒนาองค์กร</option>
-              <option value="60">60 โครงการฝ่ายสนับสนุน</option>
-              <option value="70">70 โครงการฝ่ายสื่อสารองค์กร</option>
-              <option value="80">80 โครงการอื่นๆของกวศ</option>
-              <option value="90">90 โครงการฝ่ายวิชาการ</option>
+              {filingTypeMap.map((type) => (
+                <option value={type.value} key={type.value}>
+                  {type.value.toString()}
+                  {"  "} {type.label}
+                </option>
+              ))}
             </select>
           </div>
           <div className="text-end">
