@@ -1,5 +1,4 @@
-import { Trash2, SquarePen } from "lucide-react";
-
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -7,17 +6,38 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { IoIosAlert } from "react-icons/io";
 import { HiDocumentAdd } from "react-icons/hi";
 import { filingTypeMap } from "@/src/constant/type";
+import { useState } from "react";
+import createFiling from "@/src/service/createFiling";
 
 export default function PopoverAddDocument({
   children,
+  projectId,
 }: {
   children?: React.ReactNode;
+  projectId: string;
 }) {
+  const [filingType, setFilingType] = useState<number>(0);
+  const [filingName, setFilingName] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+
+  const submitCreate = async () => {
+    if (filingName !== "") {
+      const success = await createFiling(projectId, filingName, filingType);
+
+      if (success) {
+        alert("เพิ่มเอกสารสำเร็จ");
+        setOpen(true);
+      }
+    } else {
+      alert("กรุณากรอกชื่อเอกสาร");
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children ? (
           children
@@ -37,6 +57,9 @@ export default function PopoverAddDocument({
             type="text"
             placeholder="ชื่อเอกสาร"
             className="border-black border-2 w-full p-2 rounded-lg"
+            value={filingName}
+            onChange={(e) => setFilingName(e.target.value)}
+            required
           ></input>
 
           <div className="font-sukhumvit font-semibold">
@@ -44,6 +67,9 @@ export default function PopoverAddDocument({
             <select
               id="documentType"
               className="border-black border-2 w-full p-2 rounded-lg"
+              defaultValue={0}
+              value={filingType}
+              onChange={(e) => setFilingType(parseInt(e.target.value))}
             >
               {filingTypeMap.map((type) => (
                 <option value={type.value} key={type.value}>
@@ -54,7 +80,10 @@ export default function PopoverAddDocument({
             </select>
           </div>
           <div className="text-end">
-            <button className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold">
+            <button
+              className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
+              onClick={submitCreate}
+            >
               ยืนยัน
             </button>
           </div>

@@ -80,6 +80,23 @@ export class TrpcRouter {
           projectId: input.projectId,
         });
       }),
+
+    // Create a new Filing
+    createFiling: this.trpc.procedure
+      .input(
+        z.object({
+          projectId: z.string(),
+          filingName: z.string(),
+          filingType: z.number(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.filingService.createFiling(
+          input.projectId,
+          input.filingName,
+          input.filingType,
+        );
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {

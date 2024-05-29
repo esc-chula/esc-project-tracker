@@ -38,12 +38,12 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           FilingFunc={() => {}}
         />
 
-        <PopoverAddDocument />
+        <PopoverAddDocument projectId={projectId} />
       </div>
       {isFetched && (
         <>
           {Filings.length === 0 ? (
-            <NoDocument />
+            <NoDocument projectId={projectId} />
           ) : (
             <AllDocumentPanel Filings={Filings} />
           )}
