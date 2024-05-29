@@ -123,6 +123,13 @@ export class TrpcRouter {
           status: input.FilingStatus,
         });
       }),
+
+    //Delete filing
+    deleteFiling: this.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.deleteFiling(input.filingId);
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {

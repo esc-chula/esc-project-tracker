@@ -6,7 +6,7 @@ import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
 import { useRouter } from "next/navigation";
 import { FilingStatus } from "@/src/constant/enum.ts";
 import { buttonColors, TextMyProject } from "@/src/styles/enumMap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AllDocumentCard({
   FilingId,
@@ -14,15 +14,24 @@ export default function AllDocumentCard({
   FilingCode,
   FilingName,
   FilingStatus,
+  deletThisCardFunc,
 }: {
   FilingId: string;
   projectCode: string;
   FilingCode: string;
   FilingName: string;
   FilingStatus: FilingStatus;
+  deletThisCardFunc: (id: string) => void;
 }) {
   const router = useRouter();
   const [fName, setFName] = useState<string>(FilingName);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isDeleted) {
+      deletThisCardFunc(FilingId);
+    }
+  }, [isDeleted]);
 
   return (
     <div className="bg-background shadow-xl rounded-lg space-y-14 pt-2 hover:cursor-pointer hover:shadow-2xl duration-300">
@@ -48,7 +57,12 @@ export default function AllDocumentCard({
                 setFName(newName);
               }}
             />
-            <PopoverDeleteDocument />
+            <PopoverDeleteDocument
+              filingId={FilingId}
+              setDeletedParentFunc={(deleted: boolean) => {
+                setIsDeleted(deleted);
+              }}
+            />
           </PopoverContent>
         </Popover>
       </div>

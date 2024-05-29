@@ -62,6 +62,11 @@ export default function AllDocumentPanel({
             FilingCode={Filing.FilingCode}
             FilingName={Filing.name}
             FilingStatus={Filing.status}
+            deletThisCardFunc={(id: string) => {
+              setFilteredFilings((prevFilings) =>
+                prevFilings.filter((Filing) => Filing.id !== id)
+              );
+            }}
           />
         ))}
       </div>

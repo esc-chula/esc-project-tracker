@@ -1,3 +1,5 @@
+"use client";
+
 import { Trash2, SquarePen } from "lucide-react";
 
 import {
@@ -8,8 +10,22 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { IoIosAlert } from "react-icons/io";
+import deleteFiling from "@/src/service/deleteFiling";
 
-export default function PopoverDeleteDocument() {
+export default function PopoverDeleteDocument({
+  filingId,
+  setDeletedParentFunc,
+}: {
+  filingId: string;
+  setDeletedParentFunc: (deleted: boolean) => void;
+}) {
+  const submitDelte = async () => {
+    const data = await deleteFiling(filingId);
+    if (data) {
+      alert("ลบเอกสารสำเร็จ");
+      setDeletedParentFunc(true);
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -31,7 +47,10 @@ export default function PopoverDeleteDocument() {
             ยืนยันการลบเอกสาร
           </div>
           <div className="text-center ">
-            <button className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold">
+            <button
+              className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
+              onClick={submitDelte}
+            >
               ยืนยัน
             </button>
           </div>

@@ -90,4 +90,14 @@ export class FilingService {
 
     return this.filingRepository.save({ ...foundFiling, ...filing });
   }
+
+  async deleteFiling(id: string) {
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
+    const foundFiling = await this.findByFilingID(id);
+    if (!foundFiling) throw new BadRequestException('Filing Not Found!');
+
+    this.filingRepository.delete(id);
+
+    return foundFiling;
+  }
 }
