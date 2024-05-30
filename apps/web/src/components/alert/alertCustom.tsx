@@ -32,12 +32,14 @@ export default function AlertCustom({
     <Alert
       severity={isError ? "error" : "success"}
       className={`fixed bottom-7 right-7 z-50 w-[30vw] h-[10vh] ${
-        isError ? "border-red" : "border-green-600"
-      } border-2 opacity-90 flex items-center ${
+        isError ? "border-red" : "border-green-600 "
+      } border-2 opacity-60 flex items-center ${
         slideOut ? "animate-slideOut" : "animate-slideIn"
       }`}
     >
-      {message}
+      <div className="text-ellipsis overflow-hidden whitespace-nowrap">
+        {message}
+      </div>
     </Alert>
   );
 }
