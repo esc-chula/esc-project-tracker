@@ -1,6 +1,6 @@
 import { Folders } from "lucide-react";
 import Header from "../../../components/header/header";
-import Title from "@/src/components/header/Title";
+import Title from "@/src/components/header/title";
 import MyProjectData from "@/src/components/project/myProjectData";
 
 export default function Page() {

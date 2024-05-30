@@ -23,23 +23,26 @@ export default function MyProjectData() {
   const [filing, setFiling] = useState<FilingType[]>([]);
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string>(
+    "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
+  );
 
   //TODO : Change the userId to the actual userId
   useEffect(() => {
     const fetchProjects = async () => {
-      const data = await getProjectsByUserId(
-        "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
-      );
-      setProjectsWithLastOpen(data);
-      setProjects(data.map((project) => project.project));
-      setIsFetched(true);
+      if (userId) {
+        const data = await getProjectsByUserId(userId);
+        setProjectsWithLastOpen(data);
+        setProjects(data.map((project) => project.project));
+        setIsFetched(true);
+      }
     };
     const fetchFiling = async () => {
       //TODO : Change the userId to the actual userId
-      const data = await getFilingByUserId(
-        "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
-      );
-      setFiling(data);
+      if (userId) {
+        const data = await getFilingByUserId(userId);
+        setFiling(data);
+      }
     };
     fetchProjects();
     fetchFiling();

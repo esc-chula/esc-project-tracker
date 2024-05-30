@@ -40,8 +40,40 @@ export class CountFilingService {
       throw new BadRequestException('Type must be 0 - 9');
     }
 
-    const typeCount = foundFiling[`type_${type}_count`];
-    return typeCount;
+    switch (type) {
+      case 0:
+        return foundFiling.type_0_count;
+
+      case 1:
+        return foundFiling.type_1_count;
+
+      case 2:
+        return foundFiling.type_2_count;
+
+      case 3:
+        return foundFiling.type_3_count;
+
+      case 4:
+        return foundFiling.type_4_count;
+
+      case 5:
+        return foundFiling.type_5_count;
+
+      case 6:
+        return foundFiling.type_6_count;
+
+      case 7:
+        return foundFiling.type_7_count;
+
+      case 8:
+        return foundFiling.type_8_count;
+
+      case 9:
+        return foundFiling.type_9_count;
+
+      default:
+        throw new BadRequestException('Type must be 0 - 9');
+    }
   }
 
   async addTypeCount(projectId: string, type: number) {
@@ -53,8 +85,51 @@ export class CountFilingService {
       throw new BadRequestException('Type must be 0 - 9');
     }
 
-    const typeCount = foundFiling[`type_${type}_count`];
-    foundFiling[`type_${type}_count`] = typeCount + 1;
+    switch (type) {
+      case 0:
+        foundFiling.type_0_count += 1;
+        break;
+
+      case 1:
+        foundFiling.type_1_count += 1;
+        break;
+
+      case 2:
+        foundFiling.type_2_count += 1;
+        break;
+
+      case 3:
+        foundFiling.type_3_count += 1;
+        break;
+
+      case 4:
+        foundFiling.type_4_count += 1;
+        break;
+
+      case 5:
+        foundFiling.type_5_count += 1;
+        break;
+
+      case 6:
+        foundFiling.type_6_count += 1;
+        break;
+
+      case 7:
+        foundFiling.type_7_count += 1;
+        break;
+
+      case 8:
+        foundFiling.type_8_count += 1;
+        break;
+
+      case 9:
+        foundFiling.type_9_count += 1;
+        break;
+
+      default:
+        throw new BadRequestException('Type must be 0 - 9');
+    }
+
     await this.countFilingRepository.save(foundFiling);
   }
 }

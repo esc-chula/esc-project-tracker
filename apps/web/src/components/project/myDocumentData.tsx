@@ -18,12 +18,14 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
 
   useEffect(() => {
     const fetchFilings = async () => {
-      const data = await getFilingByProjectId({ projectId });
-      setFilings(data);
-      setIsFetched(true);
+      if (projectId) {
+        const data = await getFilingByProjectId({ projectId });
+        setFilings(data);
+        setIsFetched(true);
+      }
     };
     fetchFilings();
-  }, []);
+  }, [projectId]);
 
   useEffect(() => {
     console.log(Filings);
@@ -31,7 +33,6 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
 
   return (
     <div className="space-y-4 w-[65%] ">
-      <AlertCustom isError={true} message="Yo this is error" />
       <div className="flex flex-row justify-between items-center">
         <div className="font-sukhumvit text-lg sm::text-base flex items-center font-bold ">
           <FileText style={{ marginRight: "10" }} />
