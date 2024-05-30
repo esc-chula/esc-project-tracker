@@ -15,6 +15,7 @@ export default function AllDocumentCard({
   FilingName,
   FilingStatus,
   deletThisCardFunc,
+  updateThisCardFunc,
 }: {
   FilingId: string;
   projectCode: string;
@@ -22,6 +23,7 @@ export default function AllDocumentCard({
   FilingName: string;
   FilingStatus: FilingStatus;
   deletThisCardFunc: (id: string) => void;
+  updateThisCardFunc: (id: string, newName: string) => void;
 }) {
   const router = useRouter();
   const [fName, setFName] = useState<string>(FilingName);
@@ -32,6 +34,12 @@ export default function AllDocumentCard({
       deletThisCardFunc(FilingId);
     }
   }, [isDeleted]);
+
+  useEffect(() => {
+    if (fName !== FilingName) {
+      updateThisCardFunc(FilingId, fName);
+    }
+  }, [fName]);
 
   return (
     <div className="bg-background shadow-xl rounded-lg space-y-14 pt-2 hover:cursor-pointer hover:shadow-2xl duration-300">

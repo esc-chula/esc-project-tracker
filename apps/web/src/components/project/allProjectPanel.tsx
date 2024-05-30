@@ -21,7 +21,7 @@ export default function AllProjectPanel({
       setUsedProjects(
         projects.filter((project) => project.type.toString() === projectType)
       );
-    } else if (projectType === "0") {
+    } else if (projectType === "all") {
       setUsedProjects(
         projects.filter((project) => project.status === projectState)
       );

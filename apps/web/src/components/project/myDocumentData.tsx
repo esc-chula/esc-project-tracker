@@ -59,7 +59,12 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
               }}
             />
           ) : (
-            <AllDocumentPanel Filings={Filings} />
+            <AllDocumentPanel
+              Filings={Filings}
+              setFilingsToParentFunc={(Filings: FilingType[]) => {
+                setFilings((prevFilings) => Filings);
+              }}
+            />
           )}
         </>
       )}
