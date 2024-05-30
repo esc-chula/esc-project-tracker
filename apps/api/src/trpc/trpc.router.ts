@@ -8,6 +8,7 @@ import { DocumentService } from '../document_/document.service';
 import { FilingService } from '../filing/filing.service';
 import { UserProjService } from '../user-proj/user-proj.service';
 import { FilingStatus } from '../constant/enum';
+import { CountFilingService } from '../count-filing/count-filing.service';
 
 @Injectable()
 export class TrpcRouter {
@@ -18,6 +19,7 @@ export class TrpcRouter {
     private readonly documentService: DocumentService,
     private readonly filingService: FilingService,
     private readonly userProjService: UserProjService,
+    private readonly countFilingService: CountFilingService,
   ) {}
 
   appRouter = this.trpc.router({
@@ -129,6 +131,21 @@ export class TrpcRouter {
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
+      }),
+
+    //Get FilingTypeCount
+    getFilingTypeCount: this.trpc.procedure
+      .input(
+        z.object({
+          projectId: z.string(),
+          filingType: z.number(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.countFilingService.getTypeCount(
+          input.projectId,
+          input.filingType,
+        );
       }),
   });
 

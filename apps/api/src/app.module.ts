@@ -13,6 +13,7 @@ import { FilingModule } from './filing/filing.module';
 import { UserProjService } from './user-proj/user-proj.service';
 import { UserProjController } from './user-proj/user-proj.controller';
 import { UserProjModule } from './user-proj/user-proj.module';
+import { CountFilingModule } from './count-filing/count-filing.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { UserProjModule } from './user-proj/user-proj.module';
     ProjectModule,
     FilingModule,
     UserProjModule,
+    CountFilingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
