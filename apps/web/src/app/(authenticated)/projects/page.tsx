@@ -3,7 +3,7 @@
 import { Folders } from "lucide-react";
 import Header from "@/src/components/header/header";
 import Title from "@/src/components/header/title";
-import SelectTab from "@/src/components/my-projects/selectTab";
+import SelectTab from "@/src/components/all-projects/selectTab";
 
 export default function Page() {
   return (

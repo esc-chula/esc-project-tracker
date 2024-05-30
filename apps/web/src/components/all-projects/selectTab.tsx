@@ -1,8 +1,11 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import SearchProjectsPanel from "./searchProjectsPanel";
+import { Box } from "@mui/material";
+import SearchFilingPanel from "./searchFilingPanel";
+import NoFiling from "./noFiling";
+import NoProject from "./noProject";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -21,11 +24,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -44,8 +43,18 @@ export default function SelectTab() {
     setValue(newValue);
   };
 
+  /* TODO : Fetch data from the server
+  
+  */
+
   return (
     <Box sx={{ width: "100%" }}>
+      <CustomTabPanel value={value} index={0}>
+        <SearchProjectsPanel Projects={[]} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <SearchFilingPanel Filings={[]} />
+      </CustomTabPanel>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -70,10 +79,10 @@ export default function SelectTab() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        โครงการ
+        <NoProject />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        เอกสาร
+        <NoFiling />
       </CustomTabPanel>
     </Box>
   );
