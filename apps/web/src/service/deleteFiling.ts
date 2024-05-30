@@ -4,13 +4,12 @@ import { FilingType } from "../interface/filing";
 export default async function deleteFiling(
   filingId: string
 ): Promise<FilingType | null> {
-  const data = await trpc.deleteFiling.query({
-    filingId: "acasc",
-  });
+  try {
+    const data = await trpc.deleteFiling.query({ filingId });
 
-  if (data) {
     return data;
+  } catch (err) {
+    console.log(err);
+    throw new Error("ไม่สามารถลบเอกสารได้");
   }
-
-  throw new Error("Failed to delete filing");
 }

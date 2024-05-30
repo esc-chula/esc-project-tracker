@@ -11,6 +11,7 @@ import { filingTypeMap } from "@/src/constant/type";
 import { useState } from "react";
 import createFiling from "@/src/service/createFiling";
 import { FilingType } from "@/src/interface/filing";
+import { useToast } from "../ui/use-toast";
 
 export default function PopoverAddDocument({
   children,
@@ -24,19 +25,28 @@ export default function PopoverAddDocument({
   const [filingType, setFilingType] = useState<number>(0);
   const [filingName, setFilingName] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
+  const { toast } = useToast();
 
   const submitCreate = async () => {
-    if (filingName !== "") {
-      const data = await createFiling(projectId, filingName, filingType);
+    try {
+      if (filingName !== "") {
+        const data = await createFiling(projectId, filingName, filingType);
 
-      if (data) {
         addFilingToParent(data);
-
-        alert("เพิ่มเอกสารสำเร็จ");
+        toast({
+          title: "สร้างสำเร็จ",
+          description: `เอกสาร ${data.projectCode} - ${data.FilingCode} ถูกสร้างเรียบร้อยแล้ว`,
+        });
         setOpen(false);
       }
-    } else {
-      alert("กรุณากรอกชื่อเอกสาร");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: error.message,
+          isError: true,
+        });
+      }
     }
   };
 

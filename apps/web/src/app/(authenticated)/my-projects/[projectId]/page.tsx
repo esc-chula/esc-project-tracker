@@ -6,26 +6,50 @@ import MyDocumentData from "@/src/components/project/myDocumentData";
 import { ProjectType } from "@/src/interface/project";
 import { useEffect, useState } from "react";
 import getProjectByProjectId from "@/src/service/getProjectByProjectId";
+import { useToast } from "@/src/components/ui/use-toast";
+import updateLastOpen from "@/src/service/updateLastOpen";
 
 export default function Page({ params }: { params: { projectId: string } }) {
   const [project, setProject] = useState<ProjectType | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (params?.projectId) {
       const fetchProject = async () => {
-        const data = await getProjectByProjectId(params.projectId);
-        setProject(data);
+        try {
+          const data = await getProjectByProjectId(params.projectId);
+          setProject(data);
+        } catch (err) {
+          if (err instanceof Error) {
+            toast({
+              title: "ไม่สำเร็จ",
+              description: err.message,
+              isError: true,
+            });
+          }
+        }
       };
+      ("d1c0d106-1a4a-4729-9033-1b2b2d52e98a");
 
       //TODO : Change the userId to the actual userId
-      const updateLastOpen = async () => {
-        await trpc.updateUserProjLastOpen.query({
-          userId: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
-          projectId: params.projectId,
-        });
+      const updateLastOpenFetch = async () => {
+        try {
+          await updateLastOpen(
+            "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
+            params.projectId
+          );
+        } catch (err) {
+          if (err instanceof Error) {
+            toast({
+              title: "ไม่สำเร็จ",
+              description: err.message,
+              isError: true,
+            });
+          }
+        }
       };
       fetchProject();
-      updateLastOpen();
+      updateLastOpenFetch();
     }
   }, [params]);
 

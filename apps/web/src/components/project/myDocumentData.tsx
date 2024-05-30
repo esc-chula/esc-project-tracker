@@ -10,17 +10,29 @@ import { useEffect, useState } from "react";
 import { FilingType } from "@/src/interface/filing";
 import { trpc } from "@/src/app/trpc";
 import getFilingByProjectId from "@/src/service/getFilingByProjectId";
+import { useToast } from "../ui/use-toast";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [Filings, setFilings] = useState<FilingType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchFilings = async () => {
       if (projectId) {
-        const data = await getFilingByProjectId({ projectId });
-        setFilings(data);
-        setIsFetched(true);
+        try {
+          const data = await getFilingByProjectId({ projectId });
+          setFilings(data);
+          setIsFetched(true);
+        } catch (err) {
+          if (err instanceof Error) {
+            toast({
+              title: "ไม่สำเร็จ",
+              description: err.message,
+              isError: true,
+            });
+          }
+        }
       }
     };
     fetchFilings();

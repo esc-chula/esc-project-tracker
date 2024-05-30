@@ -5,9 +5,7 @@ export default async function createFiling(
   projectId: string,
   filingName: string,
   filingType: number
-): Promise<FilingType | null> {
-  console.log(projectId, filingName, filingType);
-  console.log("TEST HI");
+): Promise<FilingType> {
   try {
     const data = await trpc.createFiling.query({
       projectId,
@@ -17,7 +15,7 @@ export default async function createFiling(
 
     return data;
   } catch (err) {
-    alert(err);
-    return null;
+    console.log(err);
+    throw new Error("ไม่สามารถสร้างเอกสารได้");
   }
 }

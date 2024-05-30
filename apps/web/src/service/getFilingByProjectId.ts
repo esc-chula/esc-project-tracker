@@ -10,7 +10,7 @@ export default async function getFilingByProjectId({
     const data = await trpc.findFilingsByProjectId.query({ projectId });
     return data;
   } catch (err) {
-    alert(err);
-    return [];
+    console.log(err);
+    throw new Error("ไม่สามารถดึงข้อมูลเอกสารได้");
   }
 }

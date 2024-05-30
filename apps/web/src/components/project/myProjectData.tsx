@@ -10,8 +10,10 @@ import { FilingType } from "@/src/interface/filing";
 import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
 import getFilingByUserId from "@/src/service/getFilingsByUserId";
+import { useToast } from "../ui/use-toast";
 
 export default function MyProjectData() {
+  const { toast } = useToast();
   const router = useRouter();
   const redirectToProject = (project: ProjectType | FilingType) => {
     router.push(`/my-projects/${project.id}`);
@@ -31,17 +33,37 @@ export default function MyProjectData() {
   useEffect(() => {
     const fetchProjects = async () => {
       if (userId) {
-        const data = await getProjectsByUserId(userId);
-        setProjectsWithLastOpen(data);
-        setProjects(data.map((project) => project.project));
-        setIsFetched(true);
+        try {
+          const data = await getProjectsByUserId(userId);
+          setProjectsWithLastOpen(data);
+          setProjects(data.map((project) => project.project));
+          setIsFetched(true);
+        } catch (err) {
+          if (err instanceof Error) {
+            toast({
+              title: "ไม่สำเร็จ",
+              description: err.message,
+              isError: true,
+            });
+          }
+        }
       }
     };
     const fetchFiling = async () => {
       //TODO : Change the userId to the actual userId
       if (userId) {
-        const data = await getFilingByUserId(userId);
-        setFiling(data);
+        try {
+          const data = await getFilingByUserId(userId);
+          setFiling(data);
+        } catch (err) {
+          if (err instanceof Error) {
+            toast({
+              title: "ไม่สำเร็จ",
+              description: err.message,
+              isError: true,
+            });
+          }
+        }
       }
     };
     fetchProjects();

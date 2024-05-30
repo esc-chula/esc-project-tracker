@@ -19,7 +19,7 @@ export default async function updateFilingName({
 
     return data;
   } catch (e) {
-    alert(e);
-    return null;
+    console.error(e);
+    throw new Error("ไม่สามารถอัพเดทชื่อเอกสารได้");
   }
 }

@@ -8,7 +8,7 @@ export default async function getProjectByProjectId(
     const project = await trpc.getProjectByProjectId.query({ projectId });
     return project;
   } catch (err) {
-    alert(err);
-    return null;
+    console.error(err);
+    throw new Error("ไม่สามารถดึงข้อมูลโปรเจคได้");
   }
 }

@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { useToast } from "../ui/use-toast";
 
 export default function PopoverEditDocument({
   filingId,
@@ -22,20 +23,40 @@ export default function PopoverEditDocument({
 }) {
   const [name, setName] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { toast } = useToast();
 
   const submitUpdate = async () => {
     if (name === "") {
-      alert("กรุณากรอกชื่อเอกสาร");
+      toast({
+        title: "ไม่สำเร็จ",
+        description: "กรุณากรอกชื่อเอกสาร",
+        isError: true,
+      });
       return;
     }
-    const data = await updateFilingName({
-      filingId,
-      filingName: name,
-    });
-    if (data) {
-      alert("Update Success");
-      setNewNameParentFunc(data.name);
-      setIsOpen(false);
+
+    try {
+      const data = await updateFilingName({
+        filingId,
+        filingName: name,
+      });
+      if (data) {
+        toast({
+          title: "สำเร็จ",
+          description: `เอกสาร ${oldFilingName} ถูกเปลี่ยนชื่อเป็น ${data.name}`,
+          isError: false,
+        });
+        setNewNameParentFunc(data.name);
+        setIsOpen(false);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: error.message,
+          isError: true,
+        });
+      }
     }
   };
   return (

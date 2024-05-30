@@ -8,7 +8,8 @@ export default async function getFilingByUserId(userId: string) {
 
     return fillings;
   } catch (err) {
-    alert(err);
-    return [];
+    console.log(err);
+
+    throw new Error("ไม่สามารถดึงข้อมูลเอกสารได้");
   }
 }

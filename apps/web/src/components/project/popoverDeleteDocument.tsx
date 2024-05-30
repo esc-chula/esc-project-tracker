@@ -33,11 +33,13 @@ export default function PopoverDeleteDocument({
         setDeletedParentFunc(true);
       }
     } catch (error) {
-      toast({
-        title: "ลบไม่สำเร็จ",
-        description: "เกิดข้อผิดพลาดในการลบเอกสาร",
-        isError: true,
-      });
+      if (error instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: error.message,
+          isError: true,
+        });
+      }
     }
   };
   return (
