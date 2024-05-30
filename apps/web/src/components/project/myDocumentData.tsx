@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { FilingType } from "@/src/interface/filing";
 import { trpc } from "@/src/app/trpc";
 import getFilingByProjectId from "@/src/service/getFilingByProjectId";
-import AlertCustom from "../alert/alertCustom";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [Filings, setFilings] = useState<FilingType[]>([]);

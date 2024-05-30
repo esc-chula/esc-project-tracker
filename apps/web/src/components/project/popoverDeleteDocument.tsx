@@ -11,6 +11,7 @@ import {
 } from "../ui/dialog";
 import { IoIosAlert } from "react-icons/io";
 import deleteFiling from "@/src/service/deleteFiling";
+import { useToast } from "../ui/use-toast";
 
 export default function PopoverDeleteDocument({
   filingId,
@@ -19,11 +20,24 @@ export default function PopoverDeleteDocument({
   filingId: string;
   setDeletedParentFunc: (deleted: boolean) => void;
 }) {
+  const { toast } = useToast();
+
   const submitDelte = async () => {
-    const data = await deleteFiling(filingId);
-    if (data) {
-      alert("ลบเอกสารสำเร็จ");
-      setDeletedParentFunc(true);
+    try {
+      const data = await deleteFiling(filingId);
+      if (data) {
+        toast({
+          title: "ลบสำเร็จ",
+          description: `เอกสารหมายเลข ${data.projectCode} - ${data.FilingCode} ถูกลบเรียบร้อยแล้ว`,
+        });
+        setDeletedParentFunc(true);
+      }
+    } catch (error) {
+      toast({
+        title: "ลบไม่สำเร็จ",
+        description: "เกิดข้อผิดพลาดในการลบเอกสาร",
+        isError: true,
+      });
     }
   };
   return (

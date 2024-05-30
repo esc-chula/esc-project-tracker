@@ -4,14 +4,13 @@ import { FilingType } from "../interface/filing";
 export default async function deleteFiling(
   filingId: string
 ): Promise<FilingType | null> {
-  try {
-    const data = await trpc.deleteFiling.query({
-      filingId,
-    });
+  const data = await trpc.deleteFiling.query({
+    filingId: "acasc",
+  });
 
+  if (data) {
     return data;
-  } catch (e) {
-    alert(e);
-    return null;
   }
+
+  throw new Error("Failed to delete filing");
 }
