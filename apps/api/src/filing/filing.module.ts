@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { FilingService } from './filing.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Filing } from '../entities/Filing.entity';
+import { Filing } from '../entities/filing.entity';
 import { FilingController } from './filing.controller';
 import { ProjectModule } from '../project_/project_.module';
 import { UserModule } from '../user_/user.module';
