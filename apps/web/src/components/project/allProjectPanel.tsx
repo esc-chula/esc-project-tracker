@@ -1,5 +1,5 @@
 import AllProjectCard from "./allProjectCard";
-import SelectType from "./selectType";
+import SelectType from "../filter/selectType";
 import { ProjectType } from "@/src/interface/project";
 import { filterProjectStatus, filterProjectType } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
