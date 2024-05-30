@@ -16,6 +16,44 @@ export const TextMyProject = {
   [FilingStatus.DRAFT]: "ฉบับร่าง",
 };
 
+export const FilingStatusToStepper = {
+  [FilingStatus.APPROVED]: [
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted"],
+  ],
+  [FilingStatus.DRAFT]: [
+    ["accepted", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  [FilingStatus.RETURNED]: [
+    ["accepted", "accepted"],
+    ["accepted", "rejected"],
+    ["rejected", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  [FilingStatus.WAIT_FOR_SECRETARY]: [
+    ["accepted", "accepted"],
+    ["accepted", "pending"],
+    ["pending", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: [
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted", "accepted"],
+    ["accepted", "pending"],
+    ["pending"],
+  ],
+};
+
 //Filing
 export const filterStatus = [
   {
@@ -36,7 +74,7 @@ export const filterStatus = [
   },
   {
     label: "เอกสารถูกตีกลับ",
-    value: "REJECTED",
+    value: "RETURNED",
   },
 ];
 
