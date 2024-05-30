@@ -132,21 +132,6 @@ export class TrpcRouter {
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
       }),
-
-    //Get FilingTypeCount
-    getFilingTypeCount: this.trpc.procedure
-      .input(
-        z.object({
-          projectId: z.string(),
-          filingType: z.number(),
-        }),
-      )
-      .query(({ input }) => {
-        return this.countFilingService.getTypeCount(
-          input.projectId,
-          input.filingType,
-        );
-      }),
   });
 
   async applyMiddleware(app: INestApplication) {

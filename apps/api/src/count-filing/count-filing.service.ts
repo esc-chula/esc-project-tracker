@@ -43,4 +43,18 @@ export class CountFilingService {
     const typeCount = foundFiling[`type_${type}_count`];
     return typeCount;
   }
+
+  async addTypeCount(projectId: string, type: number) {
+    const foundFiling = await this.findByProjectId(projectId);
+    if (!foundFiling) {
+      throw new BadRequestException('Filing Not Found!');
+    }
+    if (type < 0 || type > 9) {
+      throw new BadRequestException('Type must be 0 - 9');
+    }
+
+    const typeCount = foundFiling[`type_${type}_count`];
+    foundFiling[`type_${type}_count`] = typeCount + 1;
+    await this.countFilingRepository.save(foundFiling);
+  }
 }

@@ -6,6 +6,7 @@ import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
 import { FilingStatus } from '../constant/enum';
+import { CountFilingService } from '../count-filing/count-filing.service';
 
 @Injectable()
 export class FilingService {
@@ -14,6 +15,7 @@ export class FilingService {
     private readonly filingRepository: Repository<Filing>,
     private readonly projectService: ProjectService,
     private readonly userService: UserService,
+    private readonly countFilingService: CountFilingService,
   ) {}
 
   findByFilingID(id: string) {
@@ -61,11 +63,10 @@ export class FilingService {
     const foundProject = await this.projectService.findByProjectID(projectId);
     if (!foundProject) throw new BadRequestException('Project Not Found');
 
-    const numberOfFilingType = await this.filingRepository
-      .createQueryBuilder('filing')
-      .where('filing.projectId = :projectId', { projectId })
-      .andWhere('filing.type = :filingType', { filingType })
-      .getCount();
+    const numberOfFilingType = await this.countFilingService.getTypeCount(
+      projectId,
+      filingType,
+    );
 
     const formattedNumberOfFilingType = String(numberOfFilingType + 1).padStart(
       3,
@@ -79,6 +80,8 @@ export class FilingService {
     newFiling.FilingCode = `${filingType}${formattedNumberOfFilingType}`;
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
+
+    this.countFilingService.addTypeCount(projectId, filingType);
 
     return this.filingRepository.save(newFiling);
   }
