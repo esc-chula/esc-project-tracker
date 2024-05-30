@@ -63,10 +63,8 @@ export class FilingService {
     const foundProject = await this.projectService.findByProjectID(projectId);
     if (!foundProject) throw new BadRequestException('Project Not Found');
 
-    const numberOfFilingType = await this.countFilingService.getTypeCount(
-      projectId,
-      filingType,
-    );
+    const numberOfFilingType =
+      await this.countFilingService.getTypeCount(filingType);
 
     const formattedNumberOfFilingType = String(numberOfFilingType + 1).padStart(
       3,
@@ -81,7 +79,7 @@ export class FilingService {
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
 
-    this.countFilingService.addTypeCount(projectId, filingType);
+    this.countFilingService.addTypeCount(filingType);
 
     return this.filingRepository.save(newFiling);
   }

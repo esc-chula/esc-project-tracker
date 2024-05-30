@@ -10,29 +10,35 @@ export class CountFilingService {
   constructor(
     @InjectRepository(CountFiling)
     private readonly countFilingRepository: Repository<CountFiling>,
-    private readonly projectService: ProjectService,
   ) {}
 
-  async findByProjectId(projectId: string) {
-    if (!isUUID(projectId)) {
-      throw new BadRequestException('Project Id is not in UUID format');
+  async findByTypeNumber(type: number): Promise<CountFiling> {
+    if (type < 0 || type > 9) {
+      throw new BadRequestException('Type must be 0 - 9');
     }
-
-    const foundProject = await this.projectService.findByProjectID(projectId);
-    if (!foundProject) {
-      throw new BadRequestException('Project Not Found!');
-    }
-
-    const foundFiling = await this.countFilingRepository
+    const string_type = type.toString();
+    const foundCountFiling = await this.countFilingRepository
       .createQueryBuilder('countFiling')
-      .where('countFiling.projectId = :projectId', { projectId })
+      .where('countFiling.id = :id', { id: string_type })
       .getOne();
 
-    return foundFiling;
+    if (!foundCountFiling) {
+      return await this.createNewTypeCount(type);
+    }
+
+    return foundCountFiling;
   }
 
-  async getTypeCount(projectId: string, type: number) {
-    const foundFiling = await this.findByProjectId(projectId);
+  async getTypeCount(type: number): Promise<number> {
+    const foundFiling = await this.findByTypeNumber(type);
+    if (!foundFiling) {
+      throw new BadRequestException('Filing Not Found!');
+    }
+    return foundFiling.count;
+  }
+
+  async addTypeCount(type: number) {
+    const foundFiling = await this.findByTypeNumber(type);
     if (!foundFiling) {
       throw new BadRequestException('Filing Not Found!');
     }
@@ -40,96 +46,20 @@ export class CountFilingService {
       throw new BadRequestException('Type must be 0 - 9');
     }
 
-    switch (type) {
-      case 0:
-        return foundFiling.type_0_count;
+    foundFiling.count += 1;
 
-      case 1:
-        return foundFiling.type_1_count;
-
-      case 2:
-        return foundFiling.type_2_count;
-
-      case 3:
-        return foundFiling.type_3_count;
-
-      case 4:
-        return foundFiling.type_4_count;
-
-      case 5:
-        return foundFiling.type_5_count;
-
-      case 6:
-        return foundFiling.type_6_count;
-
-      case 7:
-        return foundFiling.type_7_count;
-
-      case 8:
-        return foundFiling.type_8_count;
-
-      case 9:
-        return foundFiling.type_9_count;
-
-      default:
-        throw new BadRequestException('Type must be 0 - 9');
-    }
+    return await this.countFilingRepository.save(foundFiling);
   }
 
-  async addTypeCount(projectId: string, type: number) {
-    const foundFiling = await this.findByProjectId(projectId);
-    if (!foundFiling) {
-      throw new BadRequestException('Filing Not Found!');
-    }
+  async createNewTypeCount(type: number) {
     if (type < 0 || type > 9) {
       throw new BadRequestException('Type must be 0 - 9');
     }
 
-    switch (type) {
-      case 0:
-        foundFiling.type_0_count += 1;
-        break;
+    const newCountFiling = new CountFiling();
+    newCountFiling.id = type.toString();
+    newCountFiling.count = 0;
 
-      case 1:
-        foundFiling.type_1_count += 1;
-        break;
-
-      case 2:
-        foundFiling.type_2_count += 1;
-        break;
-
-      case 3:
-        foundFiling.type_3_count += 1;
-        break;
-
-      case 4:
-        foundFiling.type_4_count += 1;
-        break;
-
-      case 5:
-        foundFiling.type_5_count += 1;
-        break;
-
-      case 6:
-        foundFiling.type_6_count += 1;
-        break;
-
-      case 7:
-        foundFiling.type_7_count += 1;
-        break;
-
-      case 8:
-        foundFiling.type_8_count += 1;
-        break;
-
-      case 9:
-        foundFiling.type_9_count += 1;
-        break;
-
-      default:
-        throw new BadRequestException('Type must be 0 - 9');
-    }
-
-    await this.countFilingRepository.save(foundFiling);
+    return await this.countFilingRepository.save(newCountFiling);
   }
 }
