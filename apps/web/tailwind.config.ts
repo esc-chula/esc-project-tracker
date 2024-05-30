@@ -34,6 +34,7 @@ const config = {
         accepted: "var(--accepted)",
         pending: "var(--pending)",
         disabled: "var(--disabled)",
+        lightgray: "var(--lightgray)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

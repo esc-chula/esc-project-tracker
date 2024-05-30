@@ -1,7 +1,7 @@
 import Title from "@/src/components/header/title"
 import Header from "@/src/components/header/header"
 import { Folders } from "lucide-react"
-import NewProjectForm from "@/src/components/ืnew-project/newProjectForm"
+import NewProjectForm from "@/src/components/new-project/newProjectForm"
 
 export default function Page() {
   return (
