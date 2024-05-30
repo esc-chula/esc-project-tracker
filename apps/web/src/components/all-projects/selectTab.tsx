@@ -1,11 +1,10 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import SearchProjectsPanel from "./searchProjectsPanel";
 import { Box } from "@mui/material";
-import SearchFilingPanel from "./searchFilingPanel";
-import NoFiling from "./noFiling";
-import NoProject from "./noProject";
+
+import SearchPanel from "./searchPanel";
+import NoData from "./noData";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -50,10 +49,18 @@ export default function SelectTab() {
   return (
     <Box sx={{ width: "100%" }}>
       <CustomTabPanel value={value} index={0}>
-        <SearchProjectsPanel Projects={[]} />
+        <SearchPanel
+          projects={[]}
+          placeHolder="ค้นหาโครงการทั้งหมด"
+          projectFunc={() => {}}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SearchFilingPanel Filings={[]} />
+        <SearchPanel
+          filings={[]}
+          placeHolder="ค้นหาเอกสารทั้งหมด"
+          FilingFunc={() => {}}
+        />
       </CustomTabPanel>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -79,10 +86,13 @@ export default function SelectTab() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <NoProject />
+        <NoData
+          firstLine="ยังไม่มีโครงการ"
+          secondLine="เริ่มเปิดโครงกันเลย !"
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <NoFiling />
+        <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
       </CustomTabPanel>
     </Box>
   );
