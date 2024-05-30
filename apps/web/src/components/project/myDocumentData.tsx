@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { FilingType } from "@/src/interface/filing";
 import { trpc } from "@/src/app/trpc";
 import getFilingByProjectId from "@/src/service/getFilingByProjectId";
+import AlertCustom from "../alert/alertCustom";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [Filings, setFilings] = useState<FilingType[]>([]);
@@ -30,6 +31,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
 
   return (
     <div className="space-y-4 w-[65%] ">
+      <AlertCustom isError={true} message="Yo this is error" />
       <div className="flex flex-row justify-between items-center">
         <div className="font-sukhumvit text-lg sm::text-base flex items-center font-bold ">
           <FileText style={{ marginRight: "10" }} />
