@@ -29,25 +29,29 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
   }, [Filings]);
 
   return (
-    <div className="space-y-4 w-[65%]">
-      <div className=" flex flex-row space-x-4">
-        <div className="font-sukhumvit text-lg flex items-center font-bold">
+    <div className="space-y-4 w-[65%] ">
+      <div className="flex flex-row justify-between items-center">
+        <div className="font-sukhumvit text-lg sm::text-base flex items-center font-bold ">
           <FileText style={{ marginRight: "10" }} />
           เอกสาร
         </div>
-        <SearchBar
-          Filings={Filings}
-          projects={[]}
-          placeholder="ค้นหาเอกสาร"
-          FilingFunc={() => {}}
-        />
+        <div className="flex-grow mx-4">
+          <SearchBar
+            Filings={Filings}
+            projects={[]}
+            placeholder="ค้นหาเอกสาร"
+            FilingFunc={() => {}}
+          />
+        </div>
 
-        <PopoverAddDocument
-          projectId={projectId}
-          addFilingToParent={(filing: FilingType) => {
-            setFilings((prevFilings) => [...prevFilings, filing]);
-          }}
-        />
+        <div className="">
+          <PopoverAddDocument
+            projectId={projectId}
+            addFilingToParent={(filing: FilingType) => {
+              setFilings((prevFilings) => [...prevFilings, filing]);
+            }}
+          />
+        </div>
       </div>
       {isFetched && (
         <>
