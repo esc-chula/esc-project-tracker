@@ -50,9 +50,10 @@ export default function NewProjectForm() {
     form.resetField(`members.${index}`)
   }
 
-  function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
+  async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
     console.log(values)
   }
+
   const [membersCount, setMembersCount] = useState(1)
   const isDisabled = useMemo(
     () => form.formState.isSubmitting || !form.formState.isValid,
@@ -62,7 +63,7 @@ export default function NewProjectForm() {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col max-w-3xl">
           <div className="space-y-6 bg-lightgray px-6 py-5 rounded-lg">
             <FormField
               control={form.control}
@@ -145,7 +146,7 @@ export default function NewProjectForm() {
           </div>
           <Button
             type="submit"
-            className="my-8 mx-auto rounded-full text-2xl px-6 h-12 bg-red font-bold"
+            className="my-8 mx-auto rounded-lg text-2xl px-6 h-12 bg-red font-bold"
             disabled={isDisabled}>
             <FilePlus className="h-8 w-8 mr-3" />
             เปิดโครงการ
