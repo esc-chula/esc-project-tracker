@@ -37,7 +37,7 @@ export class CountFilingService {
     return foundFiling.count;
   }
 
-  async addTypeCount(type: number) {
+  async incrementTypeCount(type: number) {
     const foundFiling = await this.findByTypeNumber(type);
     if (!foundFiling) {
       throw new BadRequestException('Filing Not Found!');

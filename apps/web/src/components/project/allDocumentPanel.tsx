@@ -73,7 +73,7 @@ export default function AllDocumentPanel({
             FilingCode={Filing.FilingCode}
             FilingName={Filing.name}
             FilingStatus={Filing.status}
-            deletThisCardFunc={(id: string) => {
+            deleteThisCardFunc={(id: string) => {
               setAllFilings((prevFilings) =>
                 prevFilings.filter((Filing) => Filing.id !== id)
               );

@@ -22,7 +22,7 @@ export default function PopoverDeleteDocument({
 }) {
   const { toast } = useToast();
 
-  const submitDelte = async () => {
+  const submitDelete = async () => {
     try {
       const data = await deleteFiling(filingId);
       if (data) {
@@ -65,7 +65,7 @@ export default function PopoverDeleteDocument({
           <div className="text-center ">
             <button
               className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
-              onClick={submitDelte}
+              onClick={submitDelete}
             >
               ยืนยัน
             </button>

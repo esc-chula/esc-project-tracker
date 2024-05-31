@@ -14,7 +14,7 @@ export default function AllDocumentCard({
   FilingCode,
   FilingName,
   FilingStatus,
-  deletThisCardFunc,
+  deleteThisCardFunc,
   updateThisCardFunc,
 }: {
   FilingId: string;
@@ -22,7 +22,7 @@ export default function AllDocumentCard({
   FilingCode: string;
   FilingName: string;
   FilingStatus: FilingStatus;
-  deletThisCardFunc: (id: string) => void;
+  deleteThisCardFunc: (id: string) => void;
   updateThisCardFunc: (id: string, newName: string) => void;
 }) {
   const router = useRouter();
@@ -31,7 +31,7 @@ export default function AllDocumentCard({
 
   useEffect(() => {
     if (isDeleted) {
-      deletThisCardFunc(FilingId);
+      deleteThisCardFunc(FilingId);
     }
   }, [isDeleted]);
 

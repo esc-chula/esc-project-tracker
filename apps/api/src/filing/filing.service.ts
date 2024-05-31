@@ -79,7 +79,7 @@ export class FilingService {
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
 
-    this.countFilingService.addTypeCount(filingType);
+    this.countFilingService.incrementTypeCount(filingType);
 
     return this.filingRepository.save(newFiling);
   }

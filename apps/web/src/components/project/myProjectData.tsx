@@ -16,7 +16,7 @@ export default function MyProjectData() {
   const { toast } = useToast();
   const router = useRouter();
   const redirectToProject = (project: ProjectType | FilingType) => {
-    router.push(`/my-projects/${project.id}`);
+    router.push(`/projects/${project.id}`);
   };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
