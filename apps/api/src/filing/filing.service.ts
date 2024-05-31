@@ -1,10 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Filing } from '../entities/Filing.entity';
+import { Filing } from '../entities/filing.entity';
 import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
+import { FilingStatus } from '../constant/enum';
+import { CountFilingService } from '../count-filing/count-filing.service';
 
 @Injectable()
 export class FilingService {
@@ -13,6 +15,7 @@ export class FilingService {
     private readonly filingRepository: Repository<Filing>,
     private readonly projectService: ProjectService,
     private readonly userService: UserService,
+    private readonly countFilingService: CountFilingService,
   ) {}
 
   findByFilingID(id: string) {
@@ -48,5 +51,54 @@ export class FilingService {
     const filings = filingsArrays.flat();
 
     return filings;
+  }
+
+  async createFiling(
+    projectId: string,
+    filingName: string,
+    filingType: number,
+  ) {
+    if (!isUUID(projectId))
+      throw new BadRequestException('Project Id is not in UUID format.');
+    const foundProject = await this.projectService.findByProjectID(projectId);
+    if (!foundProject) throw new BadRequestException('Project Not Found');
+
+    const numberOfFilingType =
+      await this.countFilingService.getTypeCount(filingType);
+
+    const formattedNumberOfFilingType = String(numberOfFilingType + 1).padStart(
+      3,
+      '0',
+    );
+
+    var newFiling = new Filing();
+    newFiling.project = foundProject;
+    newFiling.name = filingName;
+    newFiling.status = FilingStatus.DRAFT;
+    newFiling.FilingCode = `${filingType}${formattedNumberOfFilingType}`;
+    newFiling.type = filingType;
+    newFiling.projectCode = foundProject.projectCode;
+
+    this.countFilingService.incrementTypeCount(filingType);
+
+    return this.filingRepository.save(newFiling);
+  }
+
+  async updateFiling(id: string, filing: Partial<Filing>) {
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
+    const foundFiling = await this.findByFilingID(id);
+    if (!foundFiling) throw new BadRequestException('Filing Not Found!');
+
+    return this.filingRepository.save({ ...foundFiling, ...filing });
+  }
+
+  async deleteFiling(id: string) {
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
+    const foundFiling = await this.findByFilingID(id);
+    if (!foundFiling) throw new BadRequestException('Filing Not Found!');
+
+    this.filingRepository.delete(id);
+
+    return foundFiling;
   }
 }
