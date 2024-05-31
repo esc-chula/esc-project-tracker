@@ -1,18 +1,16 @@
 import { trpc } from "../app/trpc";
 
-export default async function updateLastOpen({
-  userId,
-  projectId,
-}: {
-  userId: string;
-  projectId: string;
-}) {
+export default async function updateLastOpen(
+  userId: string,
+  projectId: string
+) {
   try {
     await trpc.updateUserProjLastOpen.query({
       userId,
       projectId,
     });
   } catch (err) {
-    alert(err);
+    console.error(err);
+    throw new Error("ไม่สามารถอัพเดทข้อมูลได้การเข้าโปรเจคได้");
   }
 }

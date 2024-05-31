@@ -14,7 +14,7 @@ export default function SelectType({
   sendValue,
 }: {
   title: string;
-  items: { value: string; label: string }[];
+  items: { value: string | number; label: string }[];
   sendValue: (value: string) => void;
 }) {
   const [selected, setSelected] = useState<string>("");
@@ -30,8 +30,9 @@ export default function SelectType({
         <SelectValue placeholder={title} />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="all">ทั้งหมด</SelectItem>
         {items.map((item) => (
-          <SelectItem key={item.value} value={item.value}>
+          <SelectItem key={item.value} value={item.value.toString()}>
             {item.label}
           </SelectItem>
         ))}

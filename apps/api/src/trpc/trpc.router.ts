@@ -1,12 +1,14 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 import { TrpcService } from './trpc.service';
-import { string, z } from 'zod';
+import { optional, string, z } from 'zod';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { DocumentService } from '../document_/document.service';
 import { FilingService } from '../filing/filing.service';
 import { UserProjService } from '../user-proj/user-proj.service';
+import { FilingStatus } from '../constant/enum';
+import { CountFilingService } from '../count-filing/count-filing.service';
 
 @Injectable()
 export class TrpcRouter {
@@ -17,6 +19,7 @@ export class TrpcRouter {
     private readonly documentService: DocumentService,
     private readonly filingService: FilingService,
     private readonly userProjService: UserProjService,
+    private readonly countFilingService: CountFilingService,
   ) {}
 
   appRouter = this.trpc.router({
@@ -79,6 +82,55 @@ export class TrpcRouter {
           userId: input.userId,
           projectId: input.projectId,
         });
+      }),
+
+    // Create a new Filing
+    createFiling: this.trpc.procedure
+      .input(
+        z.object({
+          projectId: z.string(),
+          filingName: z.string(),
+          filingType: z.number(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.filingService.createFiling(
+          input.projectId,
+          input.filingName,
+          input.filingType,
+        );
+      }),
+
+    //Update filing name
+
+    updateFilingName: this.trpc.procedure
+      .input(
+        z.object({
+          filingId: z.string(),
+          filingName: z.string().optional(),
+          FilingStatus: z
+            .enum([
+              FilingStatus.APPROVED,
+              FilingStatus.DRAFT,
+              FilingStatus.RETURNED,
+              FilingStatus.WAIT_FOR_SECRETARY,
+              FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
+            ])
+            .optional(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.filingService.updateFiling(input.filingId, {
+          name: input.filingName,
+          status: input.FilingStatus,
+        });
+      }),
+
+    //Delete filing
+    deleteFiling: this.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.deleteFiling(input.filingId);
       }),
   });
 

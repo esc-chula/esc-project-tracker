@@ -10,10 +10,9 @@ export default async function getProjectsByUserId(
       userId,
     });
 
-    console.log("This is projectsWithLastOpen", projectsWithLastOpen);
     return projectsWithLastOpen;
   } catch (err) {
-    alert(err);
-    return [];
+    console.error(err);
+    throw new Error("ไม่สามารถดึงข้อมูลโปรเจคได้");
   }
 }

@@ -9,6 +9,6 @@ export default async function getFilingsByUserId(
     return data;
   } catch (err) {
     console.error(err);
-    return [];
+    throw new Error("ไม่สามารถดึงข้อมูลเอกสารได้");
   }
 }

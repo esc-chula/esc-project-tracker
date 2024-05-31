@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ChevronLast,
@@ -10,32 +10,36 @@ import {
   FilePlus,
   Trash2,
   MessageSquareWarning,
-} from "lucide-react"
-import { useEffect, useState } from "react"
-import Image from "next/image"
-import NavbarItem from "./navbar-item"
-import { usePathname } from "next/navigation"
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import NavbarItem from "./navbar-item";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
   useEffect(() => {
     const expandedDefault =
-      typeof window !== "undefined" ? localStorage.getItem("navbarExpanded") : "false"
-    setExpanded(expandedDefault === "true")
-  })
-  const pathname = usePathname()
+      typeof window !== "undefined"
+        ? localStorage.getItem("navbarExpanded")
+        : "false";
+    setExpanded(expandedDefault === "true");
+  });
+  const pathname = usePathname();
   return (
     <aside className="h-screen bg-intania flex-none sticky top-0">
       <button
         onClick={() => {
-          localStorage.setItem("navbarExpanded", String(!expanded))
-          setExpanded((curr) => !curr)
+          localStorage.setItem("navbarExpanded", String(!expanded));
+          setExpanded((curr) => !curr);
         }}
-        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14">
+        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14"
+      >
         {expanded ? <ChevronFirst /> : <ChevronLast />}
       </button>
       <nav
-        className={`h-full flex flex-col max-w-60 justify-between overflow-x-hidden transition-all overflow-y-scroll no-scrollbar py-14 ${expanded ? "px-10" : "px-4"}`}>
+        className={`h-full flex flex-col max-w-60 justify-between overflow-x-hidden transition-all overflow-y-scroll no-scrollbar py-14 ${expanded ? "px-10" : "px-4"}`}
+      >
         <div className="flex flex-col justify-between items-center gap-3.5 px-2">
           <Image
             src="/icons/esc.svg"
@@ -45,7 +49,8 @@ export default function Navbar() {
             alt="logo"
           />
           <span
-            className={`text-white text-sm text-center font-semibold overflow-hidden text-nowrap ${expanded ? "w-full" : "w-0"}`}>
+            className={`text-white text-sm text-center font-semibold overflow-hidden text-nowrap ${expanded ? "w-full" : "w-0"}`}
+          >
             Document System
           </span>
           <hr className="w-full bg-white my-5" />
@@ -112,5 +117,5 @@ export default function Navbar() {
         </div>
       </nav>
     </aside>
-  )
+  );
 }
