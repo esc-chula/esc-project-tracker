@@ -1,38 +1,50 @@
 "use client";
 import AllDocumentCard from "./allDocumentCard";
 import SelectType from "./selectType";
-import { filterStatus, filterType } from "@/src/styles/enumMap";
+import { filterStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { FilingType } from "@/src/interface/filing";
+import { filingTypeMap, projectTypeMap } from "@/src/constant/type";
 
 export default function AllDocumentPanel({
   Filings,
+  setFilingsToParentFunc,
 }: {
   Filings: FilingType[];
+  setFilingsToParentFunc: (Filings: FilingType[]) => void;
 }) {
+  const [allFilings, setAllFilings] = useState<FilingType[]>(Filings);
   const [filteredFilings, setFilteredFilings] = useState<FilingType[]>(Filings);
   const [status, setStatus] = useState<string>("all");
-  const [type, setType] = useState<string>("11");
+  const [type, setType] = useState<string>("all");
 
   useEffect(() => {
-    if (status === "all" && type === "11") {
-      setFilteredFilings(Filings);
+    if (status === "all" && type === "all") {
+      setFilteredFilings(allFilings);
     } else if (status === "all") {
       setFilteredFilings(
-        Filings.filter((Filing) => Filing.type.toString() === type)
+        allFilings.filter((Filing) => Filing.type.toString() === type)
       );
-    } else if (type === "11") {
+    } else if (type === "all") {
       setFilteredFilings(Filings.filter((Filing) => Filing.status === status));
     } else {
       setFilteredFilings(
-        Filings.filter(
+        allFilings.filter(
           (Filing) =>
             Filing.status === status && Filing.type.toString() === type
         )
       );
     }
     console.log(status);
-  }, [status, type]);
+  }, [status, type, allFilings, Filings]);
+
+  useEffect(() => {
+    setFilingsToParentFunc(allFilings);
+  }, [allFilings]);
+
+  useEffect(() => {
+    setAllFilings(Filings);
+  }, [Filings]);
 
   return (
     <div className="space-y-5 pt-5 pb-10">
@@ -46,7 +58,7 @@ export default function AllDocumentPanel({
         />
         <SelectType
           title="ประเภท"
-          items={filterType}
+          items={filingTypeMap}
           sendValue={(value) => {
             setType(value);
           }}
@@ -61,6 +73,18 @@ export default function AllDocumentPanel({
             FilingCode={Filing.FilingCode}
             FilingName={Filing.name}
             FilingStatus={Filing.status}
+            deleteThisCardFunc={(id: string) => {
+              setAllFilings((prevFilings) =>
+                prevFilings.filter((Filing) => Filing.id !== id)
+              );
+            }}
+            updateThisCardFunc={(id: string, newName: string) => {
+              setAllFilings((prevFilings) =>
+                prevFilings.map((Filing) =>
+                  Filing.id === id ? { ...Filing, name: newName } : Filing
+                )
+              );
+            }}
           />
         ))}
       </div>

@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Filing } from './Filing.entity';
+import { Filing } from './filing.entity';
 
 @Entity()
 export class Document {

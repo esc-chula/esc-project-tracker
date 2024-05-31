@@ -1,3 +1,5 @@
+"use client";
+
 import { Trash2, SquarePen } from "lucide-react";
 
 import {
@@ -8,8 +10,38 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { IoIosAlert } from "react-icons/io";
+import deleteFiling from "@/src/service/deleteFiling";
+import { useToast } from "../ui/use-toast";
 
-export default function PopoverDeleteDocument() {
+export default function PopoverDeleteDocument({
+  filingId,
+  setDeletedParentFunc,
+}: {
+  filingId: string;
+  setDeletedParentFunc: (deleted: boolean) => void;
+}) {
+  const { toast } = useToast();
+
+  const submitDelete = async () => {
+    try {
+      const data = await deleteFiling(filingId);
+      if (data) {
+        toast({
+          title: "ลบสำเร็จ",
+          description: `เอกสารหมายเลข ${data.projectCode} - ${data.FilingCode} ถูกลบเรียบร้อยแล้ว`,
+        });
+        setDeletedParentFunc(true);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: error.message,
+          isError: true,
+        });
+      }
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -31,7 +63,10 @@ export default function PopoverDeleteDocument() {
             ยืนยันการลบเอกสาร
           </div>
           <div className="text-center ">
-            <button className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold">
+            <button
+              className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
+              onClick={submitDelete}
+            >
               ยืนยัน
             </button>
           </div>

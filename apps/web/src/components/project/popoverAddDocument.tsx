@@ -1,5 +1,4 @@
-import { Trash2, SquarePen } from "lucide-react";
-
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -7,16 +6,52 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { IoIosAlert } from "react-icons/io";
 import { HiDocumentAdd } from "react-icons/hi";
+import { filingTypeMap } from "@/src/constant/type";
+import { useState } from "react";
+import createFiling from "@/src/service/createFiling";
+import { FilingType } from "@/src/interface/filing";
+import { useToast } from "../ui/use-toast";
 
 export default function PopoverAddDocument({
   children,
+  projectId,
+  addFilingToParent,
 }: {
   children?: React.ReactNode;
+  projectId: string;
+  addFilingToParent: (filing: FilingType) => void;
 }) {
+  const [filingType, setFilingType] = useState<number>(0);
+  const [filingName, setFilingName] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const { toast } = useToast();
+
+  const submitCreate = async () => {
+    try {
+      if (filingName !== "") {
+        const data = await createFiling(projectId, filingName, filingType);
+
+        addFilingToParent(data);
+        toast({
+          title: "สร้างสำเร็จ",
+          description: `เอกสาร ${data.projectCode} - ${data.FilingCode} ถูกสร้างเรียบร้อยแล้ว`,
+        });
+        setOpen(false);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: error.message,
+          isError: true,
+        });
+      }
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children ? (
           children
@@ -36,6 +71,9 @@ export default function PopoverAddDocument({
             type="text"
             placeholder="ชื่อเอกสาร"
             className="border-black border-2 w-full p-2 rounded-lg"
+            value={filingName}
+            onChange={(e) => setFilingName(e.target.value.trim())}
+            required
           ></input>
 
           <div className="font-sukhumvit font-semibold">
@@ -43,24 +81,23 @@ export default function PopoverAddDocument({
             <select
               id="documentType"
               className="border-black border-2 w-full p-2 rounded-lg"
+              defaultValue={0}
+              value={filingType}
+              onChange={(e) => setFilingType(parseInt(e.target.value))}
             >
-              <option value="10">10 โครงการฝ่ายกิจการภายใน</option>
-              <option value="11">11 โครงการฝ่ายศิลปะและวัฒนธรรม</option>
-              <option value="12">12 โครงการฝ่ายกีฬา</option>
-              <option value="20">20 โครงการฝ่ายกิจการภายนอก</option>
-              <option value="30">30 โครงการฝ่ายนิสิตสัมพันธ์</option>
-              <option value="40">
-                40 โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์
-              </option>
-              <option value="50">50 โครงการฝ่ายพัฒนาองค์กร</option>
-              <option value="60">60 โครงการฝ่ายสนับสนุน</option>
-              <option value="70">70 โครงการฝ่ายสื่อสารองค์กร</option>
-              <option value="80">80 โครงการอื่นๆของกวศ</option>
-              <option value="90">90 โครงการฝ่ายวิชาการ</option>
+              {filingTypeMap.map((type) => (
+                <option value={type.value} key={type.value}>
+                  {type.value.toString()}
+                  {"  "} {type.label}
+                </option>
+              ))}
             </select>
           </div>
           <div className="text-end">
-            <button className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold">
+            <button
+              className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
+              onClick={submitCreate}
+            >
               ยืนยัน
             </button>
           </div>
