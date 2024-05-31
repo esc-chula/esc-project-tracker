@@ -74,8 +74,8 @@ export default function Navbar() {
             icon={<Folders size={20} />}
             text="โครงการของฉัน"
             expanded={expanded}
-            active={pathname.startsWith("/projects")}
-            href="/projects"
+            active={pathname.startsWith("/my-projects")}
+            href="/my-projects"
           />
           <NavbarItem
             icon={<Radio size={20} />}
