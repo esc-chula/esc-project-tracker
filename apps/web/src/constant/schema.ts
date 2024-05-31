@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { filterProjectType } from "../styles/enumMap"
+import { projectTypeMap } from "./type"
 
-const projectTypes = filterProjectType.map((item) => item.value)
+const projectTypes = projectTypeMap.map((item) => item.value.toString())
 
 export const newProjectFormSchema = z.object({
   projectName: z

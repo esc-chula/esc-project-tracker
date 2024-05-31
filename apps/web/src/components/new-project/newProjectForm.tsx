@@ -22,11 +22,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select"
-import { filterProjectType } from "@/src/styles/enumMap"
+
 import { Textarea } from "../ui/textarea"
 import MembersInput from "./membersInput"
 import { useMemo, useState } from "react"
 import { FilePlus } from "lucide-react"
+import { projectTypeMap } from "@/src/constant/type"
 
 export default function NewProjectForm() {
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
@@ -52,6 +53,8 @@ export default function NewProjectForm() {
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
     console.log(values)
+    // type from string to number
+    // filter out empty members
   }
 
   const [membersCount, setMembersCount] = useState(1)
@@ -96,14 +99,11 @@ export default function NewProjectForm() {
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        {filterProjectType.map((item) => {
-                          if (item.value !== "0")
-                            return (
-                              <SelectItem key={item.value} value={item.value}>
-                                {item.value + " - " + item.label}
-                              </SelectItem>
-                            )
-                        })}
+                        {projectTypeMap.map((item, index) => (
+                          <SelectItem key={index} value={item.value.toString()}>
+                            {item.value + " - " + item.label}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
