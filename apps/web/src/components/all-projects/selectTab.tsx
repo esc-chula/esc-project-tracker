@@ -1,3 +1,4 @@
+"use clients";
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -5,6 +6,8 @@ import { Box } from "@mui/material";
 
 import SearchPanel from "./searchPanel";
 import NoData from "./noData";
+import { getAllProject } from "@/src/service/getAllProject";
+import { ProjectType } from "@/src/interface/project";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,6 +40,8 @@ function a11yProps(index: number) {
 
 export default function SelectTab() {
   const [value, setValue] = React.useState(0);
+  const [projects, setProjects] = React.useState<ProjectType[]>([]);
+  const [filings, setFilings] = React.useState([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -45,12 +50,27 @@ export default function SelectTab() {
   /* TODO : Fetch data from the server
   
   */
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedProject = await getAllProject();
+        //const fetchedProject = await getAllProject();
+        if (fetchedProject) {
+          setProjects(fetchedProject);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <Box sx={{ width: "100%" }}>
       <CustomTabPanel value={value} index={0}>
         <SearchPanel
-          projects={[]}
+          projects={projects}
           placeHolder="ค้นหาโครงการทั้งหมด"
           projectFunc={() => {}}
         />
