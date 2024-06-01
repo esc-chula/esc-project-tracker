@@ -14,4 +14,9 @@ export class FilingController {
   findByUserID(@Param('userID') userID: string) {
     return this.filingService.findByUserID(userID);
   }
+
+  @Get('/filings')
+  findAllfiling() {
+    return this.filingService.findAllFiling();
+  }
 }

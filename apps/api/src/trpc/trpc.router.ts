@@ -165,6 +165,11 @@ export class TrpcRouter {
           obj: { userId: input.userId, projectId: input.projectId },
         });
       }),
+
+    //Get All Filing
+    findAllFiling: this.trpc.procedure.query(() => {
+      return this.filingService.findAllFiling();
+    }),
   });
 
   async applyMiddleware(app: INestApplication) {
