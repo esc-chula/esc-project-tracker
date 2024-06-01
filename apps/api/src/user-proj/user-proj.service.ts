@@ -5,7 +5,7 @@ import { validate as isUUID } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
-import { CreateUserProjDTO } from './user-project.dto';
+import { CreateUserProjDTO, DeleteUserProjDTO } from './user-project.dto';
 
 @Injectable()
 export class UserProjService {
@@ -77,11 +77,37 @@ export class UserProjService {
       throw new BadRequestException('Project not found');
     }
 
+    const foundUserProj = await this.findByUserIDAndProjectID({
+      userId: obj.userId,
+      projectId: obj.projectId,
+    });
+    if (foundUserProj) {
+      throw new BadRequestException('UserProj already exists');
+    }
+
     const newUserProj = new UserProj();
     newUserProj.user = foundUser;
     newUserProj.project = foundProject;
     newUserProj.lastOpen = new Date();
 
     return await this.userProjRepository.save(newUserProj);
+  }
+
+  async deleteUserProject({ obj }: { obj: DeleteUserProjDTO }) {
+    if (!isUUID(obj.userId) || !isUUID(obj.projectId)) {
+      throw new BadRequestException('Id is not in UUID format');
+    }
+
+    const userProj = await this.findByUserIDAndProjectID({
+      userId: obj.userId,
+      projectId: obj.projectId,
+    });
+
+    if (!userProj) {
+      throw new BadRequestException('UserProj not found');
+    }
+    await this.userProjRepository.remove(userProj);
+    console.log(userProj);
+    return userProj;
   }
 }

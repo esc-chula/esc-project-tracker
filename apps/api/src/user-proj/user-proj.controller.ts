@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post } from '@nestjs/common';
 import { UserProjService } from './user-proj.service';
-import { CreateUserProjDTO } from './user-project.dto';
+import { CreateUserProjDTO, DeleteUserProjDTO } from './user-project.dto';
 
 @Controller('user-proj')
 export class UserProjController {
@@ -9,8 +9,16 @@ export class UserProjController {
   // TEST API
   @Post('userJoinProject')
   createUserProject(@Body() obj: CreateUserProjDTO) {
-    console.log('UserProjController.createUserProject', obj);
+    console.log('UserProjController.createUserProject:\n', obj);
     return this.userProjService.createUserProject({
+      obj,
+    });
+  }
+
+  @Delete('userLeaveProject')
+  deleteUserProject(@Body() obj: DeleteUserProjDTO) {
+    console.log('UserProjController.deleteUserProject:\n', obj);
+    return this.userProjService.deleteUserProject({
       obj,
     });
   }
