@@ -137,6 +137,20 @@ export class TrpcRouter {
     getAllProject: this.trpc.procedure.query(() => {
       return this.projectService.findAllProjects();
     }),
+
+    //Create User Project (User join Project)
+    createUserProject: this.trpc.procedure
+      .input(
+        z.object({
+          userId: z.string(),
+          projectId: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.userProjService.createUserProject({
+          obj: { userId: input.userId, projectId: input.projectId },
+        });
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {
