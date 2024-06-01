@@ -107,7 +107,6 @@ export class UserProjService {
       throw new BadRequestException('UserProj not found');
     }
     await this.userProjRepository.remove(userProj);
-    console.log(userProj);
     return userProj;
   }
 }
