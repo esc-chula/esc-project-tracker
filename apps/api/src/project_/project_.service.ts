@@ -56,4 +56,8 @@ export class ProjectService {
     });
     return projects;
   }
+
+  async findAllProjects(): Promise<Project[]> {
+    return await this.projectRepository.find();
+  }
 }

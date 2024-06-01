@@ -132,6 +132,11 @@ export class TrpcRouter {
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
       }),
+
+    //Get All Project
+    getAllProject: this.trpc.procedure.query(() => {
+      return this.projectService.findAllProjects();
+    }),
   });
 
   async applyMiddleware(app: INestApplication) {
