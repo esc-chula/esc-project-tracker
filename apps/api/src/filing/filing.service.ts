@@ -108,7 +108,7 @@ export class FilingService {
       return data;
     } catch (e) {
       console.log(e);
-      return [];
+      throw new Error('Failed to fetch Filings');
     }
   }
 }
