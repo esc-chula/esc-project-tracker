@@ -10,42 +10,79 @@ import { useEffect, useState } from "react";
 import { FilingType } from "@/src/interface/filing";
 import { trpc } from "@/src/app/trpc";
 import getFilingByProjectId from "@/src/service/getFilingByProjectId";
+import { useToast } from "../ui/use-toast";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [Filings, setFilings] = useState<FilingType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchFilings = async () => {
-      const data = await getFilingByProjectId({ projectId });
-      setFilings(data);
-      setIsFetched(true);
+      if (projectId) {
+        try {
+          const data = await getFilingByProjectId({ projectId });
+          setFilings(data);
+          setIsFetched(true);
+        } catch (err) {
+          if (err instanceof Error) {
+            toast({
+              title: "ไม่สำเร็จ",
+              description: err.message,
+              isError: true,
+            });
+          }
+        }
+      }
     };
     fetchFilings();
-  }, []);
+  }, [projectId]);
+
+  useEffect(() => {
+    console.log(Filings);
+  }, [Filings]);
 
   return (
-    <div className="space-y-4 w-[65%]">
-      <div className=" flex flex-row space-x-4">
-        <div className="font-sukhumvit text-lg flex items-center font-bold">
+    <div className="space-y-4 w-[65%] ">
+      <div className="flex flex-row justify-between items-center">
+        <div className="font-sukhumvit text-lg sm::text-base flex items-center font-bold ">
           <FileText style={{ marginRight: "10" }} />
           เอกสาร
         </div>
-        <SearchBar
-          Filings={Filings}
-          projects={[]}
-          placeholder="ค้นหาเอกสาร"
-          FilingFunc={() => {}}
-        />
+        <div className="flex-grow mx-4">
+          <SearchBar
+            Filings={Filings}
+            projects={[]}
+            placeholder="ค้นหาเอกสาร"
+            FilingFunc={() => {}}
+          />
+        </div>
 
-        <PopoverAddDocument />
+        <div className="">
+          <PopoverAddDocument
+            projectId={projectId}
+            addFilingToParent={(filing: FilingType) => {
+              setFilings((prevFilings) => [...prevFilings, filing]);
+            }}
+          />
+        </div>
       </div>
       {isFetched && (
         <>
           {Filings.length === 0 ? (
-            <NoDocument />
+            <NoDocument
+              projectId={projectId}
+              setNewFilingToParent={(filing: FilingType) => {
+                setFilings((prevFilings) => [...prevFilings, filing]);
+              }}
+            />
           ) : (
-            <AllDocumentPanel Filings={Filings} />
+            <AllDocumentPanel
+              Filings={Filings}
+              setFilingsToParentFunc={(Filings: FilingType[]) => {
+                setFilings((prevFilings) => Filings);
+              }}
+            />
           )}
         </>
       )}
