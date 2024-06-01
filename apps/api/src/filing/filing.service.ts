@@ -101,4 +101,13 @@ export class FilingService {
 
     return foundFiling;
   }
+
+  async findAllFiling(): Promise<Filing[]> {
+    try {
+      const data = await this.filingRepository.find();
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
