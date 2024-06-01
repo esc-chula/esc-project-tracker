@@ -9,7 +9,6 @@ export class UserProjController {
   // TEST API
   @Post('userJoinProject')
   createUserProject(@Body() obj: CreateUserProjDTO) {
-    console.log('UserProjController.createUserProject:\n', obj);
     return this.userProjService.createUserProject({
       obj,
     });
@@ -17,7 +16,6 @@ export class UserProjController {
 
   @Delete('userLeaveProject')
   deleteUserProject(@Body() obj: DeleteUserProjDTO) {
-    console.log('UserProjController.deleteUserProject:\n', obj);
     return this.userProjService.deleteUserProject({
       obj,
     });

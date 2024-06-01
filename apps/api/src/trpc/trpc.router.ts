@@ -151,6 +151,20 @@ export class TrpcRouter {
           obj: { userId: input.userId, projectId: input.projectId },
         });
       }),
+
+    //Delete User Project (User leave Project)
+    deleteUserProject: this.trpc.procedure
+      .input(
+        z.object({
+          userId: z.string(),
+          projectId: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.userProjService.deleteUserProject({
+          obj: { userId: input.userId, projectId: input.projectId },
+        });
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {
