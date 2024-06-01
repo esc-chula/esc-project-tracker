@@ -68,7 +68,7 @@ export default function MyProjectData() {
     };
     fetchProjects();
     fetchFiling();
-  }, []);
+  }, [projects]);
 
   return (
     <div className="w-[65%]">
@@ -88,7 +88,13 @@ export default function MyProjectData() {
           ) : (
             <>
               <LastestPanel projectsWithLastOpen={projectsWithLastOpen} />
-              <AllProjecPanel projects={projects} userId={userId} />
+              <AllProjecPanel
+                projects={projects}
+                userId={userId}
+                setProjectsToParentFunc={(projects: ProjectType[]) => {
+                  setProjects((prevProjects) => projects);
+                }}
+              />
             </>
           )}
         </>

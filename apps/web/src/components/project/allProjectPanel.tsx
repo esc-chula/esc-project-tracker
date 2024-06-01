@@ -8,9 +8,11 @@ import { projectTypeMap } from "@/src/constant/type";
 export default function AllProjectPanel({
   projects,
   userId,
+  setProjectsToParentFunc,
 }: {
   projects: ProjectType[];
   userId: string;
+  setProjectsToParentFunc: (projects: ProjectType[]) => void;
 }) {
   const [allProjects, setAllProjects] = useState<ProjectType[]>(projects);
   const [usedProjects, setUsedProjects] = useState<ProjectType[]>(projects);
@@ -42,6 +44,10 @@ export default function AllProjectPanel({
   useEffect(() => {
     setAllProjects(projects);
   }, [projects]);
+
+  useEffect(() => {
+    setProjectsToParentFunc(allProjects);
+  }, [allProjects]);
 
   return (
     <div className="space-y-5 pt-5 pb-10 ">
