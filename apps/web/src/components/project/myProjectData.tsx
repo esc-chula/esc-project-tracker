@@ -88,7 +88,7 @@ export default function MyProjectData() {
           ) : (
             <>
               <LastestPanel projectsWithLastOpen={projectsWithLastOpen} />
-              <AllProjecPanel projects={projects} />
+              <AllProjecPanel projects={projects} userId={userId} />
             </>
           )}
         </>
