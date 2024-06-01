@@ -1,11 +1,14 @@
-import { Radio } from "lucide-react"
-import Header from "../../../components/header/header"
-import Title from "@/src/components/header/title"
-import DocumentStatusStepper from "@/src/components/status/StatusStepper"
-import { StatusTable } from "@/src/components/status/StatusTable"
-import getFilingsByUserId from "@/src/service/getFilingsByUserId"
-import { FilingStatus } from "@/src/constant/enum"
-import { FilingType } from "@/src/interface/filing"
+"use client";
+import { Radio } from "lucide-react";
+import Header from "../../../components/header/header";
+import Title from "@/src/components/header/title";
+import DocumentStatusStepper from "@/src/components/status/StatusStepper";
+import { StatusTable } from "@/src/components/status/StatusTable";
+import getFilingsByUserId from "@/src/service/getFilingsByUserId";
+import { FilingStatus } from "@/src/constant/enum";
+import { FilingType } from "@/src/interface/filing";
+import { useToast } from "@/src/components/ui/use-toast";
+import { useEffect, useState } from "react";
 const mockData: FilingType[] = [
   {
     id: "m5gr84i91",
@@ -67,11 +70,34 @@ const mockData: FilingType[] = [
     createdAt: new Date("2021-08-01T19:11:00").toString(),
     updatedAt: new Date("2021-08-01T19:11:00").toString(),
   },
-]
+];
 
-export default async function Page() {
+export default function Page() {
   // TODO: Change the userId to the actual userId
-  const statuses = await getFilingsByUserId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a")
+  const { toast } = useToast();
+  const [statuses, setStatuses] = useState<FilingType[]>([]);
+
+  useEffect(() => {
+    const fetchFiling = async () => {
+      try {
+        const data = await getFilingsByUserId(
+          "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
+        );
+        setStatuses(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            title: "ไม่สำเร็จ",
+            description: err.message,
+            isError: true,
+          });
+          setStatuses([]);
+        }
+      }
+    };
+    fetchFiling();
+  }, []);
+
   return (
     <>
       <main className="w-full pt-[68px]">
@@ -82,11 +108,13 @@ export default async function Page() {
         </div>
 
         <div className="bg-lightpink flex flex-col pt-12 pb-5 items-center mt-5 w-full">
-          <h3 className="mb-8 text-2xl text-intania font-bold">ขั้นตอนการส่งเอกสาร</h3>
+          <h3 className="mb-8 text-2xl text-intania font-bold">
+            ขั้นตอนการส่งเอกสาร
+          </h3>
           <DocumentStatusStepper status="DEFAULT" />
         </div>
         <StatusTable data={mockData} />
       </main>
     </>
-  )
+  );
 }
