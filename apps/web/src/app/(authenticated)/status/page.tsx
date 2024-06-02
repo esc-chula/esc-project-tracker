@@ -91,7 +91,6 @@ export default function Page() {
             description: err.message,
             isError: true,
           });
-          setStatuses([]);
         }
       }
     };
