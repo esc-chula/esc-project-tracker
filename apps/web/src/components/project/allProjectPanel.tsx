@@ -7,34 +7,47 @@ import { projectTypeMap } from "@/src/constant/type";
 
 export default function AllProjectPanel({
   projects,
+  userId,
+  setProjectsToParentFunc,
 }: {
   projects: ProjectType[];
+  userId: string;
+  setProjectsToParentFunc: (projects: ProjectType[]) => void;
 }) {
+  const [allProjects, setAllProjects] = useState<ProjectType[]>(projects);
   const [usedProjects, setUsedProjects] = useState<ProjectType[]>(projects);
   const [projectState, setProjectState] = useState<string>("all");
   const [projectType, setProjectType] = useState<string>("all");
 
   useEffect(() => {
     if (projectState === "all" && projectType === "all") {
-      setUsedProjects(projects);
+      setUsedProjects(allProjects);
     } else if (projectState === "all") {
       setUsedProjects(
-        projects.filter((project) => project.type.toString() === projectType)
+        allProjects.filter((project) => project.type.toString() === projectType)
       );
     } else if (projectType === "all") {
       setUsedProjects(
-        projects.filter((project) => project.status === projectState)
+        allProjects.filter((project) => project.status === projectState)
       );
     } else {
       setUsedProjects(
-        projects.filter(
+        allProjects.filter(
           (project) =>
             project.status === projectState &&
             project.type.toString() === projectType
         )
       );
     }
-  }, [projectState, projectType]);
+  }, [projectState, projectType, allProjects, projects]);
+
+  useEffect(() => {
+    setAllProjects(projects);
+  }, [projects]);
+
+  useEffect(() => {
+    setProjectsToParentFunc(allProjects);
+  }, [allProjects]);
 
   return (
     <div className="space-y-5 pt-5 pb-10 ">
@@ -62,6 +75,12 @@ export default function AllProjectPanel({
             projectId={project.id}
             projectCode={project.projectCode}
             projectName={project.name}
+            userId={userId}
+            leaveThisProjectFunc={(id: string) => {
+              setAllProjects((prevProjecs) =>
+                prevProjecs.filter((project) => project.id !== id)
+              );
+            }}
           />
         ))}
       </div>

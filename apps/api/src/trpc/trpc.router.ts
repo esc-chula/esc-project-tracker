@@ -138,6 +138,34 @@ export class TrpcRouter {
       return this.projectService.findAllProjects();
     }),
 
+    //Create User Project (User join Project)
+    createUserProject: this.trpc.procedure
+      .input(
+        z.object({
+          userId: z.string(),
+          projectId: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.userProjService.createUserProject({
+          obj: { userId: input.userId, projectId: input.projectId },
+        });
+      }),
+
+    //Delete User Project (User leave Project)
+    deleteUserProject: this.trpc.procedure
+      .input(
+        z.object({
+          userId: z.string(),
+          projectId: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.userProjService.deleteUserProject({
+          obj: { userId: input.userId, projectId: input.projectId },
+        });
+      }),
+
     //Get All Filing
     findAllFiling: this.trpc.procedure.query(() => {
       return this.filingService.findAllFiling();
