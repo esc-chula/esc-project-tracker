@@ -134,7 +134,7 @@ export class TrpcRouter {
       }),
 
     //Get All Project
-    getAllProject: this.trpc.procedure.query(() => {
+    findAllProject: this.trpc.procedure.query(() => {
       return this.projectService.findAllProjects();
     }),
 

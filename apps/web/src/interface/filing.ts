@@ -2,8 +2,8 @@ import { FilingStatus } from "../constant/enum";
 
 export interface FilingType {
   id: string;
-  project: any;
-  user: any;
+  projectId: string;
+  userId: string;
   name: string;
   FilingCode: string;
   status: FilingStatus;

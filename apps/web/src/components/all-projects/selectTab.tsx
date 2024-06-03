@@ -6,8 +6,12 @@ import { Box } from "@mui/material";
 
 import SearchPanel from "./searchPanel";
 import NoData from "./noData";
-import { getAllProject } from "@/src/service/getAllProject";
 import { ProjectType } from "@/src/interface/project";
+import { FilingStatus, ProjectStatus } from "../../../../api/src/constant/enum"; // to be deleted later
+import findAllFiling from "@/src/service/findAllFiling";
+import ProjectMenu from "../project/projectMenu";
+import { FilingType } from "@/src/interface/filing";
+import FilingMenu from "../project/filingMenu";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -39,9 +43,47 @@ function a11yProps(index: number) {
 }
 
 export default function SelectTab() {
+  const mockFiling = [
+    {
+      id: "string",
+      projectId: "projectId for finding project's name",
+      userId: "userId for finding user's name",
+      name: "filing's name",
+      FilingCode: "0001",
+      status: FilingStatus.APPROVED,
+      type: 1,
+      projectCode: "1001",
+      createdAt: "10/06/2567",
+      updatedAt: "10/06/2567",
+    },
+  ];
+  const mockProject = [
+    {
+      id: "1",
+      name: "ชื่อโครงการ อันที่ 1",
+      projectCode: "0011",
+      type: 1,
+      detail: "",
+      reserveDate: "",
+      status: ProjectStatus.CONTINUE,
+      createdAt: "",
+      updatedAt: "",
+    },
+    {
+      id: "2",
+      name: "ชื่อโครงการ แบบยาว มากกกกกกกกกกกกกกก",
+      projectCode: "0012",
+      type: 1,
+      detail: "",
+      reserveDate: "",
+      status: ProjectStatus.WAIT_FOR_CLOSE,
+      createdAt: "",
+      updatedAt: "",
+    },
+  ];
   const [value, setValue] = React.useState(0);
   const [projects, setProjects] = React.useState<ProjectType[]>([]);
-  const [filings, setFilings] = React.useState([]);
+  const [filings, setFilings] = React.useState<FilingType[]>([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -53,13 +95,19 @@ export default function SelectTab() {
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const fetchedProject = await getAllProject();
-        //const fetchedProject = await getAllProject();
+        // const fetchedProject = await findAllProject();
+        // const fetchedFiling = await findAllFiling();
+        const fetchedProject = mockProject;
+        const fetchedFiling = mockFiling;
+        if (fetchedFiling) {
+          setFilings(fetchedFiling);
+        }
         if (fetchedProject) {
           setProjects(fetchedProject);
         }
       } catch (e) {
         console.log(e);
+        throw new Error("Failed to fetch data");
       }
     }
 
@@ -77,7 +125,7 @@ export default function SelectTab() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <SearchPanel
-          filings={[]}
+          filings={filings}
           placeHolder="ค้นหาเอกสารทั้งหมด"
           FilingFunc={() => {}}
         />
@@ -106,13 +154,10 @@ export default function SelectTab() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <NoData
-          firstLine="ยังไม่มีโครงการ"
-          secondLine="เริ่มเปิดโครงกันเลย !"
-        />
+        <ProjectMenu projects={projects} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
+        <FilingMenu filings={filings} />
       </CustomTabPanel>
     </Box>
   );

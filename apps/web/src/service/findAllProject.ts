@@ -1,9 +1,9 @@
 import { trpc } from "../app/trpc";
 import { ProjectType } from "../interface/project";
 
-export function getAllProject(): Promise<ProjectType[]> {
+export function findAllProject(): Promise<ProjectType[]> {
   try {
-    const data = trpc.getAllProject.query();
+    const data = trpc.findAllProject.query();
     return data;
   } catch (err) {
     console.log(err);
