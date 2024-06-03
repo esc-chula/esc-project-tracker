@@ -1,4 +1,6 @@
 import { ProjectType } from "@/src/interface/project";
+import { ProjectService } from "@/src/service/ProjectService";
+import joinProject from "@/src/service/joinProject";
 
 export default function ProjectMenuItem({
   project,
@@ -9,7 +11,15 @@ export default function ProjectMenuItem({
 }) {
   // To do : check if user joined project by init another function to check
   // onClick function for join
-  const handleJoinProject = () => {};
+
+  const handleJoinProject = async () => {
+    try {
+      await joinProject("@userId", "@projectId");
+    } catch (e) {
+      console.log(e);
+      throw new Error("cannot join project");
+    }
+  };
   return (
     <div className="w-full grid grid-cols-7 border-b-2 border-gray-300">
       <div className="flex items-center text-center justify-center p-5 px-8">

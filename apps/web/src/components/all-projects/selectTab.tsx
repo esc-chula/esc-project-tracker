@@ -46,8 +46,26 @@ export default function SelectTab() {
   const mockFiling = [
     {
       id: "string",
-      projectId: "projectId for finding project's name",
-      userId: "userId for finding user's name",
+      project: {
+        id: "2",
+        name: "ชื่อโครงการ แบบยาว มากกกกกกกกกกกกกกก",
+        projectCode: "0012",
+        type: 1,
+        detail: "",
+        reserveDate: "",
+        status: ProjectStatus.WAIT_FOR_CLOSE,
+        createdAt: "",
+        updatedAt: "",
+      },
+      user: {
+        id: "string",
+        name: "string",
+        createdAt: "string",
+        updatedAt: "string",
+        username: "string",
+        studentId: "string",
+        password: "string",
+      },
       name: "filing's name",
       FilingCode: "0001",
       status: FilingStatus.APPROVED,

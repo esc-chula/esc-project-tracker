@@ -14,7 +14,7 @@ export class Document {
   id: string;
 
   @ManyToOne(() => Filing, { onDelete: 'CASCADE' })
-  filingId: Filing;
+  filing: Filing;
 
   @Column()
   name: string;
