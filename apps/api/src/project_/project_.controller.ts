@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ProjectService } from './project_.service';
 import { ProjectType } from '../constant/enum';
+import { createProjectDTO } from './project_.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -15,5 +16,10 @@ export class ProjectController {
   @Get('findProjectTypeCount/:type')
   findCountOfProjectType(@Param('type') type: ProjectType) {
     return this.projectService.findCountOfProjectType(type);
+  }
+
+  @Post('createProject')
+  createProject(@Body() obj: createProjectDTO) {
+    return this.projectService.createProject(obj);
   }
 }

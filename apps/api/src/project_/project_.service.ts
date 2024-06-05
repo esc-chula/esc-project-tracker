@@ -4,7 +4,7 @@ import { Project } from '../entities/project.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
-import { ProjectWithLastOpenDTO } from './project_.dto';
+import { createProjectDTO, ProjectWithLastOpenDTO } from './project_.dto';
 import { ProjectType } from '../constant/enum';
 
 @Injectable()
@@ -16,6 +16,14 @@ export class ProjectService {
     private readonly userProjRepository: Repository<UserProj>,
     private readonly userService: UserService,
   ) {}
+
+  findProjectByName(name: string) {
+    return this.projectRepository.findOne({ where: { name } });
+  }
+
+  findProjectByNameAndType(name: string, type: ProjectType) {
+    return this.projectRepository.findOne({ where: { name, type } });
+  }
 
   findByProjectID(id: string) {
     const project = this.projectRepository.findOne({ where: { id } });
@@ -64,5 +72,26 @@ export class ProjectService {
 
   findCountOfProjectType(type: ProjectType): Promise<number> {
     return this.projectRepository.count({ where: { type } });
+  }
+
+  async createProject(obj: createProjectDTO): Promise<Project> {
+    if (!obj) throw new BadRequestException('Invalid input');
+    const foundProjectByNameAndType = await this.findProjectByNameAndType(
+      obj.name,
+      obj.type,
+    );
+    if (foundProjectByNameAndType) {
+      throw new BadRequestException('Project already exists');
+    }
+    const foundProjectByName = await this.findProjectByName(obj.name);
+    if (foundProjectByName) {
+      throw new BadRequestException('Project name already exists');
+    }
+    const project = new Project();
+    const countType = await this.findCountOfProjectType(obj.type);
+    const countTypeString = (countType + 1).toString().padStart(2, '0');
+    const projectCode = `${obj.type}${countTypeString}`;
+    const newProject = { ...project, ...obj, projectCode };
+    return await this.projectRepository.save(newProject);
   }
 }
