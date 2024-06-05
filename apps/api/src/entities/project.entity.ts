@@ -19,7 +19,7 @@ export class Project {
   @Column()
   name: string;
 
-  @Column()
+  @Column({})
   projectCode: string;
 
   @Column({
@@ -28,21 +28,33 @@ export class Project {
   })
   type: ProjectType;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   detail: string;
 
-  @Column()
+  @Column({
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+  })
   reserveDate: Date;
 
   @Column({
     type: 'enum',
     enum: ProjectStatus,
+    default: ProjectStatus.CONTINUE,
   })
   status: ProjectStatus;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'date',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true, default: null })
+  @UpdateDateColumn({
+    type: 'date',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   updatedAt: Date;
 }

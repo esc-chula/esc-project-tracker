@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
 import { ProjectWithLastOpenDTO } from './project_.dto';
+import { ProjectType } from '../constant/enum';
 
 @Injectable()
 export class ProjectService {
@@ -59,5 +60,9 @@ export class ProjectService {
 
   async findAllProjects(): Promise<Project[]> {
     return await this.projectRepository.find();
+  }
+
+  findCountOfProjectType(type: ProjectType): Promise<number> {
+    return this.projectRepository.count({ where: { type } });
   }
 }
