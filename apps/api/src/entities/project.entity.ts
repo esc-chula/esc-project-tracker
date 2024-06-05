@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProjectStatus } from '../constant/enum';
+import { ProjectStatus, ProjectType } from '../constant/enum';
 
 @Entity()
 export class Project {
@@ -22,8 +22,11 @@ export class Project {
   @Column()
   projectCode: string;
 
-  @Column()
-  type: number;
+  @Column({
+    type: 'enum',
+    enum: ProjectType,
+  })
+  type: ProjectType;
 
   @Column()
   detail: string;
