@@ -1,15 +1,43 @@
-import { LogOut } from "lucide-react";
+"use client"
+import { LogOut } from "lucide-react"
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { IoIosAlert } from "react-icons/io";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { IoIosAlert } from "react-icons/io"
+import leaveProject from "@/src/service/leaveProject"
+import { toast } from "../ui/use-toast"
 
-export default function PopoverExitProject() {
+export default function PopoverExitProject({
+  projectId,
+  userId,
+  projectCode,
+  deletedParentFunc,
+}: {
+  projectId: string
+  userId: string
+  projectCode: string
+  deletedParentFunc: (deleted: boolean) => void
+}) {
+  const handleLeaveProject = async () => {
+    try {
+      if (userId && projectId) {
+        await leaveProject(userId, projectId)
+        toast({
+          title: "สำเร็จ",
+          description: `ออกจากโปรเจค ${projectCode} เรียบร้อย`,
+          isError: false,
+        })
+        deletedParentFunc(true)
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: err.message,
+          isError: true,
+        })
+      }
+    }
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,16 +55,16 @@ export default function PopoverExitProject() {
           <div className="flex justify-center">
             <IoIosAlert size={100} className=" text-red" />
           </div>
-          <div className="text-center font-sukhumvit font-bold text-xl">
-            ยืนยันการออกจากโครงการ
-          </div>
+          <div className="text-center font-sukhumvit font-bold text-xl">ยืนยันการออกจากโครงการ</div>
           <div className="text-center ">
-            <button className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold">
+            <button
+              className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
+              onClick={handleLeaveProject}>
               ยืนยัน
             </button>
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
