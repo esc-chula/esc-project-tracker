@@ -49,6 +49,6 @@ export class Project {
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true, default: null })
   updatedAt: Date;
 }
