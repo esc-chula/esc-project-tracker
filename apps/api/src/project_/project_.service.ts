@@ -70,8 +70,8 @@ export class ProjectService {
     return await this.projectRepository.find();
   }
 
-  findCountOfProjectType(type: ProjectType): Promise<number> {
-    return this.projectRepository.count({ where: { type } });
+  async findCountOfProjectType(type: ProjectType): Promise<number> {
+    return await this.projectRepository.count({ where: { type } });
   }
 
   async createProject(obj: createProjectDTO): Promise<Project> {
