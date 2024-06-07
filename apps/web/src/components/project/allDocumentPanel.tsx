@@ -4,7 +4,7 @@ import SelectType from "./selectType";
 import { filterStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { FilingType } from "@/src/interface/filing";
-import { filingTypeMap, projectTypeMap } from "@/src/constant/type";
+import { filingTypeMap, projectTypeMap } from "@/src/constant/Map";
 
 export default function AllDocumentPanel({
   Filings,

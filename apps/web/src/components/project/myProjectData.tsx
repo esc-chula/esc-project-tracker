@@ -5,7 +5,7 @@ import AllProjecPanel from "./allProjectPanel";
 import NoProject from "./noProject";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ProjectType, ProjectWithLastOpenType } from "@/src/interface/project";
+import { Project, ProjectWithLastOpen } from "@/src/interface/project";
 import { FilingType } from "@/src/interface/filing";
 import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
@@ -15,15 +15,15 @@ import { useToast } from "../ui/use-toast";
 export default function MyProjectData() {
   const { toast } = useToast();
   const router = useRouter();
-  const redirectToProject = (project: ProjectType | FilingType) => {
+  const redirectToProject = (project: Project | FilingType) => {
     router.push(`/projects/${project.id}`);
   };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
-    ProjectWithLastOpenType[]
+    ProjectWithLastOpen[]
   >([]);
   const [filing, setFiling] = useState<FilingType[]>([]);
-  const [projects, setProjects] = useState<ProjectType[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>(
     "d1c0d106-1a4a-4729-9033-1b2b2d52e98a"
@@ -91,7 +91,7 @@ export default function MyProjectData() {
               <AllProjecPanel
                 projects={projects}
                 userId={userId}
-                setProjectsToParentFunc={(projects: ProjectType[]) => {
+                setProjectsToParentFunc={(projects: Project[]) => {
                   setProjects((prevProjects) => projects);
                 }}
               />

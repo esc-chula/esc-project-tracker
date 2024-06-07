@@ -1,7 +1,6 @@
 "use client";
 import { MockFiling, MockProject } from "@/src/mock/type";
 import SearchBar from "../searchbar/searchBar";
-import { mockFilings } from "@/src/mock/data";
 import { FileText } from "lucide-react";
 import NoDocument from "./noDocument";
 import AllDocumentPanel from "./allDocumentPanel";
