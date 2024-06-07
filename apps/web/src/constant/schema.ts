@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { projectTypeMap } from "./type"
+import { projectTypeMap } from "./Map"
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString())
 

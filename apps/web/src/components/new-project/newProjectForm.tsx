@@ -27,7 +27,8 @@ import { Textarea } from "../ui/textarea"
 import MembersInput from "./membersInput"
 import { useMemo, useState } from "react"
 import { FilePlus } from "lucide-react"
-import { projectTypeMap } from "@/src/constant/type"
+import { projectTypeMap } from "@/src/constant/Map"
+import { trpc } from "@/src/app/trpc"
 
 export default function NewProjectForm() {
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
@@ -53,8 +54,8 @@ export default function NewProjectForm() {
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
     console.log(values)
-    // type from string to number
-    // filter out empty members
+    const members = values.members.filter((member) => member)
+    console.log(members)
   }
 
   const [membersCount, setMembersCount] = useState(1)
@@ -100,7 +101,7 @@ export default function NewProjectForm() {
                     <SelectContent>
                       <SelectGroup>
                         {projectTypeMap.map((item, index) => (
-                          <SelectItem key={index} value={item.value.toString()}>
+                          <SelectItem key={index} value={item.value}>
                             {item.value + " - " + item.label}
                           </SelectItem>
                         ))}
