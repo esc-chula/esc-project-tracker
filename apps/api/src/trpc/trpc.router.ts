@@ -187,6 +187,23 @@ export class TrpcRouter {
           detail: input.detail,
         });
       }),
+
+    //Create a new Outside Project
+    createOutsideProject: this.trpc.procedure
+      .input(
+        z.object({
+          name: z.string(),
+          type: z.nativeEnum(ProjectType),
+          detail: z.string().optional(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        return await this.projectService.createOutsideProject({
+          name: input.name,
+          type: input.type,
+          detail: input.detail,
+        });
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {
