@@ -1,6 +1,6 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 import { TrpcService } from './trpc.service';
-import { optional, string, z } from 'zod';
+import { z } from 'zod';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
@@ -170,6 +170,16 @@ export class TrpcRouter {
     findAllFiling: this.trpc.procedure.query(() => {
       return this.filingService.findAllFiling();
     }),
+
+    findDocumentsByFilingId: this.trpc.procedure
+      .input(
+        z.object({
+          filingId: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.documentService.findDocumentByFilingId(input.filingId);
+      }),
   });
 
   async applyMiddleware(app: INestApplication) {
