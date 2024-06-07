@@ -22,4 +22,9 @@ export class ProjectController {
   createProject(@Body() obj: createProjectDTO) {
     return this.projectService.createProject(obj);
   }
+
+  @Post('createOutsideProject')
+  createOutsideProject(@Body() obj: createProjectDTO) {
+    return this.projectService.createOutsideProject(obj);
+  }
 }

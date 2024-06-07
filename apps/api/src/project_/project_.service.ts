@@ -94,4 +94,23 @@ export class ProjectService {
     const newProject = { ...project, ...obj, projectCode };
     return await this.projectRepository.save(newProject);
   }
+
+  async createOutsideProject(obj: createProjectDTO): Promise<Project> {
+    if (!obj) throw new BadRequestException('Invalid input');
+    const foundProjectByNameAndType = await this.findProjectByNameAndType(
+      obj.name,
+      obj.type,
+    );
+    if (foundProjectByNameAndType) {
+      throw new BadRequestException('Project already exists');
+    }
+    const foundProjectByName = await this.findProjectByName(obj.name);
+    if (foundProjectByName) {
+      throw new BadRequestException('Project name already exists');
+    }
+    const project = new Project();
+    const projectCode = `${obj.type}00`;
+    const newProject = { ...project, ...obj, projectCode };
+    return await this.projectRepository.save(newProject);
+  }
 }
