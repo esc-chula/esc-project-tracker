@@ -3,7 +3,7 @@ import SelectType from "./selectType";
 import { Project } from "@/src/interface/project";
 import { filterProjectStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
-import { projectTypeMap } from "@/src/constant/type";
+import { projectTypeMap } from "@/src/constant/Map";
 
 export default function AllProjectPanel({
   projects,
