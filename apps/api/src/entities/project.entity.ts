@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProjectStatus } from '../constant/enum';
+import { ProjectStatus, ProjectType } from '../constant/enum';
 
 @Entity()
 export class Project {
@@ -19,21 +19,30 @@ export class Project {
   @Column()
   name: string;
 
-  @Column()
+  @Column({})
   projectCode: string;
 
-  @Column()
-  type: number;
+  @Column({
+    type: 'enum',
+    enum: ProjectType,
+  })
+  type: ProjectType;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   detail: string;
 
-  @Column()
+  @Column({
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+  })
   reserveDate: Date;
 
   @Column({
     type: 'enum',
     enum: ProjectStatus,
+    default: ProjectStatus.CONTINUE,
   })
   status: ProjectStatus;
 
