@@ -5,7 +5,9 @@ export default async function getProjectByProjectId(
   projectId: string
 ): Promise<Project | null> {
   try {
-    const project = await trpc.getProjectByProjectId.query({ projectId });
+    const project = await trpc.project.getProjectByProjectId.query({
+      projectId,
+    });
     return project;
   } catch (err) {
     console.error(err);

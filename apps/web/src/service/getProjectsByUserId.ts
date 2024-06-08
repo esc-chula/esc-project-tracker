@@ -6,7 +6,7 @@ export default async function getProjectsByUserId(
   userId: string
 ): Promise<ProjectWithLastOpen[]> {
   try {
-    const projectsWithLastOpen = await trpc.findProjectsByUserId.query({
+    const projectsWithLastOpen = await trpc.project.findProjectsByUserId.query({
       userId,
     });
 

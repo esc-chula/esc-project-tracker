@@ -9,7 +9,7 @@ export default async function updateFilingName({
   filingName: string;
 }): Promise<FilingType | null> {
   try {
-    const data = await trpc.updateFilingName.query({
+    const data = await trpc.filing.updateFilingName.query({
       filingId,
       filingName,
     });

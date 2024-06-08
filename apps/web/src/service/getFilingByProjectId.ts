@@ -7,7 +7,7 @@ export default async function getFilingByProjectId({
   projectId: string;
 }): Promise<FilingType[]> {
   try {
-    const data = await trpc.findFilingsByProjectId.query({ projectId });
+    const data = await trpc.filing.findFilingsByProjectId.query({ projectId });
     return data;
   } catch (err) {
     console.log(err);

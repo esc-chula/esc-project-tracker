@@ -2,7 +2,7 @@ import { trpc } from "../app/trpc";
 
 export default async function leaveProject(userId: string, projectId: string) {
   try {
-    const data = await trpc.deleteUserProject.query({
+    const data = await trpc.userProj.deleteUserProject.query({
       userId,
       projectId,
     });

@@ -7,7 +7,7 @@ export default async function createFiling(
   filingType: number
 ): Promise<FilingType> {
   try {
-    const data = await trpc.createFiling.query({
+    const data = await trpc.filing.createFiling.query({
       projectId,
       filingName,
       filingType,
