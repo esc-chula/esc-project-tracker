@@ -1,21 +1,38 @@
-import { INestApplication, Injectable } from '@nestjs/common';
+import {
+  INestApplication,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { TrpcService } from './trpc.service';
-import { z } from 'zod';
 import * as trpcExpress from '@trpc/server/adapters/express';
+
+import { ProjectRouter } from './routers/project.router';
+import { FilingRouter } from './routers/filing.router';
+import { DocumentRouter } from './routers/document.router';
+import { UserProjRouter } from './routers/user-proj.router';
 
 @Injectable()
 export class TrpcRouter {
-  constructor(private readonly trpc: TrpcService) {}
-
+  constructor(
+    private readonly trpc: TrpcService,
+    private readonly projectRouter: ProjectRouter,
+    private readonly filingRouter: FilingRouter,
+    private readonly documentRouter: DocumentRouter,
+    private readonly userProjRouter: UserProjRouter,
+  ) {}
   appRouter = this.trpc.router({
-    hello: this.trpc.procedure
-      .input(z.object({ name: z.string().optional() }))
-      .query(({ input }) => {
-        return `Hello ${input.name ? input.name : `World`}`;
-      }),
+    project: this.projectRouter.appRouter,
+    filing: this.filingRouter.appRouter,
+    document: this.documentRouter.appRouter,
+    userProj: this.userProjRouter.appRouter,
   });
 
   async applyMiddleware(app: INestApplication) {
+    this.appRouter = this.trpc.mergeRouters(
+      this.appRouter,
+      this.projectRouter.appRouter,
+    );
     app.use(
       `/trpc`,
       trpcExpress.createExpressMiddleware({ router: this.appRouter }),

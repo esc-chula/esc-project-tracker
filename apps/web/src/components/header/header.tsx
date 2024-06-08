@@ -1,5 +1,9 @@
-import { Bell, ChevronDown } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar"
+import { Bell, ChevronDown } from "lucide-react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,12 +11,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu"
+} from "@/src/components/ui/dropdown-menu";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   return (
     <>
-      <div className="min-h-[50px] flex justify-between gap-3.5 pr-5">
+      <header className="min-h-[50px] flex justify-between gap-3.5 pr-5">
         {children}
         <div className="h-12 w-[284px] flex items-center ml-auto">
           <div className="pr-4 border-r border-black mr-4 h-full flex items-center">
@@ -26,7 +30,9 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <div className="flex gap-3">
-                  <span className="line-clamp-1 w-full text-left">นภันต์ โชติช่วงนภา</span>
+                  <span className="line-clamp-1 w-full text-left">
+                    นภันต์ โชติช่วงนภา
+                  </span>
                   <ChevronDown size={24} />
                 </div>
               </DropdownMenuTrigger>
@@ -41,7 +47,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             </DropdownMenu>
           </div>
         </div>
-      </div>
+      </header>
     </>
-  )
+  );
 }

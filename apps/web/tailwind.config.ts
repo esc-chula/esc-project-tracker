@@ -1,7 +1,7 @@
 // tailwind config is required for editor support
 
-import type { Config } from "tailwindcss"
-import sharedConfig from "@repo/tailwind-config"
+import type { Config } from "tailwindcss";
+import sharedConfig from "@repo/tailwind-config";
 
 const config = {
   darkMode: ["class"],
@@ -26,10 +26,14 @@ const config = {
     },
     extend: {
       colors: {
-        intania: "#5E1018",
-        red: "#C22231",
-        lightpink: "#FFF0F0",
-        pink: "#E59DA4",
+        intania: "var(--intania)",
+        red: "var(--red)",
+        lightpink: "var(--lightpink)",
+        pink: "var(--pink)",
+        rejected: "var(--rejected)",
+        accepted: "var(--accepted)",
+        pending: "var(--pending)",
+        disabled: "var(--disabled)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -78,6 +82,14 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        slideIn: {
+          "0%": { transform: "translateX(100%)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+        slideOut: {
+          "0%": { transform: "translateX(0)", opacity: "1" },
+          "100%": { transform: "translateX(100%)", opacity: "0" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -90,10 +102,12 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        slideIn: "slideIn 0.3s forwards",
+        slideOut: "slideOut 0.3s forwards",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;
