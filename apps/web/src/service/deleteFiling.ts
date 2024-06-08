@@ -5,7 +5,8 @@ export default async function deleteFiling(
   filingId: string
 ): Promise<FilingType | null> {
   try {
-    const data = await trpc.deleteFiling.query({ filingId });
+    const data = await trpc.filing.deleteFiling.query({ filingId });
+
     return data;
   } catch (err) {
     console.log(err);

@@ -5,7 +5,7 @@ export default async function getFilingsByUserId(
   userId: string
 ): Promise<FilingType[]> {
   try {
-    const data = await trpc.findFilingsByUserId.query({ userId });
+    const data = await trpc.filing.findFilingsByUserId.query({ userId });
     return data;
   } catch (err) {
     console.error(err);
