@@ -16,6 +16,8 @@ import { FilingStatus, ProjectType } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
 import { ProjectRouter } from './project.router';
 import { FilingRouter } from './filing.router';
+import { DocumentRouter } from './document.router';
+import { UserProjRouter } from './user-proj.router';
 
 @Injectable()
 export class TrpcRouter {
@@ -23,10 +25,14 @@ export class TrpcRouter {
     private readonly trpc: TrpcService,
     private readonly projectRouter: ProjectRouter,
     private readonly filingRouter: FilingRouter,
+    private readonly documentRouter: DocumentRouter,
+    private readonly userProjRouter: UserProjRouter,
   ) {}
   appRouter = this.trpc.router({
     project: this.projectRouter.appRouter,
     filing: this.filingRouter.appRouter,
+    document: this.documentRouter.appRouter,
+    userProj: this.userProjRouter.appRouter,
   });
 
   async applyMiddleware(app: INestApplication) {

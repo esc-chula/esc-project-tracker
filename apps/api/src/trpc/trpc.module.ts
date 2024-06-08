@@ -16,17 +16,17 @@ import { UserProjRouter } from './user-proj.router';
   imports: [
     ProjectModule,
     FilingModule,
-    /*DocumentModule,
+    DocumentModule,
     FilingModule,
-    UserProjModule,*/
+    UserProjModule,
   ],
   providers: [
     TrpcService,
     TrpcRouter,
     ProjectRouter,
     FilingRouter,
-    /*DocumentRouter,
-    UserProjRouter,*/
+    DocumentRouter,
+    UserProjRouter,
   ],
   controllers: [],
   exports: [TrpcService],

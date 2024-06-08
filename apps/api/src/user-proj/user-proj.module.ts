@@ -8,12 +8,7 @@ import { ProjectModule } from '../project_/project_.module';
 import { TrpcModule } from '../trpc/trpc.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([UserProj]),
-    UserModule,
-    ProjectModule,
-    TrpcModule,
-  ],
+  imports: [TypeOrmModule.forFeature([UserProj]), UserModule, ProjectModule],
   controllers: [UserProjController],
   providers: [UserProjService],
   exports: [UserProjService],
