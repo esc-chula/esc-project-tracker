@@ -3,7 +3,7 @@ import { Input } from "@/src/components/ui/input"
 import { ChangeEventHandler } from "react"
 import { Control } from "react-hook-form"
 import { Button } from "../ui/button"
-import { Trash2 } from "lucide-react"
+import { CircleMinus, Trash2 } from "lucide-react"
 import { newProjectFormSchema } from "@/src/constant/schema"
 import { z } from "zod"
 
@@ -39,7 +39,7 @@ export default function MembersInput({
                     onClick={(e) => {
                       handleDelete(e, index)
                     }}>
-                    <Trash2 className="h-5 w-5" />
+                    <CircleMinus className="h-5 w-5 stroke-darkpink" />
                   </Button>
                 )}
                 <FormMessage />

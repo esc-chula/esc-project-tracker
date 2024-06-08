@@ -28,7 +28,11 @@ import MembersInput from "./membersInput"
 import { useMemo, useState } from "react"
 import { FilePlus } from "lucide-react"
 import { projectTypeMap } from "@/src/constant/Map"
-import { trpc } from "@/src/app/trpc"
+import createProject from "@/src/service/createProject"
+import { ProjectType } from "@/src/constant/enum"
+import joinProject from "@/src/service/joinProject"
+import { useToast } from "../ui/use-toast"
+import { useRouter } from "next/navigation"
 
 export default function NewProjectForm() {
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
@@ -37,6 +41,8 @@ export default function NewProjectForm() {
       members: ["6432083021"], // TODO: change to current user's student ID
     },
   })
+  const { toast } = useToast()
+  const router = useRouter()
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const index = parseInt(e.target.name.split(".")[1])
@@ -53,9 +59,46 @@ export default function NewProjectForm() {
   }
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
-    console.log(values)
-    const members = values.members.filter((member) => member)
-    console.log(members)
+    let projCreated = false
+
+    try {
+      const newProject = await createProject(
+        values.projectName,
+        values.type as ProjectType,
+        values.description
+      )
+
+      projCreated = true
+
+      const userProjPromises = values.members.map((member) =>
+        member ? joinProject(member, newProject.id) : undefined
+      )
+
+      const newUserProjArray = await Promise.all(userProjPromises)
+
+      toast({
+        title: "สร้างโครงการสำเร็จ",
+        description: `โครงการ ${newProject.projectCode} ${newProject.name} ถูกสร้างเรียบร้อยแล้ว`,
+      })
+
+      router.push(`/project/${newProject.id}`)
+    } catch (err) {
+      if (err instanceof Error) {
+        if (projCreated) {
+          toast({
+            title: "เปิดโครงการสำเร็จ แต่ไม่สามารถเพิ่มผู้ใช้เข้าโครงการได้",
+            description: err.message,
+            isError: true,
+          })
+        } else {
+          toast({
+            title: "เปิดโครงการไม่สำเร็จ",
+            description: err.message,
+            isError: true,
+          })
+        }
+      }
+    }
   }
 
   const [membersCount, setMembersCount] = useState(1)
@@ -95,7 +138,7 @@ export default function NewProjectForm() {
                   <Select onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="ฝ่ายวิชาการ, ฝ่ายกิจกรรมภายในคณะ, ฝ่ายสนับสนุน" />
+                        <SelectValue placeholder="ฝ่ายวิชาการ, ฝ่ายกิจกรรมภายในคณะ, ฝ่ายเทคโนโลยี" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
