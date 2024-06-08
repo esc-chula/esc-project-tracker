@@ -15,9 +15,10 @@ export default function Page() {
           height={564}
           className="w-[35vh] mt-10 mb-6 aspect-auto"
         />
-        <h1 className="text-5xl font-bold mb-4">ESC Project Tracker</h1>
+        <h1 className="text-5xl font-bold mb-4">Document System</h1>
         <h2 className="text-2xl mb-6">
-          write down some information that is nesessary to know about this website
+          ดำเนินการเรื่องเอกสารของคณะฯ ไม่ยุ่งยาก สะดวก รวดเร็ว ครบจบทุกกระบวนการ
+          มาเริ่มต้นเอกสารกัน !
         </h2>
 
         <Button
