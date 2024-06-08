@@ -1,5 +1,5 @@
 "use client";
-import { ProjectWithLastOpenType } from "@/src/interface/project";
+import { ProjectWithLastOpen } from "@/src/interface/project";
 import LastestItem from "./lastestItem";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
@@ -8,14 +8,14 @@ import { useEffect, useState } from "react";
 export default function LastestPanel({
   projectsWithLastOpen,
 }: {
-  projectsWithLastOpen: ProjectWithLastOpenType[];
+  projectsWithLastOpen: ProjectWithLastOpen[];
 }) {
   const [carouselRef] = useEmblaCarousel({ loop: false, dragFree: true }, [
     WheelGesturesPlugin(),
   ]);
-  const [sortedProjects, setSortedProjects] = useState<
-    ProjectWithLastOpenType[]
-  >([]);
+  const [sortedProjects, setSortedProjects] = useState<ProjectWithLastOpen[]>(
+    []
+  );
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
   useEffect(() => {

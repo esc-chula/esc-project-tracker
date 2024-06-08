@@ -1,23 +1,24 @@
 import AllProjectCard from "./allProjectCard";
-import SelectType from "../filter/selectType";
-import { ProjectType } from "@/src/interface/project";
+
+import { Project } from "@/src/interface/project";
 import { filterProjectStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
-import { projectTypeMap } from "@/src/constant/type";
+import { projectTypeMap } from "@/src/constant/Map";
+import SelectType from "../filter/selectType";
 
 export default function AllProjectPanel({
   projects,
   userId,
   setProjectsToParentFunc,
 }: {
-  projects: ProjectType[];
+  projects: Project[];
   userId: string;
-  setProjectsToParentFunc: (projects: ProjectType[]) => void;
+  setProjectsToParentFunc: (projects: Project[]) => void;
 }) {
-  const [allProjects, setAllProjects] = useState<ProjectType[]>(projects);
-  const [usedProjects, setUsedProjects] = useState<ProjectType[]>(projects);
+  const [allProjects, setAllProjects] = useState<Project[]>(projects);
+  const [usedProjects, setUsedProjects] = useState<Project[]>(projects);
   const [projectState, setProjectState] = useState<string>("all");
-  const [projectType, setProjectType] = useState<string>("all");
+  const [projectType, setProject] = useState<string>("all");
 
   useEffect(() => {
     if (projectState === "all" && projectType === "all") {
@@ -64,7 +65,7 @@ export default function AllProjectPanel({
           title="ประเภท"
           items={projectTypeMap}
           sendValue={(value) => {
-            setProjectType(value);
+            setProject(value);
           }}
         />
       </div>

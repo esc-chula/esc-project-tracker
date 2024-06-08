@@ -11,12 +11,8 @@ export default function FilingMenu({ filings }: { filings: FilingType[] }) {
   return (
     <div className="w-full">
       <FilingMenuHeader />
-      {filings.map((eachFiling, index) => (
-        <FilingMenuItem
-          filing={eachFiling}
-          index={index + 1}
-          key={eachFiling.id}
-        />
+      {filings.map((filing, index) => (
+        <FilingMenuItem filing={filing} index={index + 1} key={filing.id} />
       ))}
     </div>
   );

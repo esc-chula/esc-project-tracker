@@ -5,13 +5,16 @@ import Tab from "@mui/material/Tab";
 import { Box } from "@mui/material";
 
 import SearchPanel from "./searchPanel";
-import NoData from "./noData";
-import { ProjectType } from "@/src/interface/project";
+import { Project } from "@/src/interface/project";
 import { FilingStatus, ProjectStatus } from "../../../../api/src/constant/enum"; // to be deleted later
 import findAllFiling from "@/src/service/findAllFiling";
 import ProjectMenu from "../project/projectMenu";
 import { FilingType } from "@/src/interface/filing";
 import FilingMenu from "../project/filingMenu";
+import SelectType from "../filter/selectType";
+import { ProjectType } from "@/src/constant/enum";
+import { typeProjectItems } from "@/src/constant/filterProject";
+import { typeFilingItems } from "@/src/constant/filterFiling";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -80,7 +83,7 @@ export default function SelectTab() {
       id: "1",
       name: "ชื่อโครงการ อันที่ 1",
       projectCode: "0011",
-      type: 1,
+      type: ProjectType.ARTS_CULTURE_AFFAIR,
       detail: "",
       reserveDate: "",
       status: ProjectStatus.CONTINUE,
@@ -91,7 +94,7 @@ export default function SelectTab() {
       id: "2",
       name: "ชื่อโครงการ แบบยาว มากกกกกกกกกกกกกกก",
       projectCode: "0012",
-      type: 1,
+      type: ProjectType.ACADEMICS_AFFAIR,
       detail: "",
       reserveDate: "",
       status: ProjectStatus.WAIT_FOR_CLOSE,
@@ -99,9 +102,17 @@ export default function SelectTab() {
       updatedAt: "",
     },
   ];
-  const [value, setValue] = React.useState(0);
-  const [projects, setProjects] = React.useState<ProjectType[]>([]);
+  const [value, setValue] = React.useState<number>(0);
+  const [projects, setProjects] = React.useState<Project[]>([]);
   const [filings, setFilings] = React.useState<FilingType[]>([]);
+
+  const [departmentProject, setDepartmentProject] = React.useState<String>("");
+  const [statusProject, setStatusProject] = React.useState<String>("");
+  const [typeProject, setTypeProject] = React.useState<String>("");
+
+  const [departmentFiling, setDepartmentFiling] = React.useState<String>("");
+  const [statusFiling, setStatusFiling] = React.useState<String>("");
+  const [typeFiling, setTypeFiling] = React.useState<String>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -123,15 +134,14 @@ export default function SelectTab() {
         if (fetchedProject) {
           setProjects(fetchedProject);
         }
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.log(error);
         throw new Error("Failed to fetch data");
       }
     }
 
     fetchData();
   }, []);
-
   return (
     <Box sx={{ width: "100%" }}>
       <CustomTabPanel value={value} index={0}>
@@ -172,9 +182,43 @@ export default function SelectTab() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
+        <div className="w-1/4 grid grid-cols-3 gap-6 mb-5">
+          <SelectType
+            title="ฝ่าย"
+            items={[{ value: "test", label: "test" }]}
+            sendValue={setDepartmentProject}
+          />
+          <SelectType
+            title="สถานะ"
+            items={[{ value: "test", label: "test" }]}
+            sendValue={setStatusProject}
+          />
+          <SelectType
+            title="ประเภท"
+            items={typeProjectItems}
+            sendValue={setTypeProject}
+          />
+        </div>
         <ProjectMenu projects={projects} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
+        <div className="w-1/4 grid grid-cols-3 gap-6 mb-5">
+          <SelectType
+            title="ฝ่าย"
+            items={[{ value: "test", label: "test" }]}
+            sendValue={setDepartmentFiling}
+          />
+          <SelectType
+            title="สถานะ"
+            items={[{ value: "test", label: "test" }]}
+            sendValue={setStatusFiling}
+          />
+          <SelectType
+            title="ประเภท"
+            items={typeFilingItems}
+            sendValue={setTypeFiling}
+          />
+        </div>
         <FilingMenu filings={filings} />
       </CustomTabPanel>
     </Box>

@@ -7,7 +7,7 @@ import { ProjectService } from '../project_/project_.service';
 import { DocumentService } from '../document_/document.service';
 import { FilingService } from '../filing/filing.service';
 import { UserProjService } from '../user-proj/user-proj.service';
-import { FilingStatus } from '../constant/enum';
+import { FilingStatus, ProjectType } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
 
 @Injectable()
@@ -179,6 +179,39 @@ export class TrpcRouter {
       )
       .query(({ input }) => {
         return this.documentService.findDocumentByFilingId(input.filingId);
+      }),
+    //Create a new Project
+    createProject: this.trpc.procedure
+      .input(
+        z.object({
+          name: z.string(),
+          type: z.nativeEnum(ProjectType),
+          detail: z.string().optional(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        return await this.projectService.createProject({
+          name: input.name,
+          type: input.type,
+          detail: input.detail,
+        });
+      }),
+
+    //Create a new Outside Project
+    createOutsideProject: this.trpc.procedure
+      .input(
+        z.object({
+          name: z.string(),
+          type: z.nativeEnum(ProjectType),
+          detail: z.string().optional(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        return await this.projectService.createOutsideProject({
+          name: input.name,
+          type: input.type,
+          detail: input.detail,
+        });
       }),
   });
 
