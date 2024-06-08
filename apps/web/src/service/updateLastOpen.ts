@@ -5,7 +5,7 @@ export default async function updateLastOpen(
   projectId: string
 ) {
   try {
-    await trpc.updateUserProjLastOpen.query({
+    await trpc.userProj.updateUserProjLastOpen.query({
       userId,
       projectId,
     });

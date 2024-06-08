@@ -2,7 +2,7 @@ import { trpc } from "../app/trpc";
 
 export default async function joinProject(userId: string, projectId: string) {
   try {
-    const data = await trpc.createUserProject.query({
+    const data = await trpc.userProj.createUserProject.query({
       userId,
       projectId,
     });
