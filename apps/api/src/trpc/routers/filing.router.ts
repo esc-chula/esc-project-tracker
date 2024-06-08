@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { TrpcService } from '../trpc/trpc.service';
+import { TrpcService } from '../trpc.service';
 import { optional, string, z } from 'zod';
-import { FilingStatus } from '../constant/enum';
-import { FilingService } from '../filing/filing.service';
+import { FilingStatus } from '../../constant/enum';
+import { FilingService } from '../../filing/filing.service';
 
 @Injectable()
 export class FilingRouter {

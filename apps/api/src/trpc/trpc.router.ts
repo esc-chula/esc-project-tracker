@@ -5,19 +5,12 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { TrpcService } from './trpc.service';
-import { optional, string, z } from 'zod';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { UserService } from '../user_/user.service';
-import { ProjectService } from '../project_/project_.service';
-import { DocumentService } from '../document_/document.service';
-import { FilingService } from '../filing/filing.service';
-import { UserProjService } from '../user-proj/user-proj.service';
-import { FilingStatus, ProjectType } from '../constant/enum';
-import { CountFilingService } from '../count-filing/count-filing.service';
-import { ProjectRouter } from './project.router';
-import { FilingRouter } from './filing.router';
-import { DocumentRouter } from './document.router';
-import { UserProjRouter } from './user-proj.router';
+
+import { ProjectRouter } from './routers/project.router';
+import { FilingRouter } from './routers/filing.router';
+import { DocumentRouter } from './routers/document.router';
+import { UserProjRouter } from './routers/user-proj.router';
 
 @Injectable()
 export class TrpcRouter {

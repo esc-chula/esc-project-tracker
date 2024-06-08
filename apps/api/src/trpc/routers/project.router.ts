@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ProjectService } from '../project_/project_.service';
-import { TrpcService } from './trpc.service';
+import { ProjectService } from '../../project_/project_.service';
+import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { ProjectType } from '../constant/enum';
+import { ProjectType } from '../../constant/enum';
 
 @Injectable()
 export class ProjectRouter {

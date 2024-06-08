@@ -6,11 +6,11 @@ import { DocumentModule } from '../document_/document.module';
 import { ProjectModule } from '../project_/project_.module';
 import { FilingModule } from '../filing/filing.module';
 
-import { ProjectRouter } from './project.router';
-import { FilingRouter } from './filing.router';
-import { DocumentRouter } from './document.router';
+import { ProjectRouter } from './routers/project.router';
+import { FilingRouter } from './routers/filing.router';
+import { DocumentRouter } from './routers/document.router';
 import { UserProjModule } from '../user-proj/user-proj.module';
-import { UserProjRouter } from './user-proj.router';
+import { UserProjRouter } from './routers/user-proj.router';
 
 @Module({
   imports: [
