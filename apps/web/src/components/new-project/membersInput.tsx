@@ -3,7 +3,7 @@ import { Input } from "@/src/components/ui/input"
 import { ChangeEventHandler } from "react"
 import { Control } from "react-hook-form"
 import { Button } from "../ui/button"
-import { CircleMinus, Trash2 } from "lucide-react"
+import { CircleMinus } from "lucide-react"
 import { newProjectFormSchema } from "@/src/constant/schema"
 import { z } from "zod"
 

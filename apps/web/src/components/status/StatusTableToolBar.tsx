@@ -11,7 +11,7 @@ export default function StatusTableToolBar({ table }: { table: Table<FilingType>
       <TextField
         InputLabelProps={{ shrink: true }}
         placeholder="รหัสเอกสาร"
-        value={(table.getColumn("รหัสเอกสาร")?.getFilterValue() as string) ?? ""}
+        value={table.getColumn("รหัสเอกสาร")?.getFilterValue() as string}
         onChange={(event) => table.getColumn("รหัสเอกสาร")?.setFilterValue(event.target.value)}
         InputProps={{
           startAdornment: (

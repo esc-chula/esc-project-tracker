@@ -19,10 +19,10 @@ export default function LastestPanel({
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
   useEffect(() => {
-    const sortedProjects = [...projectsWithLastOpen].sort(
+    const newSortedProjects = [...projectsWithLastOpen].sort(
       (a, b) => new Date(b.lastOpen).getTime() - new Date(a.lastOpen).getTime()
     );
-    setSortedProjects(sortedProjects);
+    setSortedProjects(newSortedProjects);
     setIsFetched(true);
   }, [projectsWithLastOpen]);
 

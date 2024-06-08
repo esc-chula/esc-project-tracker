@@ -74,7 +74,7 @@ export default function NewProjectForm() {
         member ? joinProject(member, newProject.id) : undefined
       )
 
-      const newUserProjArray = await Promise.all(userProjPromises)
+      await Promise.all(userProjPromises)
 
       toast({
         title: "สร้างโครงการสำเร็จ",
@@ -173,18 +173,17 @@ export default function NewProjectForm() {
               <ol className="list-decimal pl-5 py-2 space-y-3 font-semibold">
                 {/* TODO: change to current user's student ID */}
                 <li>นภันต์ โชติช่วงนภา&emsp;รหัสนิสิต {form.getValues().members[0]}</li>
-                {[...Array(membersCount)].map((_, index) => {
-                  if (index === membersCount - 1 || form.getValues().members[index + 1])
-                    return (
-                      <MembersInput
-                        control={form.control}
-                        handleChange={handleChange}
-                        key={index}
-                        index={index + 1}
-                        handleDelete={index === membersCount - 1 ? undefined : handleDelete}
-                      />
-                    )
-                })}
+                {[...Array(membersCount)].map((_, index) =>
+                  index === membersCount - 1 || form.getValues().members[index + 1] ? (
+                    <MembersInput
+                      control={form.control}
+                      handleChange={handleChange}
+                      key={index}
+                      index={index + 1}
+                      handleDelete={index === membersCount - 1 ? undefined : handleDelete}
+                    />
+                  ) : undefined
+                )}
               </ol>
             </div>
           </div>

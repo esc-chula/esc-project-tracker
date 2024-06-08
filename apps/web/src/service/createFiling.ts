@@ -1,5 +1,5 @@
 import { trpc } from "../app/trpc";
-import { FilingType } from "../interface/filing";
+import type { FilingType } from "../interface/filing";
 
 export default async function createFiling(
   projectId: string,
