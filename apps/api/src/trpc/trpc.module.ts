@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TrpcRouter } from './trpc.router';
 import { TrpcService } from './trpc.service';
 import { UserService } from '../user_/user.service';
@@ -8,16 +8,12 @@ import { DocumentModule } from '../document_/document.module';
 import { FilingModule } from '../filing/filing.module';
 import { UserProjModule } from '../user-proj/user-proj.module';
 import { CountFilingModule } from '../count-filing/count-filing.module';
+import { ProjectRouter } from './project.router';
 
 @Module({
-  imports: [
-    UserModule,
-    ProjectModule,
-    DocumentModule,
-    FilingModule,
-    UserProjModule,
-    CountFilingModule,
-  ],
-  providers: [TrpcService, TrpcRouter],
+  imports: [ProjectModule],
+  providers: [TrpcService, TrpcRouter, ProjectRouter],
+  controllers: [],
+  exports: [TrpcService],
 })
 export class TrpcModule {}
