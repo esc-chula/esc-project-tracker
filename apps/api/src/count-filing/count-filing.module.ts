@@ -7,7 +7,7 @@ import { ProjectModule } from '../project_/project_.module';
 import { TrpcModule } from '../trpc/trpc.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CountFiling]), ProjectModule, TrpcModule],
+  imports: [TypeOrmModule.forFeature([CountFiling]), ProjectModule],
   providers: [CountFilingService],
   controllers: [CountFilingController],
   exports: [CountFilingService],

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserProjService } from './user-proj.service';
 import { TrpcService } from '../trpc/trpc.service';
 import { optional, string, z } from 'zod';
+import { UserProjService } from '../user-proj/user-proj.service';
 
 @Injectable()
 export class UserProjRouter {

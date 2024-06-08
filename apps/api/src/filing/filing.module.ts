@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { FilingService } from './filing.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Filing } from '../entities/filing.entity';
@@ -11,10 +11,9 @@ import { TrpcModule } from '../trpc/trpc.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Filing]),
-    ProjectModule,
     UserModule,
     CountFilingModule,
-    TrpcModule,
+    ProjectModule,
   ],
   providers: [FilingService],
   controllers: [FilingController],

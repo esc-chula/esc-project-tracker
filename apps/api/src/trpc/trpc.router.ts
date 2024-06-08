@@ -15,16 +15,18 @@ import { UserProjService } from '../user-proj/user-proj.service';
 import { FilingStatus, ProjectType } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
 import { ProjectRouter } from './project.router';
+import { FilingRouter } from './filing.router';
 
 @Injectable()
 export class TrpcRouter {
   constructor(
     private readonly trpc: TrpcService,
-    @Inject(forwardRef(() => ProjectRouter))
     private readonly projectRouter: ProjectRouter,
+    private readonly filingRouter: FilingRouter,
   ) {}
   appRouter = this.trpc.router({
     project: this.projectRouter.appRouter,
+    filing: this.filingRouter.appRouter,
   });
 
   async applyMiddleware(app: INestApplication) {
