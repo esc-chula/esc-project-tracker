@@ -2,23 +2,23 @@ import { FilingStatus } from "./enum";
 
 export const statusFilingItems = [
   {
-    label: "",
+    label: "APPROVED",
     value: FilingStatus.APPROVED,
   },
   {
-    label: "",
+    label: "DRAFT",
     value: FilingStatus.DRAFT,
   },
   {
-    label: "",
+    label: "RETURNED",
     value: FilingStatus.RETURNED,
   },
   {
-    label: "",
+    label: "WAIT_FOR_SECRETARY",
     value: FilingStatus.WAIT_FOR_SECRETARY,
   },
   {
-    label: "",
+    label: "WAIT_FOR_STUDENT_AFFAIR",
     value: FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
   },
 ];

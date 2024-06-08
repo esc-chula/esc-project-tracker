@@ -71,7 +71,7 @@ export class FilingService {
       '0',
     );
 
-    var newFiling = new Filing();
+    const newFiling = new Filing();
     newFiling.project = foundProject;
     newFiling.name = filingName;
     newFiling.status = FilingStatus.DRAFT;
@@ -108,6 +108,20 @@ export class FilingService {
       return data;
     } catch (e) {
       console.log(e);
+      throw new Error('Failed to fetch Filings');
+    }
+  }
+
+  async findFilingWithFilter(filter: { status: string }): Promise<Filing[]> {
+    try {
+      const query = this.filingRepository.createQueryBuilder('filing');
+      if (filter.status) {
+        query.andWhere('filing.status = :status', { status: filter.status });
+      }
+
+      return await query.getMany();
+    } catch (error) {
+      console.log(error);
       throw new Error('Failed to fetch Filings');
     }
   }

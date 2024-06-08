@@ -2,15 +2,15 @@ import { ProjectStatus, ProjectType } from "./enum";
 
 export const statusProjectItems = [
   {
-    label: "",
+    label: "CONTINUE",
     value: ProjectStatus.CONTINUE,
   },
   {
-    label: "",
+    label: "CLOSED",
     value: ProjectStatus.CLOSED,
   },
   {
-    label: "",
+    label: "WAIT_FOR_CLOSE",
     value: ProjectStatus.WAIT_FOR_CLOSE,
   },
 ];

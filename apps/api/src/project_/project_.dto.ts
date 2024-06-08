@@ -11,3 +11,9 @@ export class createProjectDTO {
   type: ProjectType;
   detail?: string;
 }
+
+export class filterProjectDTO {
+  // department?: string;
+  // type?: ProjectType;
+  status?: ProjectStatus;
+}

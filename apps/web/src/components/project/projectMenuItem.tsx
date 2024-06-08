@@ -1,5 +1,5 @@
 "use client";
-import { ProjectType } from "@/src/interface/project";
+import { Project } from "@/src/interface/project";
 import { ProjectService } from "@/src/service/ProjectService";
 import joinProject from "@/src/service/joinProject";
 import { useState } from "react";
@@ -8,7 +8,7 @@ export default function ProjectMenuItem({
   project,
   index,
 }: {
-  project: ProjectType;
+  project: Project;
   index: number;
 }) {
   // To do : check if user joined project by init another function to check

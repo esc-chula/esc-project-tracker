@@ -15,6 +15,7 @@ import SelectType from "../filter/selectType";
 import { ProjectType } from "@/src/constant/enum";
 import { typeProjectItems } from "@/src/constant/filterProject";
 import { typeFilingItems } from "@/src/constant/filterFiling";
+import { mockProject, mockFiling } from "@/src/mock/data";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,73 +47,9 @@ function a11yProps(index: number) {
 }
 
 export default function SelectTab() {
-  const mockFiling = [
-    {
-      id: "string",
-      project: {
-        id: "2",
-        name: "ชื่อโครงการ แบบยาว มากกกกกกกกกกกกกกก",
-        projectCode: "0012",
-        type: 1,
-        detail: "",
-        reserveDate: "",
-        status: ProjectStatus.WAIT_FOR_CLOSE,
-        createdAt: "",
-        updatedAt: "",
-      },
-      user: {
-        id: "string",
-        name: "string",
-        createdAt: "string",
-        updatedAt: "string",
-        username: "string",
-        studentId: "string",
-        password: "string",
-      },
-      name: "filing's name",
-      FilingCode: "0001",
-      status: FilingStatus.APPROVED,
-      type: 1,
-      projectCode: "1001",
-      createdAt: "10/06/2567",
-      updatedAt: "10/06/2567",
-    },
-  ];
-  const mockProject = [
-    {
-      id: "1",
-      name: "ชื่อโครงการ อันที่ 1",
-      projectCode: "0011",
-      type: ProjectType.ARTS_CULTURE_AFFAIR,
-      detail: "",
-      reserveDate: "",
-      status: ProjectStatus.CONTINUE,
-      createdAt: "",
-      updatedAt: "",
-    },
-    {
-      id: "2",
-      name: "ชื่อโครงการ แบบยาว มากกกกกกกกกกกกกกก",
-      projectCode: "0012",
-      type: ProjectType.ACADEMICS_AFFAIR,
-      detail: "",
-      reserveDate: "",
-      status: ProjectStatus.WAIT_FOR_CLOSE,
-      createdAt: "",
-      updatedAt: "",
-    },
-  ];
   const [value, setValue] = React.useState<number>(0);
   const [projects, setProjects] = React.useState<Project[]>([]);
   const [filings, setFilings] = React.useState<FilingType[]>([]);
-
-  const [departmentProject, setDepartmentProject] = React.useState<String>("");
-  const [statusProject, setStatusProject] = React.useState<String>("");
-  const [typeProject, setTypeProject] = React.useState<String>("");
-
-  const [departmentFiling, setDepartmentFiling] = React.useState<String>("");
-  const [statusFiling, setStatusFiling] = React.useState<String>("");
-  const [typeFiling, setTypeFiling] = React.useState<String>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -182,44 +119,10 @@ export default function SelectTab() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <div className="w-1/4 grid grid-cols-3 gap-6 mb-5">
-          <SelectType
-            title="ฝ่าย"
-            items={[{ value: "test", label: "test" }]}
-            sendValue={setDepartmentProject}
-          />
-          <SelectType
-            title="สถานะ"
-            items={[{ value: "test", label: "test" }]}
-            sendValue={setStatusProject}
-          />
-          <SelectType
-            title="ประเภท"
-            items={typeProjectItems}
-            sendValue={setTypeProject}
-          />
-        </div>
-        <ProjectMenu projects={projects} />
+        <ProjectMenu />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <div className="w-1/4 grid grid-cols-3 gap-6 mb-5">
-          <SelectType
-            title="ฝ่าย"
-            items={[{ value: "test", label: "test" }]}
-            sendValue={setDepartmentFiling}
-          />
-          <SelectType
-            title="สถานะ"
-            items={[{ value: "test", label: "test" }]}
-            sendValue={setStatusFiling}
-          />
-          <SelectType
-            title="ประเภท"
-            items={typeFilingItems}
-            sendValue={setTypeFiling}
-          />
-        </div>
-        <FilingMenu filings={filings} />
+        <FilingMenu />
       </CustomTabPanel>
     </Box>
   );
