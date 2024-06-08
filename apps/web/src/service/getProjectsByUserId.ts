@@ -1,10 +1,10 @@
 // src/service/getProjectsByUserId.ts
 import { trpc } from "../app/trpc";
-import { ProjectType, ProjectWithLastOpenType } from "@/src/interface/project"; // Adjust the path as needed
+import { Project, ProjectWithLastOpen } from "@/src/interface/project"; // Adjust the path as needed
 
 export default async function getProjectsByUserId(
   userId: string
-): Promise<ProjectWithLastOpenType[]> {
+): Promise<ProjectWithLastOpen[]> {
   try {
     const projectsWithLastOpen = await trpc.project.findProjectsByUserId.query({
       userId,

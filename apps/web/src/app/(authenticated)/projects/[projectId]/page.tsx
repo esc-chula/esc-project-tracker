@@ -3,14 +3,14 @@ import { trpc } from "@/src/app/trpc";
 import Header from "../../../../components/header/header";
 import Subtitle from "@/src/components/header/subtitle";
 import MyDocumentData from "@/src/components/project/myDocumentData";
-import { ProjectType } from "@/src/interface/project";
+import { Project } from "@/src/interface/project";
 import { useEffect, useState } from "react";
 import getProjectByProjectId from "@/src/service/getProjectByProjectId";
 import { useToast } from "@/src/components/ui/use-toast";
 import updateLastOpen from "@/src/service/updateLastOpen";
 
 export default function Page({ params }: { params: { projectId: string } }) {
-  const [project, setProject] = useState<ProjectType | null>(null);
+  const [project, setProject] = useState<Project | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {

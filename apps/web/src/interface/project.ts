@@ -1,10 +1,10 @@
-import { ProjectStatus } from "../constant/enum";
+import { ProjectStatus, ProjectType } from "../constant/enum";
 
-export interface ProjectType {
+export interface Project {
   id: string;
   name: string;
   projectCode: string;
-  type: number;
+  type: ProjectType;
   detail: string;
   reserveDate: string;
   status: ProjectStatus;
@@ -12,7 +12,7 @@ export interface ProjectType {
   updatedAt: string;
 }
 
-export interface ProjectWithLastOpenType {
-  project: ProjectType;
+export interface ProjectWithLastOpen {
+  project: Project;
   lastOpen: string;
 }
