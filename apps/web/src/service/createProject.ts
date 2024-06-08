@@ -10,7 +10,7 @@ export default async function createProject(
   try {
     console.log(name, type, detail)
 
-    const data = await trpc.createProject.mutate({
+    const data = await trpc.project.createProject.mutate({
       name,
       type,
       detail,
