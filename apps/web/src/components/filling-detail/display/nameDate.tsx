@@ -10,11 +10,13 @@ export default function NameDate({
   activity: string;
 }) {
   return (
-    <div className="border-r-2 py-8 pr-5 space-y-8">
+    <div className="border-r-2 py-8 pr-5 space-y-8 w-[30%]">
       <div className="flex flex-row items-center space-x-4 ">
         {children}
-        <div>
-          <div className="border-black font-bold">{title}</div>
+        <div className="w-[70%]">
+          <div className="border-black font-bold overflow-hidden whitespace-nowrap text-ellipsis text-xl">
+            {title}
+          </div>
           <div className="text-xs">{date}</div>
         </div>
       </div>

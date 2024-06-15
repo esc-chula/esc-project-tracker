@@ -10,6 +10,7 @@ import { Filing } from "@/src/interface/filing";
 import { useToast } from "@/src/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import DisplayWithNote from "@/src/components/filling-detail/display/displayWithNote";
+import DisplayWithStatus from "@/src/components/filling-detail/display/displayWithStatus";
 
 export default function Page() {
   // TODO: Change the userId to the actual userId
@@ -51,8 +52,9 @@ export default function Page() {
           </h3>
           <DocumentStatusStepper status="DEFAULT" />
         </div>
-        <div className="justify-center flex p-5">
+        <div className="justify-center flex flex-col items-center p-5 space-y-5">
           <DisplayWithNote />
+          <DisplayWithStatus />
         </div>
       </main>
     </>
