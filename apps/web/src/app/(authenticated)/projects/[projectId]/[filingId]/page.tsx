@@ -6,7 +6,7 @@ import DocumentStatusStepper from "@/src/components/status/StatusStepper";
 import { StatusTable } from "@/src/components/status/StatusTable";
 import getFilingsByUserId from "@/src/service/getFilingsByUserId";
 import { FilingStatus } from "@/src/constant/enum";
-import { FilingType } from "@/src/interface/filing";
+import { Filing } from "@/src/interface/filing";
 import { useToast } from "@/src/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import DisplayWithNote from "@/src/components/filling-detail/display/displayWithNote";
@@ -14,7 +14,7 @@ import DisplayWithNote from "@/src/components/filling-detail/display/displayWith
 export default function Page() {
   // TODO: Change the userId to the actual userId
   const { toast } = useToast();
-  const [statuses, setStatuses] = useState<FilingType[]>([]);
+  const [statuses, setStatuses] = useState<Filing[]>([]);
 
   useEffect(() => {
     const fetchFiling = async () => {

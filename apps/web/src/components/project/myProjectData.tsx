@@ -6,7 +6,7 @@ import NoProject from "./noProject";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Project, ProjectWithLastOpen } from "@/src/interface/project";
-import { FilingType } from "@/src/interface/filing";
+import { Filing } from "@/src/interface/filing";
 import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
 import getFilingByUserId from "@/src/service/getFilingsByUserId";
@@ -15,14 +15,14 @@ import { useToast } from "../ui/use-toast";
 export default function MyProjectData() {
   const { toast } = useToast();
   const router = useRouter();
-  const redirectToProject = (project: Project | FilingType) => {
+  const redirectToProject = (project: Project | Filing) => {
     router.push(`/projects/${project.id}`);
   };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpen[]
   >([]);
-  const [filing, setFiling] = useState<FilingType[]>([]);
+  const [filing, setFiling] = useState<Filing[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>(

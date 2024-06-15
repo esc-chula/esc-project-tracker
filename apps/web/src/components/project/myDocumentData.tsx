@@ -6,13 +6,13 @@ import NoDocument from "./noDocument";
 import AllDocumentPanel from "./allDocumentPanel";
 import PopoverAddDocument from "./popoverAddDocument";
 import { useEffect, useState } from "react";
-import { FilingType } from "@/src/interface/filing";
+import { Filing } from "@/src/interface/filing";
 import { trpc } from "@/src/app/trpc";
 import getFilingByProjectId from "@/src/service/getFilingByProjectId";
 import { useToast } from "../ui/use-toast";
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
-  const [Filings, setFilings] = useState<FilingType[]>([]);
+  const [Filings, setFilings] = useState<Filing[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const { toast } = useToast();
 
@@ -60,7 +60,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
         <div className="">
           <PopoverAddDocument
             projectId={projectId}
-            addFilingToParent={(filing: FilingType) => {
+            addFilingToParent={(filing: Filing) => {
               setFilings((prevFilings) => [...prevFilings, filing]);
             }}
           />
@@ -71,14 +71,14 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           {Filings.length === 0 ? (
             <NoDocument
               projectId={projectId}
-              setNewFilingToParent={(filing: FilingType) => {
+              setNewFilingToParent={(filing: Filing) => {
                 setFilings((prevFilings) => [...prevFilings, filing]);
               }}
             />
           ) : (
             <AllDocumentPanel
               Filings={Filings}
-              setFilingsToParentFunc={(Filings: FilingType[]) => {
+              setFilingsToParentFunc={(Filings: Filing[]) => {
                 setFilings((prevFilings) => Filings);
               }}
             />
