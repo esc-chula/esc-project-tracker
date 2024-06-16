@@ -11,6 +11,7 @@ import { useToast } from "@/src/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import DisplayWithNote from "@/src/components/filling-detail/display/displayWithNote";
 import DisplayWithStatus from "@/src/components/filling-detail/display/displayWithStatus";
+import CreateDocument from "@/src/components/filling-detail/create-edit/createDocument";
 
 export default function Page() {
   // TODO: Change the userId to the actual userId
@@ -55,6 +56,7 @@ export default function Page() {
         <div className="justify-center flex flex-col items-center p-5 space-y-5">
           <DisplayWithNote />
           <DisplayWithStatus />
+          <CreateDocument />
         </div>
       </main>
     </>
