@@ -38,7 +38,7 @@ export default function DisplayWithNote() {
           <div>
             <div className="font-bold text-sm">ไฟล์แนบ</div>
             <div className="flex flex-row py-2 space-x-5">
-              <div className="w-80 bg-white border-black p-2 rounded-lg border-2 flex flex-row space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer">
+              <div className="w-60 bg-white border-black p-2 rounded-lg border-2 flex flex-row space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer">
                 <FaFile size={20} style={{ color: "skyblue" }} />
                 <div className="text-xs">
                   <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-48 ">
@@ -49,7 +49,7 @@ export default function DisplayWithNote() {
                   </div>
                 </div>
               </div>
-              <div className="w-80 bg-white border-black p-2 rounded-lg border-2 flex flex-row space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer">
+              <div className="w-60 bg-white border-black p-2 rounded-lg border-2 flex flex-row space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer">
                 <FaFile size={20} style={{ color: "orange" }} />
                 <div className="text-xs">
                   <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-48">
