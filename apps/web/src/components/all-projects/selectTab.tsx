@@ -6,15 +6,9 @@ import { Box } from "@mui/material";
 
 import SearchPanel from "./searchPanel";
 import { Project } from "@/src/interface/project";
-import { FilingStatus, ProjectStatus } from "../../../../api/src/constant/enum"; // to be deleted later
-import findAllFiling from "@/src/service/findAllFiling";
 import ProjectMenu from "../project/projectMenu";
 import { FilingType } from "@/src/interface/filing";
 import FilingMenu from "../project/filingMenu";
-import SelectType from "../filter/selectType";
-import { ProjectType } from "@/src/constant/enum";
-import { typeProjectItems } from "@/src/constant/filterProject";
-import { typeFilingItems } from "@/src/constant/filterFiling";
 import { mockProject, mockFiling } from "@/src/mock/data";
 
 interface TabPanelProps {

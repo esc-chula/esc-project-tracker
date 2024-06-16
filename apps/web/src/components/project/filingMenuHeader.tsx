@@ -1,28 +1,14 @@
 export default function FilingMenuHeader() {
   return (
-    <div className="w-full rounded-t-xl bg-rose-100 grid grid-cols-9 gap-2 font-bold">
-      <div className="flex items-center justify-center text-center py-5">
-        เลขรัน
-      </div>
-      <div className="flex items-center justify-start text-center py-5 col-span-2">
-        ชื่อโครงการ
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        วันที่จองเลขรัน
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        รายละเอียดเอกสาร
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        นิสิตผู้รับผิดชอบ
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        สถานะเอกสาร
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        หมายเหตุ
-      </div>
-      <div className="flex items-center justify-center text-center py-5"></div>
-    </div>
+    <tr className="bg-rose-100">
+      <th className="px-8 py-5 text-start text-nowrap">เลขรัน</th>
+      <th className="p-4 py-5 text-start text-nowrap">ชื่อโครงการ</th>
+      <th className="p-4 py-5 text-start text-nowrap">วันที่จองเลขรัน</th>
+      <th className="p-4 py-5 text-start text-nowrap">รายละเอียดเอกสาร</th>
+      <th className="p-4 py-5 text-start text-nowrap">นิสิตผู้รับผิดชอบ</th>
+      <th className="p-4 py-5 text-start text-nowrap">สถานะเอกสาร</th>
+      <th className="p-4 py-5 text-start text-nowrap">นิสิตผู้รับผิดชอบ</th>
+      <th className="p-4 py-5 text-start text-nowrap"></th>
+    </tr>
   );
 }

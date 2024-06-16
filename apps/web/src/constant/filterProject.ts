@@ -15,7 +15,7 @@ export const statusProjectItems = [
   },
 ];
 
-export const typeProjectItems = [
+export const departmentProjectItems = [
   {
     label: "โครงการฝ่ายกิจการภายใน",
     value: ProjectType.INTERNAL_AFFAIR,

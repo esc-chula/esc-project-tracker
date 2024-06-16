@@ -26,32 +26,21 @@ export default function FilingMenuItem({
     window.open(documents[0].pdfLink, "_blank");
   };
   return (
-    <div className="w-full grid grid-cols-9 gap-2 border-b-2 border-gray-300">
-      <div className="flex items-center justify-center text-center py-5">
+    <tr className="border-b-2 border-gray-200">
+      <td className="px-8 py-5 text-nowrap">
         {filing.projectCode + "-" + filing.FilingCode}
-      </div>
-      <div className="flex items-center justify-start text-center py-5 col-span-2">
-        {filing.name}
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        {filing.createdAt}
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        still dont have details
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        นิสิตผู้รับผิดชอบ have to query
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
+      </td>
+      <td className="p-4 py-5 text-nowrap">{filing.name}</td>
+      <td className="p-4 py-5 text-nowrap">{filing.createdAt}</td>
+      <td className="p-4 py-5 text-nowrap">still dont have details</td>
+      <td className="p-4 py-5 text-nowrap">นิสิตผู้รับผิดชอบ have to query</td>
+      <td className="p-4 py-5 text-nowrap text-center">
         <p className={`rounded-lg px-2 py-1 ${buttonColors[filing.status]}`}>
           {TextMyProject[filing.status]}
         </p>
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        หมายเหตุ
-      </div>
-      <div className="flex items-center justify-center text-center py-5">
-        {/* add preview previous document */}
+      </td>
+      <td className="p-4 py-5 text-nowrap">หมายเหตุ</td>
+      <td className="p-4 py-5 text-nowrap text-center">
         <button
           className={`px-2 py-1 bg-red text-white rounded-lg ${documents.length > 0 ? "" : "cursor-not-allowed opacity-50"}`}
           onClick={handleClick}
@@ -59,7 +48,7 @@ export default function FilingMenuItem({
         >
           อ่าน
         </button>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }

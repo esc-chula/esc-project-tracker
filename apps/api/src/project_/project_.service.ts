@@ -4,11 +4,7 @@ import { Project } from '../entities/project.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
-import {
-  createProjectDTO,
-  filterProjectDTO,
-  ProjectWithLastOpenDTO,
-} from './project_.dto';
+import { createProjectDTO, ProjectWithLastOpenDTO } from './project_.dto';
 import { ProjectType } from '../constant/enum';
 
 @Injectable()
@@ -118,7 +114,7 @@ export class ProjectService {
     return await this.projectRepository.save(newProject);
   }
 
-  async findProjectWithFilter(filter: filterProjectDTO): Promise<Project[]> {
+  async findProjectWithFilter(filter: { status?: string }): Promise<Project[]> {
     try {
       const query = await this.projectRepository.createQueryBuilder('project');
       // if (filter.department) {

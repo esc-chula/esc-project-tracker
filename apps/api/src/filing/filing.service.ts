@@ -112,7 +112,7 @@ export class FilingService {
     }
   }
 
-  async findFilingWithFilter(filter: { status: string }): Promise<Filing[]> {
+  async findFilingWithFilter(filter: { status?: string }): Promise<Filing[]> {
     try {
       const query = this.filingRepository.createQueryBuilder('filing');
       if (filter.status) {

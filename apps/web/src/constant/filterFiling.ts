@@ -23,7 +23,7 @@ export const statusFilingItems = [
   },
 ];
 
-export const typeFilingItems = [
+export const departmentFilingItems = [
   {
     label: "เอกสารขอเปิดโครงการ",
     value: 0,
