@@ -56,6 +56,7 @@ export default function NewProjectForm() {
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>, index: number) {
     e.preventDefault()
     form.resetField(`members.${index}`)
+    form.trigger(`members`)
   }
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {

@@ -40,5 +40,6 @@ export const newProjectFormSchema = z.object({
         }
         if (item) uniqueValues.set(item, idx)
       })
+      console.log(uniqueValues)
     }),
 })
