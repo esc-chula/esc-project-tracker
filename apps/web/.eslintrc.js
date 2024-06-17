@@ -1,7 +1,20 @@
 module.exports = {
   extends: ["@repo/eslint-config/next.js"],
-  error: {
-    case: "pascalCase",
-    case: "camelCase",
+  rules: {
+    "unicorn/filename-case": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "no-console": "off",
+    "no-unused-vars": "off",
+    "react/jsx-sort-props": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-unsafe-enum-comparison": "warn",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-nested-ternary": "off",
   },
+  ignorePatterns: ["src/components/ui/**/*"],
 }

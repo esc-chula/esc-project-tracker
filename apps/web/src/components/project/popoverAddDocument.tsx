@@ -72,7 +72,7 @@ export default function PopoverAddDocument({
             placeholder="ชื่อเอกสาร"
             className="border-black border-2 w-full p-2 rounded-lg"
             value={filingName}
-            onChange={(e) => setFilingName(e.target.value.trim())}
+            onChange={(e) => {setFilingName(e.target.value.trim())}}
             required
           ></input>
 
@@ -83,7 +83,7 @@ export default function PopoverAddDocument({
               className="border-black border-2 w-full p-2 rounded-lg"
               defaultValue={0}
               value={filingType}
-              onChange={(e) => setFilingType(parseInt(e.target.value))}
+              onChange={(e) => {setFilingType(parseInt(e.target.value))}}
             >
               {filingTypeMap.map((type) => (
                 <option value={type.value} key={type.value}>

@@ -15,14 +15,14 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({
+      {toasts.map(({
         id,
         title,
         description,
         action,
         isError,
         ...props
-      }) {
+      }) => {
         return (
           <Toast
             key={id}

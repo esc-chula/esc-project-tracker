@@ -1,15 +1,7 @@
-import { ArrowDownIcon, ArrowUpIcon, ArrowUpDown, EyeOff } from "lucide-react"
+import { ArrowDownIcon, ArrowUpIcon, ArrowUpDown } from "lucide-react"
 import { Column } from "@tanstack/react-table"
-
 import { cn } from "@/src/lib/utils"
 import { Button } from "@/src/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu"
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
@@ -30,7 +22,9 @@ export function DataTableColumnHeader<TData, TValue>({
       <Button
         className="p-0"
         variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        onClick={() => {
+          column.toggleSorting(column.getIsSorted() === "asc")
+        }}>
         {title}
         {column.getIsSorted() === "desc" ? (
           <ArrowDownIcon className="ml-2 h-4 w-4" />

@@ -1,7 +1,7 @@
 // tailwind config is required for editor support
 
-import type { Config } from "tailwindcss";
-import sharedConfig from "@repo/tailwind-config";
+import type { Config } from "tailwindcss"
+import sharedConfig from "@repo/tailwind-config"
 
 const config = {
   darkMode: ["class"],
@@ -34,6 +34,8 @@ const config = {
         accepted: "var(--accepted)",
         pending: "var(--pending)",
         disabled: "var(--disabled)",
+        lightgray: "var(--lightgray)",
+        darkpink: "var(--darkpink)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -107,6 +109,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+} satisfies Config
 
-export default config;
+export default config
