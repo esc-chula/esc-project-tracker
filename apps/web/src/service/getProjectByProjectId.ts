@@ -1,5 +1,5 @@
 import { trpc } from "../app/trpc";
-import { Project } from "../interface/project";
+import type { Project } from "../interface/project";
 
 export default async function getProjectByProjectId(
   projectId: string

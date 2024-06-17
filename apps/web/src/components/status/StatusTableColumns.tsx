@@ -3,8 +3,8 @@ import { DataTableColumnHeader } from "./DataTableColumnHeader"
 import { TextMyProject, buttonColors } from "@/src/styles/enumMap"
 import Link from "next/link"
 import { Button } from "../ui/button"
-import { FilingStatus } from "@/src/constant/enum"
-import { FilingType } from "@/src/interface/filing"
+import type { FilingStatus } from "@/src/constant/enum"
+import type { FilingType } from "@/src/interface/filing"
 
 export const columns: ColumnDef<FilingType>[] = [
   {
@@ -39,7 +39,7 @@ export const columns: ColumnDef<FilingType>[] = [
   },
   {
     accessorKey: "status",
-    filterFn: (row, id, value) => {
+    filterFn: (row, id, value: string[]) => {
       return value.includes(row.getValue(id))
     },
     header: ({ column }) => {

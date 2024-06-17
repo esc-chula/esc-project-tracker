@@ -1,4 +1,4 @@
-import { FilingStatus } from "../constant/enum";
+import type { FilingStatus } from "../constant/enum";
 
 export interface MockProject {
   id: string;

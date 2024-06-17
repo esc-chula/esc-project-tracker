@@ -1,5 +1,4 @@
 "use client";
-import { trpc } from "@/src/app/trpc";
 import Header from "../../../../components/header/header";
 import Subtitle from "@/src/components/header/subtitle";
 import MyDocumentData from "@/src/components/project/myDocumentData";
@@ -14,7 +13,7 @@ export default function Page({ params }: { params: { projectId: string } }) {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (params?.projectId) {
+    if (params.projectId) {
       const fetchProject = async () => {
         try {
           const data = await getProjectByProjectId(params.projectId);
@@ -48,8 +47,7 @@ export default function Page({ params }: { params: { projectId: string } }) {
           }
         }
       };
-      fetchProject();
-      updateLastOpenFetch();
+      fetchProject().then(() => updateLastOpenFetch());
     }
   }, [params]);
 
@@ -59,12 +57,12 @@ export default function Page({ params }: { params: { projectId: string } }) {
         <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh] ">
           <Header>
             <Subtitle
-              project={`${project?.projectCode} ${project?.name}`}
-              projectId={params.projectId as string}
+              project={`${project.projectCode} ${project.name}`}
+              projectId={params.projectId}
             />
           </Header>
 
-          <MyDocumentData projectId={params.projectId as string} />
+          <MyDocumentData projectId={params.projectId} />
         </main>
       )}
     </>

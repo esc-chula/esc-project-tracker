@@ -1,4 +1,4 @@
-import { FilingStatus } from "@/src/constant/enum.ts";
+import { FilingStatus } from "@/src/constant/enum.ts"
 
 export const buttonColors = {
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "bg-[#49E66B] text-white",
@@ -6,7 +6,7 @@ export const buttonColors = {
   [FilingStatus.APPROVED]: "bg-[#49E66B] text-white",
   [FilingStatus.WAIT_FOR_SECRETARY]: "bg-[#ECC700] text-[#FBF2A0]",
   [FilingStatus.DRAFT]: "bg-[#C0C0C0] text-white",
-};
+}
 
 export const TextMyProject = {
   [FilingStatus.APPROVED]: "เรียบร้อย",
@@ -14,7 +14,7 @@ export const TextMyProject = {
   [FilingStatus.WAIT_FOR_SECRETARY]: "ส่งให้เลขาตรวจสอบ",
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "ส่งให้กิจการนิสิตแล้ว",
   [FilingStatus.DRAFT]: "ฉบับร่าง",
-};
+}
 
 export const FilingStatusToStepper = {
   [FilingStatus.APPROVED]: [
@@ -52,7 +52,7 @@ export const FilingStatusToStepper = {
     ["accepted", "pending"],
     ["pending"],
   ],
-};
+}
 
 //Filing
 export const filterStatus = [
@@ -76,7 +76,7 @@ export const filterStatus = [
     label: "เอกสารถูกตีกลับ",
     value: "RETURNED",
   },
-];
+]
 
 // PROJECt
 export const filterProjectStatus = [
@@ -92,4 +92,4 @@ export const filterProjectStatus = [
     label: "ปิดโครงการ",
     value: "CLOSED",
   },
-];
+]

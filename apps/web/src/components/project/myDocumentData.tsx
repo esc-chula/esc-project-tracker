@@ -1,5 +1,4 @@
 "use client";
-import { MockFiling, MockProject } from "@/src/mock/type";
 import SearchBar from "../searchbar/searchBar";
 import { FileText } from "lucide-react";
 import NoDocument from "./noDocument";
@@ -7,7 +6,6 @@ import AllDocumentPanel from "./allDocumentPanel";
 import PopoverAddDocument from "./popoverAddDocument";
 import { useEffect, useState } from "react";
 import { FilingType } from "@/src/interface/filing";
-import { trpc } from "@/src/app/trpc";
 import getFilingByProjectId from "@/src/service/getFilingByProjectId";
 import { useToast } from "../ui/use-toast";
 
@@ -53,7 +51,6 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
             Filings={Filings}
             projects={[]}
             placeholder="ค้นหาเอกสาร"
-            FilingFunc={() => {}}
           />
         </div>
 
@@ -78,8 +75,8 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           ) : (
             <AllDocumentPanel
               Filings={Filings}
-              setFilingsToParentFunc={(Filings: FilingType[]) => {
-                setFilings((prevFilings) => Filings);
+              setFilingsToParentFunc={(newFilings: FilingType[]) => {
+                setFilings(newFilings);
               }}
             />
           )}

@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import { Toaster } from "../components/alert/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 const sukhumvitSet = localFont({
