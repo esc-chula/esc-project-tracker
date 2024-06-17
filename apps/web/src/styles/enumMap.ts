@@ -16,6 +16,14 @@ export const TextMyProject = {
   [FilingStatus.DRAFT]: "ฉบับร่าง",
 };
 
+export const TextMyFilingStatus = {
+  [FilingStatus.APPROVED]: "อนุมัติ",
+  [FilingStatus.RETURNED]: "ตีกลับ",
+  [FilingStatus.WAIT_FOR_SECRETARY]: "เลขาตรวจสอบ",
+  [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "ส่งให้กิจการนิสิต",
+  [FilingStatus.DRAFT]: "ฉบับร่าง",
+};
+
 export const FilingStatusToStepper = {
   [FilingStatus.APPROVED]: [
     ["accepted", "accepted"],

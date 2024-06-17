@@ -1,6 +1,6 @@
 import { FilingStatus } from "../constant/enum";
 
-export interface FilingType {
+export interface Filing {
   id: string;
   project: any;
   user: any;
