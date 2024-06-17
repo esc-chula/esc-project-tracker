@@ -47,7 +47,7 @@ export default function NewProjectForm() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const index = parseInt(e.target.name.split(".")[1])
     form.setValue(`members.${index}`, e.target.value)
-    form.trigger(`members.${index}`)
+    form.trigger(`members`)
     if (e.target.value) {
       setMembersCount(Math.max(membersCount, index + 1))
     }
@@ -77,16 +77,16 @@ export default function NewProjectForm() {
       await Promise.all(userProjPromises)
 
       toast({
-        title: "สร้างโครงการสำเร็จ",
-        description: `โครงการ ${newProject.projectCode} ${newProject.name} ถูกสร้างเรียบร้อยแล้ว`,
+        title: "เปิดโครงการสำเร็จ",
+        description: `เปิดโครงการ ${newProject.projectCode} ${newProject.name} เรียบร้อยแล้ว`,
       })
 
-      router.push(`/project/${newProject.id}`)
+      router.push(`/projects/${newProject.id}`)
     } catch (err) {
       if (err instanceof Error) {
         if (projCreated) {
           toast({
-            title: "เปิดโครงการสำเร็จ แต่ไม่สามารถเพิ่มผู้ใช้เข้าโครงการได้",
+            title: "เปิดโครงการสำเร็จ แต่ไม่สามารถเพิ่มนิสิตเข้าโครงการได้",
             description: err.message,
             isError: true,
           })
@@ -106,6 +106,7 @@ export default function NewProjectForm() {
     () => form.formState.isSubmitting || !form.formState.isValid,
     [form.formState.isSubmitting, form.formState.isValid]
   )
+  console.log(form.getValues())
 
   return (
     <>

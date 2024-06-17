@@ -20,5 +20,25 @@ export const newProjectFormSchema = z.object({
     .string()
     .regex(/^$|^\d{2}3\d{5}21$/, { message: "รหัสนิสิตไม่ถูกต้อง" })
     .optional()
-    .array(),
+    .array()
+    .superRefine((items, ctx) => {
+      const uniqueValues = new Map<string | undefined, number>()
+      items.forEach((item, idx) => {
+        const firstAppearanceIndex = uniqueValues.get(item)
+        if (firstAppearanceIndex !== undefined) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `รหัสนิสิตซ้ำกัน`,
+            path: [idx],
+          })
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `รหัสนิสิตซ้ำกัน`,
+            path: [firstAppearanceIndex],
+          })
+          return
+        }
+        if (item) uniqueValues.set(item, idx)
+      })
+    }),
 })
