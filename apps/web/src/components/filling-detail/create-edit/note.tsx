@@ -1,4 +1,4 @@
-export default function Example(){
+/*export default function Example(){
     return(
         "use client"
 
@@ -173,7 +173,7 @@ export default function NewProjectForm() {
             <div className="space-y-3 font-bold text-lg">
               ผู้ร่วมโครงการ
               <ol className="list-decimal pl-5 py-2 space-y-3 font-semibold">
-                {/* TODO: change to current user's student ID */}
+                {/* TODO: change to current user's student ID }
                 <li>นภันต์ โชติช่วงนภา&emsp;รหัสนิสิต {form.getValues().members[0]}</li>
                 {[...Array(membersCount)].map((_, index) =>
                   index === membersCount - 1 || form.getValues().members[index + 1] ? (
@@ -203,4 +203,4 @@ export default function NewProjectForm() {
 }
 
     )
-}
+}*/

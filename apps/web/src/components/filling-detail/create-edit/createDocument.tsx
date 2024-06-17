@@ -1,7 +1,10 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
@@ -9,19 +12,10 @@ import {
   FormMessage,
 } from "../../ui/form";
 import { projectTypeMap } from "@/src/constant/Map";
-import { Input, Button } from "@mui/material";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from "@radix-ui/react-select";
-import { FilePlus } from "lucide-react";
 
 export default function CreateDocument() {
   const createdFormSchema = z.object({
+    activity: z.string().min(1, { message: "Please select an activity." }),
     detail: z.string().min(1, { message: "กรุณากรอกรายละเอียด" }),
     note: z.string().optional(),
   });
@@ -29,42 +23,70 @@ export default function CreateDocument() {
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
     defaultValues: {
+      activity: "",
       detail: "",
       note: "",
     },
   });
 
-  const onSubmit = form.handleSubmit(
-    (data: z.infer<typeof createdFormSchema>) => {
-      console.log(data);
-    }
-  );
+  function onSubmit(values: z.infer<typeof createdFormSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
 
   return (
     <>
       <Form {...form}>
-        <div className="flex">
-          <div className="flex flex-row">
-            <div>
-              <FormField
-                control={form.control}
-                name="detail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg">
-                      กิจกรรม<span className="text-red">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="ใส่ชื่อโครงการ" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="flex">
+            <div className="flex flex-row">
+              <div>
+                <FormField
+                  control={form.control}
+                  name="activity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold text-lg block">
+                        กิจกรรม<span className="text-red">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <input
+                          placeholder="ใส่ชื่อโครงการ"
+                          {...field}
+                          className="border-2 border-black rounded-xl p-2"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="detail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold text-lg block">
+                        {"รายละเอียดเอกสาร (ชื่อเรื่องที่ระบุในเอกสาร)"}
+                        <span className="text-red">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <input
+                          placeholder="ใส่หัวข้อเอกสาร"
+                          {...field}
+                          className="border-2 border-black rounded-xl p-2"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-            <div>รายละเอียก</div>
           </div>
-        </div>
+        </form>
       </Form>
     </>
   );
