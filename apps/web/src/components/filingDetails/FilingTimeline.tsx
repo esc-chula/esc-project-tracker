@@ -6,14 +6,17 @@ import DocumentStatusStepper from "@/src/components/status/StatusStepper"
 import { StatusTable } from "@/src/components/status/StatusTable"
 import getFilingsByUserId from "@/src/service/getFilingsByUserId"
 import { FilingStatus } from "@/src/constant/enum"
-import { FilingType } from "@/src/interface/filing"
+import { Filing } from "@/src/interface/filing"
 import { useToast } from "@/src/components/ui/use-toast"
 import { useEffect, useState } from "react"
+import DisplayWithNote from "../filling-detail/display/displayWithNote"
+import DisplayWithStatus from "../filling-detail/display/displayWithStatus"
+import CreateDocument from "../filling-detail/create-edit/createDocument"
 
-export default function Page() {
+export default function FilingTimeline() {
   // TODO: Change the userId to the actual userId
   const { toast } = useToast()
-  const [statuses, setStatuses] = useState<FilingType[]>([])
+  const [statuses, setStatuses] = useState<Filing[]>([])
 
   useEffect(() => {
     const fetchFiling = async () => {
@@ -34,19 +37,10 @@ export default function Page() {
   }, [])
 
   return (
-    <>
-      <main className="w-full pt-[68px]">
-        <div className="pl-15 pr-5">
-          <Header>
-            <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
-          </Header>
-        </div>
-
-        <div className="bg-lightpink flex flex-col pt-12 pb-5 items-center mt-5 w-full">
-          <h3 className="mb-8 text-2xl text-intania font-bold">ขั้นตอนการส่งเอกสาร</h3>
-          <DocumentStatusStepper status="DEFAULT" />
-        </div>
-      </main>
-    </>
+    <div className="justify-center flex flex-col items-center p-5 space-y-5">
+      <DisplayWithNote />
+      <DisplayWithStatus />
+      <CreateDocument />
+    </div>
   )
 }
