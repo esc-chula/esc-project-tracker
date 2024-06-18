@@ -9,9 +9,9 @@ import { FilingStatus } from "@/src/constant/enum"
 import { Filing } from "@/src/interface/filing"
 import { useToast } from "@/src/components/ui/use-toast"
 import { useEffect, useState } from "react"
-import DisplayWithNote from "../filling-detail/display/displayWithNote"
-import DisplayWithStatus from "../filling-detail/display/displayWithStatus"
-import CreateDocument from "../filling-detail/create-edit/createDocument"
+import DisplayWithNote from "./display/displayWithNote"
+import DisplayWithStatus from "./display/displayWithStatus"
+import CreateDocument from "./create-edit/createDocument"
 
 export default function FilingTimeline() {
   // TODO: Change the userId to the actual userId

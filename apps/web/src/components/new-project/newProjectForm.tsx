@@ -82,7 +82,7 @@ export default function NewProjectForm() {
         description: `เปิดโครงการ ${newProject.projectCode} ${newProject.name} เรียบร้อยแล้ว`,
       })
 
-      router.push(`/projects/${newProject.id}`)
+      router.push(`/project/${newProject.id}`)
     } catch (err) {
       if (err instanceof Error) {
         if (projCreated) {

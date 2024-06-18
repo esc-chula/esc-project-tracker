@@ -8,7 +8,7 @@ import { FilingStatus } from "@/src/constant/enum"
 import { Filing } from "@/src/interface/filing"
 import { useToast } from "@/src/components/ui/use-toast"
 import { useEffect, useState } from "react"
-import FilingTimeline from "@/src/components/filingDetails/FilingTimeline"
+import FilingTimeline from "@/src/components/filling-detail/filingTimeline"
 import Subtitle from "@/src/components/header/subtitle"
 
 export default async function Page({
