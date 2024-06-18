@@ -1,15 +1,13 @@
-import { Radio } from "lucide-react"
+import { FileText, Info, Plus } from "lucide-react"
 import Header from "@/src/components/header/header"
 import Title from "@/src/components/header/title"
 import DocumentStatusStepper from "@/src/components/status/StatusStepper"
 import { StatusTable } from "@/src/components/status/StatusTable"
-import getFilingsByUserId from "@/src/service/getFilingsByUserId"
 import { FilingStatus } from "@/src/constant/enum"
 import { Filing } from "@/src/interface/filing"
-import { useToast } from "@/src/components/ui/use-toast"
-import { useEffect, useState } from "react"
 import FilingTimeline from "@/src/components/filling-detail/filingTimeline"
 import Subtitle from "@/src/components/header/subtitle"
+import { Button } from "@/src/components/ui/button"
 
 export default async function Page({
   params,
@@ -27,9 +25,27 @@ export default async function Page({
           </Header>
         </div>
 
-        <div className="bg-lightpink flex flex-col pt-12 pb-5 items-center mt-5 w-full">
-          <h3 className="mb-8 text-2xl text-intania font-bold">ขั้นตอนการส่งเอกสาร</h3>
-          <DocumentStatusStepper status="DEFAULT" />
+        <div className="flex flex-col pt-5 pb-5 items-center mt-5 w-full">
+          <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
+          <DocumentStatusStepper status={FilingStatus.APPROVED} />
+        </div>
+        <div className="px-15 flex items-center justify-between gap-3">
+          <span className="flex">
+            <FileText className="w-6 h-6 mr-2" />
+            <h4 className="font-semibold text-2xl">9035-0001 เปิดโครงการ</h4>
+          </span>
+          <span className="flex">
+            <Button
+              variant="outline"
+              className="mx-auto rounded-2xlg text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none">
+              <Plus className="h-8 w-8 mr-1" />
+              เพิ่ม
+            </Button>
+            <Button className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
+              <Info className="h-8 w-8 mr-1" />
+              อ่าน
+            </Button>
+          </span>
         </div>
         <FilingTimeline />
       </main>

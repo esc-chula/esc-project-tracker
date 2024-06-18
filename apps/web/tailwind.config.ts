@@ -17,6 +17,9 @@ const config = {
     fontFamily: {
       sukhumvit: ["var(--sukhumvit-set-font)", "sans-serif"],
     },
+    borderRadius: {
+      "2xl": "1.25rem",
+    },
     container: {
       center: true,
       padding: "2rem",
