@@ -5,10 +5,10 @@ import Title from "@/src/components/header/title";
 import DocumentStatusStepper from "@/src/components/status/StatusStepper";
 import { StatusTable } from "@/src/components/status/StatusTable";
 import getFilingsByUserId from "@/src/service/getFilingsByUserId";
-import { FilingType } from "@/src/interface/filing";
+import { Filing } from "@/src/interface/filing";
 import { useToast } from "@/src/components/ui/use-toast";
 import { useEffect, useState } from "react";
-// const mockData: FilingType[] = [
+// const mockData: Filing[] = [
 //   {
 //     id: "m5gr84i91",
 //     status: FilingStatus.DRAFT,
@@ -74,7 +74,7 @@ import { useEffect, useState } from "react";
 export default function Page() {
   // TODO: Change the userId to the actual userId
   const { toast } = useToast();
-  const [statuses, setStatuses] = useState<FilingType[]>([]);
+  const [statuses, setStatuses] = useState<Filing[]>([]);
 
   useEffect(() => {
     const fetchFiling = async () => {

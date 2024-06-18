@@ -4,9 +4,9 @@ import { TextMyProject, buttonColors } from "@/src/styles/enumMap"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import type { FilingStatus } from "@/src/constant/enum"
-import type { FilingType } from "@/src/interface/filing"
+import type { Filing } from "@/src/interface/filing"
 
-export const columns: ColumnDef<FilingType>[] = [
+export const columns: ColumnDef<Filing>[] = [
   {
     accessorKey: "updatedAt",
     header: ({ column }) => {

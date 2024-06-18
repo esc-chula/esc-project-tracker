@@ -1,9 +1,9 @@
 import { trpc } from "../app/trpc";
-import type { FilingType } from "../interface/filing";
+import type { Filing } from "../interface/filing";
 
 export default async function deleteFiling(
   filingId: string
-): Promise<FilingType | null> {
+): Promise<Filing | null> {
   try {
     const data = await trpc.filing.deleteFiling.query({ filingId });
 

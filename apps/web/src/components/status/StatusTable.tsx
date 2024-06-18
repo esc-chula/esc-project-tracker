@@ -23,9 +23,9 @@ import {
 } from "@/src/components/ui/table"
 import { columns } from "./StatusTableColumns"
 import StatusTableToolBar from "./StatusTableToolBar"
-import { FilingType } from "@/src/interface/filing"
+import { Filing } from "@/src/interface/filing"
 
-export function StatusTable({ data }: { data: FilingType[] }) {
+export function StatusTable({ data }: { data: Filing[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})

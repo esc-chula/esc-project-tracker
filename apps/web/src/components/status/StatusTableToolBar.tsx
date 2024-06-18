@@ -1,11 +1,11 @@
 import { InputAdornment, TextField } from "@mui/material"
 import { Search } from "lucide-react"
 import { Table } from "@tanstack/react-table"
-import { FilingType } from "@/src/interface/filing"
+import { Filing } from "@/src/interface/filing"
 import { filterStatus } from "@/src/styles/enumMap"
 import { DataTableFacetedFilter } from "./StatusTableFacetedFilter"
 
-export default function StatusTableToolBar({ table }: { table: Table<FilingType> }) {
+export default function StatusTableToolBar({ table }: { table: Table<Filing> }) {
   return (
     <div className="flex items-center py-4 gap-4">
       <TextField

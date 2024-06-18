@@ -10,7 +10,7 @@ import { HiDocumentAdd } from "react-icons/hi";
 import { filingTypeMap } from "@/src/constant/Map";
 import { useState } from "react";
 import createFiling from "@/src/service/createFiling";
-import { FilingType } from "@/src/interface/filing";
+import { Filing } from "@/src/interface/filing";
 import { useToast } from "../ui/use-toast";
 
 export default function PopoverAddDocument({
@@ -20,7 +20,7 @@ export default function PopoverAddDocument({
 }: {
   children?: React.ReactNode;
   projectId: string;
-  addFilingToParent: (filing: FilingType) => void;
+  addFilingToParent: (filing: Filing) => void;
 }) {
   const [filingType, setFilingType] = useState<number>(0);
   const [filingName, setFilingName] = useState<string>("");

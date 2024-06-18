@@ -3,18 +3,18 @@ import AllDocumentCard from "./allDocumentCard";
 import SelectType from "./selectType";
 import { filterStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
-import { FilingType } from "@/src/interface/filing";
+import { Filing } from "@/src/interface/filing";
 import { filingTypeMap } from "@/src/constant/Map";
 
 export default function AllDocumentPanel({
   Filings,
   setFilingsToParentFunc,
 }: {
-  Filings: FilingType[];
-  setFilingsToParentFunc: (Filings: FilingType[]) => void;
+  Filings: Filing[];
+  setFilingsToParentFunc: (Filings: Filing[]) => void;
 }) {
-  const [allFilings, setAllFilings] = useState<FilingType[]>(Filings);
-  const [filteredFilings, setFilteredFilings] = useState<FilingType[]>(Filings);
+  const [allFilings, setAllFilings] = useState<Filing[]>(Filings);
+  const [filteredFilings, setFilteredFilings] = useState<Filing[]>(Filings);
   const [status, setStatus] = useState<string>("all");
   const [type, setType] = useState<string>("all");
 

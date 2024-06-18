@@ -3,16 +3,16 @@ import { HiLightBulb } from "react-icons/hi"
 import { FilePlus } from "lucide-react"
 import PopoverAddDocument from "./popoverAddDocument"
 import { useState } from "react"
-import { FilingType } from "@/src/interface/filing"
+import { Filing } from "@/src/interface/filing"
 
 export default function NoDocument({
   projectId,
   setNewFilingToParent,
 }: {
   projectId: string
-  setNewFilingToParent: (filing: FilingType) => void
+  setNewFilingToParent: (filing: Filing) => void
 }) {
-  const [newFiling, setNewFiling] = useState<FilingType | null>(null)
+  const [newFiling, setNewFiling] = useState<Filing | null>(null)
 
   return (
     <div className="w-[50vw] flex flex-col items-center justify-center p-16">
@@ -24,7 +24,7 @@ export default function NoDocument({
       </div>
       <div>
         <PopoverAddDocument
-          addFilingToParent={(filing: FilingType) => {
+          addFilingToParent={(filing: Filing) => {
             setNewFiling(filing)
             setNewFilingToParent(filing)
           }}
