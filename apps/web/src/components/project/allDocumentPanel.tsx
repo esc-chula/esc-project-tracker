@@ -4,7 +4,7 @@ import SelectType from "../filter/selectType";
 import { filterStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { FilingType } from "@/src/interface/filing";
-import { filingTypeMap, projectTypeMap } from "@/src/constant/Map";
+import { filingTypeMap } from "@/src/constant/Map";
 
 export default function AllDocumentPanel({
   Filings,
@@ -75,13 +75,13 @@ export default function AllDocumentPanel({
             FilingStatus={Filing.status}
             deleteThisCardFunc={(id: string) => {
               setAllFilings((prevFilings) =>
-                prevFilings.filter((Filing) => Filing.id !== id)
+                prevFilings.filter((prevFiling) => prevFiling.id !== id)
               );
             }}
             updateThisCardFunc={(id: string, newName: string) => {
               setAllFilings((prevFilings) =>
-                prevFilings.map((Filing) =>
-                  Filing.id === id ? { ...Filing, name: newName } : Filing
+                prevFilings.map((prevFiling) =>
+                  prevFiling.id === id ? { ...prevFiling, name: newName } : prevFiling
                 )
               );
             }}

@@ -3,8 +3,7 @@ import { EllipsisVertical } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.tsx";
 import PopoverEditDocument from "./popoverEditDocument.tsx";
 import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
-import { useRouter } from "next/navigation";
-import { FilingStatus } from "@/src/constant/enum.ts";
+import type { FilingStatus } from "@/src/constant/enum.ts";
 import { buttonColors, TextMyProject } from "@/src/styles/enumMap";
 import { useEffect, useState } from "react";
 
@@ -25,7 +24,6 @@ export default function AllDocumentCard({
   deleteThisCardFunc: (id: string) => void;
   updateThisCardFunc: (id: string, newName: string) => void;
 }) {
-  const router = useRouter();
   const [fName, setFName] = useState<string>(FilingName);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
 

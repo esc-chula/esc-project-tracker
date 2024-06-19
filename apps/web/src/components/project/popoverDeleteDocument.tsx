@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2, SquarePen } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import {
   Dialog,

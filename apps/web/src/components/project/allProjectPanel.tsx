@@ -78,8 +78,8 @@ export default function AllProjectPanel({
             projectName={project.name}
             userId={userId}
             leaveThisProjectFunc={(id: string) => {
-              setAllProjects((prevProjecs) =>
-                prevProjecs.filter((project) => project.id !== id)
+              setAllProjects((prevProjects) =>
+                prevProjects.filter((prevProject) => prevProject.id !== id)
               );
             }}
           />

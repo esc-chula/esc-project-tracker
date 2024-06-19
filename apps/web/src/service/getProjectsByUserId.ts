@@ -1,6 +1,6 @@
 // src/service/getProjectsByUserId.ts
 import { trpc } from "../app/trpc";
-import { Project, ProjectWithLastOpen } from "@/src/interface/project"; // Adjust the path as needed
+import type { ProjectWithLastOpen } from "@/src/interface/project"; // Adjust the path as needed
 
 export default async function getProjectsByUserId(
   userId: string
