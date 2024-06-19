@@ -44,17 +44,12 @@ const steps = [
   },
 ]
 
-export default function DocumentStatusStepper({ status }: { status: FilingStatus | "DEFAULT" }) {
-  const stepStatuses =
-    status === "DEFAULT"
-      ? [
-          ["rejected", "rejected"],
-          ["rejected", "rejected"],
-          ["rejected", "rejected"],
-          ["rejected", "rejected"],
-          ["rejected"],
-        ]
-      : FilingStatusToStepper[status]
+export default function DocumentStatusStepper({
+  status,
+}: {
+  status: FilingStatus | "DEFAULT" | "DOCUMENT_CREATED"
+}) {
+  const stepStatuses = FilingStatusToStepper[status]
 
   return (
     <>

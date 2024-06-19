@@ -1,18 +1,38 @@
 "use client"
 
-import { FileText, Info, Plus } from "lucide-react"
 import Header from "@/src/components/header/header"
 import DocumentStatusStepper from "@/src/components/status/StatusStepper"
 import { FilingStatus } from "@/src/constant/enum"
 import { Filing } from "@/src/interface/filing"
 import FilingTimeline from "@/src/components/filling-detail/filingTimeline"
 import Subtitle from "@/src/components/header/subtitle"
-import { Button } from "@/src/components/ui/button"
 import getFilingByFilingId from "@/src/service/getFilingByFilingId"
-import { redirect } from "next/navigation"
-import Link from "next/link"
+import { useEffect, useState } from "react"
+import { useToast } from "@/src/components/ui/use-toast"
+import FilingTimelineHeader from "@/src/components/filling-detail/filingTimelineHeader"
 
 export default function Page({ params }: { params: { projectId: string; filingId: string } }) {
+  const [filing, setFiling] = useState<
+    (Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CREATED" }) | null
+  >(null)
+  const { toast } = useToast()
+  useEffect(() => {
+    const fetchFiling = async () => {
+      try {
+        const data = await getFilingByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a")
+        setFiling(data)
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            title: "ไม่สำเร็จ",
+            description: err.message,
+            isError: true,
+          })
+        }
+      }
+    }
+    fetchFiling()
+  }, [])
   return (
     <>
       <main className="w-full pt-[68px]">
@@ -24,28 +44,9 @@ export default function Page({ params }: { params: { projectId: string; filingId
 
         <div className="flex flex-col pt-5 pb-7 items-center mt-5 w-full">
           <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
-          <DocumentStatusStepper status={FilingStatus.DRAFT} />
+          <DocumentStatusStepper status={"DOCUMENT_CREATED"} />
         </div>
-        <div className="px-15 flex items-center justify-between gap-3">
-          <span className="flex">
-            <FileText className="w-6 h-6 mr-2" />
-            <h4 className="font-semibold text-2xl">9035-0001 เปิดโครงการ</h4>
-          </span>
-          <span className="flex gap-5">
-            <Button
-              variant="outline"
-              className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none">
-              <Plus className="h-8 w-8 mr-1" />
-              เพิ่ม
-            </Button>
-            <Link href="#">
-              <Button className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
-                <Info className="h-8 w-8 mr-1" />
-                อ่าน
-              </Button>
-            </Link>
-          </span>
-        </div>
+        <FilingTimelineHeader name="9035-0001 เปิดโครงการ" status={FilingStatus.RETURNED} />
         <FilingTimeline />
       </main>
     </>
