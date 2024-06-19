@@ -75,5 +75,11 @@ export class FilingRouter {
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
       }),
+    // Get Filing By FilingID -> Filing
+    getFilingByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findByFilingID(input.filingId);
+      }),
   });
 }
