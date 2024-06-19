@@ -60,8 +60,6 @@ export class DocumentService {
 
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
     const { filingId, name, detail, pdfLink, docLink, activity } = obj;
-    if (!isUUID(filingId))
-      throw new BadRequestException('Filing Id is not in UUID format.');
     const foundFiling = await this.filingService.findByFilingID(filingId);
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
     const newDocument = new Document();

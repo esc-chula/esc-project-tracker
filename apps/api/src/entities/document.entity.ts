@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Filing } from './filing.entity';
+import { DocumentActivity } from '../constant/enum';
 
 @Entity()
 export class Document {
@@ -20,7 +21,7 @@ export class Document {
   name: string;
 
   @Column()
-  activity: string;
+  activity: DocumentActivity;
 
   @Column({ nullable: true, default: '' })
   detail: string;
