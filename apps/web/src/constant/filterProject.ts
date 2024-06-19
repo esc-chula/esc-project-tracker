@@ -2,6 +2,10 @@ import { ProjectStatus, ProjectType } from "./enum";
 
 export const statusProjectItems = [
   {
+    label: "สถานะ",
+    value: "ALL",
+  },
+  {
     label: "CONTINUE",
     value: ProjectStatus.CONTINUE,
   },
@@ -16,6 +20,10 @@ export const statusProjectItems = [
 ];
 
 export const departmentProjectItems = [
+  {
+    label: "ฝ่าย",
+    value: "ALL",
+  },
   {
     label: "โครงการฝ่ายกิจการภายใน",
     value: ProjectType.INTERNAL_AFFAIR,

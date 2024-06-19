@@ -4,7 +4,7 @@ export default async function findDocumentsByFilingId(
   filingId: string
 ): Promise<documentType[]> {
   try {
-    const data = await trpc.findDocumentsByFilingId.query({ filingId });
+    const data = await trpc.document.findDocumentByFilingId.query({ filingId });
     if (data) return data;
     else return [];
   } catch (e) {

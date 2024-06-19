@@ -3,37 +3,44 @@ import NoData from "../all-projects/noData";
 import FilingMenuHeader from "./filingMenuHeader";
 import FilingMenuItem from "./filingMenuItem";
 import {
-  departmentFilingItems,
   statusFilingItems,
+  typeFilingItems,
 } from "@/src/constant/filterFiling";
 import SelectType from "../filter/selectType";
 import React from "react";
-import { mockProject, mockFiling } from "@/src/mock/data";
 import { useToast } from "../ui/use-toast";
+import findAllFiling from "@/src/service/findAllFiling";
+import { departmentProjectItems } from "@/src/constant/filterProject";
+import findFilingWithFilter from "@/src/service/findFilingWithFilter";
 export default function FilingMenu() {
   const { toast } = useToast();
 
-  const [departmentFiling, setDepartmentFiling] = React.useState<String>("");
-  const [statusFiling, setStatusFiling] = React.useState<String>("");
-  const [typeFiling, setTypeFiling] = React.useState<String>("");
+  const [departmentFiling, setDepartmentFiling] = React.useState<string>("ALL");
+  const [statusFiling, setStatusFiling] = React.useState<string>("ALL");
+  const [typeFiling, setTypeFiling] = React.useState<string>("ALL");
   const [filings, setFilings] = React.useState<FilingType[]>([]);
 
   async function fetchData() {
     try {
-      // if (
-      //   departmentFiling === "" &&
-      //   statusFiling === "" &&
-      //   typeFiling === ""
-      // ) {
-      //   const fetchedFiling = await findAllFiling();
-      // } else {
-      //   const fetchedFiling = await findFilingWithFilter({
-      //     status: statusFiling,
-      //   });
-      // }
-      const fetchedFiling = mockFiling;
-      if (fetchedFiling) {
-        setFilings(fetchedFiling);
+      if (
+        departmentFiling === "ALL" &&
+        statusFiling === "ALL" &&
+        typeFiling === "ALL"
+      ) {
+        const fetchedFiling = await findAllFiling();
+        if (fetchedFiling) {
+          setFilings(fetchedFiling);
+        }
+      } else {
+        const fetchedFiling = await findFilingWithFilter(
+          statusFiling,
+          typeFiling,
+          departmentFiling
+        );
+        console.log("herehehehehe");
+        if (fetchedFiling) {
+          setFilings(fetchedFiling);
+        }
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -45,22 +52,23 @@ export default function FilingMenu() {
       }
     }
   }
+
   React.useEffect(() => {
     fetchData();
-  }, []);
+  }, [departmentFiling, statusFiling, typeFiling]);
 
-  if (!filings || !filings.length) {
-    return (
-      <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
-    );
-  }
+  // if (!filings || !filings.length) {
+  //   return (
+  //     <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
+  //   );
+  // }
 
   return (
     <div className="w-full">
-      <div className="w-1/4 grid grid-cols-3 gap-6 mb-5">
+      <div className="w-1/3 lg:w-1/4 grid grid-cols-3 gap-6 mb-5">
         <SelectType
           title="ฝ่าย"
-          items={departmentFilingItems}
+          items={departmentProjectItems}
           sendValue={setDepartmentFiling}
         />
         <SelectType
@@ -69,20 +77,28 @@ export default function FilingMenu() {
           sendValue={setStatusFiling}
         />
         <SelectType
-          title="ทั้งหมด"
-          items={[{ value: "test", label: "test" }]}
+          title="ประเภท"
+          items={typeFilingItems}
           sendValue={setTypeFiling}
         />
       </div>
 
-      <div className="w-full overflow-scroll rounded-t-xl">
-        <table className="w-full border-collapse border-spacing-0 overflow-hidden">
-          <FilingMenuHeader />
-          {filings.map((filing, index) => (
-            <FilingMenuItem filing={filing} index={index + 1} key={filing.id} />
-          ))}
-        </table>
-      </div>
+      {!filings || !filings.length ? (
+        <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
+      ) : (
+        <div className="w-full h-[500px] overflow-x-auto overflow-y-auto rounded-t-xl">
+          <table className="w-full">
+            <FilingMenuHeader />
+            {filings.map((filing, index) => (
+              <FilingMenuItem
+                filing={filing}
+                index={index + 1}
+                key={filing.id}
+              />
+            ))}
+          </table>
+        </div>
+      )}
     </div>
   );
 }
