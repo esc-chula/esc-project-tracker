@@ -26,6 +26,13 @@ export class DocumentRouter {
         return this.documentService.findByProjectID(input.projectId);
       }),
 
+    //get Documents by filingId
+    findDocumentByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.documentService.findDocumentByFilingId(input.filingId);
+      }),
+
     // Create Document -> Document
     createDocument: this.trpcService.trpc.procedure
       .input(

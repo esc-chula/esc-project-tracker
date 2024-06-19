@@ -58,12 +58,21 @@ export class DocumentService {
     return documents;
   }
 
+  async findDocumentByFilingId(filingId: string): Promise<Document[]> {
+    if (!isUUID(filingId)) throw new Error('Input is not an UUID!');
+    const data = await this.documentRepository.find({
+      where: { filing: { id: filingId } },
+      order: { createdAt: 'DESC' },
+    });
+    return data;
+  }
+
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
     const { filingId, name, detail, pdfLink, docLink, activity } = obj;
     const foundFiling = await this.filingService.findByFilingID(filingId);
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
     const newDocument = new Document();
-    newDocument.filingId = foundFiling;
+    newDocument.filing = foundFiling;
     newDocument.name = name;
     newDocument.detail = detail;
     newDocument.pdfLink = pdfLink;
