@@ -22,7 +22,7 @@ export class Document {
   @Column()
   activity: string;
 
-  @Column()
+  @Column({ nullable: true, default: '' })
   detail: string;
 
   @Column()

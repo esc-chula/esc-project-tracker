@@ -1,20 +1,8 @@
-import { Controller } from '@nestjs/common';
-
-@Controller('document')
-export class DocumentController {
+export class CreateDocumentDTO {
+  filingId: string;
   name: string;
-
-  Code: string;
-
-  projectCode: string;
-
-  type: number;
-
-  detail: string;
-
+  detail?: string;
   pdfLink: string;
-
   docLink: string;
-
-  projectID: string;
+  activity: string;
 }
