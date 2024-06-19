@@ -6,6 +6,7 @@ import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
 import { createProjectDTO, ProjectWithLastOpenDTO } from './project_.dto';
 import { ProjectType } from '../constant/enum';
+import { deprecate } from 'util';
 
 @Injectable()
 export class ProjectService {
@@ -114,19 +115,20 @@ export class ProjectService {
     return await this.projectRepository.save(newProject);
   }
 
-  async findProjectWithFilter(filter: { status?: string }): Promise<Project[]> {
+  async findProjectWithFilter(filter: {
+    status: string;
+    department: string;
+  }): Promise<Project[]> {
     try {
       const query = await this.projectRepository.createQueryBuilder('project');
-      // if (filter.department) {
-      //   query.andWhere('project.type := ');
-      // }
-      if (filter.status) {
+      if (filter.department !== 'ALL') {
+        query.andWhere('project.type = :department', {
+          department: filter.department,
+        });
+      }
+      if (filter.status !== 'ALL') {
         query.andWhere('project.status = :status', { status: filter.status });
       }
-      // if (filter.type) {
-      //   query.andWhere('project.type = :type', { type: filter.type });
-      // }
-
       return await query.getMany();
     } catch (error) {
       console.log(error);

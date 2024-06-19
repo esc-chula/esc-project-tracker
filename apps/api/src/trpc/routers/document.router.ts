@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
-import { optional, string, z } from 'zod';
+import { z } from 'zod';
 import { DocumentService } from '../../document_/document.service';
 
 @Injectable()
@@ -23,6 +23,13 @@ export class DocumentRouter {
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.documentService.findByProjectID(input.projectId);
+      }),
+
+    //get Documents by filingId
+    findDocumentByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.documentService.findDocumentByFilingId(input.filingId);
       }),
   });
 }

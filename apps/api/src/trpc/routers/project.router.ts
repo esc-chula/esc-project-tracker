@@ -13,7 +13,7 @@ export class ProjectRouter {
 
   appRouter = this.trpcService.router({
     //Get All Project
-    getAllProject: this.trpcService.trpc.procedure.query(() => {
+    findAllProject: this.trpcService.trpc.procedure.query(() => {
       return this.projectService.findAllProjects();
     }),
 
@@ -61,6 +61,15 @@ export class ProjectRouter {
           name: input.name,
           type: input.type,
           detail: input.detail,
+        });
+      }),
+
+    findProjectWithFilter: this.trpcService.trpc.procedure
+      .input(z.object({ status: z.string(), department: z.string() }))
+      .query(({ input }) => {
+        return this.projectService.findProjectWithFilter({
+          status: input.status,
+          department: input.department,
         });
       }),
   });

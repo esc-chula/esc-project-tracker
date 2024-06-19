@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
-import { optional, string, z } from 'zod';
+import { z } from 'zod';
 import { FilingStatus } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
 
@@ -74,6 +74,22 @@ export class FilingRouter {
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
+      }),
+    //findFilingWithFilter
+    findFilingWithFilter: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          status: z.string(),
+          type: z.string(),
+          department: z.string(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.filingService.findFilingWithFilter({
+          status: input.status,
+          type: input.type,
+          department: input.department,
+        });
       }),
   });
 }

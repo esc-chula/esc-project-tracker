@@ -10,8 +10,6 @@ import { UserModule } from './user_/user.module';
 import { DocumentModule } from './document_/document.module';
 import { ProjectModule } from './project_/project_.module';
 import { FilingModule } from './filing/filing.module';
-import { UserProjService } from './user-proj/user-proj.service';
-import { UserProjController } from './user-proj/user-proj.controller';
 import { UserProjModule } from './user-proj/user-proj.module';
 import { CountFilingModule } from './count-filing/count-filing.module';
 

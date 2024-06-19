@@ -112,11 +112,25 @@ export class FilingService {
     }
   }
 
-  async findFilingWithFilter(filter: { status?: string }): Promise<Filing[]> {
+  async findFilingWithFilter(filter: {
+    status: string;
+    type: string;
+    department: string;
+  }): Promise<Filing[]> {
     try {
       const query = this.filingRepository.createQueryBuilder('filing');
-      if (filter.status) {
+      if (filter.status !== 'ALL') {
         query.andWhere('filing.status = :status', { status: filter.status });
+      }
+
+      if (filter.type !== 'ALL') {
+        query.andWhere('filing.type = :type', { type: +filter.type });
+      }
+
+      if (filter.department !== 'ALL') {
+        query.andWhere('filing.projectCode LIKE :department', {
+          department: `${filter.department}%`,
+        });
       }
 
       return await query.getMany();
