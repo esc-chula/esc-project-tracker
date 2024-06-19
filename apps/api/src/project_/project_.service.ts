@@ -6,7 +6,6 @@ import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
 import { createProjectDTO, ProjectWithLastOpenDTO } from './project_.dto';
 import { ProjectType } from '../constant/enum';
-import { deprecate } from 'util';
 
 @Injectable()
 export class ProjectService {
