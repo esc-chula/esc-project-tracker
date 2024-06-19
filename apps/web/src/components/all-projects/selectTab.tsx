@@ -9,7 +9,8 @@ import { Project } from "@/src/interface/project";
 import ProjectMenu from "../project/projectMenu";
 import { FilingType } from "@/src/interface/filing";
 import FilingMenu from "../project/filingMenu";
-import { mockProject, mockFiling } from "@/src/mock/data";
+import { findAllProject } from "@/src/service/findAllProject";
+import findAllFiling from "@/src/service/findAllFiling";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,22 +50,13 @@ export default function SelectTab() {
     setValue(newValue);
   };
 
-  /* TODO : Fetch data from the server
-  
-  */
   React.useEffect(() => {
     async function fetchData() {
       try {
-        // const fetchedProject = await findAllProject();
-        // const fetchedFiling = await findAllFiling();
-        const fetchedProject = mockProject;
-        const fetchedFiling = mockFiling;
-        if (fetchedFiling) {
-          setFilings(fetchedFiling);
-        }
-        if (fetchedProject) {
-          setProjects(fetchedProject);
-        }
+        const fetchedProject = await findAllProject();
+        const fetchedFiling = await findAllFiling();
+        setFilings(fetchedFiling);
+        setProjects(fetchedProject);
       } catch (error) {
         console.log(error);
         throw new Error("Failed to fetch data");

@@ -8,10 +8,10 @@ import {
   departmentProjectItems,
   statusProjectItems,
 } from "@/src/constant/filterProject";
-import { mockProject } from "@/src/mock/data";
 import { useToast } from "../ui/use-toast";
 import { findAllProject } from "@/src/service/findAllProject";
 import findProjectWithFilter from "@/src/service/findProjectWithFilter";
+import checkByUserIDAndProjectID from "@/src/service/checkUserProject";
 
 export default function ProjectMenu() {
   const { toast } = useToast();
@@ -21,25 +21,44 @@ export default function ProjectMenu() {
   const [typeProject, setTypeProject] = React.useState<string>("ALL");
   const [projects, setProjects] = React.useState<Project[]>([]);
 
+  async function filterJoin(eachProject: Project): Promise<boolean> {
+    const result = await checkByUserIDAndProjectID(
+      "c8b285e0-9653-40d5-9865-def3b4792c99",
+      eachProject.id
+    );
+    console.log(result);
+    return result;
+  }
   async function fetchData() {
     try {
-      if (
-        departmentProject === "ALL" &&
-        statusProject === "ALL" &&
-        typeProject === "ALL"
-      ) {
-        const fetchedProject = await findAllProject();
-        if (fetchedProject) {
-          setProjects(fetchedProject);
-        }
+      let fetchedProject: Project[];
+      if (departmentProject === "ALL" && statusProject === "ALL") {
+        fetchedProject = await findAllProject();
       } else {
-        const fetchedProject = await findProjectWithFilter(
+        fetchedProject = await findProjectWithFilter(
           statusProject,
           departmentProject
         );
-        if (fetchedProject) {
-          setProjects(fetchedProject);
-        }
+      }
+
+      if (typeProject === "ALL") {
+        setProjects(fetchedProject);
+      } else {
+        const filteredProjects = await Promise.all(
+          fetchedProject.map(async (project) => {
+            const isJoined = await filterJoin(project);
+            if (typeProject === "join") {
+              return isJoined ? project : null;
+            } else {
+              return isJoined ? null : project;
+            }
+          })
+        );
+        setProjects(
+          filteredProjects.filter(
+            (project): project is Project => project !== null
+          )
+        );
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -54,12 +73,6 @@ export default function ProjectMenu() {
   React.useEffect(() => {
     fetchData();
   }, [departmentProject, statusProject, typeProject]);
-
-  // if (!projects || !projects.length) {
-  //   return (
-  //     <NoData firstLine="ยังไม่มีโครงการ" secondLine="เริ่มเปิดโครงกันเลย !" />
-  //   );
-  // }
 
   return (
     <div className="w-full">
@@ -78,13 +91,13 @@ export default function ProjectMenu() {
           title="ทั้งหมด"
           items={[
             { value: "ALL", label: "ทั้งหมด" },
-            { value: "join", label: "ทั้งหมด" },
-            { value: "notjoin", label: "ทั้งหมด" },
+            { value: "join", label: "เข้าร่วม" },
+            { value: "notjoin", label: "ไม่ได้เข้าร่วม" },
           ]}
           sendValue={setTypeProject}
         />
       </div>
-      {!projects || !projects.length ? (
+      {!projects.length ? (
         <NoData
           firstLine="ยังไม่มีโครงการ"
           secondLine="เริ่มเปิดโครงกันเลย !"

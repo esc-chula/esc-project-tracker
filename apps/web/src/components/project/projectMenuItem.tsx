@@ -1,6 +1,5 @@
 "use client";
 import { Project } from "@/src/interface/project";
-import { ProjectService } from "@/src/service/ProjectService";
 import joinProject from "@/src/service/joinProject";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
@@ -58,17 +57,19 @@ export default function ProjectMenuItem({
   };
   return (
     <tr className="border-b-2 border-gray-200">
-      <td className="p-4 py-5 text-nowrap text-center w-[80px] overflow-hidden text-ellipsis whitespace-nowrap">
+      <td className="p-4 py-5 text-nowrap text-center w-[90px] overflow-hidden text-ellipsis whitespace-nowrap">
         {index}
       </td>
-      <td className="p-4 py-5 text-nowrap text-center w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">
+      <td className="p-4 py-5 text-nowrap text-center w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">
         {project.projectCode}
       </td>
       <td className="p-4 py-5 text-nowrap max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
         {project.name}
       </td>
-      <td className="p-4 py-5 text-nowrap text-center">{project.status}</td>
-      <td className="p-4 py-5 text-nowrap text-center">
+      <td className="p-4 py-5 text-nowrap text-center w-[180px]">
+        {project.status}
+      </td>
+      <td className="p-4 py-5 text-nowrap text-center w-[200px]">
         <button
           className={`rounded-lg px-2 py-1 ${buttonStyle(isJoined)} transition-all`}
           onClick={handleJoinProject}

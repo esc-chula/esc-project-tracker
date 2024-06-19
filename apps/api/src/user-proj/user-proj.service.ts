@@ -117,16 +117,15 @@ export class UserProjService {
     userId: string;
     projectId: string;
   }) {
-    const userProj = this.userProjRepository
+    const userProj = await this.userProjRepository
       .createQueryBuilder('userProj')
       .where('userProj.userId = :uid', { uid: userId })
       .andWhere('userProj.projectId = :pid', { pid: projectId })
       .getOne();
-
     if (!userProj) {
       return false;
+    } else {
+      return true;
     }
-
-    return true;
   }
 }
