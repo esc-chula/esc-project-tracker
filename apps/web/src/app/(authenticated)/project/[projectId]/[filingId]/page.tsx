@@ -46,7 +46,13 @@ export default function Page({ params }: { params: { projectId: string; filingId
           <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
           <DocumentStatusStepper status={"DOCUMENT_CREATED"} />
         </div>
-        <FilingTimelineHeader name="9035-0001 เปิดโครงการ" status={FilingStatus.RETURNED} />
+        <FilingTimelineHeader
+          name="9035-0001 เปิดโครงการ"
+          status={FilingStatus.WAIT_FOR_SECRETARY}
+          setStatus={(status) => {
+            setFiling((prev) => (prev ? { ...prev, status } : null))
+          }}
+        />
         <FilingTimeline />
       </main>
     </>
