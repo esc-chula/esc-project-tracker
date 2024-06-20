@@ -41,18 +41,22 @@ export default function Page({ params }: { params: { projectId: string; filingId
         </Header>
       </div>
 
-      <div className="flex flex-col pt-5 pb-7 items-center mt-5 w-full">
+      <section className="flex flex-col pt-5 pb-7 items-center mt-5 w-full">
         <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
         <DocumentStatusStepper status={"DOCUMENT_CREATED"} />
-      </div>
-      <FilingTimelineHeader
-        name="9035-0001 เปิดโครงการ"
-        status={"DOCUMENT_CREATED"}
-        setStatus={(status) => {
-          setFiling((prev) => (prev ? { ...prev, status } : null))
-        }}
-      />
-      <FilingTimeline />
+      </section>
+      <section className="mb-12 px-15">
+        <FilingTimelineHeader
+          name="9035-0001 เปิดโครงการ"
+          status={"DOCUMENT_CREATED"}
+          setStatus={(status) => {
+            setFiling((prev) => (prev ? { ...prev, status } : null))
+          }}
+        />
+      </section>
+      <section className="px-15 mt-12 relative">
+        <FilingTimeline />
+      </section>
     </main>
   )
 }

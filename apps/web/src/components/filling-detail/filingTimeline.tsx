@@ -6,6 +6,7 @@ import { useToast } from "@/src/components/ui/use-toast"
 import { useEffect, useState } from "react"
 import DisplayWithNote from "./display/displayWithNote"
 import DisplayWithStatus from "./display/displayWithStatus"
+import { Clock } from "lucide-react"
 
 export default function FilingTimeline() {
   // TODO: Change the userId to the actual userId
@@ -31,8 +32,17 @@ export default function FilingTimeline() {
   }, [])
 
   return (
-    <div className="flex flex-col items-center px-15 space-y-7 mt-12">
+    <div className="flex flex-col items-center gap-7">
+      {/* 60+40+(32/2)-(3/2) = 114.5 */}
+      <div className="h-[calc(100%-2px)] w-[3px] bg-black absolute left-[114.5px] -z-10 top-[2px] overflow-hidden" />
+      <div className="flex w-full pl-10 items-center text-3xl font-semibold">
+        <Clock className="w-8 h-8 bg-gray-100 p-1.5 rounded-full mr-5" />
+        10 มิ.ย. 67
+      </div>
       <DisplayWithNote />
+      {/* <div className="flex w-full pl-10 items-center text-3xl font-semibold">
+        <Clock className="w-8 h-8 bg-gray-100 p-1.5 rounded-full mr-5" />8 มิ.ย. 67
+      </div> */}
       <DisplayWithStatus />
     </div>
   )

@@ -76,8 +76,8 @@ export default function FilingTimelineHeader({
   }
   return (
     <>
-      <div className="px-15 flex items-center justify-between gap-3 mb-12">
-        <span className="flex">
+      <div className="flex items-center justify-between gap-3">
+        <span className="flex items-center">
           <FileText className="w-5 h-5 mr-2" />
           <h4 className="font-semibold text-2xl">{name}</h4>
         </span>
