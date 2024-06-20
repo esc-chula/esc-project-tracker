@@ -1,9 +1,4 @@
 "use client"
-import { Radio } from "lucide-react"
-import Header from "@/src/components/header/header"
-import Title from "@/src/components/header/title"
-import DocumentStatusStepper from "@/src/components/status/StatusStepper"
-import { StatusTable } from "@/src/components/status/StatusTable"
 import getFilingsByUserId from "@/src/service/getFilingsByUserId"
 import { FilingStatus } from "@/src/constant/enum"
 import { Filing } from "@/src/interface/filing"
@@ -11,7 +6,6 @@ import { useToast } from "@/src/components/ui/use-toast"
 import { useEffect, useState } from "react"
 import DisplayWithNote from "./display/displayWithNote"
 import DisplayWithStatus from "./display/displayWithStatus"
-import CreateDocument from "./create-edit/createDocument"
 
 export default function FilingTimeline() {
   // TODO: Change the userId to the actual userId
@@ -37,10 +31,9 @@ export default function FilingTimeline() {
   }, [])
 
   return (
-    <div className="justify-center flex flex-col items-center p-5 space-y-5">
+    <div className="flex flex-col items-center px-15 space-y-7 mt-12">
       <DisplayWithNote />
       <DisplayWithStatus />
-      <CreateDocument />
     </div>
   )
 }

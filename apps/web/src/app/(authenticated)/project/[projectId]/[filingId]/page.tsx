@@ -34,27 +34,25 @@ export default function Page({ params }: { params: { projectId: string; filingId
     fetchFiling()
   }, [])
   return (
-    <>
-      <main className="w-full pt-[68px]">
-        <div className="pl-15 pr-5">
-          <Header>
-            <Subtitle project="9011" filing={"9011-1234"} projectId={params.projectId} />
-          </Header>
-        </div>
+    <main className="w-full pt-[68px]">
+      <div className="pl-15 pr-5">
+        <Header>
+          <Subtitle project="9011" filing={"9011-1234"} projectId={params.projectId} />
+        </Header>
+      </div>
 
-        <div className="flex flex-col pt-5 pb-7 items-center mt-5 w-full">
-          <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
-          <DocumentStatusStepper status={"DOCUMENT_CREATED"} />
-        </div>
-        <FilingTimelineHeader
-          name="9035-0001 เปิดโครงการ"
-          status={FilingStatus.WAIT_FOR_SECRETARY}
-          setStatus={(status) => {
-            setFiling((prev) => (prev ? { ...prev, status } : null))
-          }}
-        />
-        <FilingTimeline />
-      </main>
-    </>
+      <div className="flex flex-col pt-5 pb-7 items-center mt-5 w-full">
+        <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
+        <DocumentStatusStepper status={"DOCUMENT_CREATED"} />
+      </div>
+      <FilingTimelineHeader
+        name="9035-0001 เปิดโครงการ"
+        status={"DOCUMENT_CREATED"}
+        setStatus={(status) => {
+          setFiling((prev) => (prev ? { ...prev, status } : null))
+        }}
+      />
+      <FilingTimeline />
+    </main>
   )
 }
