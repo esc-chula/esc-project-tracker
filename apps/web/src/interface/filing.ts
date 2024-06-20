@@ -6,7 +6,7 @@ import { Project } from "./project"
 
 export interface Filing {
   id: string
-  project: any
+  project: Project
   user: any
   name: string
   FilingCode: string

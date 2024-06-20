@@ -74,7 +74,7 @@ export default function DisplayWithNote() {
               className="w-auto flex flex-col"
             ></PopoverContent>
           </Popover>
-          <CollapsibleTrigger onClick={() => setExpanded(!expanded)}>
+          <CollapsibleTrigger onClick={() => {setExpanded(!expanded)}}>
             {expanded ? <ChevronUp /> : <ChevronDown />}
           </CollapsibleTrigger>
         </div>

@@ -8,6 +8,7 @@ import { useState } from "react"
 import { useToast } from "../ui/use-toast"
 import { Filing } from "@/src/interface/filing"
 import CreateDocument from "./create-edit/createDocument"
+import updateFilingName from "@/src/service/updateFiling"
 
 export default function FilingTimelineHeader({
   name,
@@ -27,11 +28,12 @@ export default function FilingTimelineHeader({
   const { toast } = useToast()
   const cancelDocumentSubmission = async () => {
     try {
-      // const data = await updateFilingName({
-      //   filingId,
-      //   filingName: name,
-      // });
-      if (true) {
+      // TODO: cancel document submission
+      const data = await updateFilingName({
+        filingId: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
+        filingName: name,
+      })
+      if (data) {
         setStatus(FilingStatus.DRAFT)
         setIsOpen(false)
         toast({
@@ -52,11 +54,12 @@ export default function FilingTimelineHeader({
   }
   const submitDocument = async () => {
     try {
-      // const data = await updateFilingName({
-      //   filingId,
-      //   filingName: name,
-      // });
-      if (true) {
+      // TODO: call api to submit document
+      const data = await updateFilingName({
+        filingId: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
+        filingName: name,
+      })
+      if (data) {
         setStatus(FilingStatus.WAIT_FOR_SECRETARY)
         toast({
           title: "สำเร็จ",

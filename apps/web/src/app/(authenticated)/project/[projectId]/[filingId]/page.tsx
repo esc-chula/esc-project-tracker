@@ -20,6 +20,7 @@ export default function Page({ params }: { params: { projectId: string; filingId
     const fetchFiling = async () => {
       try {
         const data = await getFilingByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a")
+        // getAllDocumentsByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a")
         setFiling(data)
       } catch (err) {
         if (err instanceof Error) {
