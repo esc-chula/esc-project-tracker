@@ -13,6 +13,7 @@ import FilingTimelineHeader from "@/src/components/filling-detail/filingTimeline
 import CreateDocumentClient from "@/src/components/filling-detail/create-edit/createDocumentClient";
 import CreateDocumentAdmin from "@/src/components/filling-detail/create-edit/createDocumentAdmin";
 import UpdateDocumentAdmin from "@/src/components/filling-detail/create-edit/updateDocumentAdmin";
+import DisplayWithNoteAndStatus from "@/src/components/filling-detail/display/displayWithNoteAndStatus";
 
 export default function Page({
   params,
@@ -72,6 +73,9 @@ export default function Page({
       <section className="px-15 mt-12 relative">
         <FilingTimeline />
       </section>
+      <div className="flex mt-10 justify-center">
+        <DisplayWithNoteAndStatus />
+      </div>
       <div className="text-center flex justify-center items-center mt-10">
         <CreateDocumentClient />
       </div>

@@ -10,7 +10,7 @@ export default function NameDate({
   activity: string;
 }) {
   return (
-    <div className="border-r-2 py-8 pr-5 space-y-8 w-[30%]">
+    <div className="border-r-2 py-8 pr-5 space-y-8 w-[20vw]">
       <div className="flex flex-row items-center space-x-4 ">
         {children}
         <div className="w-[70%]">
