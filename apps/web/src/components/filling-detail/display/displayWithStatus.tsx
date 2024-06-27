@@ -9,7 +9,7 @@ import FileDisplay from "./fileDisplay";
 
 export default function DisplayWithStatus() {
   return (
-    <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl">
+    <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
       <div className="flex flex-row px-8">
         <NameDate
           title="Secretary ESC"

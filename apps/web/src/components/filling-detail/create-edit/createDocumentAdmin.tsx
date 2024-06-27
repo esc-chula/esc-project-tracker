@@ -71,7 +71,7 @@ export default function CreateDocumentAdmin() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-[70vw] p-8 flex flex-col text-start"
+          className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-full p-8 flex flex-col text-start"
         >
           <div className="flex flex-row space-x-5">
             <div className="flex flex-col space-y-8">

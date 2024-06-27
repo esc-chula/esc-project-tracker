@@ -70,7 +70,7 @@ export default function NewProjectForm() {
       )
 
       projCreated = true
-
+      // TODO: Convert studentId to userId
       const userProjPromises = values.members.map((member) =>
         member ? joinProject(member, newProject.id) : undefined
       )

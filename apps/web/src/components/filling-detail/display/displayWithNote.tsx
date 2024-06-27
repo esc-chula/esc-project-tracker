@@ -21,8 +21,8 @@ export default function DisplayWithNote() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl">
-      <div className="flex flex-row px-8 ">
+    <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
+      <div className="flex flex-row px-8">
         <NameDate
           title="นายสมชาย สายชลลลลลลลลลลลลล"
           date="ส่งเอกสารเมื่อ 41 มิ.ย 2567 14.30.00"

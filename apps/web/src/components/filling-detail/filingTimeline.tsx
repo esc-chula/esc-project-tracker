@@ -7,6 +7,9 @@ import { useEffect, useState } from "react"
 import DisplayWithNote from "./display/displayWithNote"
 import DisplayWithStatus from "./display/displayWithStatus"
 import { Clock } from "lucide-react"
+import DisplayWithNoteAndStatus from "./display/displayWithNoteAndStatus"
+import UpdateDocumentAdmin from "./create-edit/updateDocumentAdmin"
+import CreateDocumentAdmin from "./create-edit/createDocumentAdmin"
 
 export default function FilingTimeline() {
   // TODO: Change the userId to the actual userId
@@ -44,6 +47,9 @@ export default function FilingTimeline() {
         <Clock className="w-8 h-8 bg-gray-100 p-1.5 rounded-full mr-5" />8 มิ.ย. 67
       </div> */}
       <DisplayWithStatus />
+      <DisplayWithNoteAndStatus />
+      <CreateDocumentAdmin />
+      <UpdateDocumentAdmin />
     </div>
   )
 }
