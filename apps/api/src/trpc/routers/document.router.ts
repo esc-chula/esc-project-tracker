@@ -27,10 +27,10 @@ export class DocumentRouter {
       }),
 
     //get Documents by filingId
-    findDocumentByFilingId: this.trpcService.trpc.procedure
+    findDocumentsByFilingId: this.trpcService.trpc.procedure
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
-        return this.documentService.findDocumentByFilingId(input.filingId);
+        return this.documentService.findDocumentsByFilingId(input.filingId);
       }),
 
     // Create Document -> Document
