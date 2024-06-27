@@ -39,7 +39,7 @@ export default function DisplayWithStatus() {
 "
           ></textarea>
         </div>
-        <div className="py-8 flex flex-col justify-between w-[5vw] items-end">
+        <div className="py-8 flex flex-col justify-between w-[5vw] items-end ml-auto">
           <StatusButton status={FilingStatus.WAIT_FOR_STUDENT_AFFAIR} />
         </div>
       </div>

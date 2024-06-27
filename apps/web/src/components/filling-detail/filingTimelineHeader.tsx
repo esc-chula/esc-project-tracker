@@ -155,7 +155,7 @@ export default function FilingTimelineHeader({
       </div>
       {showCreateDocument && (
         <div className="my-10 w-full">
-          <CreateDocumentClient />
+          <CreateDocumentClient setShowCreateDocument={setShowCreateDocument} />
         </div>
       )}
     </>

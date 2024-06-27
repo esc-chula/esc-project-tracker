@@ -41,7 +41,7 @@ export default function DisplayWithNoteAndStatus() {
 "
           ></textarea>
         </div>
-        <div className="py-8 flex flex-col justify-between w-[5vw] items-end space-y-5">
+        <div className="py-8 flex flex-col justify-between w-[5vw] items-end space-y-5 ml-auto">
           <StatusButton
             status={FilingStatus.RETURNED}
             isSubmitAfterReturn={false}

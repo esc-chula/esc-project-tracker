@@ -52,7 +52,7 @@ export default function DisplayWithNote() {
             </div>
           </div>
         </div>
-        <div className="py-8 flex flex-col justify-between w-[5vw] items-end">
+        <div className="py-8 flex flex-col justify-between w-[5vw] items-end ml-auto">
           <Popover>
             <PopoverTrigger>
               <EllipsisVertical />
