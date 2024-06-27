@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
-import { z } from 'zod';
+
+import { optional, z } from 'zod';
+
 import { DocumentService } from '../../document_/document.service';
+import { DocumentActivity } from '../../constant/enum';
 
 @Injectable()
 export class DocumentRouter {
@@ -29,7 +32,31 @@ export class DocumentRouter {
     findDocumentByFilingId: this.trpcService.trpc.procedure
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
-        return this.documentService.findDocumentByFilingId(input.filingId);
+        return this.documentService.findDocumentsByFilingId(input.filingId);
+      }),
+
+
+    // Create Document -> Document
+    createDocument: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          filingId: z.string(),
+          name: z.string(),
+          detail: optional(z.string()),
+          pdfLink: z.string(),
+          docLink: z.string(),
+          activity: z.nativeEnum(DocumentActivity),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        return await this.documentService.createDocument({
+          filingId: input.filingId,
+          name: input.name,
+          detail: input.detail,
+          pdfLink: input.pdfLink,
+          docLink: input.docLink,
+          activity: input.activity,
+        });
       }),
   });
 }

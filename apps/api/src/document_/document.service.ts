@@ -7,6 +7,8 @@ import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
+import { CreateDocumentDTO } from './document.dto';
+import { FilingService } from '../filing/filing.service';
 
 @Injectable()
 export class DocumentService {
@@ -15,6 +17,7 @@ export class DocumentService {
     private readonly documentRepository: Repository<Document>,
     private readonly projectService: ProjectService,
     private readonly userService: UserService,
+    private readonly filingService: FilingService,
   ) {}
 
   findByDocID(id: string) {
@@ -55,12 +58,28 @@ export class DocumentService {
     return documents;
   }
 
-  async findDocumentByFilingId(filingId: string): Promise<Document[]> {
+
+  async findDocumentsByFilingId(filingId: string): Promise<Document[]> {
     if (!isUUID(filingId)) throw new Error('Input is not an UUID!');
     const data = await this.documentRepository.find({
       where: { filing: { id: filingId } },
       order: { createdAt: 'DESC' },
     });
     return data;
+  }
+
+  async createDocument(obj: CreateDocumentDTO): Promise<Document> {
+    const { filingId, name, detail, pdfLink, docLink, activity } = obj;
+    const foundFiling = await this.filingService.findByFilingID(filingId);
+    if (!foundFiling) throw new BadRequestException('Filing Not Found!');
+    const newDocument = new Document();
+    newDocument.filing = foundFiling;
+    newDocument.name = name;
+    newDocument.detail = detail;
+    newDocument.pdfLink = pdfLink;
+    newDocument.docLink = docLink;
+    newDocument.activity = activity;
+
+    return await this.documentRepository.save(newDocument);
   }
 }
