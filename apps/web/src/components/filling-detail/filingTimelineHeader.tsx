@@ -33,7 +33,7 @@ export default function FilingTimelineHeader({
         filingName: name,
       })
       if (data) {
-        setStatus(FilingStatus.DRAFT)
+        setStatus("DOCUMENT_CREATED")
         setIsOpen(false)
         toast({
           title: "ยกเลิกสำเร็จ",
@@ -98,58 +98,63 @@ export default function FilingTimelineHeader({
               </Button>
             </>
           ) : (
-            <Button
-              variant="outline"
-              disabled={
-                status === FilingStatus.WAIT_FOR_SECRETARY ||
-                status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
-              }
-              onClick={() => {
-                setShowCreateDocument(true)
-              }}
-              className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none">
-              <Plus className="h-8 w-8 mr-2" />
-              เพิ่ม
-            </Button>
-          )}
-          {status === FilingStatus.WAIT_FOR_SECRETARY ? (
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <DialogTrigger asChild>
+            <>
+              <Button
+                variant="outline"
+                disabled={
+                  status === FilingStatus.WAIT_FOR_SECRETARY ||
+                  status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
+                }
+                onClick={() => {
+                  setShowCreateDocument(true)
+                }}
+                className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none">
+                <Plus className="h-8 w-8 mr-2" />
+                เพิ่ม
+              </Button>
+              {status === FilingStatus.WAIT_FOR_SECRETARY ? (
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black">
+                      <X className="h-8 w-8 mr-2" />
+                      ยกเลิก
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="font-semibold text-2xl">
+                        ยกเลิกการส่งเอกสาร
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="bg-white rounded-lg space-y-4">
+                      ยกเลิกการส่งเอกสารเพื่อเปลี่ยนแปลงข้อมูล
+                      โปรดอย่าลืมส่งอีกครั้งเมื่อดำเนินการเสร็จ
+                      <div className="text-end">
+                        <button
+                          className="bg-red text-white rounded-lg py-1 px-4 font-semibold"
+                          onClick={cancelDocumentSubmission}>
+                          ยืนยัน
+                        </button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              ) : (
                 <Button
-                  variant="outline"
-                  className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black">
-                  <X className="h-8 w-8 mr-2" />
-                  ยกเลิก
+                  disabled={
+                    status === FilingStatus.DRAFT ||
+                    (status === FilingStatus.RETURNED && !documentFixed) ||
+                    status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
+                  }
+                  onClick={submitDocument}
+                  className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
+                  <Send className="h-8 w-8 mr-2" />
+                  ส่ง
                 </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className="font-semibold text-2xl">ยกเลิกการส่งเอกสาร</DialogTitle>
-                </DialogHeader>
-                <div className="bg-white rounded-lg space-y-4">
-                  ยกเลิกการส่งเอกสารเพื่อเปลี่ยนแปลงข้อมูล โปรดอย่าลืมส่งอีกครั้งเมื่อดำเนินการเสร็จ
-                  <div className="text-end">
-                    <button
-                      className="bg-red text-white rounded-lg py-1 px-4 font-semibold"
-                      onClick={cancelDocumentSubmission}>
-                      ยืนยัน
-                    </button>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-          ) : (
-            <Button
-              disabled={
-                status === FilingStatus.DRAFT ||
-                (status === FilingStatus.RETURNED && !documentFixed) ||
-                status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
-              }
-              onClick={submitDocument}
-              className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
-              <Send className="h-8 w-8 mr-2" />
-              ส่ง
-            </Button>
+              )}
+            </>
           )}
         </span>
       </div>

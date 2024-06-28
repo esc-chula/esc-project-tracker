@@ -10,22 +10,25 @@ import getFilingByFilingId from "@/src/service/getFilingByFilingId"
 import { useEffect, useState } from "react"
 import { useToast } from "@/src/components/ui/use-toast"
 import FilingTimelineHeader from "@/src/components/filling-detail/filingTimelineHeader"
-import CreateDocumentClient from "@/src/components/filling-detail/create-edit/createDocumentClient"
-import CreateDocumentAdmin from "@/src/components/filling-detail/create-edit/createDocumentAdmin"
-import UpdateDocumentAdmin from "@/src/components/filling-detail/create-edit/updateDocumentAdmin"
-import DisplayWithNoteAndStatus from "@/src/components/filling-detail/display/displayWithNoteAndStatus"
+import getDocumentsByFilingId from "@/src/service/getDocumentsByFilingId"
+import { Document } from "@/src/interface/document"
 
 export default function Page({ params }: { params: { projectId: string; filingId: string } }) {
   const [filing, setFiling] = useState<
     (Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CREATED" }) | null
   >(null)
+  const [documents, setDocuments] = useState<Document[]>([])
   const { toast } = useToast()
   useEffect(() => {
-    const fetchFiling = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getFilingByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a")
-        // getAllDocumentsByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a")
-        setFiling(data)
+        // TODO: Change the userId to the actual userId
+        const [filingData, documentsData] = await Promise.all([
+          getFilingByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a"),
+          getDocumentsByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a"),
+        ])
+        if (filingData) setFiling(filingData)
+        if (documentsData) setDocuments(documentsData)
       } catch (err) {
         if (err instanceof Error) {
           toast({
@@ -36,7 +39,7 @@ export default function Page({ params }: { params: { projectId: string; filingId
         }
       }
     }
-    fetchFiling()
+    fetchData()
   }, [])
   return (
     <main className="w-full pt-[68px]">
@@ -60,20 +63,8 @@ export default function Page({ params }: { params: { projectId: string; filingId
         />
       </section>
       <section className="px-15 relative">
-        <FilingTimeline />
+        <FilingTimeline documents={documents} />
       </section>
-      {/* <div className="flex mt-10 justify-center">
-        <DisplayWithNoteAndStatus />
-      </div>
-      <div className="text-center flex justify-center items-center mt-10">
-        <CreateDocumentClient />
-      </div>
-      <div className="text-center flex justify-center items-center mt-10">
-        <CreateDocumentAdmin />
-      </div>
-      <div className="text-center flex justify-center items-center mt-10">
-        <UpdateDocumentAdmin />
-      </div> */}
     </main>
   )
 }

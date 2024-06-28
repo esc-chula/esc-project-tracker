@@ -6,7 +6,7 @@ export default async function getDocumentsByFilingId(filingId: string): Promise<
     const data = await trpc.document.findDocumentsByFilingId.query({ filingId })
     return data
   } catch (err) {
-    console.error(err)
+    console.error("getDocumentsByFilingId error: ", err)
     throw new Error("ไม่สามารถดึงประวัติเอกสารได้")
   }
 }
