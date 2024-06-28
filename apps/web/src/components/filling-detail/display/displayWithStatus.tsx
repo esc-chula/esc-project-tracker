@@ -23,9 +23,9 @@ export default function DisplayWithStatus() {
             alt="esc-icon"
           />
         </NameDate>
-        <div className="px-8 py-4 font-bold space-y-4 w-[35vw]">
-          <div className="flex flex-row items-center space-x-6">
-            <div className="font-bold text-sm">ไฟล์แนบ</div>
+        <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
+          <div className="flex flex-row items-center gap-x-6 gap-y-2 flex-wrap">
+            <div className="font-bold text-sm shrink-0">ไฟล์แนบ</div>
             <FileDisplay
               fileName="เอกสารสุดยอดสายลับอิอิอิอิอิอิอิอิอิอิvbvbvbvbvbv"
               fileType="pdf"
@@ -39,7 +39,7 @@ export default function DisplayWithStatus() {
 "
           ></textarea>
         </div>
-        <div className="py-8 flex flex-col justify-between w-[5vw] items-end ml-auto">
+        <div className="py-8 flex flex-col justify-between w-auto items-end">
           <StatusButton status={FilingStatus.WAIT_FOR_STUDENT_AFFAIR} />
         </div>
       </div>

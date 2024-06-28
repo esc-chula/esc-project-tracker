@@ -33,7 +33,7 @@ export default function DisplayWithNoteAndStatus() {
             alt="esc-icon"
           />
         </NameDate>
-        <div className="px-8 py-4 font-bold space-y-4 w-[35vw]">
+        <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
           <div className="font-bold text-sm">ความคิดเห็น</div>
           <textarea
             className="bg-white rounded-lg min-h-[15vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
@@ -41,7 +41,7 @@ export default function DisplayWithNoteAndStatus() {
 "
           ></textarea>
         </div>
-        <div className="py-8 flex flex-col justify-between w-[5vw] items-end space-y-5 ml-auto">
+        <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
           <StatusButton
             status={FilingStatus.RETURNED}
             isSubmitAfterReturn={false}

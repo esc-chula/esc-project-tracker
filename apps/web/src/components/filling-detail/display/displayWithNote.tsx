@@ -31,14 +31,14 @@ export default function DisplayWithNote() {
           <CircleUserRound size={30} />
         </NameDate>
 
-        <div className="py-8 space-y-4 px-8 w-[35vw]">
+        <div className="py-8 space-y-4 px-8 w-[35vw] grow">
           <div>
             <span className="font-bold">รายละเอียดเอกสาร: </span>
             <span>ขออนุมัติโครงการ</span>
           </div>
           <div>
             <div className="font-bold text-sm">ไฟล์แนบ</div>
-            <div className="flex flex-row py-2 space-x-5">
+            <div className="flex flex-row py-2 gap-5 flex-wrap">
               <FileDisplay
                 fileName="เอกสารสุดยอดสายลับอิอิอิอิอิอิอิอิอิอิvbvbvbvbvbv"
                 fileType="pdf"
@@ -52,7 +52,7 @@ export default function DisplayWithNote() {
             </div>
           </div>
         </div>
-        <div className="py-8 flex flex-col justify-between w-[5vw] items-end ml-auto">
+        <div className="py-8 flex flex-col justify-between w-auto items-end">
           <Popover>
             <PopoverTrigger>
               <EllipsisVertical />
