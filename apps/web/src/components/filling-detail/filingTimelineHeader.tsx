@@ -78,9 +78,9 @@ export default function FilingTimelineHeader({
   return (
     <>
       <div className="flex items-center justify-between gap-3">
-        <span className="flex items-center">
-          <FileText className="w-5 h-5 mr-2" />
-          <h4 className="font-semibold text-2xl">{name}</h4>
+        <span className="flex items-center gap-2 w-0 grow">
+          <FileText className="w-5 h-5 shrink-0" />
+          <div className="font-semibold text-2xl line-clamp-1">{name}</div>
         </span>
         <span className="flex gap-5">
           {status === FilingStatus.APPROVED ? (

@@ -15,61 +15,14 @@ export default function FilingTimeline({
   documents: Document[]
   status: FilingStatus | "DOCUMENT_CREATED"
 }) {
-  const mockDocument = {
-    id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
-    filing: {
-      id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
-      status: FilingStatus.DRAFT,
-      name: "Filing 1 weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh",
-      projectCode: "1001",
-      FilingCode: "9001",
-      type: 9,
-      user: {},
-      project: {
-        id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
-        status: ProjectStatus.CONTINUE,
-        name: "Project 1 weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh",
-        projectCode: "1001",
-        type: ProjectType.ACADEMICS_AFFAIR,
-        detail: "Project 1 details weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh",
-        reserveDate: new Date("2021-08-01T19:11:00").toString(),
-        createdAt: new Date("2021-08-01T19:11:00").toString(),
-        updatedAt: new Date("2021-08-01T19:11:00").toString(),
-      },
-      createdAt: new Date("2021-08-01T19:11:00").toString(),
-      updatedAt: new Date("2021-08-01T19:11:00").toString(),
-    },
-    name: "เอกสาร 1",
-    activity: DocumentActivity.CREATE,
-    detail: "เอกสารนี้เป็นเอกสารที่สร้างใหม่",
-    pdfLink: "https://www.google.com",
-    docLink: "https://www.google.com",
-    createdAt: new Date("2021-08-01T19:11:00").toString(),
-    updatedAt: new Date("2021-08-01T19:11:00").toString(),
-  }
-  const mockDocuments: Document[] = [
-    {
-      ...mockDocument,
-      createdAt: new Date("2024-06-28T19:11:00").toString(),
-      activity: DocumentActivity.EDIT,
-    },
-    {
-      ...mockDocument,
-      createdAt: new Date("2024-06-11T19:11:00").toString(),
-      activity: DocumentActivity.REPLY,
-    },
-    { ...mockDocument, createdAt: new Date("2024-06-11T19:11:00").toString() },
-    { ...mockDocument, createdAt: new Date("2024-06-11T19:11:00").toString() },
-    { ...mockDocument, createdAt: new Date("2024-06-10T19:11:00").toString() },
-  ]
   let previousDate = ""
   return (
     <div className="flex flex-col items-center gap-7">
       {/* 60+40+(32/2)-(3/2) = 114.5 */}
-      {mockDocuments && (
+      {documents && (
         <div className="h-[calc(100%-2px)] w-[3px] bg-black absolute left-[114.5px] -z-10 top-[2px] overflow-hidden" />
       )}
-      {mockDocuments.map((document, index) => {
+      {documents.map((document, index) => {
         const currentDate = new Date(document.createdAt).toLocaleDateString("th-TH", {
           year: "2-digit",
           month: "short",
