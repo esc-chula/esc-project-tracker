@@ -5,12 +5,11 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../ui/form"
 import { Select } from "../../ui/select"
-import { Button } from "@mui/material"
-import { FilePlus } from "lucide-react"
-import { FaFile, FaSave } from "react-icons/fa"
 import ButtonPanel from "./buttonPanel"
 import FileInputPanel from "./fileInputPanel"
 import ActivityPanel from "./activityPanel"
+import { Document } from "@/src/interface/document"
+import { mockDocument } from "@/src/app/(authenticated)/project/[projectId]/[filingId]/page"
 
 function checkFileType(file: File) {
   if (file === undefined) return false
@@ -25,8 +24,10 @@ function checkFileType(file: File) {
 
 export default function CreateDocumentClient({
   setShowCreateDocument,
+  afterCreateDocument,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void
+  afterCreateDocument: (createdDocument: Document) => void
 }) {
   const createdFormSchema = z.object({
     // Server side ไม่รู้จัก FileList ***
@@ -54,6 +55,8 @@ export default function CreateDocumentClient({
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    // createDocument
+    afterCreateDocument(mockDocument)
   }
 
   return (

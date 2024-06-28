@@ -4,21 +4,26 @@ import { Button } from "../ui/button"
 import Link from "next/link"
 import { FilingStatus } from "@/src/constant/enum"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useToast } from "../ui/use-toast"
 import updateFilingName from "@/src/service/updateFiling"
 import CreateDocumentClient from "./create-edit/createDocumentClient"
+import { Document } from "@/src/interface/document"
 
 export default function FilingTimelineHeader({
   name,
   status,
   latestPDFUrl = "#",
   setStatus,
+  setDocuments,
+  filingId,
 }: {
   name: string
   status: FilingStatus | "DOCUMENT_CREATED"
   latestPDFUrl?: string
   setStatus: (status: FilingStatus | "DOCUMENT_CREATED") => void
+  setDocuments: Dispatch<SetStateAction<Document[]>>
+  filingId: string
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false)
@@ -26,12 +31,11 @@ export default function FilingTimelineHeader({
   const { toast } = useToast()
   const cancelDocumentSubmission = async () => {
     try {
-      // TODO: cancel document submission
-      const data = await updateFilingName({
-        filingId: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
-        filingName: name,
+      const updatedFiling = await updateFilingName({
+        filingId,
+        filingStatus: FilingStatus.DRAFT,
       })
-      if (data) {
+      if (updatedFiling) {
         setStatus("DOCUMENT_CREATED")
         setIsOpen(false)
         toast({
@@ -52,12 +56,11 @@ export default function FilingTimelineHeader({
   }
   const submitDocument = async () => {
     try {
-      // TODO: call api to submit document
-      const data = await updateFilingName({
-        filingId: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
-        filingName: name,
+      const updatedFiling = await updateFilingName({
+        filingId,
+        filingStatus: FilingStatus.WAIT_FOR_SECRETARY,
       })
-      if (data) {
+      if (updatedFiling) {
         setStatus(FilingStatus.WAIT_FOR_SECRETARY)
         toast({
           title: "สำเร็จ",
@@ -159,7 +162,15 @@ export default function FilingTimelineHeader({
       </div>
       {showCreateDocument && (
         <div className="my-10 w-full">
-          <CreateDocumentClient setShowCreateDocument={setShowCreateDocument} />
+          <CreateDocumentClient
+            setShowCreateDocument={setShowCreateDocument}
+            afterCreateDocument={(createdDocument) => {
+              setDocuments((prev) => [createdDocument, ...prev])
+              setStatus("DOCUMENT_CREATED")
+              setDocumentFixed(true)
+              setShowCreateDocument(false)
+            }}
+          />
         </div>
       )}
       {!showCreateDocument && status === FilingStatus.DRAFT && (

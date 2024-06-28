@@ -5,7 +5,7 @@ import DisplayWithNoteAndStatus from "./display/displayWithNoteAndStatus"
 import UpdateDocumentAdmin from "./create-edit/updateDocumentAdmin"
 import CreateDocumentAdmin from "./create-edit/createDocumentAdmin"
 import { Document } from "@/src/interface/document"
-import { FilingStatus, ProjectStatus, ProjectType } from "@/src/constant/enum"
+import { FilingStatus } from "@/src/constant/enum"
 import { DocumentActivity } from "../../../../api/src/constant/enum"
 
 export default function FilingTimeline({

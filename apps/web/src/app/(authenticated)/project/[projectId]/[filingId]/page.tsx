@@ -16,7 +16,7 @@ import { DocumentActivity } from "../../../../../../../api/src/constant/enum"
 
 const mockFiling: Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CREATED" } = {
   id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
-  status: "DOCUMENT_CREATED",
+  status: FilingStatus.RETURNED,
   name: "Filing 1 eridsjbpsf'jmvs;bfkdjpoijvnkdlfmxfspoeofjpas;wegmvjgodiff;j",
   projectCode: "1001",
   FilingCode: "9001",
@@ -37,7 +37,7 @@ const mockFiling: Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CR
   updatedAt: new Date("2021-08-01T19:11:00").toString(),
 }
 
-const mockDocument = {
+export const mockDocument = {
   id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
   filing: {
     id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
@@ -89,15 +89,15 @@ export default function Page({ params }: { params: { projectId: string; filingId
   const [filing, setFiling] = useState<
     (Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CREATED" }) | null
   >(mockFiling)
-  const [documents, setDocuments] = useState<Document[]>([])
+  const [documents, setDocuments] = useState<Document[]>(mockDocuments)
   const { toast } = useToast()
   useEffect(() => {
     const fetchData = async () => {
       try {
         // TODO: Change the userId to the actual userId
         const [filingData, documentsData] = await Promise.all([
-          getFilingByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a"),
-          getDocumentsByFilingId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a"),
+          getFilingByFilingId(params.filingId),
+          getDocumentsByFilingId(params.filingId),
         ])
         if (filingData) setFiling(filingData)
         if (documentsData) setDocuments(documentsData)
@@ -135,13 +135,16 @@ export default function Page({ params }: { params: { projectId: string; filingId
         <FilingTimelineHeader
           name={filing ? filing.projectCode + "-" + filing.FilingCode + " " + filing.name : "..."}
           status={filing?.status ?? FilingStatus.DRAFT}
+          latestPDFUrl={documents[0]?.pdfLink ?? "#"}
           setStatus={(status) => {
             setFiling((prev) => (prev ? { ...prev, status } : null))
           }}
+          setDocuments={setDocuments}
+          filingId={params.filingId}
         />
       </section>
       <section className="px-15 relative">
-        <FilingTimeline documents={mockDocuments} status={filing?.status ?? FilingStatus.DRAFT} />
+        <FilingTimeline documents={documents} status={filing?.status ?? FilingStatus.DRAFT} />
       </section>
     </main>
   )
