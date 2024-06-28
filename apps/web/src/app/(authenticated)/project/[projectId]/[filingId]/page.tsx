@@ -63,7 +63,7 @@ export default function Page({ params }: { params: { projectId: string; filingId
         />
       </section>
       <section className="px-15 relative">
-        <FilingTimeline documents={documents} />
+        <FilingTimeline documents={documents} status={"DOCUMENT_CREATED"} />
       </section>
     </main>
   )

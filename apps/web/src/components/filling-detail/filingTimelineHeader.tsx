@@ -1,5 +1,5 @@
 "use client"
-import { CircleCheck, FileText, Info, Plus, Send, X } from "lucide-react"
+import { CircleCheck, CirclePlus, FileText, Info, Plus, Send, X } from "lucide-react"
 import { Button } from "../ui/button"
 import Link from "next/link"
 import { FilingStatus } from "@/src/constant/enum"
@@ -13,17 +13,16 @@ export default function FilingTimelineHeader({
   name,
   status,
   latestPDFUrl = "#",
-  documentFixed = false,
   setStatus,
 }: {
   name: string
   status: FilingStatus | "DOCUMENT_CREATED"
   latestPDFUrl?: string
-  documentFixed?: boolean
   setStatus: (status: FilingStatus | "DOCUMENT_CREATED") => void
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false)
+  const [documentFixed, setDocumentFixed] = useState<boolean>(false)
   const { toast } = useToast()
   const cancelDocumentSubmission = async () => {
     try {
@@ -162,6 +161,17 @@ export default function FilingTimelineHeader({
         <div className="my-10 w-full">
           <CreateDocumentClient setShowCreateDocument={setShowCreateDocument} />
         </div>
+      )}
+      {!showCreateDocument && status === FilingStatus.DRAFT && (
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setShowCreateDocument(true)
+          }}
+          className="bg-gray-100 text-gray-700 font-semibold text-2xl w-full py-16 mt-6">
+          <CirclePlus className="h-11 w-11 mr-6" />
+          อัปโหลดเอกสาร
+        </Button>
       )}
     </>
   )
