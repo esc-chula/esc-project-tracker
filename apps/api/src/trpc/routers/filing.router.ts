@@ -12,6 +12,12 @@ export class FilingRouter {
   ) {}
 
   appRouter = this.trpcService.router({
+    //Get Filing By ID
+    findFilingByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findByFilingID(input.filingId);
+      }),
     //Get All Filing
     findAllFiling: this.trpcService.trpc.procedure.query(() => {
       return this.filingService.findAllFiling();
@@ -82,6 +88,7 @@ export class FilingRouter {
           status: z.string(),
           type: z.string(),
           department: z.string(),
+          id: z.string().optional(),
         }),
       )
       .query(({ input }) => {
@@ -89,6 +96,7 @@ export class FilingRouter {
           status: input.status,
           type: input.type,
           department: input.department,
+          id: input.id,
         });
       }),
   });

@@ -1,4 +1,4 @@
-"use clients";
+"use client";
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -11,6 +11,7 @@ import { FilingType } from "@/src/interface/filing";
 import FilingMenu from "../project/filingMenu";
 import { findAllProject } from "@/src/service/findAllProject";
 import findAllFiling from "@/src/service/findAllFiling";
+import { useToast } from "../ui/use-toast";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,9 +46,18 @@ export default function SelectTab() {
   const [value, setValue] = React.useState<number>(0);
   const [projects, setProjects] = React.useState<Project[]>([]);
   const [filings, setFilings] = React.useState<FilingType[]>([]);
+  const [searchedProjectID, setSearchedProjectID] = React.useState<
+    string | null
+  >(null);
+  const [searchedFilingID, setSearchedFilingID] = React.useState<string | null>(
+    null
+  );
+  const { toast } = useToast();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    setSearchedProjectID(null);
+    setSearchedFilingID(null);
   };
 
   React.useEffect(() => {
@@ -58,27 +68,43 @@ export default function SelectTab() {
         setFilings(fetchedFiling);
         setProjects(fetchedProject);
       } catch (error) {
-        console.log(error);
-        throw new Error("Failed to fetch data");
+        if (error instanceof Error) {
+          toast({
+            title: "ไม่สำเร็จ",
+            description: error.message,
+            isError: true,
+          });
+        }
       }
     }
 
     fetchData();
   }, []);
+
   return (
     <Box sx={{ width: "100%" }}>
       <CustomTabPanel value={value} index={0}>
         <SearchPanel
           projects={projects}
           placeHolder="ค้นหาโครงการทั้งหมด"
-          projectFunc={() => {}}
+          projectFunc={(project: Project | FilingType) => {
+            setSearchedProjectID(project.id);
+          }}
+          clearFunc={() => {
+            setSearchedProjectID(null);
+          }}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <SearchPanel
           filings={filings}
           placeHolder="ค้นหาเอกสารทั้งหมด"
-          FilingFunc={() => {}}
+          FilingFunc={(filing: FilingType | Project) => {
+            setSearchedFilingID(filing.id);
+          }}
+          clearFunc={() => {
+            setSearchedFilingID(null);
+          }}
         />
       </CustomTabPanel>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -105,10 +131,10 @@ export default function SelectTab() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ProjectMenu />
+        <ProjectMenu searchedProjectId={searchedProjectID} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <FilingMenu />
+        <FilingMenu searchedFilingId={searchedFilingID} />
       </CustomTabPanel>
     </Box>
   );

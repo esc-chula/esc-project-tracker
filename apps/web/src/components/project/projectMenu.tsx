@@ -12,8 +12,13 @@ import { useToast } from "../ui/use-toast";
 import { findAllProject } from "@/src/service/findAllProject";
 import findProjectsWithFilter from "@/src/service/findProjectsWithFilter";
 import hasUserProj from "@/src/service/hasUserProj";
+import getProjectByProjectId from "@/src/service/getProjectByProjectId";
 
-export default function ProjectMenu() {
+export default function ProjectMenu({
+  searchedProjectId,
+}: {
+  searchedProjectId: string | null;
+}) {
   const { toast } = useToast();
   const [departmentProject, setDepartmentProject] =
     React.useState<string>("ALL"); // department that projects belong to
@@ -31,13 +36,42 @@ export default function ProjectMenu() {
   async function fetchData() {
     try {
       let fetchedProject: Project[];
+
       if (departmentProject === "ALL" && statusProject === "ALL") {
-        fetchedProject = await findAllProject();
+        // case search
+        if (searchedProjectId) {
+          const projectById = await getProjectByProjectId(searchedProjectId);
+          projectById
+            ? (fetchedProject = [projectById])
+            : (fetchedProject = []);
+        } else {
+          // case ปกติ
+          fetchedProject = await findAllProject();
+        }
       } else {
-        fetchedProject = await findProjectsWithFilter(
-          statusProject,
-          departmentProject
-        );
+        // case search
+        if (searchedProjectId) {
+          const projectById = await getProjectByProjectId(searchedProjectId);
+          if (projectById) {
+            if (
+              (departmentProject === "ALL" ||
+                departmentProject === projectById.type) &&
+              (statusProject === "ALL" || statusProject === projectById.status)
+            ) {
+              fetchedProject = [projectById];
+            } else {
+              fetchedProject = [];
+            }
+          } else {
+            fetchedProject = [];
+          }
+        } else {
+          // case ปกติ
+          fetchedProject = await findProjectsWithFilter(
+            statusProject,
+            departmentProject
+          );
+        }
       }
 
       if (typeProject === "ALL") {
@@ -70,7 +104,7 @@ export default function ProjectMenu() {
   }
   React.useEffect(() => {
     fetchData();
-  }, [departmentProject, statusProject, typeProject]);
+  }, [departmentProject, statusProject, typeProject, searchedProjectId]);
 
   return (
     <div className="w-full">

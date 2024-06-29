@@ -1,5 +1,3 @@
-"use client";
-
 import { Folders } from "lucide-react";
 import Header from "@/src/components/header/header";
 import Title from "@/src/components/header/title";

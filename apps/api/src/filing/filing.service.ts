@@ -19,6 +19,7 @@ export class FilingService {
   ) {}
 
   findByFilingID(id: string) {
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
     return this.filingRepository.findOne({ where: { id } });
   }
 
@@ -116,9 +117,14 @@ export class FilingService {
     status: string;
     type: string;
     department: string;
+    id?: string;
   }): Promise<Filing[]> {
     try {
       const query = this.filingRepository.createQueryBuilder('filing');
+
+      if (filter.id) {
+        query.andWhere('filing.id = :id', { id: filter.id });
+      }
       if (filter.status !== 'ALL') {
         query.andWhere('filing.status = :status', { status: filter.status });
       }

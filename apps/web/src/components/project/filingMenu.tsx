@@ -12,7 +12,12 @@ import { useToast } from "../ui/use-toast";
 import findAllFiling from "@/src/service/findAllFiling";
 import { departmentProjectItems } from "@/src/constant/filterProject";
 import findFilingsWithFilter from "@/src/service/findFilingsWithFilter";
-export default function FilingMenu() {
+import getFilingByFilingId from "@/src/service/getFilingByFilingId";
+export default function FilingMenu({
+  searchedFilingId,
+}: {
+  searchedFilingId: string | null;
+}) {
   const { toast } = useToast();
 
   const [departmentFiling, setDepartmentFiling] = React.useState<string>("ALL");
@@ -27,16 +32,37 @@ export default function FilingMenu() {
         statusFiling === "ALL" &&
         typeFiling === "ALL"
       ) {
-        const fetchedFiling = await findAllFiling();
-        setFilings(fetchedFiling);
-      } else {
-        const fetchedFiling = await findFilingsWithFilter(
-          statusFiling,
-          typeFiling,
-          departmentFiling
-        );
-        if (fetchedFiling) {
+        // case search
+        if (searchedFilingId) {
+          const filingById = await getFilingByFilingId(searchedFilingId);
+          filingById ? setFilings([filingById]) : setFilings([]);
+        } else {
+          // case ปกติ
+          const fetchedFiling = await findAllFiling();
           setFilings(fetchedFiling);
+        }
+      } else {
+        // case search
+        if (searchedFilingId) {
+          const fetchedFiling = await findFilingsWithFilter(
+            statusFiling,
+            typeFiling,
+            departmentFiling,
+            searchedFilingId
+          );
+          if (fetchedFiling) {
+            setFilings(fetchedFiling);
+          }
+        } else {
+          // case ปกติ
+          const fetchedFiling = await findFilingsWithFilter(
+            statusFiling,
+            typeFiling,
+            departmentFiling
+          );
+          if (fetchedFiling) {
+            setFilings(fetchedFiling);
+          }
         }
       }
     } catch (error) {
@@ -52,7 +78,7 @@ export default function FilingMenu() {
 
   React.useEffect(() => {
     fetchData();
-  }, [departmentFiling, statusFiling, typeFiling]);
+  }, [departmentFiling, statusFiling, typeFiling, searchedFilingId]);
 
   return (
     <div className="w-full">

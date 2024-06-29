@@ -24,10 +24,6 @@ export class TrpcRouter {
   });
 
   async applyMiddleware(app: INestApplication) {
-    this.appRouter = this.trpc.mergeRouters(
-      this.appRouter,
-      this.projectRouter.appRouter,
-    );
     app.use(
       `/trpc`,
       trpcExpress.createExpressMiddleware({ router: this.appRouter }),
