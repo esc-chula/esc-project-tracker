@@ -64,10 +64,10 @@ export class ProjectRouter {
         });
       }),
 
-    findProjectWithFilter: this.trpcService.trpc.procedure
+    findProjectsWithFilter: this.trpcService.trpc.procedure
       .input(z.object({ status: z.string(), department: z.string() }))
       .query(({ input }) => {
-        return this.projectService.findProjectWithFilter({
+        return this.projectService.findProjectsWithFilter({
           status: input.status,
           department: input.department,
         });

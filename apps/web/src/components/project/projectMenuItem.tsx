@@ -3,7 +3,7 @@ import { Project } from "@/src/interface/project";
 import joinProject from "@/src/service/joinProject";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
-import checkByUserIDAndProjectID from "@/src/service/checkUserProject";
+import hasUserProj from "@/src/service/hasUserProj";
 
 export default function ProjectMenuItem({
   project,
@@ -13,8 +13,6 @@ export default function ProjectMenuItem({
   index: number;
 }) {
   const { toast } = useToast();
-  const userId = "c8b285e0-9653-40d5-9865-def3b4792c99";
-  const projectId = "ca09400e-bb9f-48f6-ae9c-a967e8eb2ab8";
   // To do : check if user joined project by init another function to check
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const handleJoinProject = async () => {
@@ -41,19 +39,21 @@ export default function ProjectMenuItem({
   };
 
   const checkUserJoinProject = async (userId: string, projectId: string) => {
-    const result = await checkByUserIDAndProjectID(userId, projectId);
+    const result = await hasUserProj(userId, projectId);
     setIsJoined(result);
   };
   useEffect(() => {
-    checkUserJoinProject(userId, projectId);
+    checkUserJoinProject(
+      "c8b285e0-9653-40d5-9865-def3b4792c99",
+      "ca09400e-bb9f-48f6-ae9c-a967e8eb2ab8"
+    );
   }, []);
 
-  const buttonStyle = (isJoined: Boolean) => {
-    if (isJoined) {
+  const buttonStyle = (joined: boolean) => {
+    if (joined) {
       return "text-[#49E66B] bg-white";
-    } else {
-      return "bg-red text-white hover:bg-white hover:text-red";
     }
+    return "bg-red text-white hover:bg-white hover:text-red";
   };
   return (
     <tr className="border-b-2 border-gray-200">

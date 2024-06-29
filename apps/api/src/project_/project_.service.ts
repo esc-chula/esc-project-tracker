@@ -114,7 +114,7 @@ export class ProjectService {
     return await this.projectRepository.save(newProject);
   }
 
-  async findProjectWithFilter(filter: {
+  async findProjectsWithFilter(filter: {
     status: string;
     department: string;
   }): Promise<Project[]> {

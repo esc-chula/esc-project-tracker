@@ -1,11 +1,11 @@
 import { trpc } from "../app/trpc";
 
-export default async function checkByUserIDAndProjectID(
+export default async function hasUserProj(
   userId: string,
   projectId: string
 ): Promise<boolean> {
   try {
-    const result = await trpc.userProj.checkByUserIDAndProjectID.query({
+    const result = await trpc.userProj.hasUserProj.query({
       userId,
       projectId,
     });

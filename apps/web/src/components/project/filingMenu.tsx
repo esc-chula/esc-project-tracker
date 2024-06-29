@@ -11,7 +11,7 @@ import React from "react";
 import { useToast } from "../ui/use-toast";
 import findAllFiling from "@/src/service/findAllFiling";
 import { departmentProjectItems } from "@/src/constant/filterProject";
-import findFilingWithFilter from "@/src/service/findFilingWithFilter";
+import findFilingsWithFilter from "@/src/service/findFilingsWithFilter";
 export default function FilingMenu() {
   const { toast } = useToast();
 
@@ -28,16 +28,13 @@ export default function FilingMenu() {
         typeFiling === "ALL"
       ) {
         const fetchedFiling = await findAllFiling();
-        if (fetchedFiling) {
-          setFilings(fetchedFiling);
-        }
+        setFilings(fetchedFiling);
       } else {
-        const fetchedFiling = await findFilingWithFilter(
+        const fetchedFiling = await findFilingsWithFilter(
           statusFiling,
           typeFiling,
           departmentFiling
         );
-        console.log("herehehehehe");
         if (fetchedFiling) {
           setFilings(fetchedFiling);
         }
@@ -56,12 +53,6 @@ export default function FilingMenu() {
   React.useEffect(() => {
     fetchData();
   }, [departmentFiling, statusFiling, typeFiling]);
-
-  // if (!filings || !filings.length) {
-  //   return (
-  //     <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
-  //   );
-  // }
 
   return (
     <div className="w-full">
@@ -83,18 +74,14 @@ export default function FilingMenu() {
         />
       </div>
 
-      {!filings || !filings.length ? (
+      {!filings.length ? (
         <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
       ) : (
         <div className="w-full h-[500px] overflow-x-auto overflow-y-auto rounded-t-xl">
           <table className="w-full">
             <FilingMenuHeader />
             {filings.map((filing, index) => (
-              <FilingMenuItem
-                filing={filing}
-                index={index + 1}
-                key={filing.id}
-              />
+              <FilingMenuItem filing={filing} key={filing.id} />
             ))}
           </table>
         </div>

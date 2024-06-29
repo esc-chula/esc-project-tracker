@@ -53,10 +53,10 @@ export class UserProjRouter {
         });
       }),
 
-    checkByUserIDAndProjectID: this.trpcService.trpc.procedure
+    hasUserProj: this.trpcService.trpc.procedure
       .input(z.object({ userId: z.string(), projectId: z.string() }))
       .query(({ input }) => {
-        return this.userProjService.checkByUserIDAndProjectID({
+        return this.userProjService.hasUserProj({
           userId: input.userId,
           projectId: input.projectId,
         });

@@ -112,7 +112,7 @@ export class FilingService {
     }
   }
 
-  async findFilingWithFilter(filter: {
+  async findFilingsWithFilter(filter: {
     status: string;
     type: string;
     department: string;

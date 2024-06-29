@@ -76,7 +76,7 @@ export class FilingRouter {
         return this.filingService.deleteFiling(input.filingId);
       }),
     //findFilingWithFilter
-    findFilingWithFilter: this.trpcService.trpc.procedure
+    findFilingsWithFilter: this.trpcService.trpc.procedure
       .input(
         z.object({
           status: z.string(),
@@ -85,7 +85,7 @@ export class FilingRouter {
         }),
       )
       .query(({ input }) => {
-        return this.filingService.findFilingWithFilter({
+        return this.filingService.findFilingsWithFilter({
           status: input.status,
           type: input.type,
           department: input.department,

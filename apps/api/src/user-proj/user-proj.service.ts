@@ -110,7 +110,7 @@ export class UserProjService {
     return userProj;
   }
 
-  async checkByUserIDAndProjectID({
+  async hasUserProj({
     userId,
     projectId,
   }: {

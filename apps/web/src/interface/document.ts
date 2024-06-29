@@ -1,6 +1,6 @@
 import { FilingType } from "./filing";
 
-export interface documentType {
+export interface DocumentType {
   id: string;
   filing: FilingType;
   name: string;

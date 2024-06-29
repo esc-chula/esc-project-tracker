@@ -10,23 +10,22 @@ import {
 } from "@/src/constant/filterProject";
 import { useToast } from "../ui/use-toast";
 import { findAllProject } from "@/src/service/findAllProject";
-import findProjectWithFilter from "@/src/service/findProjectWithFilter";
-import checkByUserIDAndProjectID from "@/src/service/checkUserProject";
+import findProjectsWithFilter from "@/src/service/findProjectsWithFilter";
+import hasUserProj from "@/src/service/hasUserProj";
 
 export default function ProjectMenu() {
   const { toast } = useToast();
   const [departmentProject, setDepartmentProject] =
-    React.useState<string>("ALL");
-  const [statusProject, setStatusProject] = React.useState<string>("ALL");
-  const [typeProject, setTypeProject] = React.useState<string>("ALL");
+    React.useState<string>("ALL"); // department that projects belong to
+  const [statusProject, setStatusProject] = React.useState<string>("ALL"); // status of project
+  const [typeProject, setTypeProject] = React.useState<string>("ALL"); // join or not
   const [projects, setProjects] = React.useState<Project[]>([]);
 
   async function filterJoin(eachProject: Project): Promise<boolean> {
-    const result = await checkByUserIDAndProjectID(
+    const result = await hasUserProj(
       "c8b285e0-9653-40d5-9865-def3b4792c99",
       eachProject.id
     );
-    console.log(result);
     return result;
   }
   async function fetchData() {
@@ -35,7 +34,7 @@ export default function ProjectMenu() {
       if (departmentProject === "ALL" && statusProject === "ALL") {
         fetchedProject = await findAllProject();
       } else {
-        fetchedProject = await findProjectWithFilter(
+        fetchedProject = await findProjectsWithFilter(
           statusProject,
           departmentProject
         );
@@ -49,9 +48,8 @@ export default function ProjectMenu() {
             const isJoined = await filterJoin(project);
             if (typeProject === "join") {
               return isJoined ? project : null;
-            } else {
-              return isJoined ? null : project;
             }
+            return isJoined ? null : project;
           })
         );
         setProjects(

@@ -1,12 +1,13 @@
 import { trpc } from "../app/trpc";
-import { documentType } from "../interface/document";
+import { DocumentType } from "../interface/document";
 export default async function findDocumentsByFilingId(
   filingId: string
-): Promise<documentType[]> {
+): Promise<DocumentType[]> {
   try {
-    const data = await trpc.document.findDocumentByFilingId.query({ filingId });
-    if (data) return data;
-    else return [];
+    const data = await trpc.document.findDocumentsByFilingId.query({
+      filingId,
+    });
+    return data;
   } catch (e) {
     console.log(e);
     throw new Error("Cant get doc");

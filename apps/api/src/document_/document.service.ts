@@ -58,7 +58,6 @@ export class DocumentService {
     return documents;
   }
 
-
   async findDocumentsByFilingId(filingId: string): Promise<Document[]> {
     if (!isUUID(filingId)) throw new Error('Input is not an UUID!');
     const data = await this.documentRepository.find({
