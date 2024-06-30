@@ -1,6 +1,6 @@
 "use client";
 import AllDocumentCard from "./allDocumentCard";
-import SelectType from "./selectType";
+import SelectType from "../filter/selectType";
 import { filterStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { FilingType } from "@/src/interface/filing";

@@ -1,9 +1,4 @@
-import {
-  INestApplication,
-  Inject,
-  Injectable,
-  forwardRef,
-} from '@nestjs/common';
+import { INestApplication, Injectable } from '@nestjs/common';
 import { TrpcService } from './trpc.service';
 import * as trpcExpress from '@trpc/server/adapters/express';
 
@@ -29,10 +24,6 @@ export class TrpcRouter {
   });
 
   async applyMiddleware(app: INestApplication) {
-    this.appRouter = this.trpc.mergeRouters(
-      this.appRouter,
-      this.projectRouter.appRouter,
-    );
     app.use(
       `/trpc`,
       trpcExpress.createExpressMiddleware({ router: this.appRouter }),

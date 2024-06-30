@@ -30,7 +30,6 @@ export default function SelectType({
         <SelectValue placeholder={title} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">ทั้งหมด</SelectItem>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value.toString()}>
             {item.label}

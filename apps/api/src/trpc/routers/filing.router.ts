@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
-import { optional, string, z } from 'zod';
+import { z } from 'zod';
 import { FilingStatus } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
 
@@ -12,6 +12,12 @@ export class FilingRouter {
   ) {}
 
   appRouter = this.trpcService.router({
+    //Get Filing By ID
+    findFilingByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findByFilingID(input.filingId);
+      }),
     //Get All Filing
     findAllFiling: this.trpcService.trpc.procedure.query(() => {
       return this.filingService.findAllFiling();
@@ -74,6 +80,24 @@ export class FilingRouter {
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
+      }),
+    //findFilingWithFilter
+    findFilingsWithFilter: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          status: z.string(),
+          type: z.string(),
+          department: z.string(),
+          id: z.string().optional(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.filingService.findFilingsWithFilter({
+          status: input.status,
+          type: input.type,
+          department: input.department,
+          id: input.id,
+        });
       }),
   });
 }
