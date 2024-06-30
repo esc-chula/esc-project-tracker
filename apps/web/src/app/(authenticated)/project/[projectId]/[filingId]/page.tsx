@@ -142,7 +142,6 @@ export default function Page({
           />
         </Header>
       </div>
-
       <section className="flex flex-col mb-7 items-center mt-10 w-full">
         <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
         <DocumentStatusStepper status={filing?.status ?? "DEFAULT"} />
@@ -163,6 +162,7 @@ export default function Page({
           filingId={params.filingId}
         />
       </section>
+
       <section className="px-15 relative">
         <FilingTimeline
           documents={documents}
