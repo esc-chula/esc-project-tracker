@@ -52,10 +52,9 @@ export default function CreateDocumentClient({
   const fileRef = form.register("file")
 
   function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values)
-    // createDocument
+    // upload file
+    // then createDocument
     afterCreateDocument(mockDocument)
   }
 

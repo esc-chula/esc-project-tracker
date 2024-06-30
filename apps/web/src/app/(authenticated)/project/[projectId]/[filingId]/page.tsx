@@ -92,9 +92,9 @@ export default function Page({ params }: { params: { projectId: string; filingId
   const [documents, setDocuments] = useState<Document[]>(mockDocuments)
   const { toast } = useToast()
   useEffect(() => {
+    // TODO: split to 2 async functions
     const fetchData = async () => {
       try {
-        // TODO: Change the userId to the actual userId
         const [filingData, documentsData] = await Promise.all([
           getFilingByFilingId(params.filingId),
           getDocumentsByFilingId(params.filingId),
@@ -118,7 +118,7 @@ export default function Page({ params }: { params: { projectId: string; filingId
       <div className="pl-15 pr-5">
         <Header>
           <Subtitle
-            project={filing ? filing.projectCode + " " + filing.project.name : "..."}
+            project={filing ? filing.projectCode : "..."}
             filing={
               filing ? filing.projectCode + "-" + filing.FilingCode + " " + filing.name : "..."
             }
