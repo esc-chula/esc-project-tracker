@@ -12,7 +12,7 @@ export default function ActivityPanel() {
   return (
     <>
       <FormControl>
-        <SelectTrigger className="w-[30vw]">
+        <SelectTrigger className="border-2 rounded-lg w-[38vw] p-4">
           <SelectValue placeholder={DocumentActivityMapForUser[0].label} />
         </SelectTrigger>
       </FormControl>

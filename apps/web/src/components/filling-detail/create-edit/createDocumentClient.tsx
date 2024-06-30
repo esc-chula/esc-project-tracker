@@ -77,7 +77,7 @@ export default function CreateDocumentClient({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-full p-8 flex flex-col text-start"
         >
-          <div className="flex flex-row space-x-5">
+          <div className="flex flex-row space-x-5 w-full">
             <div className="flex flex-col space-y-8">
               <FormField
                 control={form.control}
@@ -107,7 +107,7 @@ export default function CreateDocumentClient({
                       <input
                         placeholder="ใส่หัวข้อเอกสาร"
                         {...field}
-                        className="border-2 rounded-lg p-2 w-[30vw]"
+                        className="border-2 rounded-lg p-1 px-4 w-[38vw] flex items-center"
                       />
                     </FormControl>
 
