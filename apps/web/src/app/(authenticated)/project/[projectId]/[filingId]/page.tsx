@@ -14,7 +14,9 @@ import getDocumentsByFilingId from "@/src/service/getDocumentsByFilingId"
 import { Document } from "@/src/interface/document"
 import { DocumentActivity } from "../../../../../../../api/src/constant/enum"
 
-const mockFiling: Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CREATED" } = {
+const mockFiling: Omit<Filing, "status"> & {
+  status: FilingStatus | "DOCUMENT_CREATED"
+} = {
   id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
   status: FilingStatus.RETURNED,
   name: "Filing 1 eridsjbpsf'jmvs;bfkdjpoijvnkdlfmxfspoeofjpas;wegmvjgodiff;j",
@@ -126,7 +128,6 @@ export default function Page({ params }: { params: { projectId: string; filingId
           />
         </Header>
       </div>
-
       <section className="flex flex-col mb-7 items-center mt-10 w-full">
         <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
         <DocumentStatusStepper status={filing?.status ?? "DEFAULT"} />
@@ -143,6 +144,7 @@ export default function Page({ params }: { params: { projectId: string; filingId
           filingId={params.filingId}
         />
       </section>
+
       <section className="px-15 relative">
         <FilingTimeline documents={documents} status={filing?.status ?? FilingStatus.DRAFT} />
       </section>

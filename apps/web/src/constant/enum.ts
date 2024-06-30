@@ -27,3 +27,9 @@ export enum ProjectType {
   OTHER_ESC = "80", // อื่นๆของกวศ
   OFFICE_SUPPLY_AFFAIR = "90", // สำนักงานและพัสดุ
 }
+
+export enum DocumentActivity {
+  CREATE = 'CREATE', // User Only
+  REPLY = 'REPLY', // Admin Only
+  EDIT = 'EDIT', // Both
+}

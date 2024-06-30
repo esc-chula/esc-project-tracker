@@ -27,7 +27,7 @@ import { CountFilingModule } from './count-filing/count-filing.module';
           type: 'postgres',
           url: configService.get('DATABASE_URL'),
           entities: [join(__dirname, '**/*.entity.{ts,js}')],
-          synchronize: true,
+          synchronize: false,
         };
       },
       inject: [ConfigService],
