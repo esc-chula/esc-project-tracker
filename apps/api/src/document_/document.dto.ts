@@ -8,3 +8,11 @@ export class CreateDocumentDTO {
   docLink: string;
   activity: DocumentActivity;
 }
+
+export class EditDocumentDTO {
+  name?: string;
+  activity?: DocumentActivity;
+  detail?: string;
+  pdfLink?: string;
+  docLink?: string;
+}
