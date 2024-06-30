@@ -16,3 +16,13 @@ export interface Filing {
   createdAt: string
   updatedAt: string
 }
+
+export interface UserType {
+  id: string
+  name: string
+  createdAt: string
+  updatedAt: string
+  username: string
+  studentId: string
+  password: string
+}

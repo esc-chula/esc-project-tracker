@@ -1,14 +1,14 @@
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState, useEffect } from "react";
-import { Search } from "lucide-react";
-import { FaFolder } from "react-icons/fa6";
-import { IoDocumentText } from "react-icons/io5";
+import TextField from "@mui/material/TextField"
+import Autocomplete from "@mui/material/Autocomplete"
+import { useState, useEffect } from "react"
+import { Search } from "lucide-react"
+import { FaFolder } from "react-icons/fa6"
+import { IoDocumentText } from "react-icons/io5"
 
-import { InputAdornment } from "@mui/material";
-import { autocompleteStyles } from "@/src/styles/autocompleteStype";
-import { Project } from "@/src/interface/project";
-import { Filing } from "@/src/interface/filing";
+import { InputAdornment } from "@mui/material"
+import { autocompleteStyles } from "@/src/styles/autocompleteStype"
+import { Project } from "@/src/interface/project"
+import { Filing } from "@/src/interface/filing"
 
 export default function SearchBar({
   placeholder,
@@ -16,34 +16,40 @@ export default function SearchBar({
   Filings,
   projectFunc,
   FilingFunc,
+  clearFunc,
 }: {
-  placeholder: string;
-  projects: Project[];
-  Filings: Filing[];
-  projectFunc?: (project: Project | Filing) => void; // Make functions optional
-  FilingFunc?: (Filing: Project | Filing) => void;
+  placeholder: string
+  projects: Project[]
+  Filings: Filing[]
+  projectFunc?: (project: Project | Filing) => void // Make functions optional
+  FilingFunc?: (Filing: Project | Filing) => void
+  clearFunc?: () => void
 }) {
-  const [value, setValue] = useState<Project | Filing | null>(null);
+  const [value, setValue] = useState<Project | Filing | null>(null)
 
   useEffect(() => {
-    console.log(value);
-  }, [value]);
+    console.log(value)
+  }, [value])
 
   const handleSelect = (option: Project | Filing | null) => {
-    setValue(option);
+    setValue(option)
     if (option !== null) {
-      setValue(option);
+      setValue(option)
       if (projectFunc && "reserveDate" in option) {
-        projectFunc(option);
+        projectFunc(option)
       } else {
         if (FilingFunc) {
-          FilingFunc(option);
+          FilingFunc(option)
         } else {
-          console.log("No function to call");
+          console.log("No function to call")
         }
       }
+    } else {
+      if (clearFunc) {
+        clearFunc()
+      }
     }
-  };
+  }
 
   return (
     <div className="min-w-[40vw] max-w-full">
@@ -51,7 +57,9 @@ export default function SearchBar({
         value={value}
         options={[...Filings, ...projects]}
         noOptionsText="ไม่พบข้อมูล"
-        onChange={(event, newValue) => {handleSelect(newValue)}}
+        onChange={(event, newValue) => {
+          handleSelect(newValue)
+        }}
         getOptionLabel={(option) =>
           typeof option === "string"
             ? option
@@ -88,5 +96,5 @@ export default function SearchBar({
         )}
       />
     </div>
-  );
+  )
 }

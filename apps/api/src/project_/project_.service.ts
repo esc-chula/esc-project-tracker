@@ -113,4 +113,25 @@ export class ProjectService {
     const newProject = { ...project, ...obj, projectCode };
     return await this.projectRepository.save(newProject);
   }
+
+  async findProjectsWithFilter(filter: {
+    status: string;
+    department: string;
+  }): Promise<Project[]> {
+    try {
+      const query = await this.projectRepository.createQueryBuilder('project');
+      if (filter.department !== 'ALL') {
+        query.andWhere('project.type = :department', {
+          department: filter.department,
+        });
+      }
+      if (filter.status !== 'ALL') {
+        query.andWhere('project.status = :status', { status: filter.status });
+      }
+      return await query.getMany();
+    } catch (error) {
+      console.log(error);
+      throw new Error('Failed to fetch Projects');
+    }
+  }
 }

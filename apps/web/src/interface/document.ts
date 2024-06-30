@@ -12,3 +12,15 @@ export interface Document {
   createdAt: string
   updatedAt: string
 }
+
+export interface DocumentType {
+  id: string
+  filing: Filing
+  name: string
+  activity: string
+  detail: string
+  pdfLink: string
+  docLink: string
+  createdAt: string
+  updatedAt: string
+}
