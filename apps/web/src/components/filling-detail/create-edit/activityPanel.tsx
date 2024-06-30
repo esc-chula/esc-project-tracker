@@ -1,4 +1,4 @@
-import { projectTypeMap } from "@/src/constant/Map";
+import { DocumentActivityMapForUser, projectTypeMap } from "@/src/constant/Map";
 import { FormControl } from "../../ui/form";
 import {
   SelectContent,
@@ -13,16 +13,17 @@ export default function ActivityPanel() {
     <>
       <FormControl>
         <SelectTrigger className="w-[30vw]">
-          <SelectValue placeholder="สร้าง / แก้ไขเอกสาร" />
+          <SelectValue placeholder={DocumentActivityMapForUser[0].label} />
         </SelectTrigger>
       </FormControl>
       <SelectContent>
         <SelectGroup>
-          {projectTypeMap.map((item, index) => (
+          {DocumentActivityMapForUser.map((item, index) => (
             <SelectItem key={index} value={item.value}>
-              {item.value + " - " + item.label}
+              {item.label}
             </SelectItem>
           ))}
+          {/* TODO: DocumentActivityMapForAdmin */}
         </SelectGroup>
       </SelectContent>
     </>

@@ -1,4 +1,4 @@
-import { ProjectType } from "./enum";
+import { ProjectType, DocumentActivity } from "./enum";
 
 export const filingTypeMap = [
   {
@@ -97,5 +97,27 @@ export const projectTypeMap = [
   {
     label: "โครงการฝ่ายสำนักงานและพัสดุ",
     value: ProjectType.OFFICE_SUPPLY_AFFAIR,
+  },
+];
+
+export const DocumentActivityMapForUser = [
+  {
+    label: "สร้างเอกสาร",
+    value: DocumentActivity.CREATE,
+  },
+  {
+    label: "แก้ไขเอกสาร",
+    value: DocumentActivity.EDIT,
+  },
+];
+
+export const DocumentActivityMapForAdmin = [
+  {
+    label: "ตอบกลับ",
+    value: DocumentActivity.REPLY,
+  },
+  {
+    label: "แก้ไขเอกสาร",
+    value: DocumentActivity.EDIT,
   },
 ];
