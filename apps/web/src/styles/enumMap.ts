@@ -24,6 +24,12 @@ export const TextMyFilingStatus = {
   [FilingStatus.DRAFT]: "ฉบับร่าง",
 }
 
+export const TextDocumentActivity = {
+  CREATE: "สร้างเอกสาร",
+  EDIT: "แก้ไขเอกสาร",
+  REPLY: "ตอบกลับ",
+}
+
 export const FilingStatusToStepper = {
   LOADING: [
     ["disabled", "disabled"],

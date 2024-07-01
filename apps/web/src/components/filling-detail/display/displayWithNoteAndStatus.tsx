@@ -9,6 +9,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../ui/co
 import { useState } from "react"
 import FileDisplay from "./fileDisplay"
 import { Document } from "@/src/interface/document"
+import { TextDocumentActivity } from "@/src/styles/enumMap"
 
 export default function DisplayWithNoteAndStatus({
   setShowCreateDocument,
@@ -35,7 +36,7 @@ export default function DisplayWithNoteAndStatus({
           <NameDate
             title="Secretary ESC"
             date={"ส่งเอกสารเมื่อ " + new Date(document.createdAt).toLocaleString("th-TH")}
-            activity={document.activity}>
+            activity={TextDocumentActivity[document.activity]}>
             <Image src="/icons/esc-red.svg" width={30} height={30} alt="esc-icon" />
           </NameDate>
           <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">

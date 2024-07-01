@@ -10,7 +10,7 @@ export default function StatusButton({
 }: {
   status: FilingStatus
   isSubmitAfterReturn?: boolean
-  setShowCreateDocument: (showCreateDocument: boolean) => void
+  setShowCreateDocument?: (showCreateDocument: boolean) => void
 }) {
   return (
     <div className="flex flex-col space-y-5 text-xxs font-extrabold w-full">
@@ -18,7 +18,7 @@ export default function StatusButton({
         className={`rounded-lg text-center py-2 px-3 font-bold font-sukhumvit ${buttonColors[status]}`}>
         {TextMyFilingStatus[status]}
       </div>
-      {status === FilingStatus.RETURNED && !isSubmitAfterReturn && (
+      {status === FilingStatus.RETURNED && !isSubmitAfterReturn && setShowCreateDocument && (
         <button
           onClick={() => {
             setShowCreateDocument(true)

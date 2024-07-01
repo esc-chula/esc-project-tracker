@@ -103,6 +103,8 @@ export default function Page({ params }: { params: { projectId: string; filingId
   const fetchFiling = async () => {
     try {
       const filingData = await getFilingByFilingId(params.filingId)
+      console.log(filingData)
+
       if (filingData) setFiling(filingData)
     } catch (err) {
       if (err instanceof Error) {

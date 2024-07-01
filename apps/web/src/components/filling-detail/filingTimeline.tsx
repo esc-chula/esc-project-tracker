@@ -32,9 +32,9 @@ export default function FilingTimeline({
         })
         const display =
           document.activity === DocumentActivity.REPLY ? (
-            <DisplayWithStatus />
+            <DisplayWithStatus document={document} />
           ) : index === 0 && status === "DOCUMENT_CREATED" ? (
-            <DisplayWithNote />
+            <DisplayWithNote document={document} />
           ) : (
             <DisplayWithNoteAndStatus
               setShowCreateDocument={setShowCreateDocument}
