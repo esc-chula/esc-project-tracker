@@ -7,7 +7,7 @@ import { Filing } from "@/src/interface/filing"
 import FilingTimeline from "@/src/components/filling-detail/filingTimeline"
 import Subtitle from "@/src/components/header/subtitle"
 import getFilingByFilingId from "@/src/service/getFilingByFilingId"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useToast } from "@/src/components/ui/use-toast"
 import FilingTimelineHeader from "@/src/components/filling-detail/filingTimelineHeader"
 import findDocumentsByFilingId from "@/src/service/findDocumentsByFilingId"
@@ -92,40 +92,48 @@ export default function Page({ params }: { params: { projectId: string; filingId
     (Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CREATED" }) | null
   >()
   const [documents, setDocuments] = useState<Document[]>([])
+  const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false)
   const { toast } = useToast()
+  const setStatus = useMemo(
+    () => (status: FilingStatus | "DOCUMENT_CREATED") => {
+      setFiling((prev) => (prev ? { ...prev, status } : null))
+    },
+    []
+  )
+  const fetchFiling = async () => {
+    try {
+      const filingData = await getFilingByFilingId(params.filingId)
+      if (filingData) setFiling(filingData)
+    } catch (err) {
+      if (err instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: err.message,
+          isError: true,
+        })
+      }
+    }
+  }
+  const fetchDocuments = async () => {
+    try {
+      const documentsData = await findDocumentsByFilingId(params.filingId)
+      if (documentsData) {
+        if (filing?.status === FilingStatus.DRAFT) setStatus("DOCUMENT_CREATED")
+        setDocuments(documentsData)
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        toast({
+          title: "ไม่สำเร็จ",
+          description: err.message,
+          isError: true,
+        })
+      }
+    }
+  }
   useEffect(() => {
-    const fetchFiling = async () => {
-      try {
-        const filingData = await getFilingByFilingId(params.filingId)
-        // correct FilingStatus
-        if (filingData) setFiling(filingData)
-      } catch (err) {
-        if (err instanceof Error) {
-          toast({
-            title: "ไม่สำเร็จ",
-            description: err.message,
-            isError: true,
-          })
-        }
-      }
-    }
-    const fetchDocuments = async () => {
-      try {
-        const documentsData = await findDocumentsByFilingId(params.filingId)
-        if (documentsData) setDocuments(documentsData)
-      } catch (err) {
-        if (err instanceof Error) {
-          toast({
-            title: "ไม่สำเร็จ",
-            description: err.message,
-            isError: true,
-          })
-        }
-      }
-    }
-    fetchFiling().then(() => {
-      fetchDocuments()
-    })
+    fetchFiling()
+    fetchDocuments()
   }, [])
   return (
     <main className="w-full pt-[68px]">
@@ -149,16 +157,20 @@ export default function Page({ params }: { params: { projectId: string; filingId
           name={filing ? filing.projectCode + "-" + filing.FilingCode + " " + filing.name : "..."}
           status={filing?.status ?? FilingStatus.DRAFT}
           latestPDFUrl={documents[0]?.pdfLink ?? "#"}
-          setStatus={(status) => {
-            setFiling((prev) => (prev ? { ...prev, status } : null))
-          }}
+          setStatus={setStatus}
           setDocuments={setDocuments}
           filingId={params.filingId}
+          showCreateDocument={showCreateDocument}
+          setShowCreateDocument={setShowCreateDocument}
         />
       </section>
 
       <section className="px-15 relative">
-        <FilingTimeline documents={documents} status={filing?.status ?? FilingStatus.DRAFT} />
+        <FilingTimeline
+          documents={documents}
+          status={filing?.status ?? FilingStatus.DRAFT}
+          setShowCreateDocument={setShowCreateDocument}
+        />
       </section>
     </main>
   )

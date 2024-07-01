@@ -63,7 +63,7 @@ export default function CreateDocumentClient({
       filingId,
       "https://www.google.com",
       "https://www.google.com",
-      DocumentActivity.CREATE,
+      values.activity as DocumentActivity,
       values.note
     )
     afterCreateDocument(newDocument)

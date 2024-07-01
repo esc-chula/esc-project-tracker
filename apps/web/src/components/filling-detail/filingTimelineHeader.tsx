@@ -17,6 +17,8 @@ export default function FilingTimelineHeader({
   setStatus,
   setDocuments,
   filingId,
+  showCreateDocument,
+  setShowCreateDocument,
 }: {
   name: string
   status: FilingStatus | "DOCUMENT_CREATED"
@@ -24,9 +26,11 @@ export default function FilingTimelineHeader({
   setStatus: (status: FilingStatus | "DOCUMENT_CREATED") => void
   setDocuments: Dispatch<SetStateAction<Document[]>>
   filingId: string
+  showCreateDocument: boolean
+  setShowCreateDocument: (showCreateDocument: boolean) => void
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false)
+
   const [documentFixed, setDocumentFixed] = useState<boolean>(false)
   const { toast } = useToast()
   const cancelDocumentSubmission = async () => {
@@ -88,7 +92,7 @@ export default function FilingTimelineHeader({
         <span className="flex gap-5">
           {status === FilingStatus.APPROVED ? (
             <>
-              <Link href={latestPDFUrl}>
+              <Link href={latestPDFUrl} rel="noopener noreferrer" target="_blank">
                 <Button className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
                   <Info className="h-8 w-8 mr-2" />
                   อ่าน
