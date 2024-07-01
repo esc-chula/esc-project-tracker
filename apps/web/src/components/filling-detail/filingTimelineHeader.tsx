@@ -1,28 +1,14 @@
-"use client";
-import {
-  CircleCheck,
-  CirclePlus,
-  FileText,
-  Info,
-  Plus,
-  Send,
-  X,
-} from "lucide-react";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { FilingStatus } from "@/src/constant/enum";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Dispatch, SetStateAction, useState } from "react";
-import { useToast } from "../ui/use-toast";
-import updateFilingName from "@/src/service/updateFiling";
-import CreateDocumentClient from "./create-edit/createDocumentClient";
-import { Document } from "@/src/interface/document";
+"use client"
+import { CircleCheck, CirclePlus, FileText, Info, Plus, Send, X } from "lucide-react"
+import { Button } from "../ui/button"
+import Link from "next/link"
+import { FilingStatus } from "@/src/constant/enum"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { Dispatch, SetStateAction, useState } from "react"
+import { useToast } from "../ui/use-toast"
+import updateFilingName from "@/src/service/updateFiling"
+import CreateDocumentClient from "./create-edit/createDocumentClient"
+import { Document } from "@/src/interface/document"
 
 export default function FilingTimelineHeader({
   name,
@@ -32,31 +18,31 @@ export default function FilingTimelineHeader({
   setDocuments,
   filingId,
 }: {
-  name: string;
-  status: FilingStatus | "DOCUMENT_CREATED";
-  latestPDFUrl?: string;
-  setStatus: (status: FilingStatus | "DOCUMENT_CREATED") => void;
-  setDocuments: Dispatch<SetStateAction<Document[]>>;
-  filingId: string;
+  name: string
+  status: FilingStatus | "DOCUMENT_CREATED"
+  latestPDFUrl?: string
+  setStatus: (status: FilingStatus | "DOCUMENT_CREATED") => void
+  setDocuments: Dispatch<SetStateAction<Document[]>>
+  filingId: string
 }) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
-  const [documentFixed, setDocumentFixed] = useState<boolean>(false);
-  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false)
+  const [documentFixed, setDocumentFixed] = useState<boolean>(false)
+  const { toast } = useToast()
   const cancelDocumentSubmission = async () => {
     try {
       const updatedFiling = await updateFilingName({
         filingId,
         filingStatus: FilingStatus.DRAFT,
-      });
+      })
       if (updatedFiling) {
-        setStatus("DOCUMENT_CREATED");
-        setIsOpen(false);
+        setStatus("DOCUMENT_CREATED")
+        setIsOpen(false)
         toast({
           title: "ยกเลิกสำเร็จ",
           description: "ยกเลิกการส่งเอกสารสำเร็จ",
           isError: false,
-        });
+        })
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -64,23 +50,23 @@ export default function FilingTimelineHeader({
           title: "ไม่สำเร็จ",
           description: error.message,
           isError: true,
-        });
+        })
       }
     }
-  };
+  }
   const submitDocument = async () => {
     try {
       const updatedFiling = await updateFilingName({
         filingId,
         filingStatus: FilingStatus.WAIT_FOR_SECRETARY,
-      });
+      })
       if (updatedFiling) {
-        setStatus(FilingStatus.WAIT_FOR_SECRETARY);
+        setStatus(FilingStatus.WAIT_FOR_SECRETARY)
         toast({
           title: "สำเร็จ",
           description: "ส่งเอกสารสำเร็จ",
           isError: false,
-        });
+        })
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -88,10 +74,10 @@ export default function FilingTimelineHeader({
           title: "ไม่สำเร็จ",
           description: error.message,
           isError: true,
-        });
+        })
       }
     }
-  };
+  }
   return (
     <>
       <div className="flex items-center justify-between gap-3">
@@ -122,10 +108,9 @@ export default function FilingTimelineHeader({
                   status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
                 }
                 onClick={() => {
-                  setShowCreateDocument(true);
+                  setShowCreateDocument(true)
                 }}
-                className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none"
-              >
+                className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none">
                 <Plus className="h-8 w-8 mr-2" />
                 เพิ่ม
               </Button>
@@ -134,8 +119,7 @@ export default function FilingTimelineHeader({
                   <DialogTrigger asChild>
                     <Button
                       variant="outline"
-                      className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black"
-                    >
+                      className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black">
                       <X className="h-8 w-8 mr-2" />
                       ยกเลิก
                     </Button>
@@ -152,8 +136,7 @@ export default function FilingTimelineHeader({
                       <div className="text-end">
                         <button
                           className="bg-red text-white rounded-lg py-1 px-4 font-semibold"
-                          onClick={cancelDocumentSubmission}
-                        >
+                          onClick={cancelDocumentSubmission}>
                           ยืนยัน
                         </button>
                       </div>
@@ -168,8 +151,7 @@ export default function FilingTimelineHeader({
                     status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
                   }
                   onClick={submitDocument}
-                  className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white"
-                >
+                  className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
                   <Send className="h-8 w-8 mr-2" />
                   ส่ง
                 </Button>
@@ -183,11 +165,12 @@ export default function FilingTimelineHeader({
           <CreateDocumentClient
             setShowCreateDocument={setShowCreateDocument}
             afterCreateDocument={(createdDocument) => {
-              setDocuments((prev) => [createdDocument, ...prev]);
-              setStatus("DOCUMENT_CREATED");
-              setDocumentFixed(true);
-              setShowCreateDocument(false);
+              setDocuments((prev) => [createdDocument, ...prev])
+              setStatus("DOCUMENT_CREATED")
+              setDocumentFixed(true)
+              setShowCreateDocument(false)
             }}
+            filingId={filingId}
           />
         </div>
       )}
@@ -195,14 +178,13 @@ export default function FilingTimelineHeader({
         <Button
           variant="secondary"
           onClick={() => {
-            setShowCreateDocument(true);
+            setShowCreateDocument(true)
           }}
-          className="bg-gray-100 text-gray-700 font-semibold text-2xl w-full py-16 mt-6"
-        >
+          className="bg-gray-100 text-gray-700 font-semibold text-2xl w-full py-16 mt-6">
           <CirclePlus className="h-11 w-11 mr-6" />
           อัปโหลดเอกสาร
         </Button>
       )}
     </>
-  );
+  )
 }

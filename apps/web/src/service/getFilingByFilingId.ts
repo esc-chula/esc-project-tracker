@@ -8,7 +8,7 @@ export default async function getFilingByFilingId(filingId: string): Promise<Fil
     })
     return filing
   } catch (err) {
-    console.error(err)
+    console.error("getFilingByFilingId error: ", err)
     throw new Error("ไม่สามารถดึงข้อมูลเอกสารได้")
   }
 }

@@ -1,4 +1,4 @@
-import { DocumentActivity } from "../../../api/src/constant/enum"
+import { DocumentActivity } from "@/src/constant/enum"
 import { Filing } from "./filing"
 
 export interface Document {
@@ -6,18 +6,6 @@ export interface Document {
   filing: Filing
   name: string
   activity: DocumentActivity
-  detail: string
-  pdfLink: string
-  docLink: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface DocumentType {
-  id: string
-  filing: Filing
-  name: string
-  activity: string
   detail: string
   pdfLink: string
   docLink: string

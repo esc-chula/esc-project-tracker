@@ -10,7 +10,7 @@ import getFilingByFilingId from "@/src/service/getFilingByFilingId"
 import { useEffect, useState } from "react"
 import { useToast } from "@/src/components/ui/use-toast"
 import FilingTimelineHeader from "@/src/components/filling-detail/filingTimelineHeader"
-import getDocumentsByFilingId from "@/src/service/getDocumentsByFilingId"
+import findDocumentsByFilingId from "@/src/service/findDocumentsByFilingId"
 import { Document } from "@/src/interface/document"
 import { DocumentActivity } from "../../../../../../../api/src/constant/enum"
 
@@ -90,18 +90,28 @@ const mockDocuments: Document[] = [
 export default function Page({ params }: { params: { projectId: string; filingId: string } }) {
   const [filing, setFiling] = useState<
     (Omit<Filing, "status"> & { status: FilingStatus | "DOCUMENT_CREATED" }) | null
-  >(mockFiling)
-  const [documents, setDocuments] = useState<Document[]>(mockDocuments)
+  >()
+  const [documents, setDocuments] = useState<Document[]>([])
   const { toast } = useToast()
   useEffect(() => {
-    // TODO: split to 2 async functions
-    const fetchData = async () => {
+    const fetchFiling = async () => {
       try {
-        const [filingData, documentsData] = await Promise.all([
-          getFilingByFilingId(params.filingId),
-          getDocumentsByFilingId(params.filingId),
-        ])
+        const filingData = await getFilingByFilingId(params.filingId)
+        // correct FilingStatus
         if (filingData) setFiling(filingData)
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            title: "ไม่สำเร็จ",
+            description: err.message,
+            isError: true,
+          })
+        }
+      }
+    }
+    const fetchDocuments = async () => {
+      try {
+        const documentsData = await findDocumentsByFilingId(params.filingId)
         if (documentsData) setDocuments(documentsData)
       } catch (err) {
         if (err instanceof Error) {
@@ -113,7 +123,9 @@ export default function Page({ params }: { params: { projectId: string; filingId
         }
       }
     }
-    fetchData()
+    fetchFiling().then(() => {
+      fetchDocuments()
+    })
   }, [])
   return (
     <main className="w-full pt-[68px]">
@@ -130,7 +142,7 @@ export default function Page({ params }: { params: { projectId: string; filingId
       </div>
       <section className="flex flex-col mb-7 items-center mt-10 w-full">
         <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
-        <DocumentStatusStepper status={filing?.status ?? "DEFAULT"} />
+        <DocumentStatusStepper status={filing?.status ?? "LOADING"} />
       </section>
       <section className="px-15 mb-7">
         <FilingTimelineHeader

@@ -1,12 +1,11 @@
-import { FilingStatus } from "@/src/constant/enum";
-import { DocumentType } from "@/src/interface/document";
-import { FilingType } from "@/src/interface/filing";
+import { Document } from "@/src/interface/document";
+import { Filing } from "@/src/interface/filing";
 import findDocumentsByFilingId from "@/src/service/findDocumentsByFilingId";
 import { TextMyProject, buttonColors } from "@/src/styles/enumMap";
 import { useEffect, useState } from "react";
 
-export default function FilingMenuItem({ filing }: { filing: FilingType }) {
-  const [documents, setDocuments] = useState<DocumentType[]>([]);
+export default function FilingMenuItem({ filing }: { filing: Filing }) {
+  const [documents, setDocuments] = useState<Document[]>([]);
   const getLatestDocument = async () => {
     try {
       const docs = await findDocumentsByFilingId(filing.id);

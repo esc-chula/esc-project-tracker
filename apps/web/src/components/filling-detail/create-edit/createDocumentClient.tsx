@@ -9,7 +9,8 @@ import ButtonPanel from "./buttonPanel"
 import FileInputPanel from "./fileInputPanel"
 import ActivityPanel from "./activityPanel"
 import { Document } from "@/src/interface/document"
-import { mockDocument } from "@/src/app/(authenticated)/project/[projectId]/[filingId]/page"
+import createDocument from "@/src/service/createDocument"
+import { DocumentActivity } from "@/src/constant/enum"
 
 function checkFileType(file: File) {
   if (file === undefined) return false
@@ -25,9 +26,11 @@ function checkFileType(file: File) {
 export default function CreateDocumentClient({
   setShowCreateDocument,
   afterCreateDocument,
+  filingId,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void
   afterCreateDocument: (createdDocument: Document) => void
+  filingId: string
 }) {
   const createdFormSchema = z.object({
     // Server side ไม่รู้จัก FileList ***
@@ -51,11 +54,19 @@ export default function CreateDocumentClient({
 
   const fileRef = form.register("file")
 
-  function onSubmit(values: z.infer<typeof createdFormSchema>) {
+  async function onSubmit(values: z.infer<typeof createdFormSchema>) {
     console.log(values)
     // upload file
     // then createDocument
-    afterCreateDocument(mockDocument)
+    const newDocument = await createDocument(
+      values.detail,
+      filingId,
+      "https://www.google.com",
+      "https://www.google.com",
+      DocumentActivity.CREATE,
+      values.note
+    )
+    afterCreateDocument(newDocument)
   }
 
   return (
