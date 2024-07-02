@@ -7,7 +7,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
 
   try {
     const response = await axios.post(
-      `${process.env.INTANIA_AUTH_URL}/api/auth/app/validate`,
+      "https://accounts.intania.org/api/v1/auth/app/validate",
       {
         token: body.token,
       },
