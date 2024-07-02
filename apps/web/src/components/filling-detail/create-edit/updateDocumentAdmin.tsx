@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
 "use client";
@@ -21,6 +20,7 @@ import ButtonPanel from "./buttonPanel";
 import FileInputPanel from "./fileInputPanel";
 import ActivityPanel from "./activityPanel";
 import { checkFileType } from "@/src/lib/utils";
+import { useMemo } from "react";
 
 export default function UpdateDocumentAdmin() {
   const createdFormSchema = z.object({
@@ -55,6 +55,8 @@ export default function UpdateDocumentAdmin() {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+
+  const isDisabled = useMemo(() => form.formState.isSubmitting, [form.formState.isSubmitting])
 
   return (
     <>
@@ -158,7 +160,7 @@ export default function UpdateDocumentAdmin() {
               )}
             />
           </div>
-          <ButtonPanel />
+          <ButtonPanel isDisabled={isDisabled}/>
         </form>
       </Form>
     </>
