@@ -25,10 +25,12 @@ import { columns } from "./StatusTableColumns"
 import StatusTableToolBar from "./StatusTableToolBar"
 import { FilingType } from "@/src/interface/filing"
 
-export function StatusTable({ data }: { data: FilingType[] }) {
+export function StatusTable({ data, compact = false }: { data: FilingType[]; compact?: boolean }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+    updatedAt: !compact,
+  })
 
   const table = useReactTable({
     data,
@@ -45,11 +47,16 @@ export function StatusTable({ data }: { data: FilingType[] }) {
       columnFilters,
       columnVisibility,
     },
+    initialState: {
+      pagination: {
+        pageSize: compact ? 5 : 10,
+      },
+    },
   })
 
   return (
-    <div className="w-full pl-15 pr-5">
-      <StatusTableToolBar table={table} />
+    <>
+      {!compact && <StatusTableToolBar table={table} />}
       <Table className="rounded-xl overflow-hidden text-base">
         <TableHeader className="bg-lightpink">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -86,7 +93,7 @@ export function StatusTable({ data }: { data: FilingType[] }) {
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end space-x-2 py-4 pr-4">
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -108,6 +115,6 @@ export function StatusTable({ data }: { data: FilingType[] }) {
           </Button>
         </div>
       </div>
-    </div>
+    </>
   )
 }

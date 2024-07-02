@@ -62,7 +62,7 @@ export const columns: ColumnDef<FilingType>[] = [
     header: () => null,
     cell: ({ row }) => (
       <Link href={row.getValue("detailsPath")}>
-        <Button variant="link" className="underline">
+        <Button variant="link" className="underline px-0">
           ดูรายละเอียด
         </Button>
       </Link>
