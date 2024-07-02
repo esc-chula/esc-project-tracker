@@ -16,7 +16,7 @@ export default function NavbarItem({
   return (
     <Link href={href}>
       <li
-        className={`relative flex items-center py-2.5 px-2.5 justify-center rounded-md cursor-pointer transition-colors group ${active ? "bg-white text-red" : "hover:bg-white text-white  hover:text-pink"}`}>
+        className={`relative flex items-center py-2.5 px-2.5 justify-center rounded-md cursor-pointer transition-colors group ${active ? "bg-white text-red" : "hover:bg-white text-white  hover:text-black"}`}>
         <div className="flex-initial h-6">{icon}</div>
         <span
           className={`overflow-hidden transition-all font-medium font-inter ${expanded ? "w-60 ml-2.5" : "hidden"}`}>

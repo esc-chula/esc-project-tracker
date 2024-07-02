@@ -2,56 +2,49 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProjectStatus } from '../constant/enum';
-import { DocType } from './docType.entity';
-import { Document } from './document.entity';
-import { UserProj } from './userProj.entity';
+import { ProjectStatus, ProjectType } from '../constant/enum';
 
 @Entity()
 export class Project {
   @PrimaryGeneratedColumn('uuid')
-  projectID: string;
+  id: string;
 
   @Column()
   name: string;
 
-  @Column()
-  code: string;
+  @Column({})
+  projectCode: string;
 
-  @Column()
-  type: number;
+  @Column({
+    type: 'enum',
+    enum: ProjectType,
+  })
+  type: ProjectType;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   detail: string;
 
-  @Column()
-  reserDate: Date;
+  @Column({
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+  })
+  reserveDate: Date;
 
   @Column({
     type: 'enum',
     enum: ProjectStatus,
+    default: ProjectStatus.CONTINUE,
   })
   status: ProjectStatus;
-
-  @OneToMany(() => UserProj, (userProj) => userProj.project)
-  userProj: UserProj[];
-
-  @OneToMany(() => Document, (document) => document.project)
-  documents: Document[];
-
-  @OneToOne(() => DocType, { cascade: true })
-  docType: DocType;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true, default: null })
   updatedAt: Date;
 }

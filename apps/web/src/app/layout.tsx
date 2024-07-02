@@ -1,8 +1,8 @@
-import "../styles/globals.css"
-import { Inter } from "next/font/google"
-import localFont from "next/font/local"
+import "../styles/globals.css";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 const sukhumvitSet = localFont({
   src: [
     {
@@ -20,7 +20,11 @@ const sukhumvitSet = localFont({
       weight: "500",
       style: "normal",
     },
-    { path: "../../public/fonts/SukhumvitSet-Text.ttf", weight: "400", style: "normal" },
+    {
+      path: "../../public/fonts/SukhumvitSet-Text.ttf",
+      weight: "400",
+      style: "normal",
+    },
     {
       path: "../../public/fonts/SukhumvitSet-Light.ttf",
       weight: "300",
@@ -33,20 +37,26 @@ const sukhumvitSet = localFont({
     },
   ],
   variable: "--sukhumvit-set-font",
-})
+});
 
 export const metadata = {
   title: "ESC Project Tracker",
   description: "ESC Project Tracker",
-}
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <head>
         <link rel="icon" type="x-icon" href="/icons/esc.svg" />
       </head>
-      <body className={inter.className + " " + sukhumvitSet.className}>{children}</body>
+      <body className={inter.className + " " + sukhumvitSet.className}>
+        {children}
+      </body>
     </html>
-  )
+  );
 }
