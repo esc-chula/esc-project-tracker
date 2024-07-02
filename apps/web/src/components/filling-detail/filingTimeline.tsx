@@ -21,7 +21,7 @@ export default function FilingTimeline({
   return (
     <div className="flex flex-col items-center gap-7">
       {/* 60+40+(32/2)-(3/2) = 114.5 */}
-      {documents && (
+      {documents.length > 0 && (
         <div className="h-[calc(100%-2px)] w-[3px] bg-black absolute left-[114.5px] -z-10 top-[2px] overflow-hidden" />
       )}
       {documents.map((document, index) => {

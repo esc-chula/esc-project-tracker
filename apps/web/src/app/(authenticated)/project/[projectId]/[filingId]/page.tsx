@@ -39,7 +39,7 @@ const mockFiling: Omit<Filing, "status"> & {
   updatedAt: new Date("2021-08-01T19:11:00").toString(),
 }
 
-export const mockDocument = {
+const mockDocument = {
   id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
   filing: {
     id: "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
@@ -119,7 +119,7 @@ export default function Page({ params }: { params: { projectId: string; filingId
   const fetchDocuments = async () => {
     try {
       const documentsData = await findDocumentsByFilingId(params.filingId)
-      if (documentsData) {
+      if (documentsData.length > 0) {
         if (filing?.status === FilingStatus.DRAFT) setStatus("DOCUMENT_CREATED")
         setDocuments(documentsData)
       }

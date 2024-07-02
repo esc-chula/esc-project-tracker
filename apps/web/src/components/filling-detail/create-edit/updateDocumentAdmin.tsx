@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Necessary for compatibility with the existing codebase */
+/* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowUpFromLine } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -12,33 +14,13 @@ import {
   FormLabel,
   FormMessage,
 } from "../../ui/form";
-import { projectTypeMap } from "@/src/constant/Map";
 import {
   Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from "../../ui/select";
-import { Button } from "@mui/material";
-import { FilePlus } from "lucide-react";
-import { FaFile, FaSave } from "react-icons/fa";
 import ButtonPanel from "./buttonPanel";
 import FileInputPanel from "./fileInputPanel";
 import ActivityPanel from "./activityPanel";
-
-function checkFileType(file: File) {
-  if (file === undefined) return true;
-
-  if (file?.name) {
-    const fileType = file.name.split(".").pop();
-    if (fileType === "docx" || fileType === "pdf" || fileType === "doc")
-      return true;
-  }
-
-  return false;
-}
+import { checkFileType } from "@/src/lib/utils";
 
 export default function UpdateDocumentAdmin() {
   const createdFormSchema = z.object({

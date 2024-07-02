@@ -74,7 +74,7 @@ export class DocumentService {
     const newDocument = new Document();
     newDocument.filing = foundFiling;
     newDocument.name = name;
-    newDocument.detail = detail;
+    if (detail) newDocument.detail = detail;
     newDocument.pdfLink = pdfLink;
     newDocument.docLink = docLink;
     newDocument.activity = activity;

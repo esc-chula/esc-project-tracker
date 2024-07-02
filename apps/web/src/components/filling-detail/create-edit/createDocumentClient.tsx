@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Necessary for compatibility with the existing codebase */
+/* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -11,17 +14,7 @@ import ActivityPanel from "./activityPanel"
 import { Document } from "@/src/interface/document"
 import createDocument from "@/src/service/createDocument"
 import { DocumentActivity } from "@/src/constant/enum"
-
-function checkFileType(file: File) {
-  if (file === undefined) return false
-
-  if (file?.name) {
-    const fileType = file.name.split(".").pop()
-    if (fileType === "docx" || fileType === "pdf" || fileType === "doc") return true
-  }
-
-  return false
-}
+import { checkFileType } from "@/src/lib/utils"
 
 export default function CreateDocumentClient({
   setShowCreateDocument,
@@ -35,7 +28,7 @@ export default function CreateDocumentClient({
   const createdFormSchema = z.object({
     // Server side ไม่รู้จัก FileList ***
     file: (typeof window === "undefined" ? z.any() : z.instanceof(FileList))
-      .refine((file) => file?.length == 1, "กรุณาเลือกไฟล์")
+      .refine((file) => file?.length === 1, "กรุณาเลือกไฟล์")
       .refine((file) => checkFileType(file[0]), "กรุณาเลือกไฟล์ที่มีนามสกุล .docx, .pdf, .doc"),
 
     activity: z.string().optional(),
