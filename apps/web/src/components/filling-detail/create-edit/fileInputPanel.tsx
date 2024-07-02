@@ -10,8 +10,6 @@ export default function FileInputPanel({
   fileRef: UseFormRegisterReturn<"file">
   fileList: FileList | undefined
 }) {
-  console.log(fileList)
-
   return (
     <FormControl className="flex-grow">
       <div className="relative flex flex-col w-full items-center justify-center p-6 border-4 border-dashed border-gray-300 text-center cursor-pointer rounded-lg hover:bg-gray-100 bg-white">

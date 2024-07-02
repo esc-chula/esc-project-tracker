@@ -103,9 +103,11 @@ export default function Page({ params }: { params: { projectId: string; filingId
   const fetchFiling = async () => {
     try {
       const filingData = await getFilingByFilingId(params.filingId)
-      console.log(filingData)
 
-      if (filingData) setFiling(filingData)
+      if (filingData) {
+        fetchDocuments(filingData)
+        setFiling(filingData)
+      }
     } catch (err) {
       if (err instanceof Error) {
         toast({
@@ -116,11 +118,11 @@ export default function Page({ params }: { params: { projectId: string; filingId
       }
     }
   }
-  const fetchDocuments = async () => {
+  const fetchDocuments = async (filingData: Filing) => {
     try {
       const documentsData = await findDocumentsByFilingId(params.filingId)
       if (documentsData.length > 0) {
-        if (filing?.status === FilingStatus.DRAFT) setStatus("DOCUMENT_CREATED")
+        if (filingData.status === FilingStatus.DRAFT) setStatus("DOCUMENT_CREATED")
         setDocuments(documentsData)
       }
     } catch (err) {
@@ -135,7 +137,6 @@ export default function Page({ params }: { params: { projectId: string; filingId
   }
   useEffect(() => {
     fetchFiling()
-    fetchDocuments()
   }, [])
   return (
     <main className="w-full pt-[68px]">

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
 "use client";
@@ -22,6 +21,7 @@ import ButtonPanel from "./buttonPanel";
 import FileInputPanel from "./fileInputPanel";
 import ActivityPanel from "./activityPanel";
 import { checkFileType } from "@/src/lib/utils";
+import { useMemo } from "react";
 
 export default function CreateDocumentAdmin() {
   const createdFormSchema = z.object({
@@ -44,6 +44,8 @@ export default function CreateDocumentAdmin() {
       comment: "",
     },
   });
+
+  const isDisabled = useMemo(() => form.formState.isSubmitting, [form.formState.isSubmitting])
 
   const fileRef = form.register("file");
 
@@ -113,7 +115,7 @@ export default function CreateDocumentAdmin() {
               </FormItem>
             )}
           />
-          <ButtonPanel />
+          <ButtonPanel isDisabled={isDisabled} />
         </form>
       </Form>
     </>

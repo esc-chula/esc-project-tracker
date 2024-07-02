@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
 "use client"
@@ -15,6 +14,7 @@ import { Document } from "@/src/interface/document"
 import createDocument from "@/src/service/createDocument"
 import { DocumentActivity } from "@/src/constant/enum"
 import { checkFileType } from "@/src/lib/utils"
+import { useMemo } from "react"
 
 export default function CreateDocumentClient({
   setShowCreateDocument,
@@ -61,6 +61,8 @@ export default function CreateDocumentClient({
     )
     afterCreateDocument(newDocument)
   }
+
+  const isDisabled = useMemo(() => form.formState.isSubmitting, [form.formState.isSubmitting])
 
   return (
     <>
@@ -140,7 +142,7 @@ export default function CreateDocumentClient({
               </FormItem>
             )}
           />
-          <ButtonPanel setShowCreateDocument={setShowCreateDocument} />
+          <ButtonPanel isDisabled={isDisabled} setShowCreateDocument={setShowCreateDocument} />
         </form>
       </Form>
     </>

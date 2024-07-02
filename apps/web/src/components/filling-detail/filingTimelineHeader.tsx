@@ -30,10 +30,11 @@ export default function FilingTimelineHeader({
   setShowCreateDocument: (showCreateDocument: boolean) => void
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [documentFixed, setDocumentFixed] = useState<boolean>(false)
   const { toast } = useToast()
   const cancelDocumentSubmission = async () => {
+    setIsSubmitting(true)
     try {
       const updatedFiling = await updateFilingName({
         filingId,
@@ -57,8 +58,10 @@ export default function FilingTimelineHeader({
         })
       }
     }
+    setIsSubmitting(false)
   }
   const submitDocument = async () => {
+    setIsSubmitting(true)
     try {
       const updatedFiling = await updateFilingName({
         filingId,
@@ -81,6 +84,7 @@ export default function FilingTimelineHeader({
         })
       }
     }
+    setIsSubmitting(false)
   }
   return (
     <>
@@ -139,8 +143,9 @@ export default function FilingTimelineHeader({
                       โปรดอย่าลืมส่งอีกครั้งเมื่อดำเนินการเสร็จ
                       <div className="text-end">
                         <button
-                          className="bg-red text-white rounded-lg py-1 px-4 font-semibold"
-                          onClick={cancelDocumentSubmission}>
+                          className=" disabled:bg-disabled bg-red text-white rounded-lg py-1 px-4 font-semibold"
+                          onClick={cancelDocumentSubmission}
+                          disabled={isSubmitting}>
                           ยืนยัน
                         </button>
                       </div>
@@ -152,7 +157,8 @@ export default function FilingTimelineHeader({
                   disabled={
                     status === FilingStatus.DRAFT ||
                     (status === FilingStatus.RETURNED && !documentFixed) ||
-                    status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
+                    status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR ||
+                    isSubmitting
                   }
                   onClick={submitDocument}
                   className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
