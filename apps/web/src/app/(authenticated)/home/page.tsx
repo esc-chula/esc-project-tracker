@@ -1,10 +1,12 @@
-import { Home } from "lucide-react"
+import { ArrowRight, FileText, Home, Radio } from "lucide-react"
 import Header from "../../../components/header/header"
 import Title from "@/src/components/header/title"
 import MyProjectData from "@/src/components/project/myProjectData"
 import { StatusTable } from "@/src/components/status/StatusTable"
 import { FilingStatus } from "@/src/constant/enum"
 import { FilingType } from "@/src/interface/filing"
+import Link from "next/link"
+import { Button } from "@/src/components/ui/button"
 const mockData: FilingType[] = [
   {
     id: "m5gr84i91",
@@ -141,10 +143,26 @@ const mockData: FilingType[] = [
 ]
 export default function Page() {
   return (
-    <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh]">
+    <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
       <Header>
         <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>
+      <section className="w-full mt-7">
+        <div className="flex items-center justify-between gap-3 h-10">
+          <span className="flex items-center gap-2 w-0 grow">
+            <Radio className="w-5 h-5 shrink-0" />
+            <div className="font-bold">สถานะเอกสารล่าสุด</div>
+          </span>
+          <Link href="/status">
+            <Button variant="link">
+              <span className="flex items-center gap-1">
+                ดูสถานะทั้งหมด
+                <ArrowRight className="w-5 h-5 shrink-0" />
+              </span>
+            </Button>
+          </Link>
+        </div>
+      </section>
       <section className="mt-5 shadow-lg rounded-xl">
         <StatusTable data={mockData} compact />
       </section>
