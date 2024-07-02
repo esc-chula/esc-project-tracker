@@ -78,7 +78,6 @@ export default function MyProjectData() {
           projects={projects}
           placeholder="ค้นหาโครงการหรือเอกสาร"
           projectFunc={redirectToProject}
-          FilingFunc={() => {}}
         />
       </div>
       {isFetched && (
@@ -91,8 +90,8 @@ export default function MyProjectData() {
               <AllProjecPanel
                 projects={projects}
                 userId={userId}
-                setProjectsToParentFunc={(projects: Project[]) => {
-                  setProjects((prevProjects) => projects);
+                setProjectsToParentFunc={(newProjects: Project[]) => {
+                  setProjects(newProjects);
                 }}
               />
             </>

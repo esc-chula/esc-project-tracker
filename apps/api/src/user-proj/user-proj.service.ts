@@ -109,4 +109,23 @@ export class UserProjService {
     await this.userProjRepository.remove(userProj);
     return userProj;
   }
+
+  async hasUserProj({
+    userId,
+    projectId,
+  }: {
+    userId: string;
+    projectId: string;
+  }) {
+    const userProj = await this.userProjRepository
+      .createQueryBuilder('userProj')
+      .where('userProj.userId = :uid', { uid: userId })
+      .andWhere('userProj.projectId = :pid', { pid: projectId })
+      .getOne();
+    if (!userProj) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

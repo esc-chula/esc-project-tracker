@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
-import { optional, string, z } from 'zod';
+import { z } from 'zod';
 import { UserProjService } from '../../user-proj/user-proj.service';
 
 @Injectable()
@@ -50,6 +50,15 @@ export class UserProjRouter {
       .query(({ input }) => {
         return this.userProjService.deleteUserProject({
           obj: { userId: input.userId, projectId: input.projectId },
+        });
+      }),
+
+    hasUserProj: this.trpcService.trpc.procedure
+      .input(z.object({ userId: z.string(), projectId: z.string() }))
+      .query(({ input }) => {
+        return this.userProjService.hasUserProj({
+          userId: input.userId,
+          projectId: input.projectId,
         });
       }),
   });

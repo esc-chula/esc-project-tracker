@@ -19,6 +19,7 @@ export class FilingService {
   ) {}
 
   findByFilingID(id: string) {
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
     return this.filingRepository.findOne({ where: { id } });
   }
 
@@ -71,7 +72,7 @@ export class FilingService {
       '0',
     );
 
-    var newFiling = new Filing();
+    const newFiling = new Filing();
     newFiling.project = foundProject;
     newFiling.name = filingName;
     newFiling.status = FilingStatus.DRAFT;
@@ -108,6 +109,39 @@ export class FilingService {
       return data;
     } catch (e) {
       console.log(e);
+      throw new Error('Failed to fetch Filings');
+    }
+  }
+
+  async findFilingsWithFilter(filter: {
+    status: string;
+    type: string;
+    department: string;
+    id?: string;
+  }): Promise<Filing[]> {
+    try {
+      const query = this.filingRepository.createQueryBuilder('filing');
+
+      if (filter.id) {
+        query.andWhere('filing.id = :id', { id: filter.id });
+      }
+      if (filter.status !== 'ALL') {
+        query.andWhere('filing.status = :status', { status: filter.status });
+      }
+
+      if (filter.type !== 'ALL') {
+        query.andWhere('filing.type = :type', { type: +filter.type });
+      }
+
+      if (filter.department !== 'ALL') {
+        query.andWhere('filing.projectCode LIKE :department', {
+          department: `${filter.department}%`,
+        });
+      }
+
+      return await query.getMany();
+    } catch (error) {
+      console.log(error);
       throw new Error('Failed to fetch Filings');
     }
   }

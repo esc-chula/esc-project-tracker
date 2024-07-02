@@ -1,5 +1,3 @@
-import { trpc } from "./trpc";
-
 export default function Home(): JSX.Element {
   return (
     <div className="flex flex-wrap ml-9 my-5">

@@ -16,12 +16,14 @@ export default function SearchBar({
   Filings,
   projectFunc,
   FilingFunc,
+  clearFunc,
 }: {
   placeholder: string;
   projects: Project[];
   Filings: FilingType[];
-  projectFunc?: (project: Project | FilingType) => any; // Make functions optional
-  FilingFunc?: (Filing: Project | FilingType) => any;
+  projectFunc?: (project: Project | FilingType) => void;
+  FilingFunc?: (Filing: Project | FilingType) => void;
+  clearFunc?: () => void;
 }) {
   const [value, setValue] = useState<Project | FilingType | null>(null);
 
@@ -34,17 +36,17 @@ export default function SearchBar({
     if (option !== null) {
       setValue(option);
       if (projectFunc && "reserveDate" in option) {
-        if (projectFunc) {
-          projectFunc(option);
-        } else {
-          console.log("No function to call");
-        }
+        projectFunc(option);
       } else {
         if (FilingFunc) {
           FilingFunc(option);
         } else {
           console.log("No function to call");
         }
+      }
+    } else {
+      if (clearFunc) {
+        clearFunc();
       }
     }
   };
@@ -55,7 +57,9 @@ export default function SearchBar({
         value={value}
         options={[...Filings, ...projects]}
         noOptionsText="ไม่พบข้อมูล"
-        onChange={(event, newValue) => handleSelect(newValue)}
+        onChange={(event, newValue) => {
+          handleSelect(newValue);
+        }}
         getOptionLabel={(option) =>
           typeof option === "string"
             ? option

@@ -1,11 +1,10 @@
 "use client";
-import { EllipsisVertical, SquarePen } from "lucide-react";
+import { SquarePen } from "lucide-react";
 import { useState } from "react";
 import updateFilingName from "@/src/service/updateFiling";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -76,7 +75,7 @@ export default function PopoverEditDocument({
             type="text"
             placeholder={oldFilingName}
             value={name}
-            onChange={(e) => setName(e.target.value.trim())}
+            onChange={(e) => {setName(e.target.value.trim())}}
             className="border-black border-2 w-full p-2 rounded-lg"
           ></input>
           <div className="text-end">

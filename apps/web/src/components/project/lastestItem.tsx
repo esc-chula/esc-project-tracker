@@ -14,7 +14,7 @@ export default function LastestItem({
   return (
     <div
       className="bg-card text-card-foreground rounded-md flex flex-row py-1 px-8 space-x-5 border-2 border-black hover:cursor-pointer hover:scale-105 duration-200"
-      onClick={() => router.push(`/projects/${projectId}`)}
+      onClick={() => {router.push(`/projects/${projectId}`)}}
     >
       <div className="flex items-center justify-center">
         <File size={30} strokeWidth={1} />

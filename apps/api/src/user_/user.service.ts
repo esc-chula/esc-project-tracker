@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserProj } from '../entities/userProj.entity';
 import { validate as isUUID } from 'uuid';
 
 @Injectable()

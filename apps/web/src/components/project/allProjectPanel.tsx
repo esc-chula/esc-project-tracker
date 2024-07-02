@@ -1,9 +1,10 @@
 import AllProjectCard from "./allProjectCard";
-import SelectType from "./selectType";
+
 import { Project } from "@/src/interface/project";
 import { filterProjectStatus } from "@/src/styles/enumMap";
 import { useState, useEffect } from "react";
 import { projectTypeMap } from "@/src/constant/Map";
+import SelectType from "../filter/selectType";
 
 export default function AllProjectPanel({
   projects,
@@ -77,8 +78,8 @@ export default function AllProjectPanel({
             projectName={project.name}
             userId={userId}
             leaveThisProjectFunc={(id: string) => {
-              setAllProjects((prevProjecs) =>
-                prevProjecs.filter((project) => project.id !== id)
+              setAllProjects((prevProjects) =>
+                prevProjects.filter((prevProject) => prevProject.id !== id)
               );
             }}
           />

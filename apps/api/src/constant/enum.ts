@@ -1,4 +1,4 @@
-//DOCUMENT
+//Filing
 export enum FilingStatus {
   APPROVED = 'APPROVED',
   WAIT_FOR_STUDENT_AFFAIR = 'WAIT_FOR_STUDENT_AFFAIR',
@@ -7,7 +7,23 @@ export enum FilingStatus {
   DRAFT = 'DRAFT',
 }
 
-//PROJECT
+//Document
+export enum DocumentStatus {
+  APPROVED = 'APPROVED',
+  WAIT_FOR_STUDENT_AFFAIR = 'WAIT_FOR_STUDENT_AFFAIR',
+  WAIT_FOR_SECRETARY = 'WAIT_FOR_SECRETARY',
+  RETURNED = 'RETURNED',
+  DRAFT = 'DRAFT',
+  DOCUMENT_CREATED = 'DOCUMENT_CREATED',
+}
+
+export enum DocumentActivity {
+  CREATE = 'CREATE', // User Only
+  REPLY = 'REPLY', // Admin Only
+  EDIT = 'EDIT', // Both
+}
+
+//Project
 export enum ProjectStatus {
   CONTINUE = 'CONTINUE',
   WAIT_FOR_CLOSE = 'WAIT_FOR_CLOSE',
