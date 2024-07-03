@@ -7,6 +7,10 @@ import { FilingStatus } from "@/src/constant/enum"
 import { FilingType } from "@/src/interface/filing"
 import Link from "next/link"
 import { Button } from "@/src/components/ui/button"
+import getFilingsByUserId from "@/src/service/getFilingsByUserId"
+import getProjectsByUserId from "@/src/service/getProjectsByUserId"
+import { Project, ProjectWithLastOpen } from "@/src/interface/project"
+import SearchPanel from "@/src/components/all-projects/searchPanel"
 const mockData: FilingType[] = [
   {
     id: "m5gr84i91",
@@ -141,12 +145,40 @@ const mockData: FilingType[] = [
     updatedAt: new Date("2021-08-01T19:11:00").toString(),
   },
 ]
-export default function Page() {
+export default async function Page() {
+  //TODO : Change the userId to the actual userId
+  const [filingsData, projectsWithLastOpenData] = await Promise.all([
+    getFilingsByUserId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a").catch((err) => {
+      console.error(err)
+      return [] as FilingType[]
+    }),
+    getProjectsByUserId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a").catch((err) => {
+      console.error(err)
+      return [] as ProjectWithLastOpen[]
+    }),
+  ])
+  const projectsDataObj = projectsWithLastOpenData.reduce(
+    (acc, curr) => ((acc[curr.project.projectCode] = curr.project), acc),
+    {} as Record<string, Project>
+  )
+
+  const filingsDataWithProject = filingsData.map((filing) => {
+    return { ...filing, project: projectsDataObj[filing.projectCode] }
+  })
+
+  const projectsData = projectsWithLastOpenData.map((project) => project.project)
   return (
     <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
       <Header>
         <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>
+      <section className="mt-8">
+        <SearchPanel
+          filings={filingsDataWithProject}
+          projects={projectsData}
+          placeHolder="ค้นหาโครงการหรือเอกสาร"
+        />
+      </section>
       <section className="w-full mt-7">
         <div className="flex items-center justify-between gap-3 h-10">
           <span className="flex items-center gap-2 w-0 grow">
@@ -164,7 +196,7 @@ export default function Page() {
         </div>
       </section>
       <section className="mt-5 shadow-lg rounded-xl">
-        <StatusTable data={mockData} compact />
+        <StatusTable data={filingsDataWithProject} compact />
       </section>
       <section className="w-full mt-12">
         <div className="flex items-center justify-between gap-3 h-10">
@@ -183,7 +215,11 @@ export default function Page() {
         </div>
       </section>
       <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <MyProjectData compact />
+        <MyProjectData
+          compact
+          filingsData={filingsDataWithProject}
+          projectsWithLastOpenData={projectsWithLastOpenData}
+        />
       </section>
     </main>
   )
