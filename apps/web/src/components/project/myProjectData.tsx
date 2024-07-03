@@ -1,7 +1,7 @@
 "use client";
 
-import LastestPanel from "./lastestPanel";
-import AllProjecPanel from "./allProjectPanel";
+import LastestPanel from "./latestPanel";
+import AllProjectPanel from "./allProjectPanel";
 import NoProject from "./noProject";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { Project, ProjectWithLastOpen } from "@/src/interface/project";
 import { FilingType } from "@/src/interface/filing";
 import getProjectsByUserId from "@/src/service/getProjectsByUserId";
 import SearchBar from "../searchbar/searchBar";
-import getFilingByUserId from "@/src/service/getFilingsByUserId";
+import getFilingsByUserId from "@/src/service/getFilingsByUserId";
 import { useToast } from "../ui/use-toast";
 
 export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boolean}) {
@@ -53,7 +53,7 @@ export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boole
       //TODO : Change the userId to the actual userId
       if (userId) {
         try {
-          const data = await getFilingByUserId(userId);
+          const data = await getFilingsByUserId(userId);
           setFiling(data);
         } catch (err) {
           if (err instanceof Error) {
@@ -71,7 +71,7 @@ export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boole
   }, [projects]);
 
   return (
-    <div className="w-[65%]">
+    <div className={showSearchbar ? "w-[65%]" : "w-full"}>
       <div className="mb-5">
         {showSearchbar && <SearchBar
           Filings={filing}
@@ -87,7 +87,7 @@ export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boole
           ) : (
             <>
               <LastestPanel projectsWithLastOpen={projectsWithLastOpen} />
-              <AllProjecPanel
+              <AllProjectPanel
                 projects={projects}
                 userId={userId}
                 setProjectsToParentFunc={(newProjects: Project[]) => {

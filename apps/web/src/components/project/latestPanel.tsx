@@ -1,6 +1,6 @@
 "use client";
 import { ProjectWithLastOpen } from "@/src/interface/project";
-import LastestItem from "./lastestItem";
+import LatestItem from "./latestItem";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { useEffect, useState } from "react";
@@ -36,7 +36,7 @@ export default function LastestPanel({
         {isFetched && (
           <div className="flex space-x-8">
             {sortedProjects.map((project) => (
-              <LastestItem
+              <LatestItem
                 key={project.project.id}
                 projectId={project.project.id}
                 projectCode={project.project.projectCode}
