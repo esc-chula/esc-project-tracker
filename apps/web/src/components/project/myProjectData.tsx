@@ -12,7 +12,7 @@ import SearchBar from "../searchbar/searchBar";
 import getFilingsByUserId from "@/src/service/getFilingsByUserId";
 import { useToast } from "../ui/use-toast";
 
-export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boolean}) {
+export default function MyProjectData({compact=false}:{compact?:boolean}) {
   const { toast } = useToast();
   const router = useRouter();
   const redirectToProject = (project: Project | FilingType) => {
@@ -71,9 +71,9 @@ export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boole
   }, [projects]);
 
   return (
-    <div className={showSearchbar ? "w-[65%]" : "w-full"}>
+    <div className={compact ? "w-full" : "w-[65%]"}>
       <div className="mb-5">
-        {showSearchbar && <SearchBar
+        {!compact && <SearchBar
           Filings={filing}
           projects={projects}
           placeholder="ค้นหาโครงการหรือเอกสาร"
@@ -86,7 +86,7 @@ export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boole
             <NoProject />
           ) : (
             <>
-              <LastestPanel projectsWithLastOpen={projectsWithLastOpen} />
+              <LastestPanel projectsWithLastOpen={projectsWithLastOpen} compact={compact} />
               <AllProjectPanel
                 projects={projects}
                 userId={userId}

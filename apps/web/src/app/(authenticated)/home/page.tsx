@@ -183,7 +183,7 @@ export default function Page() {
         </div>
       </section>
       <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <MyProjectData showSearchbar={false} />
+        <MyProjectData compact />
       </section>
     </main>
   )
