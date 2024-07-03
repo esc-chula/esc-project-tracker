@@ -1,4 +1,4 @@
-import { ArrowRight, FileText, Home, Radio } from "lucide-react"
+import { ArrowRight, Folders, Home, Radio } from "lucide-react"
 import Header from "../../../components/header/header"
 import Title from "@/src/components/header/title"
 import MyProjectData from "@/src/components/project/myProjectData"
@@ -166,7 +166,25 @@ export default function Page() {
       <section className="mt-5 shadow-lg rounded-xl">
         <StatusTable data={mockData} compact />
       </section>
-      <MyProjectData />
+      <section className="w-full mt-12">
+        <div className="flex items-center justify-between gap-3 h-10">
+          <span className="flex items-center gap-2 w-0 grow">
+            <Folders className="w-5 h-5 shrink-0" />
+            <div className="font-bold">โครงการของฉัน</div>
+          </span>
+          <Link href="/projects">
+            <Button variant="link">
+              <span className="flex items-center gap-1">
+                ดูโครงการทั้งหมด
+                <ArrowRight className="w-5 h-5 shrink-0" />
+              </span>
+            </Button>
+          </Link>
+        </div>
+      </section>
+      <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
+        <MyProjectData showSearchbar={false} />
+      </section>
     </main>
   )
 }

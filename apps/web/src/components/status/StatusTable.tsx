@@ -93,7 +93,7 @@ export function StatusTable({ data, compact = false }: { data: FilingType[]; com
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4 pr-4">
+      <div className="flex items-center justify-end space-x-2 pb-4 pt-2 px-4">
         <div className="space-x-2">
           <Button
             variant="outline"

@@ -12,7 +12,7 @@ import SearchBar from "../searchbar/searchBar";
 import getFilingByUserId from "@/src/service/getFilingsByUserId";
 import { useToast } from "../ui/use-toast";
 
-export default function MyProjectData() {
+export default function MyProjectData({showSearchbar=true}:{showSearchbar?:boolean}) {
   const { toast } = useToast();
   const router = useRouter();
   const redirectToProject = (project: Project | FilingType) => {
@@ -73,12 +73,12 @@ export default function MyProjectData() {
   return (
     <div className="w-[65%]">
       <div className="mb-5">
-        <SearchBar
+        {showSearchbar && <SearchBar
           Filings={filing}
           projects={projects}
           placeholder="ค้นหาโครงการหรือเอกสาร"
           projectFunc={redirectToProject}
-        />
+        />}
       </div>
       {isFetched && (
         <>
