@@ -9,7 +9,8 @@ export class AwsService {
       accessKeyId: process.env.access,
       secretAccessKey: process.env.secret_key,
     },
-    endpoint: 's3.intania.org',
+    endpoint: 'https://s3.intania.org',
+    forcePathStyle: true,
   });
 
   constructor() {}
