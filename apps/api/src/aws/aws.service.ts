@@ -23,7 +23,5 @@ export class AwsService {
         Body: file,
       }),
     );
-    // console.log(fileName);
-    // console.log(file);
   }
 }
