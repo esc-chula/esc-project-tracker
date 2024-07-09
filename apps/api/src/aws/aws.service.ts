@@ -4,12 +4,12 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 @Injectable()
 export class AwsService {
   private readonly s3Client = new S3Client({
-    region: 'ap-southeast-1',
+    region: process.env.REGION,
     credentials: {
-      accessKeyId: process.env.access,
-      secretAccessKey: process.env.secret_key,
+      accessKeyId: process.env.ACCESS,
+      secretAccessKey: process.env.SECRET_KEY,
     },
-    endpoint: 'https://s3.intania.org',
+    endpoint: process.env.ENDPOINT,
     forcePathStyle: true,
   });
 
