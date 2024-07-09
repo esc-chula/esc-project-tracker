@@ -9,7 +9,7 @@ import Link from "next/link"
 import { Button } from "@/src/components/ui/button"
 import getFilingsByUserId from "@/src/service/getFilingsByUserId"
 import getProjectsByUserId from "@/src/service/getProjectsByUserId"
-import { Project, ProjectWithLastOpen } from "@/src/interface/project"
+import { ProjectWithLastOpen } from "@/src/interface/project"
 import SearchPanel from "@/src/components/all-projects/searchPanel"
 const mockData: FilingType[] = [
   {
@@ -147,7 +147,7 @@ const mockData: FilingType[] = [
 ]
 export default async function Page() {
   //TODO : Change the userId to the actual userId
-  const [filingsData, projectsWithLastOpenData] = await Promise.all([
+  const [filingsDataWithProject, projectsWithLastOpenData] = await Promise.all([
     getFilingsByUserId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a").catch((err) => {
       console.error(err)
       return [] as FilingType[]
@@ -157,14 +157,6 @@ export default async function Page() {
       return [] as ProjectWithLastOpen[]
     }),
   ])
-  const projectsDataObj = projectsWithLastOpenData.reduce(
-    (acc, curr) => ((acc[curr.project.projectCode] = curr.project), acc),
-    {} as Record<string, Project>
-  )
-
-  const filingsDataWithProject = filingsData.map((filing) => {
-    return { ...filing, project: projectsDataObj[filing.projectCode] }
-  })
 
   const projectsData = projectsWithLastOpenData.map((project) => project.project)
   return (

@@ -7,6 +7,7 @@ import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
 import { FilingStatus } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
+import { Project } from '../entities/project.entity';
 
 @Injectable()
 export class FilingService {
@@ -49,9 +50,24 @@ export class FilingService {
       this.findByProjectID(projectWithLastOpen.project.id),
     );
     const filingsArrays = await Promise.all(filingPromises);
-    const filings = filingsArrays.flat();
 
-    return filings;
+    const filingsArraysWithProject = [];
+    for (let i = 0; i < filingsArrays.length; i++) {
+      const project = projects[i].project;
+      const filingsWithProject = [];
+      for (let j = 0; j < filingsArrays[i].length; j++) {
+        const filingWithProject = {
+          ...filingsArrays[i][j],
+          project: project,
+        };
+        filingsWithProject.push(filingWithProject);
+      }
+      filingsArraysWithProject.push(filingsWithProject);
+    }
+
+    const filingsWithProject = filingsArraysWithProject.flat();
+
+    return filingsWithProject;
   }
 
   async createFiling(
