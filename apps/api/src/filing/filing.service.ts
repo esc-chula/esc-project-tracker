@@ -120,7 +120,7 @@ export class FilingService {
     id?: string;
   }): Promise<Filing[]> {
     try {
-      const query = this.filingRepository.createQueryBuilder('filing');
+      const query = await this.filingRepository.createQueryBuilder('filing');
 
       if (filter.id) {
         query.andWhere('filing.id = :id', { id: filter.id });
@@ -143,6 +143,18 @@ export class FilingService {
     } catch (error) {
       console.log(error);
       throw new Error('Failed to fetch Filings');
+    }
+  }
+
+  async findFilingsForSearchBar(input: string): Promise<Filing[]> {
+    try {
+      const query = await this.filingRepository.createQueryBuilder('filing');
+      query.where('filing.name ILIKE :input', { input: `%${input}%` });
+      query.orWhere('filing.FilingCode ILIKE :input', { input: `%${input}%` });
+      return await query.getMany();
+    } catch (error) {
+      console.log(error.string);
+      throw new Error(error.string);
     }
   }
 }

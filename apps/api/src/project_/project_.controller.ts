@@ -27,4 +27,9 @@ export class ProjectController {
   createOutsideProject(@Body() obj: createProjectDTO) {
     return this.projectService.createOutsideProject(obj);
   }
+
+  @Post('testSearch')
+  findProjectForSearchBar(@Body() obj: { input: string }) {
+    return this.projectService.findProjectForSearchBar(obj.input);
+  }
 }
