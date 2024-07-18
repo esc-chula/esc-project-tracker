@@ -134,4 +134,18 @@ export class ProjectService {
       throw new Error('Failed to fetch Projects');
     }
   }
+
+  async findProjectsForSearchBar(input: string): Promise<Project[]> {
+    try {
+      const query = await this.projectRepository.createQueryBuilder('project');
+      query.where('project.name ILIKE :input', { input: `%${input}%` });
+      query.orWhere('project.projectCode ILIKE :input', {
+        input: `%${input}%`,
+      });
+      return await query.getMany();
+    } catch (error) {
+      console.log(error.string);
+      throw new Error(error.string);
+    }
+  }
 }
