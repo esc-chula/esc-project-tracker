@@ -135,7 +135,7 @@ export class ProjectService {
     }
   }
 
-  async findProjectForSearchBar(input: string): Promise<Project[]> {
+  async findProjectsForSearchBar(input: string): Promise<Project[]> {
     try {
       const query = await this.projectRepository.createQueryBuilder('project');
       query.where('project.name ILIKE :input', { input: `%${input}%` });

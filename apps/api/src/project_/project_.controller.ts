@@ -29,7 +29,7 @@ export class ProjectController {
   }
 
   @Post('testSearch')
-  findProjectForSearchBar(@Body() obj: { input: string }) {
-    return this.projectService.findProjectForSearchBar(obj.input);
+  findProjectsForSearchBar(@Body() obj: { input: string }) {
+    return this.projectService.findProjectsForSearchBar(obj.input);
   }
 }
