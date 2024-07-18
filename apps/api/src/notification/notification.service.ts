@@ -13,10 +13,14 @@ export class NotificationService {
   ) {}
 
   async findAllNotificationByUserId(userId: string) {
-    const user = await this.userService.findByUserID(userId);
-    if (!user) throw new Error("user's not found");
-    const query = this.notificationRepository.createQueryBuilder('noti');
-    query.where('noti.userId = :userId', { userId });
-    return await query.getMany();
+    try {
+      const user = await this.userService.findByUserID(userId);
+      if (!user) throw new Error("user's not found");
+      const query = this.notificationRepository.createQueryBuilder('noti');
+      query.where('noti.userId = :userId', { userId });
+      return await query.getMany();
+    } catch (error) {
+      throw new Error(error.string);
+    }
   }
 }
