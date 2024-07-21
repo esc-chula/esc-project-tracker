@@ -12,7 +12,7 @@ export class NotificationService {
     private readonly userService: UserService,
   ) {}
 
-  async findAllNotificationByUserId(userId: string) {
+  async findNotificationsByUserId(userId: string) {
     try {
       const user = await this.userService.findByUserID(userId);
       if (!user) throw new Error("user's not found");

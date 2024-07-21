@@ -5,7 +5,7 @@ import { NotificationService } from './notification.service';
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
   @Post('/testNotification')
-  findAllNotificationByUserId(@Body() obj: { userId: string }) {
-    return this.notificationService.findAllNotificationByUserId(obj.userId);
+  findNotificationsByUserId(@Body() obj: { userId: string }) {
+    return this.notificationService.findNotificationsByUserId(obj.userId);
   }
 }

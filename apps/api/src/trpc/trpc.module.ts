@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TrpcRouter } from './trpc.router';
 import { TrpcService } from './trpc.service';
 

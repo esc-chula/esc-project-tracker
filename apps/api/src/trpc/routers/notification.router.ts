@@ -10,10 +10,10 @@ export class NotificationRouter {
     private readonly notificationService: NotificationService,
   ) {}
   appRouter = this.trpcService.router({
-    findAllNotificationByUserId: this.trpcService.trpc.procedure
+    findNotificationsByUserId: this.trpcService.trpc.procedure
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
-        this.notificationService.findAllNotificationByUserId(input.userId);
+        this.notificationService.findNotificationsByUserId(input.userId);
       }),
   });
 }
