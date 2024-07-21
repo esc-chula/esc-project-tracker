@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
-import { Repository } from 'typeorm';
+import { FindOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 
 @Injectable()
@@ -15,6 +15,11 @@ export class UserService {
       throw new BadRequestException('Id is not in UUID format');
     }
     const user = this.userRepository.findOne({ where: { id } });
+    return user;
+  }
+
+  findUserByCondition(condition: FindOptionsWhere<User>) {
+    const user = this.userRepository.findOne({ where: condition });
     return user;
   }
 }

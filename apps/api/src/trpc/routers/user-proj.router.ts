@@ -61,5 +61,15 @@ export class UserProjRouter {
           projectId: input.projectId,
         });
       }),
+
+    //Join Project By StudentId
+    joinProjectByStudentId: this.trpcService.trpc.procedure
+      .input(z.object({ studentId: z.string(), projectId: z.string() }))
+      .query(({ input }) => {
+        return this.userProjService.joinProjectByStudentId({
+          studentId: input.studentId,
+          projectId: input.projectId,
+        });
+      }),
   });
 }

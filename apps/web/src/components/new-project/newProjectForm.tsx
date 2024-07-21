@@ -30,9 +30,9 @@ import { FilePlus } from "lucide-react"
 import { projectTypeMap } from "@/src/constant/Map"
 import createProject from "@/src/service/createProject"
 import { ProjectType } from "@/src/constant/enum"
-import joinProject from "@/src/service/joinProject"
 import { useToast } from "../ui/use-toast"
 import { useRouter } from "next/navigation"
+import joinProjectByStudentId from "@/src/service/joinProjectByStudentId"
 
 export default function NewProjectForm() {
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
