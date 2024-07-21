@@ -5,7 +5,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex">
-        <Navbar />
+        <Navbar adminDisplay />
         {children}
         <Toaster />
       </div>
