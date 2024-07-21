@@ -70,16 +70,32 @@ export default function NewProjectForm() {
 
       projCreated = true
 
-      const userProjPromises = values.members.map((member) =>
-        member ? joinProject(member, newProject.id) : undefined
+      toast({
+        title: "เปิดโครงการสำเร็จ",
+        description: `เปิดโครงการ ${newProject.projectCode} ${newProject.name} เรียบร้อยแล้ว`,
+        duration: 2000,
+      })
+
+      let studentIdsNotFound: string[] = []
+
+      const userProjPromises = values.members.map((studentId) =>
+        studentId
+          ? joinProjectByStudentId(studentId, newProject.id).catch(() => {
+              studentIdsNotFound.push(studentId)
+            })
+          : undefined
       )
 
       await Promise.all(userProjPromises)
 
-      toast({
-        title: "เปิดโครงการสำเร็จ",
-        description: `เปิดโครงการ ${newProject.projectCode} ${newProject.name} เรียบร้อยแล้ว`,
-      })
+      if (studentIdsNotFound.length > 0) {
+        toast({
+          title: `ไม่สามารถเพิ่มนิสิตเข้าโครงการ ${newProject.projectCode} ได้`,
+          description: `ไม่สามารถเพิ่มนิสิตรหัส ${studentIdsNotFound.join(", ")} ได้เนื่องจากไม่พบชื่อในระบบ`,
+          isError: true,
+          duration: 5000,
+        })
+      }
 
       router.push(`/projects/${newProject.id}`)
     } catch (err) {
@@ -106,7 +122,7 @@ export default function NewProjectForm() {
     () => form.formState.isSubmitting || !form.formState.isValid,
     [form.formState.isSubmitting, form.formState.isValid]
   )
-  console.log(form.getValues())
+  // console.log(form.getValues())
 
   return (
     <>
