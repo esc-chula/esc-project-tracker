@@ -99,7 +99,9 @@ export default function Page() {
       <main className="w-full pt-[68px]">
         <div className="pl-15 pr-5">
           <Header>
-            <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
+            <Title icon={<Radio size={40} />} adminDisplay>
+              ติดตามสถานะ
+            </Title>
           </Header>
         </div>
 
