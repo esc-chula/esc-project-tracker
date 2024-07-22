@@ -32,7 +32,7 @@ export default function Navbar({ adminDisplay = false }: { adminDisplay?: boolea
           localStorage.setItem("navbarExpanded", String(!expanded))
           setExpanded((curr) => !curr)
         }}
-        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14">
+        className={`p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14 ${adminDisplay ? "text-darkpink" : "text-intania"}`}>
         {expanded ? <ChevronFirst /> : <ChevronLast />}
       </button>
       <nav
