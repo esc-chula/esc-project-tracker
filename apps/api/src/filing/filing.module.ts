@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { FilingService } from './filing.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Filing } from '../entities/filing.entity';
@@ -6,6 +6,7 @@ import { FilingController } from './filing.controller';
 import { ProjectModule } from '../project_/project_.module';
 import { UserModule } from '../user_/user.module';
 import { CountFilingModule } from '../count-filing/count-filing.module';
+import { DocumentModule } from '../document_/document.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CountFilingModule } from '../count-filing/count-filing.module';
     UserModule,
     CountFilingModule,
     ProjectModule,
+    forwardRef(() => DocumentModule),
   ],
   providers: [FilingService],
   controllers: [FilingController],
