@@ -10,5 +10,4 @@ export interface DocumentType {
   docLink: string;
   createdAt: string;
   updatedAt: string;
-  status: string;
 }
