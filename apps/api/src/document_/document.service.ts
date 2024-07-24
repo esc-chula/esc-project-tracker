@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Document } from '../entities/document.entity';
 import { Repository } from 'typeorm';
@@ -17,6 +22,7 @@ export class DocumentService {
     private readonly documentRepository: Repository<Document>,
     private readonly projectService: ProjectService,
     private readonly userService: UserService,
+    @Inject(forwardRef(() => FilingService))
     private readonly filingService: FilingService,
   ) {}
 
@@ -67,6 +73,15 @@ export class DocumentService {
     return data;
   }
 
+  async findLatestDocumentByFilingId(filingId: string): Promise<Document> {
+    if (!isUUID(filingId)) throw new Error('filingId is not an UUID!');
+    const data = await this.documentRepository.findOne({
+      where: { filing: { id: filingId } },
+      order: { createdAt: 'DESC' },
+    });
+    return data;
+  }
+
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
     const { filingId, name, detail, pdfLink, docLink, activity } = obj;
     const foundFiling = await this.filingService.findByFilingID(filingId);
@@ -80,5 +95,12 @@ export class DocumentService {
     newDocument.activity = activity;
 
     return await this.documentRepository.save(newDocument);
+  }
+
+  async deleteDocument(id: string): Promise<Document> {
+    const foundDocument = await this.findByDocID(id);
+    if (!foundDocument) throw new BadRequestException('Document Not Found!');
+    await this.documentRepository.remove(foundDocument);
+    return foundDocument;
   }
 }
