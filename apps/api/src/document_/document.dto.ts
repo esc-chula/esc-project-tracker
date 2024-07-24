@@ -7,5 +7,4 @@ export class CreateDocumentDTO {
   pdfLink: string;
   docLink: string;
   activity: DocumentActivity;
-  userId: string;
 }

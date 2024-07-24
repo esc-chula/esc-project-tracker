@@ -14,7 +14,6 @@ import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
 import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
-import { DocumentStatus } from '../constant/enum';
 
 @Injectable()
 export class DocumentService {
@@ -84,7 +83,7 @@ export class DocumentService {
   }
 
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
-    const { filingId, name, detail, pdfLink, docLink, activity, userId } = obj;
+    const { filingId, name, detail, pdfLink, docLink, activity } = obj;
     const foundFiling = await this.filingService.findByFilingID(filingId);
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
     const newDocument = new Document();
@@ -94,8 +93,6 @@ export class DocumentService {
     newDocument.pdfLink = pdfLink;
     newDocument.docLink = docLink;
     newDocument.activity = activity;
-    newDocument.status = DocumentStatus.DOCUMENT_CREATED;
-    newDocument.user.id = userId;
 
     return await this.documentRepository.save(newDocument);
   }

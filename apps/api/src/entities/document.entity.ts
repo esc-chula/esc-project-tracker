@@ -7,8 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Filing } from './filing.entity';
-import { DocumentActivity, DocumentStatus } from '../constant/enum';
-import { User } from './user.entity';
+import { DocumentActivity } from '../constant/enum';
 
 @Entity()
 export class Document {
@@ -38,10 +37,4 @@ export class Document {
 
   @UpdateDateColumn({ nullable: true, default: null })
   updatedAt: Date;
-
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  user: User;
-
-  @Column()
-  status: DocumentStatus;
 }
