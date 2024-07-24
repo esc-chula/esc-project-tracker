@@ -90,8 +90,8 @@ export default function NewProjectForm() {
 
       if (studentIdsNotFound.length > 0) {
         toast({
-          title: `ไม่สามารถเพิ่มนิสิตเข้าโครงการ ${newProject.projectCode} ได้`,
-          description: `ไม่สามารถเพิ่มนิสิตรหัส ${studentIdsNotFound.join(", ")} ได้เนื่องจากไม่พบชื่อในระบบ`,
+          title: `ไม่สามารถเพิ่มนิสิตเข้า ${newProject.projectCode} ${newProject.name} ได้`,
+          description: `ไม่สามารถเพิ่มนิสิตรหัส ${studentIdsNotFound.join(", ")} เข้า ${newProject.projectCode} ${newProject.name}`,
           isError: true,
           duration: 5000,
         })
