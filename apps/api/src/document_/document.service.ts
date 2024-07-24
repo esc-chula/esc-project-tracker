@@ -73,7 +73,9 @@ export class DocumentService {
     return data;
   }
 
-  async findLatestDocumentByFilingId(filingId: string): Promise<Document> {
+  async findLatestDocumentByFilingId(
+    filingId: string,
+  ): Promise<Document | null> {
     if (!isUUID(filingId)) throw new Error('filingId is not an UUID!');
     const data = await this.documentRepository.findOne({
       where: { filing: { id: filingId } },
@@ -89,7 +91,7 @@ export class DocumentService {
     const newDocument = new Document();
     newDocument.filing = foundFiling;
     newDocument.name = name;
-    newDocument.detail = detail;
+    newDocument.detail = detail ?? '';
     newDocument.pdfLink = pdfLink;
     newDocument.docLink = docLink;
     newDocument.activity = activity;
