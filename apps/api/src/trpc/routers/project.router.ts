@@ -72,5 +72,11 @@ export class ProjectRouter {
           department: input.department,
         });
       }),
+
+    findProjectsForSearchBar: this.trpcService.trpc.procedure
+      .input(z.object({ input: z.string() }))
+      .query(({ input }) => {
+        return this.projectService.findProjectsForSearchBar(input.input);
+      }),
   });
 }

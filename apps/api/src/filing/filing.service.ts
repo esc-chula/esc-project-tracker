@@ -1,12 +1,20 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Filing } from '../entities/filing.entity';
 import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
-import { FilingStatus } from '../constant/enum';
+import { DocumentActivity, FilingStatus } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
+import { FilingFieldTranslate } from '../constant/translate';
+import { DocumentService } from '../document_/document.service';
+import { CreateDocumentDTO } from '../document_/document.dto';
 
 @Injectable()
 export class FilingService {
@@ -16,6 +24,8 @@ export class FilingService {
     private readonly projectService: ProjectService,
     private readonly userService: UserService,
     private readonly countFilingService: CountFilingService,
+    @Inject(forwardRef(() => DocumentService))
+    private readonly documentService: DocumentService,
   ) {}
 
   findByFilingID(id: string) {
@@ -86,11 +96,52 @@ export class FilingService {
   }
 
   async updateFiling(id: string, filing: Partial<Filing>) {
-    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
-    const foundFiling = await this.findByFilingID(id);
-    if (!foundFiling) throw new BadRequestException('Filing Not Found!');
+    try {
+      if (!isUUID(id))
+        throw new BadRequestException('Id is not in UUID format.');
+      const foundFiling = await this.findByFilingID(id);
+      if (!foundFiling) throw new BadRequestException('Filing Not Found!');
 
-    return this.filingRepository.save({ ...foundFiling, ...filing });
+      const updatedFiling = await this.filingRepository.save({
+        ...foundFiling,
+        ...filing,
+      });
+
+      const latestDocument =
+        await this.documentService.findLatestDocumentByFilingId(
+          updatedFiling.id,
+        );
+      const newDocumentName = this.describeUpdatedFiling(filing);
+
+      await this.documentService.createDocument({
+        filingId: updatedFiling.id,
+        name: newDocumentName,
+        detail: latestDocument?.detail || '',
+        pdfLink: latestDocument?.pdfLink || '',
+        docLink: latestDocument?.docLink || '',
+        activity: latestDocument?.activity || DocumentActivity.CREATE,
+      });
+
+      return updatedFiling;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Failed to update Filing');
+    }
+  }
+
+  describeUpdatedFiling(filing: Partial<Filing>) {
+    const newDocumentName = Object.entries(filing)
+      .reduce((acc, [key, value]) => {
+        if (value) {
+          return (
+            acc + `เปลี่ยน${FilingFieldTranslate[key]}ของเอกสารเป็น ${value}, `
+          );
+        }
+        return acc;
+      }, '')
+      .slice(0, -2);
+
+    return newDocumentName;
   }
 
   async deleteFiling(id: string) {
@@ -120,7 +171,7 @@ export class FilingService {
     id?: string;
   }): Promise<Filing[]> {
     try {
-      const query = this.filingRepository.createQueryBuilder('filing');
+      const query = await this.filingRepository.createQueryBuilder('filing');
 
       if (filter.id) {
         query.andWhere('filing.id = :id', { id: filter.id });
@@ -143,6 +194,18 @@ export class FilingService {
     } catch (error) {
       console.log(error);
       throw new Error('Failed to fetch Filings');
+    }
+  }
+
+  async findFilingsForSearchBar(input: string): Promise<Filing[]> {
+    try {
+      const query = await this.filingRepository.createQueryBuilder('filing');
+      query.where('filing.name ILIKE :input', { input: `%${input}%` });
+      query.orWhere('filing.FilingCode ILIKE :input', { input: `%${input}%` });
+      return await query.getMany();
+    } catch (error) {
+      console.log(error.string);
+      throw new Error(error.string);
     }
   }
 }

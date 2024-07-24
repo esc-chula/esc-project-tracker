@@ -106,5 +106,11 @@ export class FilingRouter {
           id: input.id,
         });
       }),
+
+    findFilingsForSearchBar: this.trpcService.trpc.procedure
+      .input(z.object({ input: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findFilingsForSearchBar(input.input);
+      }),
   });
 }
