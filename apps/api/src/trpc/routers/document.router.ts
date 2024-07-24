@@ -45,6 +45,7 @@ export class DocumentRouter {
           pdfLink: z.string(),
           docLink: z.string(),
           activity: z.nativeEnum(DocumentActivity),
+          userId: z.string(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -55,6 +56,7 @@ export class DocumentRouter {
           pdfLink: input.pdfLink,
           docLink: input.docLink,
           activity: input.activity,
+          userId: input.userId,
         });
       }),
 
