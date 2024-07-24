@@ -57,5 +57,12 @@ export class DocumentRouter {
           activity: input.activity,
         });
       }),
+
+    // Delete Document -> Document
+    deleteDocument: this.trpcService.trpc.procedure
+      .input(z.object({ id: z.string() }))
+      .mutation(({ input }) => {
+        return this.documentService.deleteDocument(input.id);
+      }),
   });
 }

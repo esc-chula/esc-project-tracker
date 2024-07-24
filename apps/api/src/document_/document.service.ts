@@ -96,4 +96,11 @@ export class DocumentService {
 
     return await this.documentRepository.save(newDocument);
   }
+
+  async deleteDocument(id: string): Promise<Document> {
+    const foundDocument = await this.findByDocID(id);
+    if (!foundDocument) throw new BadRequestException('Document Not Found!');
+    await this.documentRepository.remove(foundDocument);
+    return foundDocument;
+  }
 }
