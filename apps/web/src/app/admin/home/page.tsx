@@ -11,6 +11,7 @@ import getFilingsByUserId from "@/src/service/getFilingsByUserId"
 import getProjectsByUserId from "@/src/service/getProjectsByUserId"
 import { ProjectWithLastOpen } from "@/src/interface/project"
 import SearchPanel from "@/src/components/all-projects/searchPanel"
+import LastestPanel from "@/src/components/project/latestPanel"
 const mockData: FilingType[] = [
   {
     id: "m5gr84i91",
@@ -209,11 +210,7 @@ export default async function Page() {
         </div>
       </section>
       <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <MyProjectData
-          compact
-          filingsData={filingsDataWithProject}
-          projectsWithLastOpenData={projectsWithLastOpenData}
-        />
+        <LastestPanel projectsWithLastOpen={projectsWithLastOpenData} compact />
       </section>
     </main>
   )
