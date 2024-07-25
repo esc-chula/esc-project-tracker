@@ -1,7 +1,8 @@
-import Title from "@/src/components/header/title"
-import Header from "@/src/components/header/header"
-import { Folders } from "lucide-react"
-import NewProjectForm from "@/src/components/new-project/newProjectForm"
+import Title from '@/src/components/header/title';
+import Header from '@/src/components/header/header';
+import { Folders } from 'lucide-react';
+import ProjectForm from '@/src/components/new-project/projectForm';
+import { projectFormAction } from '@/src/constant/formAction';
 
 export default function Page() {
   return (
@@ -12,8 +13,11 @@ export default function Page() {
             เปิดโครงการใหม่
           </Title>
         </Header>
-        <NewProjectForm />
+        <ProjectForm
+          formAction={projectFormAction.USER_CREATE}
+          isAdmin={false}
+        />
       </main>
     </>
-  )
+  );
 }
