@@ -128,4 +128,21 @@ export class UserProjService {
       return true;
     }
   }
+
+  async joinProjectByStudentId({
+    studentId,
+    projectId,
+  }: {
+    studentId: string;
+    projectId: string;
+  }): Promise<UserProj> {
+    const user = await this.userService.findUserByCondition({ studentId });
+    if (!user) throw new BadRequestException('No user match with studentId');
+    return await this.createUserProject({
+      obj: {
+        userId: user.id,
+        projectId,
+      },
+    });
+  }
 }
