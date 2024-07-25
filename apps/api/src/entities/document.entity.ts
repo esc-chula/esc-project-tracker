@@ -28,7 +28,7 @@ export class Document {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column({ default: DocumentStatus.DRAFT })
+  @Column({ nullable: true })
   status: DocumentStatus;
 
   @Column({ nullable: true, default: '' })
