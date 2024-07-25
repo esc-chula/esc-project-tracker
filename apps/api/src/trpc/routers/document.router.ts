@@ -59,7 +59,7 @@ export class DocumentRouter {
       }),
 
     //edit document
-    editDocument: this.trpcService.trpc.procedure
+    updateDocument: this.trpcService.trpc.procedure
       .input(
         z.object({
           docId: z.string(),
@@ -74,7 +74,7 @@ export class DocumentRouter {
       )
       .mutation(async ({ input }) => {
         const { docId, obj } = input;
-        return this.documentService.editDocument(docId, obj);
+        return this.documentService.updateDocument(docId, obj);
       }),
     // Delete Document -> Document
     deleteDocument: this.trpcService.trpc.procedure

@@ -99,7 +99,7 @@ export class DocumentService {
     return await this.documentRepository.save(newDocument);
   }
 
-  async editDocument(docId: string, obj: EditDocumentDTO): Promise<Document> {
+  async updateDocument(docId: string, obj: EditDocumentDTO): Promise<Document> {
     const foundDoc = await this.documentRepository.findOne({
       where: { id: docId },
     });

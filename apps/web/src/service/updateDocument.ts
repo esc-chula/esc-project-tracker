@@ -1,7 +1,7 @@
 import { DocumentActivity } from "../../../api/src/constant/enum";
 import { trpc } from "../app/trpc";
 import { DocumentType } from "../interface/document";
-export default async function editDocumentByDocumentId({
+export default async function updateDocument({
   docId,
   obj,
 }: {
@@ -15,7 +15,7 @@ export default async function editDocumentByDocumentId({
   };
 }): Promise<DocumentType> {
   try {
-    const result = await trpc.document.editDocument.mutate({ docId, obj });
+    const result = await trpc.document.updateDocument.mutate({ docId, obj });
     return result;
   } catch (error) {
     throw new Error("failed");
