@@ -107,20 +107,20 @@ export class FilingService {
         ...filing,
       });
 
-      const latestDocument =
-        await this.documentService.findLatestDocumentByFilingId(
-          updatedFiling.id,
-        );
-      const newDocumentName = this.describeUpdatedFiling(filing);
+      // const latestDocument =
+      //   await this.documentService.findLatestDocumentByFilingId(
+      //     updatedFiling.id,
+      //   );
+      // const newDocumentName = this.describeUpdatedFiling(filing);
 
-      await this.documentService.createDocument({
-        filingId: updatedFiling.id,
-        name: newDocumentName,
-        detail: latestDocument?.detail || '',
-        pdfLink: latestDocument?.pdfLink || '',
-        docLink: latestDocument?.docLink || '',
-        activity: latestDocument?.activity || DocumentActivity.CREATE,
-      });
+      // await this.documentService.createDocument({
+      //   filingId: updatedFiling.id,
+      //   name: newDocumentName,
+      //   detail: latestDocument?.detail || '',
+      //   pdfLink: latestDocument?.pdfLink || '',
+      //   docLink: latestDocument?.docLink || '',
+      //   activity: latestDocument?.activity || DocumentActivity.CREATE,
+      // });
 
       return updatedFiling;
     } catch (error) {
@@ -134,7 +134,8 @@ export class FilingService {
       .reduce((acc, [key, value]) => {
         if (value) {
           return (
-            acc + `เปลี่ยน${FilingFieldTranslate[key]}ของเอกสารเป็น ${value}, `
+            acc +
+            `เปลี่ยน${FilingFieldTranslate[key as keyof typeof FilingFieldTranslate]}ของเอกสารเป็น ${value}, `
           );
         }
         return acc;
@@ -199,13 +200,13 @@ export class FilingService {
 
   async findFilingsForSearchBar(input: string): Promise<Filing[]> {
     try {
-      const query = await this.filingRepository.createQueryBuilder('filing');
+      const query = this.filingRepository.createQueryBuilder('filing');
       query.where('filing.name ILIKE :input', { input: `%${input}%` });
       query.orWhere('filing.FilingCode ILIKE :input', { input: `%${input}%` });
       return await query.getMany();
     } catch (error) {
-      console.log(error.string);
-      throw new Error(error.string);
+      console.log(error);
+      throw new Error('Failed to find Filings for Search Bar');
     }
   }
 }
