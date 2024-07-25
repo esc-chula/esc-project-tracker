@@ -58,7 +58,7 @@ export default function ProjectInfoPage() {
               project={project}
               formAction={projectFormAction.INFO}
               joinUsers={members}
-              isAdmin={false}
+              isAdmin={true}
             />
           )}
         </div>
