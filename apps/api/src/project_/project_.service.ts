@@ -144,8 +144,8 @@ export class ProjectService {
       });
       return await query.getMany();
     } catch (error) {
-      console.log(error.string);
-      throw new Error(error.string);
+      console.log(error);
+      throw new Error('Failed to find Projects for Search Bar');
     }
   }
 }
