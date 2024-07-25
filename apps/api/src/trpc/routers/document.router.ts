@@ -76,5 +76,11 @@ export class DocumentRouter {
         const { docId, obj } = input;
         return this.documentService.editDocument(docId, obj);
       }),
+    // Delete Document -> Document
+    deleteDocument: this.trpcService.trpc.procedure
+      .input(z.object({ id: z.string() }))
+      .mutation(({ input }) => {
+        return this.documentService.deleteDocument(input.id);
+      }),
   });
 }

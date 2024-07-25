@@ -8,8 +8,6 @@ export default async function createProject(
   detail?: string
 ): Promise<Project> {
   try {
-    console.log(name, type, detail)
-
     const data = await trpc.project.createProject.mutate({
       name,
       type,
