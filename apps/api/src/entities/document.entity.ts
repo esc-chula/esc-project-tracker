@@ -26,6 +26,9 @@ export class Document {
   @Column({ nullable: true, default: '' })
   detail: string;
 
+  @Column({ nullable: true, default: '' })
+  comment: string;
+
   @Column()
   pdfLink: string;
 
