@@ -3,11 +3,13 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Filing } from './filing.entity';
-import { DocumentActivity } from '../constant/enum';
+import { DocumentActivity, DocumentStatus } from '../constant/enum';
+import { User } from './user.entity';
 
 @Entity()
 export class Document {
@@ -22,6 +24,12 @@ export class Document {
 
   @Column()
   activity: DocumentActivity;
+
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  user: User;
+
+  @Column({ default: DocumentStatus.DRAFT })
+  status: DocumentStatus;
 
   @Column({ nullable: true, default: '' })
   detail: string;

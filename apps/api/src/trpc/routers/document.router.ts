@@ -4,7 +4,7 @@ import { TrpcService } from '../trpc.service';
 import { optional, z } from 'zod';
 
 import { DocumentService } from '../../document_/document.service';
-import { DocumentActivity } from '../../constant/enum';
+import { DocumentActivity, DocumentStatus } from '../../constant/enum';
 
 @Injectable()
 export class DocumentRouter {
@@ -45,6 +45,8 @@ export class DocumentRouter {
           pdfLink: z.string(),
           docLink: z.string(),
           activity: z.nativeEnum(DocumentActivity),
+          userId: z.string(),
+          status: optional(z.nativeEnum(DocumentStatus)),
         }),
       )
       .mutation(async ({ input }) => {
@@ -55,6 +57,8 @@ export class DocumentRouter {
           pdfLink: input.pdfLink,
           docLink: input.docLink,
           activity: input.activity,
+          userId: input.userId,
+          status: input.status,
         });
       }),
 

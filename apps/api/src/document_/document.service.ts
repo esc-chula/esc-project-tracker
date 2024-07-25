@@ -85,7 +85,18 @@ export class DocumentService {
   }
 
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
-    const { filingId, name, detail, pdfLink, docLink, activity } = obj;
+    const {
+      filingId,
+      name,
+      detail,
+      pdfLink,
+      docLink,
+      activity,
+      userId,
+      status,
+    } = obj;
+    const foundUser = await this.userService.findByUserID(userId);
+    if (!foundUser) throw new BadRequestException('User Not Found!');
     const foundFiling = await this.filingService.findByFilingID(filingId);
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
     const newDocument = new Document();
@@ -95,6 +106,10 @@ export class DocumentService {
     newDocument.pdfLink = pdfLink;
     newDocument.docLink = docLink;
     newDocument.activity = activity;
+    newDocument.user = foundUser;
+    if (status) {
+      newDocument.status = status;
+    }
 
     return await this.documentRepository.save(newDocument);
   }
