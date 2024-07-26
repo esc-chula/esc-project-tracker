@@ -12,7 +12,7 @@ import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
-import { CreateDocumentDTO, EditDocumentDTO } from './document.dto';
+import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
 
 @Injectable()
@@ -99,7 +99,7 @@ export class DocumentService {
     return await this.documentRepository.save(newDocument);
   }
 
-  async updateDocument(docId: string, obj: EditDocumentDTO): Promise<Document> {
+  async updateDocument(docId: string, obj: Partial<Document>): Promise<Document> {
     const foundDoc = await this.documentRepository.findOne({
       where: { id: docId },
     });
