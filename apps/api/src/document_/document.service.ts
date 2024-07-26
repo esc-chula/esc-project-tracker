@@ -89,8 +89,8 @@ export class DocumentService {
       filingId,
       name,
       detail,
-      pdfLink,
-      docLink,
+      pdfName,
+      docName,
       activity,
       userId,
       status,
@@ -103,8 +103,8 @@ export class DocumentService {
     newDocument.filing = foundFiling;
     newDocument.name = name;
     newDocument.detail = detail ?? '';
-    newDocument.pdfLink = pdfLink;
-    newDocument.docLink = docLink;
+    newDocument.pdfName = pdfName;
+    newDocument.docName = docName;
     newDocument.activity = activity;
     newDocument.user = foundUser;
     if (status) {

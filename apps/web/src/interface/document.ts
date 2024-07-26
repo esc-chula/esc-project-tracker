@@ -6,8 +6,8 @@ export interface DocumentType {
   name: string;
   activity: string;
   detail: string;
-  pdfLink: string;
-  docLink: string;
+  pdfName: string;
+  docName: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -117,8 +117,8 @@ export class FilingService {
       //   filingId: updatedFiling.id,
       //   name: newDocumentName,
       //   detail: latestDocument?.detail || '',
-      //   pdfLink: latestDocument?.pdfLink || '',
-      //   docLink: latestDocument?.docLink || '',
+      //   pdfName: latestDocument?.pdfName || '',
+      //   docName: latestDocument?.docName || '',
       //   activity: latestDocument?.activity || DocumentActivity.CREATE,
       // });
 

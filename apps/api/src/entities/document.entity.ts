@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -35,10 +34,10 @@ export class Document {
   detail: string;
 
   @Column()
-  pdfLink: string;
+  pdfName: string;
 
   @Column()
-  docLink: string;
+  docName: string;
 
   @CreateDateColumn()
   createdAt: Date;
