@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProjectService } from '../../project_/project_.service';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { ProjectType } from '../../constant/enum';
+import { ProjectStatus, ProjectType } from '../../constant/enum';
 
 @Injectable()
 export class ProjectRouter {
@@ -91,6 +91,27 @@ export class ProjectRouter {
       .input(z.object({ projectId: z.string().uuid() }))
       .mutation(async ({ input }) => {
         return await this.projectService.deleteProject(input.projectId);
+      }),
+
+    //TODO
+    /*
+    ROLE ADMIN GUARD
+    */
+    updateProject: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          projectId: z.string().uuid(),
+          updatedProject: z.object({
+            name: z.string().optional(),
+            detail: z.string().optional(),
+            reserveDate: z.date().optional(),
+            status: z.nativeEnum(ProjectStatus).optional(),
+          }),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const { projectId, updatedProject } = input;
+        return this.projectService.updateProject(projectId, updatedProject);
       }),
   });
 }

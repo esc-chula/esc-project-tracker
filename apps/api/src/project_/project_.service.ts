@@ -186,4 +186,21 @@ export class ProjectService {
     }
     return await this.projectRepository.remove(foundProject);
   }
+
+  async updateProject(
+    projectId: string,
+    updatedProject: Omit<Partial<Project>, 'id'>,
+  ): Promise<Project> {
+    if (!isUUID(projectId)) {
+      throw new BadRequestException('Invalid project ID format');
+    }
+    const foundProject = await this.findByProjectID(projectId);
+    if (!foundProject) {
+      throw new BadRequestException('Project not found');
+    }
+    return await this.projectRepository.save({
+      ...foundProject,
+      ...updatedProject,
+    });
+  }
 }
