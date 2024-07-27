@@ -97,7 +97,7 @@ export default function NewProjectForm() {
         })
       }
 
-      router.push(`/projects/${newProject.id}`)
+      router.push(`/project/${newProject.id}`)
     } catch (err) {
       if (err instanceof Error) {
         if (projCreated) {
