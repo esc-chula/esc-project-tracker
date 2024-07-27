@@ -1,5 +1,5 @@
 "use client";
-import Header from "../../../../components/header/header";
+import Header from "@/src/components/header/header";
 import Subtitle from "@/src/components/header/subtitle";
 import MyDocumentData from "@/src/components/project/myDocumentData";
 import { Project } from "@/src/interface/project";

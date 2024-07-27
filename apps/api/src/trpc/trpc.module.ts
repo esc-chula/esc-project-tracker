@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TrpcRouter } from './trpc.router';
 import { TrpcService } from './trpc.service';
 
@@ -11,6 +11,8 @@ import { FilingRouter } from './routers/filing.router';
 import { DocumentRouter } from './routers/document.router';
 import { UserProjModule } from '../user-proj/user-proj.module';
 import { UserProjRouter } from './routers/user-proj.router';
+import { NotificationModule } from '../notification/notification.module';
+import { NotificationRouter } from './routers/notification.router';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { UserProjRouter } from './routers/user-proj.router';
     DocumentModule,
     FilingModule,
     UserProjModule,
+    NotificationModule,
   ],
   providers: [
     TrpcService,
@@ -27,6 +30,7 @@ import { UserProjRouter } from './routers/user-proj.router';
     FilingRouter,
     DocumentRouter,
     UserProjRouter,
+    NotificationRouter,
   ],
   controllers: [],
   exports: [TrpcService],

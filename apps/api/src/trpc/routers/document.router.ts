@@ -62,6 +62,24 @@ export class DocumentRouter {
         });
       }),
 
+    //edit document
+    updateDocument: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          docId: z.string(),
+          obj: z.object({
+            name: z.string().optional(),
+            activity: z.nativeEnum(DocumentActivity).optional(),
+            detail: z.string().optional(),
+            pdfLink: z.string().optional(),
+            docLink: z.string().optional(),
+          }),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const { docId, obj } = input;
+        return this.documentService.updateDocument(docId, obj);
+      }),
     // Delete Document -> Document
     deleteDocument: this.trpcService.trpc.procedure
       .input(z.object({ id: z.string() }))

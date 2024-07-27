@@ -114,6 +114,16 @@ export class DocumentService {
     return await this.documentRepository.save(newDocument);
   }
 
+  async updateDocument(docId: string, obj: Partial<Document>): Promise<Document> {
+    const foundDoc = await this.documentRepository.findOne({
+      where: { id: docId },
+    });
+    if (!foundDoc) {
+      throw new Error(`document not found`);
+    }
+    return await this.documentRepository.save({ ...foundDoc, ...obj });
+  }
+
   async deleteDocument(id: string): Promise<Document> {
     const foundDocument = await this.findByDocID(id);
     if (!foundDocument) throw new BadRequestException('Document Not Found!');
