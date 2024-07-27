@@ -17,7 +17,7 @@ export default function FilingMenuItem({ filing }: { filing: FilingType }) {
     }
   };
   const handleClick = () => {
-    window.open(documents[0].pdfLink, "_blank");
+    window.open(documents[0].pdfName, "_blank");
   };
   useEffect(() => {
     getLatestDocument();

@@ -10,8 +10,8 @@ export default async function updateDocument({
     name?: string;
     activity?: DocumentActivity;
     detail?: string;
-    pdfLink?: string;
-    docLink?: string;
+    pdfName?: string;
+    docName?: string;
   };
 }): Promise<DocumentType> {
   try {
