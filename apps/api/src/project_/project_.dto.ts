@@ -10,4 +10,5 @@ export class createProjectDTO {
   name: string;
   type: ProjectType;
   detail?: string;
+  projectOwner: string;
 }
