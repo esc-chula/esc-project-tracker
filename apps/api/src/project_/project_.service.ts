@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from '../entities/project.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
 import { createProjectDTO, ProjectWithLastOpenDTO } from './project_.dto';
 import { ProjectType } from '../constant/enum';
+import { validate as isUUID } from 'uuid';
 
 @Injectable()
 export class ProjectService {
@@ -172,5 +173,17 @@ export class ProjectService {
       console.log(error);
       throw new Error('Failed to find Projects for Search Bar');
     }
+  }
+
+  async deleteProject(id: string): Promise<Project | null> {
+    const foundProject = await this.findByProjectID(id);
+    if (!foundProject) {
+      throw new BadRequestException('Project not found');
+    }
+
+    if (!isUUID(id)) {
+      throw new BadRequestException('Id is not in UUID format');
+    }
+    return await this.projectRepository.remove(foundProject);
   }
 }
