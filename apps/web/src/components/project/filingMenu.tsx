@@ -104,7 +104,7 @@ export default function FilingMenu({
         <NoData firstLine="ยังไม่มีเอกสาร" secondLine="เริ่มเปิดโครงกันเลย !" />
       ) : (
         <div className="w-full h-[500px] overflow-x-auto overflow-y-auto rounded-t-xl">
-          <table className="w-full">
+          <table className="w-full text-sm">
             <FilingMenuHeader />
             {filings.map((filing, index) => (
               <FilingMenuItem filing={filing} key={filing.id} />

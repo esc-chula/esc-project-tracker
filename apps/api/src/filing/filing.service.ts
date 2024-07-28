@@ -84,11 +84,15 @@ export class FilingService {
     projectId: string,
     filingName: string,
     filingType: number,
+    userId: string,
   ) {
-    if (!isUUID(projectId))
-      throw new BadRequestException('Project Id is not in UUID format.');
+    if (!isUUID(projectId) || !isUUID(userId))
+      throw new BadRequestException('Ids are not in UUID format.');
     const foundProject = await this.projectService.findByProjectID(projectId);
     if (!foundProject) throw new BadRequestException('Project Not Found');
+
+    const foundUser = await this.userService.findByUserID(userId);
+    if (!foundUser) throw new BadRequestException('User Not Found');
 
     const numberOfFilingType =
       await this.countFilingService.getTypeCount(filingType);
@@ -105,6 +109,7 @@ export class FilingService {
     newFiling.FilingCode = `${filingType}${formattedNumberOfFilingType}`;
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
+    newFiling.userId = userId;
 
     this.countFilingService.incrementTypeCount(filingType);
 

@@ -137,7 +137,7 @@ export default function ProjectMenu({
         />
       ) : (
         <div className="w-full h-[500px] overflow-x-auto overflow-y-auto rounded-t-xl">
-          <table className="w-full">
+          <table className="w-full text-sm">
             <ProjectMenuHeader />
             {projects.map((project, index) => (
               <ProjectMenuItem
