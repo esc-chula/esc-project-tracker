@@ -25,4 +25,12 @@ export class DocumentController {
   deleteDocument(@Param('id') id: string) {
     return this.documentService.deleteDocument(id);
   }
+
+  @Post('review')
+  reviewDocument(@Body() obj: { id: string; isApproved: boolean }) {
+    return this.documentService.reviewDocumentSubmission(
+      obj.id,
+      obj.isApproved,
+    );
+  }
 }
