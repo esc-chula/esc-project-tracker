@@ -14,6 +14,11 @@ export class UserProjController {
     });
   }
 
+  @Post('testGetUser')
+  findUsersByProjectId(@Body() obj: { projectId: string }) {
+    return this.userProjService.findUsersByProjectId(obj.projectId);
+  }
+
   @Delete('userLeaveProject')
   deleteUserProject(@Body() obj: DeleteUserProjDTO) {
     return this.userProjService.deleteUserProject({

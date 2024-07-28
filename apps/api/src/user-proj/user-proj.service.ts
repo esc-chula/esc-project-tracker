@@ -167,4 +167,17 @@ export class UserProjService {
       obj: { userId: foundUser.id, projectId },
     });
   }
+
+  async findUsersByProjectId(projectId: string) {
+    const query = this.userProjRepository.createQueryBuilder('userProj');
+    query.where('userProj.projectId = :projectId', { projectId });
+    const userProjects = await query.getMany();
+    const result = [];
+    userProjects.forEach((userProject) => {
+      if (userProject.user)
+        result.push(this.userService.findByUserID(userProject.user.id));
+    });
+
+    return await Promise.all(result);
+  }
 }
