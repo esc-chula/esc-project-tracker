@@ -37,7 +37,7 @@ export class ProjectRouter {
           name: z.string(),
           type: z.nativeEnum(ProjectType),
           detail: z.string().optional(),
-          projectOwner: z.string(),
+          owner: z.string(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -45,7 +45,7 @@ export class ProjectRouter {
           name: input.name,
           type: input.type,
           detail: input.detail,
-          projectOwner: input.projectOwner,
+          owner: input.owner,
         });
       }),
 
@@ -56,7 +56,7 @@ export class ProjectRouter {
           name: z.string(),
           type: z.nativeEnum(ProjectType),
           detail: z.string().optional(),
-          projectOwner: z.string(),
+          owner: z.string(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -64,7 +64,7 @@ export class ProjectRouter {
           name: input.name,
           type: input.type,
           detail: input.detail,
-          projectOwner: input.projectOwner,
+          owner: input.owner,
         });
       }),
 

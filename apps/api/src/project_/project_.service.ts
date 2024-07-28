@@ -88,9 +88,8 @@ export class ProjectService {
       throw new BadRequestException('Project name already exists');
     }
 
-    const projectOwner = await this.userService.findByUserID(obj.projectOwner);
-    if (!projectOwner)
-      throw new BadRequestException('Project Owner not found!!!');
+    const owner = await this.userService.findByUserID(obj.owner);
+    if (!owner) throw new BadRequestException('Project Owner not found!!!');
     const project = new Project();
     const countType = await this.findCountOfProjectType(obj.type);
     const countTypeString = (countType + 1).toString().padStart(2, '0');
@@ -99,7 +98,7 @@ export class ProjectService {
     const newProject = {
       ...project,
       projectCode,
-      projectOwner,
+      owner,
       name: obj.name,
       type: obj.type,
     };
@@ -123,15 +122,14 @@ export class ProjectService {
       throw new BadRequestException('Project name already exists');
     }
 
-    const projectOwner = await this.userService.findByUserID(obj.projectOwner);
-    if (!projectOwner)
-      throw new BadRequestException('Project Owner not found!!!');
+    const owner = await this.userService.findByUserID(obj.owner);
+    if (!owner) throw new BadRequestException('Project Owner not found!!!');
     const project = new Project();
     const projectCode = `${obj.type}00`;
     const newProject = {
       ...project,
       projectCode,
-      projectOwner,
+      owner,
       name: obj.name,
       type: obj.type,
     };

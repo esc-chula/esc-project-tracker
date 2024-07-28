@@ -21,7 +21,7 @@ export class Project {
   projectCode: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  projectOwner: User;
+  owner: User;
 
   @Column({
     type: 'enum',
