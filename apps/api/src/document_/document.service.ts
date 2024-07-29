@@ -26,8 +26,8 @@ export class DocumentService {
     private readonly filingService: FilingService,
   ) {}
 
-  findByDocID(id: string) {
-    return this.documentRepository.findOne({ where: { id } });
+  async findByDocID(id: string): Promise<Document> {
+    return await this.documentRepository.findOne({ where: { id } });
   }
 
   async findByProjectID(id: string): Promise<Document[]> {
@@ -114,7 +114,10 @@ export class DocumentService {
     return await this.documentRepository.save(newDocument);
   }
 
-  async updateDocument(docId: string, obj: Partial<Document>): Promise<Document> {
+  async updateDocument(
+    docId: string,
+    obj: Partial<Document>,
+  ): Promise<Document> {
     const foundDoc = await this.documentRepository.findOne({
       where: { id: docId },
     });

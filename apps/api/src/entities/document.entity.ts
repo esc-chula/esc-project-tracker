@@ -18,6 +18,9 @@ export class Document {
   @ManyToOne(() => Filing, { onDelete: 'CASCADE' })
   filing: Filing;
 
+  @Column({ nullable: true })
+  filingId: string;
+
   @Column()
   name: string;
 
@@ -26,6 +29,9 @@ export class Document {
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
+
+  @Column({ nullable: true })
+  userId: string;
 
   @Column({ nullable: true })
   status: DocumentStatus;
