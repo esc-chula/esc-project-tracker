@@ -114,7 +114,10 @@ export class DocumentService {
     return await this.documentRepository.save(newDocument);
   }
 
-  async updateDocument(docId: string, obj: Partial<Document>): Promise<Document> {
+  async updateDocument(
+    docId: string,
+    obj: Partial<Document>,
+  ): Promise<Document> {
     const foundDoc = await this.documentRepository.findOne({
       where: { id: docId },
     });
