@@ -16,7 +16,7 @@ export class UserProjController {
 
   @Post('testGetUser')
   findUsersByProjectId(@Body() obj: { projectId: string }) {
-    return this.userProjService.findUsersByProjectId(obj.projectId);
+    return this.userProjService.findJoinedUsersByProjectId(obj.projectId);
   }
 
   @Delete('userLeaveProject')

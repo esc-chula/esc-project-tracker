@@ -105,5 +105,11 @@ export class UserProjRouter {
           projectId: input.projectId,
         });
       }),
+
+    findJoinedUsersByProjectId: this.trpcService.trpc.procedure
+      .input(z.object({ projectId: z.string() }))
+      .query(({ input }) => {
+        return this.userProjService.findJoinedUsersByProjectId(input.projectId);
+      }),
   });
 }

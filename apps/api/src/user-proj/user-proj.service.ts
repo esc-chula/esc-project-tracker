@@ -168,7 +168,7 @@ export class UserProjService {
     });
   }
 
-  async findUsersByProjectId(projectId: string) {
+  async findJoinedUsersByProjectId(projectId: string) {
     const userProjects = await this.userProjRepository.find({
       where: { project: { id: projectId } },
       relations: ['project', 'user'],
