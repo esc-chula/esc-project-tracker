@@ -20,6 +20,9 @@ export class Project {
   @Column()
   projectCode: string;
 
+  @Column()
+  ownerId: string;
+
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   owner: User;
 

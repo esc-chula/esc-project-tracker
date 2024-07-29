@@ -8,6 +8,7 @@ export interface Project {
   detail: string;
   reserveDate: string;
   status: ProjectStatus;
+  ownerId:string;
   createdAt: string;
   updatedAt: string;
 }
