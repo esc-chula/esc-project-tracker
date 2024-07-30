@@ -62,9 +62,11 @@ export default function NewProjectForm() {
     let projCreated = false
 
     try {
+      //TODO : Change the userId to the actual userId
       const newProject = await createProject(
         values.projectName,
         values.type as ProjectType,
+        "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
         values.description
       )
 
