@@ -7,7 +7,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Filing } from './filing.entity';
-import { DocumentActivity } from '../constant/enum';
+import { DocumentActivity, DocumentStatus } from '../constant/enum';
+import { User } from './user.entity';
 
 @Entity()
 export class Document {
@@ -23,14 +24,23 @@ export class Document {
   @Column()
   activity: DocumentActivity;
 
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  user: User;
+
+  @Column({ nullable: true })
+  status: DocumentStatus;
+
   @Column({ nullable: true, default: '' })
   detail: string;
 
-  @Column()
-  pdfLink: string;
+  @Column({ nullable: true, default: '' })
+  comment: string;
 
   @Column()
-  docLink: string;
+  pdfName: string;
+
+  @Column()
+  docName: string;
 
   @CreateDateColumn()
   createdAt: Date;

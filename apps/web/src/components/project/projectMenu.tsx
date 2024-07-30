@@ -27,8 +27,9 @@ export default function ProjectMenu({
   const [projects, setProjects] = React.useState<Project[]>([]);
 
   async function filterJoin(eachProject: Project): Promise<boolean> {
+    //TODO: change to actual userId
     const result = await hasUserProj(
-      "c8b285e0-9653-40d5-9865-def3b4792c99",
+      "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
       eachProject.id
     );
     return result;

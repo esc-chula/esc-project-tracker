@@ -4,7 +4,7 @@ import { TrpcService } from '../trpc.service';
 import { optional, z } from 'zod';
 
 import { DocumentService } from '../../document_/document.service';
-import { DocumentActivity } from '../../constant/enum';
+import { DocumentActivity, DocumentStatus } from '../../constant/enum';
 
 @Injectable()
 export class DocumentRouter {
@@ -42,9 +42,11 @@ export class DocumentRouter {
           filingId: z.string(),
           name: z.string(),
           detail: optional(z.string()),
-          pdfLink: z.string(),
-          docLink: z.string(),
+          pdfName: z.string(),
+          docName: z.string(),
           activity: z.nativeEnum(DocumentActivity),
+          userId: z.string(),
+          status: optional(z.nativeEnum(DocumentStatus)),
         }),
       )
       .mutation(async ({ input }) => {
@@ -52,10 +54,37 @@ export class DocumentRouter {
           filingId: input.filingId,
           name: input.name,
           detail: input.detail,
-          pdfLink: input.pdfLink,
-          docLink: input.docLink,
+          pdfName: input.pdfName,
+          docName: input.docName,
           activity: input.activity,
+          userId: input.userId,
+          status: input.status,
         });
+      }),
+
+    //edit document
+    updateDocument: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          docId: z.string(),
+          obj: z.object({
+            name: z.string().optional(),
+            activity: z.nativeEnum(DocumentActivity).optional(),
+            detail: z.string().optional(),
+            pdfLink: z.string().optional(),
+            docLink: z.string().optional(),
+          }),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const { docId, obj } = input;
+        return this.documentService.updateDocument(docId, obj);
+      }),
+    // Delete Document -> Document
+    deleteDocument: this.trpcService.trpc.procedure
+      .input(z.object({ id: z.string() }))
+      .mutation(({ input }) => {
+        return this.documentService.deleteDocument(input.id);
       }),
   });
 }

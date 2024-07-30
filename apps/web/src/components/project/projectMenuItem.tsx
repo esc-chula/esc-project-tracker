@@ -18,8 +18,8 @@ export default function ProjectMenuItem({
   const handleJoinProject = async () => {
     try {
       await joinProject(
-        "c8b285e0-9653-40d5-9865-def3b4792c99", // mock userid
-        "ca09400e-bb9f-48f6-ae9c-a967e8eb2ab8" // mock projid
+        "d1c0d106-1a4a-4729-9033-1b2b2d52e98a", // mock userid
+        project.id 
       );
       setIsJoined(true);
       toast({
@@ -44,8 +44,8 @@ export default function ProjectMenuItem({
   };
   useEffect(() => {
     checkUserJoinProject(
-      "c8b285e0-9653-40d5-9865-def3b4792c99",
-      "ca09400e-bb9f-48f6-ae9c-a967e8eb2ab8"
+      "d1c0d106-1a4a-4729-9033-1b2b2d52e98a",
+      project.id
     );
   }, []);
 
