@@ -1,14 +1,16 @@
 "use client";
 import { ProjectWithLastOpen } from "@/src/interface/project";
-import LastestItem from "./lastestItem";
+import LatestItem from "./latestItem";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { useEffect, useState } from "react";
 
 export default function LastestPanel({
   projectsWithLastOpen,
+  compact=false
 }: {
   projectsWithLastOpen: ProjectWithLastOpen[];
+  compact?:boolean
 }) {
   const [carouselRef] = useEmblaCarousel({ loop: false, dragFree: true }, [
     WheelGesturesPlugin(),
@@ -27,7 +29,7 @@ export default function LastestPanel({
   }, [projectsWithLastOpen]);
 
   return (
-    <div className="flex flex-col max-w-[60vw]">
+    <div className={`flex flex-col max-w-${compact?'[100vw]':'[60vw]'}`}>
       <div className="font-sukhumvit font-bold text-lg">ล่าสุด</div>
       <div
         className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden"
@@ -36,7 +38,7 @@ export default function LastestPanel({
         {isFetched && (
           <div className="flex space-x-8">
             {sortedProjects.map((project) => (
-              <LastestItem
+              <LatestItem
                 key={project.project.id}
                 projectId={project.project.id}
                 projectCode={project.project.projectCode}
