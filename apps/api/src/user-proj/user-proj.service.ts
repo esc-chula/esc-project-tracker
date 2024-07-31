@@ -164,7 +164,7 @@ export class UserProjService {
       throw new BadRequestException('Owner cannot leave project');
 
     return await this.deleteUserProject({
-      obj: { userId: foundProject.id, projectId },
+      obj: { userId: foundUser.id, projectId },
     });
   }
 }
