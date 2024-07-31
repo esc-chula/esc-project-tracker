@@ -145,4 +145,26 @@ export class UserProjService {
       },
     });
   }
+
+  async leaveProjectByStudentId({
+    studentId,
+    projectId,
+  }: {
+    studentId: string;
+    projectId: string;
+  }): Promise<UserProj> {
+    const foundUser = await this.userService.findUserByCondition({ studentId });
+    if (!foundUser)
+      throw new BadRequestException('No user match with studentId');
+    const foundProject = await this.projectService.findByProjectID(projectId);
+    if (!foundProject)
+      throw new BadRequestException('No project match with projectId');
+
+    if (foundUser.id === foundProject.ownerId)
+      throw new BadRequestException('Owner cannot leave project');
+
+    return await this.deleteUserProject({
+      obj: { userId: foundProject.id, projectId },
+    });
+  }
 }
