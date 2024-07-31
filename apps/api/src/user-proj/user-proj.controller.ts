@@ -11,6 +11,7 @@ export class UserProjController {
   createUserProject(@Body() obj: CreateUserProjDTO) {
     return this.userProjService.createUserProject({
       obj,
+      isUpdatedLastOpen: true,
     });
   }
 

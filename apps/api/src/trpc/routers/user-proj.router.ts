@@ -36,6 +36,7 @@ export class UserProjRouter {
       .query(({ input }) => {
         return this.userProjService.createUserProject({
           obj: { userId: input.userId, projectId: input.projectId },
+          isUpdatedLastOpen: true,
         });
       }),
 
