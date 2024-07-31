@@ -82,5 +82,15 @@ export class ProjectRouter {
       .query(({ input }) => {
         return this.projectService.findProjectsForSearchBar(input.input);
       }),
+
+    //TODO
+    /*
+    ROLE ADMIN GUARD
+    */
+    deleteProject: this.trpcService.trpc.procedure
+      .input(z.object({ projectId: z.string().uuid() }))
+      .mutation(async ({ input }) => {
+        return await this.projectService.deleteProject(input.projectId);
+      }),
   });
 }
