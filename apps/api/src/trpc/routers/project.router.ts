@@ -106,6 +106,7 @@ export class ProjectRouter {
             detail: z.string().optional(),
             reserveDate: z.date().optional(),
             status: z.nativeEnum(ProjectStatus).optional(),
+            type: z.nativeEnum(ProjectType).optional(),
           }),
         }),
       )

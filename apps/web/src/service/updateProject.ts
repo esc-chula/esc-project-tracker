@@ -1,5 +1,5 @@
 import { trpc } from '../app/trpc';
-import { ProjectStatus } from '../constant/enum';
+import { ProjectStatus, ProjectType } from '../constant/enum';
 import { Project } from '../interface/project';
 
 export default async function updateProject({
@@ -8,12 +8,14 @@ export default async function updateProject({
   detail,
   reserveDate,
   status,
+  type,
 }: {
   projectId: string;
   name?: string;
   detail?: string;
   reserveDate?: Date;
   status?: ProjectStatus;
+  type?: ProjectType;
 }): Promise<Project | null> {
   try {
     const data = await trpc.project.updateProject.mutate({
@@ -23,6 +25,7 @@ export default async function updateProject({
         detail,
         reserveDate,
         status,
+        type,
       },
     });
 
