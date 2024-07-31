@@ -151,9 +151,8 @@ export class UserProjService {
       where: { project: { id: projectId } },
       relations: ['project', 'user'],
     });
-    const result = [];
-    userProjects.forEach((UP) => {
-      result.push(UP.user);
+    const result = userProjects.map((userProject) => {
+      return userProject.user;
     });
     return result;
   }
