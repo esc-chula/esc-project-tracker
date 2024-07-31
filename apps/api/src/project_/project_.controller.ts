@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ProjectService } from './project_.service';
 import { ProjectType } from '../constant/enum';
 import { createProjectDTO } from './project_.dto';
@@ -31,5 +31,10 @@ export class ProjectController {
   @Post('testSearch')
   findProjectsForSearchBar(@Body() obj: { input: string }) {
     return this.projectService.findProjectsForSearchBar(obj.input);
+  }
+
+  @Delete('deleteProject/:id')
+  deleteProject(@Param('id') id: string) {
+    return this.projectService.deleteProject(id);
   }
 }
