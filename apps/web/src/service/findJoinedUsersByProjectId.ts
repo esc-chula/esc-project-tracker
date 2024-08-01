@@ -1,6 +1,9 @@
 import { trpc } from '../app/trpc';
+import { User } from '../interface/user';
 
-export default async function findJoinedUsersByProjectId(projectId: string) {
+export default async function findJoinedUsersByProjectId(
+  projectId: string,
+): Promise<User[]> {
   try {
     return await trpc.userProj.findJoinedUsersByProjectId.query({
       projectId,
