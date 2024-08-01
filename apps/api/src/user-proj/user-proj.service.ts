@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { CreateUserProjDTO, DeleteUserProjDTO } from './user-project.dto';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class UserProjService {
@@ -166,5 +167,16 @@ export class UserProjService {
     return await this.deleteUserProject({
       obj: { userId: foundUser.id, projectId },
     });
+  }
+
+  async findJoinedUsersByProjectId(projectId: string): Promise<User[]> {
+    const userProjects = await this.userProjRepository.find({
+      where: { project: { id: projectId } },
+      relations: ['project', 'user'],
+    });
+    const result: User[] = userProjects.map((userProject) => {
+      return userProject.user;
+    });
+    return result;
   }
 }
