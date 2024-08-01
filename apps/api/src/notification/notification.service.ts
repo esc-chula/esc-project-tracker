@@ -20,7 +20,8 @@ export class NotificationService {
       query.where('noti.userId = :userId', { userId });
       return await query.getMany();
     } catch (error) {
-      throw new Error(error.string);
+      console.log(error);
+      throw new Error('Failed to find notifications');
     }
   }
 }

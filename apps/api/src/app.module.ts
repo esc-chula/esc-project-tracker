@@ -13,6 +13,7 @@ import { FilingModule } from './filing/filing.module';
 import { UserProjModule } from './user-proj/user-proj.module';
 import { CountFilingModule } from './count-filing/count-filing.module';
 import { NotificationModule } from './notification/notification.module';
+import { UserFilingModule } from './user-filing/user-filing.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { NotificationModule } from './notification/notification.module';
     CountFilingModule,
     TrpcModule,
     NotificationModule,
+    UserFilingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

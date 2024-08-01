@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ProjectService } from './project_.service';
 import { ProjectType } from '../constant/enum';
 import { createProjectDTO } from './project_.dto';
+import { Project } from '../entities/project.entity';
 
 @Controller('project')
 export class ProjectController {
@@ -31,5 +40,18 @@ export class ProjectController {
   @Post('testSearch')
   findProjectsForSearchBar(@Body() obj: { input: string }) {
     return this.projectService.findProjectsForSearchBar(obj.input);
+  }
+
+  @Delete('deleteProject/:id')
+  deleteProject(@Param('id') id: string) {
+    return this.projectService.deleteProject(id);
+  }
+
+  @Put('updateProject/:id')
+  updateProject(
+    @Body() updatedProject: Omit<Partial<Project>, 'id'>,
+    @Param('id') id: string,
+  ) {
+    return this.projectService.updateProject(id, updatedProject);
   }
 }
