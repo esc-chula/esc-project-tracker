@@ -1,11 +1,15 @@
 import { trpc } from '../app/trpc';
 import { User } from '../interface/user';
 
-export async function findUserByCondition(
-  id?: string,
-  name?: string,
-  studentId?: string,
-): Promise<User | null> {
+export async function findUserByCondition({
+  id,
+  name,
+  studentId,
+}: {
+  id?: string;
+  name?: string;
+  studentId?: string;
+}): Promise<User | null> {
   try {
     return await trpc.user.findUserByCondition.query({
       id,
