@@ -59,8 +59,10 @@ export class UserProjService {
 
   async createUserProject({
     obj,
+    isUpdatedLastOpen,
   }: {
     obj: CreateUserProjDTO;
+    isUpdatedLastOpen: boolean;
   }): Promise<UserProj> {
     if (!isUUID(obj.userId) || !isUUID(obj.projectId)) {
       throw new BadRequestException('Id is not in UUID format');
@@ -89,7 +91,9 @@ export class UserProjService {
     const newUserProj = new UserProj();
     newUserProj.user = foundUser;
     newUserProj.project = foundProject;
-    newUserProj.lastOpen = new Date();
+    if (!isUpdatedLastOpen) {
+      newUserProj.lastOpen = new Date();
+    }
 
     return await this.userProjRepository.save(newUserProj);
   }
@@ -144,6 +148,7 @@ export class UserProjService {
         userId: user.id,
         projectId,
       },
+      isUpdatedLastOpen: true,
     });
   }
 

@@ -21,6 +21,6 @@ export class UserProj {
   @Column()
   projectId: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  lastOpen: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  lastOpen?: Date;
 }
