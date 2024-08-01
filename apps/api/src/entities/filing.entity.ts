@@ -18,8 +18,14 @@ export class Filing {
   @ManyToOne(() => Project, { onDelete: 'CASCADE' })
   project: Project;
 
+  @Column({ nullable: true })
+  projectId: string;
+
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
+
+  @Column({ nullable: true })
+  userId: string;
 
   @Column()
   name: string;

@@ -10,7 +10,7 @@ export class UserProj {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column()
+  @Column({ nullable: true })
   userId: string;
 
   @ManyToOne(() => Project, {
@@ -18,9 +18,9 @@ export class UserProj {
   })
   project: Project;
 
-  @Column()
+  @Column({ nullable: true })
   projectId: string;
 
-  @Column({ type: 'timestamp', nullable: true })
-  lastOpen?: Date;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  lastOpen: Date;
 }
