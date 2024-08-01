@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
 import { CreateUserProjDTO, DeleteUserProjDTO } from './user-project.dto';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class UserProjService {
@@ -146,12 +147,34 @@ export class UserProjService {
     });
   }
 
-  async findJoinedUsersByProjectId(projectId: string) {
+  async leaveProjectByStudentId({
+    studentId,
+    projectId,
+  }: {
+    studentId: string;
+    projectId: string;
+  }): Promise<UserProj> {
+    const foundUser = await this.userService.findUserByCondition({ studentId });
+    if (!foundUser)
+      throw new BadRequestException('No user match with studentId');
+    const foundProject = await this.projectService.findByProjectID(projectId);
+    if (!foundProject)
+      throw new BadRequestException('No project match with projectId');
+
+    if (foundUser.id === foundProject.ownerId)
+      throw new BadRequestException('Owner cannot leave project');
+
+    return await this.deleteUserProject({
+      obj: { userId: foundUser.id, projectId },
+    });
+  }
+
+  async findJoinedUsersByProjectId(projectId: string): Promise<User[]> {
     const userProjects = await this.userProjRepository.find({
       where: { project: { id: projectId } },
       relations: ['project', 'user'],
     });
-    const result = userProjects.map((userProject) => {
+    const result: User[] = userProjects.map((userProject) => {
       return userProject.user;
     });
     return result;
