@@ -19,6 +19,9 @@ export class Document {
   filing: Filing;
 
   @Column()
+  filingId: string;
+
+  @Column()
   name: string;
 
   @Column()
