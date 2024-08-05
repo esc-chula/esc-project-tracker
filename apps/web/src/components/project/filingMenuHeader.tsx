@@ -16,7 +16,7 @@ export default function FilingMenuHeader() {
         สถานะเอกสาร
       </th>
       <th className="p-4 py-5 text-nowrap text-center max-w-[150px]">
-        นิสิตผู้รับผิดชอบ
+        หมายเหตุ
       </th>
       <th className="p-4 py-5 text-nowrap text-center w-[60px]"></th>
     </tr>
