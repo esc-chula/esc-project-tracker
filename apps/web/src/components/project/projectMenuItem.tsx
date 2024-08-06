@@ -7,13 +7,16 @@ import joinProject from '@/src/service/joinProject';
 import type { Project } from '@/src/interface/project';
 import { useToast } from '../ui/use-toast';
 import Link from 'next/link';
+import { ProjectStatusToThai } from '@/src/constant/translate';
 
 export default function ProjectMenuItem({
   project,
   index,
+  isAdmin
 }: {
   project: Project;
   index: number;
+  isAdmin: boolean;
 }) {
   const { toast } = useToast();
 
@@ -65,19 +68,29 @@ export default function ProjectMenuItem({
         {project.projectCode}
       </td>
       <td className="p-4 py-5 text-nowrap max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {isAdmin ?  (
+          <Link href={`project/${project.id}`}>
+            {project.name}
+          </Link>
+        ) : (
+          <>
         {project.name}
+          </>
+        )}
       </td>
       <td className="p-4 py-5 text-nowrap text-center w-[180px]">
-        {project.status}
+        {ProjectStatusToThai.get(project.status)}
       </td>
-      <td className="px-2 py-5 text-center w-[20px] hover:cursor-pointer">
-      <Link href={`/project/${project.id}/info`}>
+      <td className={`${isAdmin? 'px-10' : 'px-2 '} py-5 text-center w-[20px] hover:cursor-pointer`}>
+      <Link href={`project/${project.id}/info`}>
         <BsInfoCircleFill
           size={15}
           className="text-red w-[15px] h-[16px]"
         />
       </Link>
       </td>
+      {
+        isAdmin ? null : (
       <td className="p-4 py-5 text-nowrap text-center w-[150px]">
         <button
           className={`rounded-lg px-2 py-1 ${buttonStyle(isJoined)} transition-all`}
@@ -88,6 +101,8 @@ export default function ProjectMenuItem({
           {isJoined ? 'เข้าร่วมแล้ว' : 'เข้าร่วม'}
         </button>
       </td>
+        )
+      }
     </tr>
   );
 }

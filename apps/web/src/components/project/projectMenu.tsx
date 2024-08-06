@@ -16,8 +16,10 @@ import getProjectByProjectId from "@/src/service/getProjectByProjectId";
 
 export default function ProjectMenu({
   searchedProjectId,
+  isAdmin,
 }: {
   searchedProjectId: string | null;
+  isAdmin: boolean;
 }) {
   const { toast } = useToast();
   const [departmentProject, setDepartmentProject] =
@@ -138,12 +140,13 @@ export default function ProjectMenu({
       ) : (
         <div className="w-full h-[500px] overflow-x-auto overflow-y-auto rounded-t-xl">
           <table className="w-full text-sm">
-            <ProjectMenuHeader />
+            <ProjectMenuHeader isAdmin={isAdmin}/>
             {projects.map((project, index) => (
               <ProjectMenuItem
                 project={project}
                 key={project.id}
                 index={index + 1}
+                isAdmin={isAdmin}
               />
             ))}
           </table>

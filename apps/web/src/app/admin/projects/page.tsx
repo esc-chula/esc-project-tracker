@@ -12,7 +12,7 @@ export default function Page() {
             โครงการทั้งหมด
           </Title>
         </Header>
-        <SelectTab />
+        <SelectTab isAdmin={true}/>
       </main>
     </>
   )

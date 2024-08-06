@@ -10,7 +10,7 @@ export default function Page() {
         <Header>
           <Title icon={<Folders size={40} />}>โครงการทั้งหมด</Title>
         </Header>
-        <SelectTab />
+        <SelectTab isAdmin={false}/>
       </main>
     </>
   );
