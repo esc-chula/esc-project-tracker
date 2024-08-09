@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Document } from '../entities/document.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Project } from '../entities/project.entity';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
@@ -14,6 +14,7 @@ import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
 import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
+import { DocumentActivity, DocumentStatus } from '../constant/enum';
 
 @Injectable()
 export class DocumentService {
@@ -78,9 +79,14 @@ export class DocumentService {
   ): Promise<Document | null> {
     if (!isUUID(filingId)) throw new Error('filingId is not an UUID!');
     const data = await this.documentRepository.findOne({
-      where: { filing: { id: filingId } },
+      where: {
+        filing: { id: filingId },
+        activity: Not(DocumentActivity.REPLY),
+        status: Not(DocumentStatus.DRAFT),
+      },
       order: { createdAt: 'DESC' },
     });
+    console.log(data);
     return data;
   }
 

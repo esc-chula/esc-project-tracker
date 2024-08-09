@@ -24,7 +24,7 @@ export class Document {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ default: DocumentActivity.CREATE })
   activity: DocumentActivity;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
@@ -33,7 +33,7 @@ export class Document {
   @Column({ nullable: true })
   userId: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: DocumentStatus.DRAFT })
   status: DocumentStatus;
 
   @Column({ nullable: true, default: '' })
