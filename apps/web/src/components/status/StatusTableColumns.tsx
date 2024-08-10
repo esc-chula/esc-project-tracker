@@ -26,9 +26,9 @@ export const columns: ColumnDef<FilingType>[] = [
     accessorKey: "รหัสเอกสาร",
     accessorFn: (row) => row.projectCode + "-" + row.FilingCode,
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="รหัสเอกสาร" />
+      return <DataTableColumnHeader className="justify-center" column={column} title="รหัสเอกสาร" />
     },
-    cell: ({ row }) => <div>{row.getValue("รหัสเอกสาร")}</div>,
+    cell: ({ row }) => <div className="text-center">{row.getValue("รหัสเอกสาร")}</div>,
   },
   {
     accessorKey: "name",
@@ -62,7 +62,7 @@ export const columns: ColumnDef<FilingType>[] = [
     header: () => null,
     cell: ({ row }) => (
       <Link href={row.getValue("detailsPath")}>
-        <Button variant="link" className="underline">
+        <Button variant="link" className="underline px-0">
           ดูรายละเอียด
         </Button>
       </Link>

@@ -6,6 +6,9 @@ import { ProjectRouter } from './routers/project.router';
 import { FilingRouter } from './routers/filing.router';
 import { DocumentRouter } from './routers/document.router';
 import { UserProjRouter } from './routers/user-proj.router';
+import { NotificationRouter } from './routers/notification.router';
+import { UserRouter } from './routers/user.router';
+import { UserFilingRouter } from './routers/user-filing.router';
 
 @Injectable()
 export class TrpcRouter {
@@ -15,12 +18,18 @@ export class TrpcRouter {
     private readonly filingRouter: FilingRouter,
     private readonly documentRouter: DocumentRouter,
     private readonly userProjRouter: UserProjRouter,
+    private readonly notificationRouter: NotificationRouter,
+    private readonly userRouter: UserRouter,
+    private readonly userFilingRouter: UserFilingRouter,
   ) {}
   appRouter = this.trpc.router({
     project: this.projectRouter.appRouter,
     filing: this.filingRouter.appRouter,
     document: this.documentRouter.appRouter,
     userProj: this.userProjRouter.appRouter,
+    notification: this.notificationRouter.appRouter,
+    user: this.userRouter.appRouter,
+    userFiling: this.userFilingRouter.appRouter,
   });
 
   async applyMiddleware(app: INestApplication) {

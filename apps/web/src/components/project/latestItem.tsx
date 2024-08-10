@@ -1,21 +1,22 @@
-import { File } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { File } from "lucide-react"
+import { useRouter } from "next/navigation"
 
-export default function LastestItem({
+export default function LatestItem({
   projectId,
   projectCode,
   projectName,
 }: {
-  projectId: string;
-  projectCode: string;
-  projectName: string;
+  projectId: string
+  projectCode: string
+  projectName: string
 }) {
-  const router = useRouter();
+  const router = useRouter()
   return (
     <div
       className="bg-card text-card-foreground rounded-md flex flex-row py-1 px-8 space-x-5 border-2 border-black hover:cursor-pointer hover:scale-105 duration-200"
-      onClick={() => {router.push(`/projects/${projectId}`)}}
-    >
+      onClick={() => {
+        router.push(`/project/${projectId}`)
+      }}>
       <div className="flex items-center justify-center">
         <File size={30} strokeWidth={1} />
       </div>
@@ -26,5 +27,5 @@ export default function LastestItem({
         </div>
       </div>
     </div>
-  );
+  )
 }

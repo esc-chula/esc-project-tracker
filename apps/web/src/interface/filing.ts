@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- Necessary for compatibility with the existing codebase */
 
-import type { FilingStatus } from "../constant/enum";
-import { Project } from "./project";
+import type { FilingStatus } from '../constant/enum';
+import { Project } from './project';
+import { User } from './user';
 
 export interface FilingType {
   id: string;
   project: Project | { id: string };
-  user: any;
+  userId: string;
   name: string;
   FilingCode: string;
   status: FilingStatus;
@@ -14,14 +15,4 @@ export interface FilingType {
   projectCode: string;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface UserType {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  username: string;
-  studentId: string;
-  password: string;
 }

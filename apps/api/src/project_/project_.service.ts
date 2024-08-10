@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from '../entities/project.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
 import { createProjectDTO, ProjectWithLastOpenDTO } from './project_.dto';
 import { ProjectType } from '../constant/enum';
+import { validate as isUUID } from 'uuid';
 
 @Injectable()
 export class ProjectService {
@@ -87,11 +88,24 @@ export class ProjectService {
     if (foundProjectByName) {
       throw new BadRequestException('Project name already exists');
     }
+
+    const owner = await this.userService.findByUserID(obj.owner);
+    if (!owner) throw new BadRequestException('Project Owner not found!!!');
     const project = new Project();
     const countType = await this.findCountOfProjectType(obj.type);
     const countTypeString = (countType + 1).toString().padStart(2, '0');
     const projectCode = `${obj.type}${countTypeString}`;
-    const newProject = { ...project, ...obj, projectCode };
+
+    const newProject = {
+      ...project,
+      projectCode,
+      owner,
+      name: obj.name,
+      type: obj.type,
+    };
+    if (obj.detail) {
+      newProject.detail = obj.detail;
+    }
     return await this.projectRepository.save(newProject);
   }
 
@@ -108,9 +122,21 @@ export class ProjectService {
     if (foundProjectByName) {
       throw new BadRequestException('Project name already exists');
     }
+
+    const owner = await this.userService.findByUserID(obj.owner);
+    if (!owner) throw new BadRequestException('Project Owner not found!!!');
     const project = new Project();
     const projectCode = `${obj.type}00`;
-    const newProject = { ...project, ...obj, projectCode };
+    const newProject = {
+      ...project,
+      projectCode,
+      owner,
+      name: obj.name,
+      type: obj.type,
+    };
+    if (obj.detail) {
+      newProject.detail = obj.detail;
+    }
     return await this.projectRepository.save(newProject);
   }
 
@@ -147,5 +173,34 @@ export class ProjectService {
       console.log(error);
       throw new Error('Failed to find Projects for Search Bar');
     }
+  }
+
+  async deleteProject(id: string): Promise<Project | null> {
+    const foundProject = await this.findByProjectID(id);
+    if (!foundProject) {
+      throw new BadRequestException('Project not found');
+    }
+
+    if (!isUUID(id)) {
+      throw new BadRequestException('Id is not in UUID format');
+    }
+    return await this.projectRepository.remove(foundProject);
+  }
+
+  async updateProject(
+    projectId: string,
+    updatedProject: Omit<Partial<Project>, 'id'>,
+  ): Promise<Project> {
+    if (!isUUID(projectId)) {
+      throw new BadRequestException('Invalid project ID format');
+    }
+    const foundProject = await this.findByProjectID(projectId);
+    if (!foundProject) {
+      throw new BadRequestException('Project not found');
+    }
+    return await this.projectRepository.save({
+      ...foundProject,
+      ...updatedProject,
+    });
   }
 }

@@ -5,6 +5,7 @@ export const autocompleteStyles = {
     border: "none",
     outline: "none",
     backgroundColor: "#E3E3E3",
+    fontFamily: "var(--sukhumvit-set-font)",
     paddingLeft: "16px",
     boxShadow: "none",
     height: "40px",
