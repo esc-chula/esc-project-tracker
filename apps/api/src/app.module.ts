@@ -12,6 +12,7 @@ import { ProjectModule } from './project_/project_.module';
 import { FilingModule } from './filing/filing.module';
 import { UserProjModule } from './user-proj/user-proj.module';
 import { CountFilingModule } from './count-filing/count-filing.module';
+import { AwsModule } from './aws/aws.module';
 import { NotificationModule } from './notification/notification.module';
 import { UserFilingModule } from './user-filing/user-filing.module';
 
@@ -40,6 +41,7 @@ import { UserFilingModule } from './user-filing/user-filing.module';
     UserProjModule,
     CountFilingModule,
     TrpcModule,
+    AwsModule,
     NotificationModule,
     UserFilingModule,
   ],
