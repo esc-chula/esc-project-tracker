@@ -3,6 +3,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AwsService } from './aws.service';
@@ -16,7 +17,12 @@ export class AwsController {
   async uploadFile(
     @UploadedFile()
     file: Express.Multer.File,
+    @Body('folderName') folderName: string,
   ) {
-    await this.awsService.uploadFileToS3(file.originalname, file.buffer);
+    return await this.awsService.uploadFileToS3(
+      file.originalname,
+      file.buffer,
+      folderName,
+    );
   }
 }

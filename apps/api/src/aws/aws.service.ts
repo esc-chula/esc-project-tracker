@@ -15,11 +15,15 @@ export class AwsService {
 
   constructor() {}
 
-  async uploadFileToS3(fileName: string, file: Buffer) {
-    await this.s3Client.send(
+  async uploadFileToS3(fileName: string, file: Buffer, folderName?: string) {
+    const currentDate = new Date();
+    const dateWithTimestamp = currentDate.toISOString();
+    let storedName = `{${dateWithTimestamp}}-` + fileName;
+    if (folderName) storedName = folderName + '/' + storedName;
+    return await this.s3Client.send(
       new PutObjectCommand({
         Bucket: 'project-tracker',
-        Key: fileName,
+        Key: storedName,
         Body: file,
       }),
     );
