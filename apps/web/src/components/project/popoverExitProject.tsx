@@ -41,7 +41,7 @@ export default function PopoverExitProject({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex flex-row p-2 space-x-3 hover:cursor-pointer">
+        <div className="flex flex-row p-2 space-x-2 hover:cursor-pointer">
           <LogOut />
           <div className="">ออกจากโครงการ</div>
         </div>
