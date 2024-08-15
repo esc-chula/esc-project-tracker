@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Document } from '../entities/document.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Project } from '../entities/project.entity';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
@@ -14,6 +14,7 @@ import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
 import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
+import { DocumentActivity, DocumentStatus } from '../constant/enum';
 
 @Injectable()
 export class DocumentService {
@@ -26,8 +27,8 @@ export class DocumentService {
     private readonly filingService: FilingService,
   ) {}
 
-  findByDocID(id: string) {
-    return this.documentRepository.findOne({ where: { id } });
+  async findByDocID(id: string): Promise<Document> {
+    return await this.documentRepository.findOne({ where: { id } });
   }
 
   async findByProjectID(id: string): Promise<Document[]> {
@@ -78,25 +79,58 @@ export class DocumentService {
   ): Promise<Document | null> {
     if (!isUUID(filingId)) throw new Error('filingId is not an UUID!');
     const data = await this.documentRepository.findOne({
-      where: { filing: { id: filingId } },
+      where: {
+        filing: { id: filingId },
+        activity: Not(DocumentActivity.REPLY),
+        status: Not(DocumentStatus.DRAFT),
+      },
       order: { createdAt: 'DESC' },
     });
+    console.log(data);
     return data;
   }
 
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
-    const { filingId, name, detail, pdfLink, docLink, activity } = obj;
+    const {
+      filingId,
+      name,
+      detail,
+      pdfName,
+      docName,
+      activity,
+      userId,
+      status,
+    } = obj;
+    const foundUser = await this.userService.findByUserID(userId);
+    if (!foundUser) throw new BadRequestException('User Not Found!');
     const foundFiling = await this.filingService.findByFilingID(filingId);
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
     const newDocument = new Document();
     newDocument.filing = foundFiling;
     newDocument.name = name;
     newDocument.detail = detail ?? '';
-    newDocument.pdfLink = pdfLink;
-    newDocument.docLink = docLink;
+    newDocument.pdfName = pdfName;
+    newDocument.docName = docName;
     newDocument.activity = activity;
+    newDocument.user = foundUser;
+    if (status) {
+      newDocument.status = status;
+    }
 
     return await this.documentRepository.save(newDocument);
+  }
+
+  async updateDocument(
+    docId: string,
+    obj: Partial<Document>,
+  ): Promise<Document> {
+    const foundDoc = await this.documentRepository.findOne({
+      where: { id: docId },
+    });
+    if (!foundDoc) {
+      throw new Error(`document not found`);
+    }
+    return await this.documentRepository.save({ ...foundDoc, ...obj });
   }
 
   async deleteDocument(id: string): Promise<Document> {

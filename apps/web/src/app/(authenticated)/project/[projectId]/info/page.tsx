@@ -1,39 +1,47 @@
-"use client";
-import Header from "@/src/components/header/header";
-import Title from "@/src/components/header/title";
-import ProjectInfoPanel from "@/src/components/project-info/projectInfoPanel";
-import { toast } from "@/src/components/ui/use-toast";
-import { Project } from "@/src/interface/project";
-import getProjectByProjectId from "@/src/service/getProjectByProjectId";
-import { Folders } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+'use client';
+import Header from '@/src/components/header/header';
+import Title from '@/src/components/header/title';
+import ProjectForm from '@/src/components/new-project/projectForm';
+import { toast } from '@/src/components/ui/use-toast';
+import { projectFormAction } from '@/src/constant/formAction';
+import { Project } from '@/src/interface/project';
+import { User } from '@/src/interface/user';
+import findJoinedUsersByProjectId from '@/src/service/findJoinedUsersByProjectId';
+import getProjectByProjectId from '@/src/service/getProjectByProjectId';
+import { Folders } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function ProjectInfoPage() {
   const params = useParams();
   const { projectId } = params;
   const [project, setProject] = useState<Project | null>(null);
+  const [members, setMembers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProject = async () => {
+    const fetchProjectInfo = async () => {
       try {
         const projectInfo = await getProjectByProjectId(String(projectId));
         setProject(projectInfo);
 
-        //TODO GET joinUserByProjectId
-        /**** */
+        const joinUsers = await findJoinedUsersByProjectId(String(projectId));
+        console.log('joinUsers', joinUsers);
+        setMembers(joinUsers);
       } catch (err) {
         if (err instanceof Error) {
           toast({
-            title: "โหลดข้อมูลโครงการไม่สำเร็จ",
+            title: 'โหลดข้อมูลโครงการไม่สำเร็จ',
             description: err.message,
             isError: true,
           });
         }
+      } finally {
+        setLoading(false);
       }
     };
-    fetchProject();
-  }, []);
+    fetchProjectInfo();
+  }, [projectId]);
 
   return (
     <>
@@ -43,7 +51,17 @@ export default function ProjectInfoPage() {
             รายละเอียดโครงการ
           </Title>
         </Header>
-        {project && <ProjectInfoPanel projectInfo={project} />}
+
+        <div className="">
+          {!loading && members.length > 0 && project && (
+            <ProjectForm
+              project={project}
+              formAction={projectFormAction.INFO}
+              joinUsers={members}
+              isAdmin={false}
+            />
+          )}
+        </div>
       </main>
     </>
   );

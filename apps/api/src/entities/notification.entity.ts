@@ -11,19 +11,22 @@ import { User } from './user.entity';
 @Entity()
 export class Notification {
   @PrimaryGeneratedColumn('uuid')
-  id: String;
+  id: string;
 
   @Column()
-  isRead: Boolean;
+  isRead: boolean;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column()
-  title: String;
+  @Column({ nullable: true })
+  userId: string;
 
   @Column()
-  message: String;
+  title: string;
+
+  @Column()
+  message: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ProjectStatus, ProjectType } from '../constant/enum';
+import { User } from './user.entity';
 
 @Entity()
 export class Project {
@@ -15,8 +17,14 @@ export class Project {
   @Column()
   name: string;
 
-  @Column({})
+  @Column()
   projectCode: string;
+
+  @Column()
+  ownerId: string;
+
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  owner: User;
 
   @Column({
     type: 'enum',

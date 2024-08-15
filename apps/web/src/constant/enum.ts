@@ -4,6 +4,7 @@ export enum FilingStatus {
   WAIT_FOR_SECRETARY = "WAIT_FOR_SECRETARY",
   RETURNED = "RETURNED",
   DRAFT = "DRAFT",
+  DOCUMENT_CREATED = "DOCUMENT_CREATED",
 }
 
 export enum ProjectStatus {

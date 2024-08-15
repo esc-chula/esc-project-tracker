@@ -25,4 +25,9 @@ export class DocumentController {
   deleteDocument(@Param('id') id: string) {
     return this.documentService.deleteDocument(id);
   }
+
+  @Post('/findLatestDocumentByFilingId')
+  findLatestDocumentByFilingId(@Body() obj: { filingId: string }) {
+    return this.documentService.findLatestDocumentByFilingId(obj.filingId);
+  }
 }
