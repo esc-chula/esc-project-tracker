@@ -230,4 +230,24 @@ export class FilingService {
       throw new Error('Failed to find Filings for Search Bar');
     }
   }
+
+  async updateStatus(id: string, status: FilingStatus) {
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
+    const foundFiling = await this.findByFilingID(id);
+    if (!foundFiling) throw new BadRequestException('Filing Not Found!');
+
+    if (foundFiling.status === status) {
+      throw new BadRequestException('Cant change filing with same status');
+    }
+
+    return await this.filingRepository
+      .save({
+        ...foundFiling,
+        status,
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error('Failed to update filing status');
+      });
+  }
 }

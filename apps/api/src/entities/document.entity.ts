@@ -22,6 +22,9 @@ export class Document {
   filingId: string;
 
   @Column()
+  filingId: string;
+
+  @Column()
   name: string;
 
   @Column({ default: DocumentActivity.CREATE })

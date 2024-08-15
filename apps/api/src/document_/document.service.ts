@@ -14,7 +14,7 @@ import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
 import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
-import { DocumentActivity, DocumentStatus } from '../constant/enum';
+import { DocumentActivity,DocumentStatus, FilingStatus } from '../constant/enum';
 
 @Injectable()
 export class DocumentService {
@@ -138,5 +138,38 @@ export class DocumentService {
     if (!foundDocument) throw new BadRequestException('Document Not Found!');
     await this.documentRepository.remove(foundDocument);
     return foundDocument;
+  }
+
+  async reviewDocumentSubmission(
+    docId: string,
+    updatedStatus: boolean,
+  ): Promise<Document> {
+    const foundDocument = await this.findByDocID(docId);
+    if (!foundDocument) throw new BadRequestException('Document Not Found!');
+
+    const newStatus = updatedStatus
+      ? DocumentStatus.APPROVED
+      : DocumentStatus.RETURNED;
+
+    if (foundDocument.status === newStatus) {
+      throw new BadRequestException('Cant change document with same status');
+    }
+
+    const reviewedDocument = await this.updateDocument(docId, {
+      status: newStatus,
+    }).catch((error) => {
+      console.error(error);
+      throw new Error('Failed to update document status');
+    });
+
+    await this.filingService.updateStatus(
+      reviewedDocument.filingId,
+      updatedStatus ? FilingStatus.APPROVED : FilingStatus.RETURNED,
+    ).catch((error) => {
+      console.error(error);
+      throw new Error('Failed to update filing status');
+    });
+
+    return reviewedDocument;
   }
 }

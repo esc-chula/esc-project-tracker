@@ -86,5 +86,13 @@ export class DocumentRouter {
       .mutation(({ input }) => {
         return this.documentService.deleteDocument(input.id);
       }),
+    reviewSubmission: this.trpcService.trpc.procedure
+      .input(z.object({ id: z.string().uuid(), updatedStatus: z.boolean() }))
+      .mutation(({ input }) => {
+        return this.documentService.reviewDocumentSubmission(
+          input.id,
+          input.updatedStatus,
+        );
+      }),
   });
 }
