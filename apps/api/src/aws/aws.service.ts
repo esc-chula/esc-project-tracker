@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  PutObjectCommand,
+  GetObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 
 @Injectable()
 export class AwsService {
@@ -27,5 +31,17 @@ export class AwsService {
         Body: file,
       }),
     );
+  }
+
+  async getUrltoFile(fileName: string) {
+    const command = new GetObjectCommand({
+      Bucket: 'project-tracker',
+      Key: fileName,
+    });
+
+    console.log(command);
+
+    const url = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
+    return url;
   }
 }

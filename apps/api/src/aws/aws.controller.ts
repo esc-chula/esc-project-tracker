@@ -25,4 +25,9 @@ export class AwsController {
       folderName,
     );
   }
+
+  @Post('/getUrlToFile')
+  async getUrlToFile(@Body() obj: { fileName: string }) {
+    return await this.awsService.getUrltoFile(obj.fileName);
+  }
 }
