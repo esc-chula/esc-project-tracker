@@ -400,7 +400,7 @@ export default function ProjectForm({
               {action === projectFormAction.INFO ||
               action === projectFormAction.UPDATE ? (
                 <div className="font-sukhumvit font-bold">
-                  <div className="">รหัสโครงการ</div>
+                  <div className="text-center">รหัสโครงการ</div>
                   <div className="text-center text-4xl">
                     {project?.projectCode || 'ไม่มีรหัสโครงการ'}
                   </div>
