@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import deleteProject from '@/src/service/deleteProject';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useToast } from '../ui/use-toast';
 
 export default function DeleteProjectDialog({
@@ -19,6 +19,7 @@ export default function DeleteProjectDialog({
 }) {
   const { toast } = useToast();
   const router = useRouter();
+  const pathname = usePathname();
 
   const onClickDeleteProject = async () => {
     await deleteProject(projectId)
@@ -29,7 +30,10 @@ export default function DeleteProjectDialog({
           isError: false,
         });
         //TODO: back to admin projects path
-        router.push('/admin/projects');
+        const redirectPath = pathname.includes('admin')
+          ? '/admin/projects'
+          : '/projects';
+        router.push(redirectPath);
       })
       .catch((err) => {
         toast({
