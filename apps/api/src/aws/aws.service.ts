@@ -4,6 +4,7 @@ import {
   GetObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 @Injectable()
 export class AwsService {
@@ -33,15 +34,24 @@ export class AwsService {
     );
   }
 
-  async getUrltoFile(fileName: string) {
+  async getUrlToFile(fileName: string, folderName?: string): Promise<string> {
+    const bucketName = 'project-tracker';
+    const pathToFile = folderName ? `${folderName}/${fileName}` : fileName;
     const command = new GetObjectCommand({
-      Bucket: 'project-tracker',
-      Key: fileName,
+      Bucket: bucketName,
+      Key: pathToFile,
+      ResponseContentDisposition: 'inline', // Force the PDF to be displayed in the browser
+      ResponseContentType: 'application/pdf', // Ensure it's treated as a PDF
     });
 
-    console.log(command);
-
-    const url = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
-    return url;
+    try {
+      // Generate signed URL for file
+      const signedUrl = await getSignedUrl(this.s3Client, command, {
+        expiresIn: 3600,
+      }); // URL valid for 1 hour
+      return signedUrl;
+    } catch (err) {
+      throw new Error(`Error generating URL for file: ${err.message}`);
+    }
   }
 }
