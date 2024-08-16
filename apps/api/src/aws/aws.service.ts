@@ -35,14 +35,26 @@ export class AwsService {
   }
 
   async getUrlToFile(fileName: string, folderName?: string): Promise<string> {
+    const isPdf = fileName.slice(-4) == '.pdf';
     const bucketName = 'project-tracker';
     const pathToFile = folderName ? `${folderName}/${fileName}` : fileName;
-    const command = new GetObjectCommand({
-      Bucket: bucketName,
-      Key: pathToFile,
-      ResponseContentDisposition: 'inline', // Force the PDF to be displayed in the browser
-      ResponseContentType: 'application/pdf', // Ensure it's treated as a PDF
-    });
+    let command: GetObjectCommand;
+    if (isPdf) {
+      command = new GetObjectCommand({
+        Bucket: bucketName,
+        Key: pathToFile,
+        ResponseContentDisposition: 'inline', // Force the PDF to be displayed in the browser
+        ResponseContentType: 'application/pdf', // Ensure it's treated as a PDF
+      });
+    } else {
+      command = new GetObjectCommand({
+        Bucket: bucketName,
+        Key: pathToFile,
+        ResponseContentDisposition: 'inline', // Force the PDF to be displayed in the browser
+        ResponseContentType:
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Ensure it's treated as a PDF
+      });
+    }
 
     try {
       // Generate signed URL for file
