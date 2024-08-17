@@ -21,6 +21,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.632.0",
     "dotenv": "^16.4.5"
   }
 }
