@@ -378,7 +378,10 @@ export default function ProjectForm({
                         disabled={action === projectFormAction.INFO}
                       >
                         <FormControl>
-                          <SelectTrigger className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-sm border-black">
+                          <SelectTrigger
+                            className="text-sm border-black"
+                            disabled={action === projectFormAction.INFO}
+                          >
                             <SelectValue placeholder="ฝ่ายวิชาการ, ฝ่ายกิจกรรมภายในคณะ, ฝ่ายเทคโนโลยี" />
                           </SelectTrigger>
                         </FormControl>
