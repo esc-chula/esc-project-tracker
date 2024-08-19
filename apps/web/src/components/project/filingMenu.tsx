@@ -17,10 +17,10 @@ import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import createDocument from '@/src/service/createDocument';
 export default function FilingMenu({
   searchedFilingId,
-  isUpdating,
+  isUpdateMode,
 }: {
   searchedFilingId: string | null;
-  isUpdating: boolean;
+  isUpdateMode: boolean;
 }) {
   const { toast } = useToast();
 
@@ -102,18 +102,18 @@ export default function FilingMenu({
 
   React.useEffect(() => {
     const createDocuments = async () => {
-      if (!isUpdating && prepareUpdatedDocuments.size > 0) {
+      if (!isUpdateMode && prepareUpdatedDocuments.size > 0) {
         let filingIdsNoUpdated: string[] = [];
 
-        const createDocumentPromises = Array.from(
+        const documentPromises = Array.from(
           prepareUpdatedDocuments.values(),
         ).map((newDocument) =>
           createDocument({ document: newDocument }).catch(() => {
-            filingIdsNoUpdated.push(newDocument.filingId);
+            filingIdsNoUpdated.push(newDocument.name);
           }),
         );
 
-        await Promise.all(createDocumentPromises);
+        await Promise.all(documentPromises);
 
         if (filingIdsNoUpdated.length > 0) {
           toast({
@@ -135,7 +135,7 @@ export default function FilingMenu({
       }
     };
     createDocuments();
-  }, [isUpdating]);
+  }, [isUpdateMode]);
 
   return (
     <div className="w-full">
@@ -168,7 +168,7 @@ export default function FilingMenu({
                 <FilingMenuItem
                   filing={filing}
                   key={filing.id}
-                  isUpdating={isUpdating}
+                  isUpdateMode={isUpdateMode}
                   setPrepareUpdatedDocument={(newDocument) => {
                     addPrepareUpdatedDocument(newDocument as CreateDocumentDTO);
                   }}
