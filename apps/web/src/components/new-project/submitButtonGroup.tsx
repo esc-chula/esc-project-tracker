@@ -18,12 +18,6 @@ export default function SubmitButtonGroup({
   changeFormActionToParent: (action: projectFormAction) => void;
   form: UseFormReturn<z.infer<typeof newProjectFormSchema>>;
 }) {
-  const [action, setAction] = useState<projectFormAction>(formAction);
-
-  useEffect(() => {
-    setAction(formAction);
-  }, [formAction]);
-
   const isDisabled = useMemo(
     () => form.formState.isSubmitting || !form.formState.isValid,
     [(form.formState.isSubmitting, form.formState.isValid)],
@@ -43,8 +37,8 @@ export default function SubmitButtonGroup({
 
   return (
     <>
-      {action === projectFormAction.ADMIN_CREATE ||
-      action === projectFormAction.USER_CREATE ? (
+      {formAction === projectFormAction.ADMIN_CREATE ||
+      formAction === projectFormAction.USER_CREATE ? (
         <Button
           type="submit"
           className="my-8 mx-auto rounded-lg px-6 h-12 bg-red font-bold text-xl"
@@ -54,7 +48,7 @@ export default function SubmitButtonGroup({
           เปิดโครงการ
         </Button>
       ) : null}
-      {action === projectFormAction.UPDATE ? (
+      {formAction === projectFormAction.UPDATE ? (
         <div className="w-full flex justify-between px-5">
           <Button
             className="my-8 rounded-lg px-6 h-12 text-black bg-transparent font-bold text-xl hover:bg-transparent"
