@@ -12,7 +12,7 @@ import { ProjectStatusToThai } from '@/src/constant/translate';
 export default function ProjectMenuItem({
   project,
   index,
-  isAdmin
+  isAdmin,
 }: {
   project: Project;
   index: number;
@@ -55,7 +55,7 @@ export default function ProjectMenuItem({
 
   const buttonStyle = (joined: boolean) => {
     if (joined) {
-      return 'text-[#49E66B] bg-white';
+      return 'text-accept bg-white';
     }
     return 'bg-red text-white hover:bg-white hover:text-red';
   };
@@ -68,41 +68,34 @@ export default function ProjectMenuItem({
         {project.projectCode}
       </td>
       <td className="p-4 py-5 text-nowrap max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {isAdmin ?  (
-          <Link href={`project/${project.id}`}>
-            {project.name}
-          </Link>
+        {isAdmin ? (
+          <Link href={`project/${project.id}`}>{project.name}</Link>
         ) : (
-          <>
-        {project.name}
-          </>
+          <>{project.name}</>
         )}
       </td>
       <td className="p-4 py-5 text-nowrap text-center w-[180px]">
         {ProjectStatusToThai.get(project.status)}
       </td>
-      <td className={`${isAdmin? 'px-10' : 'px-2 '} py-5 text-center w-[20px] hover:cursor-pointer`}>
-      <Link href={`project/${project.id}/info`}>
-        <BsInfoCircleFill
-          size={15}
-          className="text-red w-[15px] h-[16px]"
-        />
-      </Link>
+      <td
+        className={`${isAdmin ? 'px-10' : 'px-2 '} py-5 text-center w-[20px] hover:cursor-pointer`}
+      >
+        <Link href={`project/${project.id}/info`}>
+          <BsInfoCircleFill size={15} className="text-red w-[15px] h-[16px]" />
+        </Link>
       </td>
-      {
-        isAdmin ? null : (
-      <td className="p-4 py-5 text-nowrap text-center w-[150px]">
-        <button
-          className={`rounded-lg px-2 py-1 ${buttonStyle(isJoined)} transition-all`}
-          onClick={handleJoinProject}
-          disabled={isJoined}
-        >
-          {isJoined ? null : <LogIn size={16} className="mr-2 inline" />}
-          {isJoined ? 'เข้าร่วมแล้ว' : 'เข้าร่วม'}
-        </button>
-      </td>
-        )
-      }
+      {isAdmin ? null : (
+        <td className="p-4 py-5 text-nowrap text-center w-[150px]">
+          <button
+            className={`rounded-lg px-2 py-1 ${buttonStyle(isJoined)} transition-all`}
+            onClick={handleJoinProject}
+            disabled={isJoined}
+          >
+            {isJoined ? null : <LogIn size={16} className="mr-2 inline" />}
+            {isJoined ? 'เข้าร่วมแล้ว' : 'เข้าร่วม'}
+          </button>
+        </td>
+      )}
     </tr>
   );
 }

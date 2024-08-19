@@ -17,11 +17,11 @@ import findLatestDocumentByFilingId from '@/src/service/findLatestDocumentByFili
 
 export default function FilingMenuItem({
   filing,
-  isUpdating,
+  isUpdateMode,
   setPrepareUpdatedDocument,
 }: {
   filing: FilingType;
-  isUpdating: boolean;
+  isUpdateMode: boolean;
   setPrepareUpdatedDocument: (newDocument: CreateDocumentDTO) => void;
 }) {
   const [document, setDocuments] = useState<DocumentType | null>(null);
@@ -93,7 +93,7 @@ export default function FilingMenuItem({
         </td>
         <td className="relative w-[150px] h-[40px]">
           <div className="absolute inset-0 flex items-center justify-center">
-            {isUpdating && filing.status === FilingStatus.APPROVED ? (
+            {isUpdateMode && filing.status === FilingStatus.APPROVED ? (
               <textarea
                 value={name}
                 className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none transition-all duration-300 ease-in-out focus:h-36 focus:z-40"
@@ -121,7 +121,7 @@ export default function FilingMenuItem({
         </td>
         <td className="relative w-[150px] h-[40px]">
           <div className="absolute inset-0 flex items-center justify-center">
-            {isUpdating && filing.status === FilingStatus.APPROVED ? (
+            {isUpdateMode && filing.status === FilingStatus.APPROVED ? (
               <textarea
                 value={detail}
                 className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none transition-all duration-300 ease-in-out focus:h-36 focus:z-40"

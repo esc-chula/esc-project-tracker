@@ -55,8 +55,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
   const [searchedFilingID, setSearchedFilingID] = React.useState<string | null>(
     null,
   );
-  const [isFilingUpdating, setIsFilingUpdating] =
-    React.useState<boolean>(false);
+  const [isUpdateMode, setIsUpdateMode] = React.useState<boolean>(false);
   const { toast } = useToast();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -68,8 +67,11 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const fetchedProject = await findAllProject();
-        const fetchedFiling = await findAllFiling();
+        const [fetchedProject, fetchedFiling] = await Promise.all([
+          findAllProject(),
+          findAllFiling(),
+        ]);
+
         setFilings(fetchedFiling);
         setProjects(fetchedProject);
       } catch (error) {
@@ -117,13 +119,13 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
               setSearchedFilingID(null);
             }}
           />
-          {isAdmin ? (
-            isFilingUpdating ? (
+          {isAdmin &&
+            (isUpdateMode ? (
               <BiSolidSave
                 size={25}
                 className="font-bold hover:cursor-pointer"
                 onClick={() => {
-                  setIsFilingUpdating(false);
+                  setIsUpdateMode(false);
                 }}
               />
             ) : (
@@ -131,11 +133,11 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
                 size={25}
                 className="font-bold hover:cursor-pointer"
                 onClick={() => {
-                  setIsFilingUpdating(true);
+                  setIsUpdateMode(true);
                 }}
               />
-            )
-          ) : null}
+            ))}
+
           <div className="items-center flex text-center">
             <AddNewProjectButton />
           </div>
@@ -170,7 +172,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
       <CustomTabPanel value={value} index={1}>
         <FilingMenu
           searchedFilingId={searchedFilingID}
-          isUpdating={isFilingUpdating}
+          isUpdateMode={isUpdateMode}
         />
       </CustomTabPanel>
     </Box>

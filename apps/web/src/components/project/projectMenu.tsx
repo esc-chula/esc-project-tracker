@@ -83,10 +83,7 @@ export default function ProjectMenu({
         const filteredProjects = await Promise.all(
           fetchedProject.map(async (project) => {
             const isJoined = await filterJoin(project);
-            if (typeProject === 'join') {
-              return isJoined ? project : null;
-            }
-            return isJoined ? null : project;
+            return (typeProject === 'JOIN') === isJoined ? project : null;
           }),
         );
         setProjects(
@@ -126,8 +123,8 @@ export default function ProjectMenu({
           title="ทั้งหมด"
           items={[
             { value: 'ALL', label: 'ทั้งหมด' },
-            { value: 'join', label: 'เข้าร่วม' },
-            { value: 'notjoin', label: 'ไม่ได้เข้าร่วม' },
+            { value: 'JOINED', label: 'เข้าร่วม' },
+            { value: 'NOTJOINED', label: 'ไม่ได้เข้าร่วม' },
           ]}
           sendValue={setTypeProject}
         />
