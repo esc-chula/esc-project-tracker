@@ -84,14 +84,15 @@ export default function ProjectMenuItem({
           <BsInfoCircleFill size={15} className="text-red w-[15px] h-[16px]" />
         </Link>
       </td>
-      {isAdmin ? null : (
+
+      {isAdmin && (
         <td className="p-4 py-5 text-nowrap text-center w-[150px]">
           <button
             className={`rounded-lg px-2 py-1 ${buttonStyle(isJoined)} transition-all`}
             onClick={handleJoinProject}
             disabled={isJoined}
           >
-            {isJoined ? null : <LogIn size={16} className="mr-2 inline" />}
+            {!isJoined && <LogIn size={16} className="mr-2 inline" />}
             {isJoined ? 'เข้าร่วมแล้ว' : 'เข้าร่วม'}
           </button>
         </td>
