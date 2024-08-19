@@ -67,16 +67,17 @@ export default function ProjectForm({
   const router = useRouter();
 
   const [action, setAction] = useState<projectFormAction>(formAction);
-  const [ownerUser, setOwnerUser] = useState<User | null>(
-    joinUsers?.find((user) => user.id === project?.ownerId) || null,
-  );
-  const [initialMembers, setInitialMembers] = useState<User[]>(joinUsers || []);
   const [studentIdsInitialMembers, setStudentIdsInitialMembers] = useState<
     string[]
   >([]);
   const [membersCount, setMembersCount] = useState(1);
   const [isAfterCancelUpdate, setIsAfterCancelUpdate] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
+
+  const initialMembers = useMemo(() => joinUsers || [], [joinUsers]);
+  const ownerUser = useMemo(() => {
+    return joinUsers?.find((user) => user.id === project?.ownerId) || null;
+  }, [joinUsers, project?.ownerId]);
 
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
     resolver: zodResolver(newProjectFormSchema),
@@ -100,13 +101,10 @@ export default function ProjectForm({
     // if role is user
     //TODO : use real current user
     if (
-      action === projectFormAction.INFO &&
-      mockCurrentUser.id === project?.ownerId
+      (action === projectFormAction.INFO &&
+        mockCurrentUser.id === project?.ownerId) ||
+      isAdmin
     ) {
-      setCanEdit(true);
-    }
-
-    if (isAdmin) {
       setCanEdit(true);
     }
   }, []);
@@ -185,7 +183,7 @@ export default function ProjectForm({
     })
       .catch((err) => {
         toast({
-          title: `ไม่สามารถอัพเดทสร้างโครง ${project?.projectCode} ${project?.name} ได้`,
+          title: `ไม่สามารถอัพเดทโครง ${project?.projectCode} ${project?.name} ได้`,
           description: err.message,
           isError: true,
           duration: 5000,
@@ -205,7 +203,7 @@ export default function ProjectForm({
   async function onSubmitCreate(
     values: z.infer<typeof newProjectFormSchema>,
   ): Promise<Project> {
-    const ownerId = async () => {
+    const getOwnerId = async () => {
       if (action === projectFormAction.USER_CREATE) {
         // TODO use real current user
         return mockCurrentUser.id;
@@ -222,7 +220,7 @@ export default function ProjectForm({
     const newProject = await createProject(
       values.projectName,
       values.type as ProjectType,
-      await ownerId(),
+      await getOwnerId(),
       values.description,
     );
 
@@ -231,7 +229,6 @@ export default function ProjectForm({
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
     let projCreated = false;
-    let projUpdated = false;
     var projectToJoin: Project | null = null;
     var userToAdd: (string | undefined)[] = values.members;
     var userToLeave: (string | undefined)[] = [];
@@ -253,7 +250,6 @@ export default function ProjectForm({
         userToAdd = userAddAndLeave.membersToAdd;
         userToLeave = userAddAndLeave.membersToLeave;
         projectToJoin = project as Project;
-        projUpdated = true;
       }
 
       let addStudentIdsNotFound: string[] = [];

@@ -74,7 +74,7 @@ export default function MembersInput({
                     </>
                   )}
                   <>
-                    {handleDelete && formAction !== projectFormAction.INFO ? (
+                    {handleDelete && formAction !== projectFormAction.INFO && (
                       <Button
                         variant="ghost"
                         size="sm"
@@ -83,7 +83,7 @@ export default function MembersInput({
                       >
                         <CircleMinus className="h-5 w-5 stroke-darkpink" />
                       </Button>
-                    ) : null}
+                    )}
                   </>
                   <FormMessage />
                 </FormItem>
