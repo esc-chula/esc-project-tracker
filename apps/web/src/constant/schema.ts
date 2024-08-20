@@ -18,7 +18,10 @@ export const newProjectFormSchema = z.object({
   }),
   members: z
     .string()
-    .regex(/^$|^\d{2}3\d{5}21$/, { message: "รหัสนิสิตไม่ถูกต้อง" })
+    .regex(
+      /^\d{2}[013478]\d{5}(?:01|02|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|51|53|55|56|58|63|92|99)$/gm,
+      { message: "รหัสนิสิตไม่ถูกต้อง" }
+    )
     .optional()
     .array()
     .superRefine((items, ctx) => {

@@ -41,6 +41,7 @@ export class FilingRouter {
           projectId: z.string(),
           filingName: z.string(),
           filingType: z.number(),
+          userId: z.string(),
         }),
       )
       .query(({ input }) => {
@@ -48,6 +49,7 @@ export class FilingRouter {
           input.projectId,
           input.filingName,
           input.filingType,
+          input.userId,
         );
       }),
 

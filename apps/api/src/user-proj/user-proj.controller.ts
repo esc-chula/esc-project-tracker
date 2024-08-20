@@ -11,7 +11,13 @@ export class UserProjController {
   createUserProject(@Body() obj: CreateUserProjDTO) {
     return this.userProjService.createUserProject({
       obj,
+      isUpdatedLastOpen: true,
     });
+  }
+
+  @Post('testGetUser')
+  findUsersByProjectId(@Body() obj: { projectId: string }) {
+    return this.userProjService.findJoinedUsersByProjectId(obj.projectId);
   }
 
   @Delete('userLeaveProject')

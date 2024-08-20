@@ -12,6 +12,7 @@ import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
 import { DocumentActivity, FilingStatus } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
+import { Project } from '../entities/project.entity';
 import { FilingFieldTranslate } from '../constant/translate';
 import { DocumentService } from '../document_/document.service';
 import { CreateDocumentDTO } from '../document_/document.dto';
@@ -59,20 +60,39 @@ export class FilingService {
       this.findByProjectID(projectWithLastOpen.project.id),
     );
     const filingsArrays = await Promise.all(filingPromises);
-    const filings = filingsArrays.flat();
 
-    return filings;
+    const filingsArraysWithProject = [];
+    for (let i = 0; i < filingsArrays.length; i++) {
+      const project = projects[i].project;
+      const filingsWithProject = [];
+      for (let j = 0; j < filingsArrays[i].length; j++) {
+        const filingWithProject = {
+          ...filingsArrays[i][j],
+          project: project,
+        };
+        filingsWithProject.push(filingWithProject);
+      }
+      filingsArraysWithProject.push(filingsWithProject);
+    }
+
+    const filingsWithProject = filingsArraysWithProject.flat();
+
+    return filingsWithProject;
   }
 
   async createFiling(
     projectId: string,
     filingName: string,
     filingType: number,
+    userId: string,
   ) {
-    if (!isUUID(projectId))
-      throw new BadRequestException('Project Id is not in UUID format.');
+    if (!isUUID(projectId) || !isUUID(userId))
+      throw new BadRequestException('Ids are not in UUID format.');
     const foundProject = await this.projectService.findByProjectID(projectId);
     if (!foundProject) throw new BadRequestException('Project Not Found');
+
+    const foundUser = await this.userService.findByUserID(userId);
+    if (!foundUser) throw new BadRequestException('User Not Found');
 
     const numberOfFilingType =
       await this.countFilingService.getTypeCount(filingType);
@@ -89,6 +109,7 @@ export class FilingService {
     newFiling.FilingCode = `${filingType}${formattedNumberOfFilingType}`;
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
+    newFiling.userId = userId;
 
     this.countFilingService.incrementTypeCount(filingType);
 
@@ -117,8 +138,8 @@ export class FilingService {
       //   filingId: updatedFiling.id,
       //   name: newDocumentName,
       //   detail: latestDocument?.detail || '',
-      //   pdfLink: latestDocument?.pdfLink || '',
-      //   docLink: latestDocument?.docLink || '',
+      //   pdfName: latestDocument?.pdfName || '',
+      //   docName: latestDocument?.docName || '',
       //   activity: latestDocument?.activity || DocumentActivity.CREATE,
       // });
 
@@ -208,5 +229,25 @@ export class FilingService {
       console.log(error);
       throw new Error('Failed to find Filings for Search Bar');
     }
+  }
+
+  async updateStatus(id: string, status: FilingStatus) {
+    if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
+    const foundFiling = await this.findByFilingID(id);
+    if (!foundFiling) throw new BadRequestException('Filing Not Found!');
+
+    if (foundFiling.status === status) {
+      throw new BadRequestException('Cant change filing with same status');
+    }
+
+    return await this.filingRepository
+      .save({
+        ...foundFiling,
+        status,
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error('Failed to update filing status');
+      });
   }
 }

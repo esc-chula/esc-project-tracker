@@ -1,7 +1,7 @@
 import { File } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-export default function LastestItem({
+export default function LatestItem({
   projectId,
   projectCode,
   projectName,

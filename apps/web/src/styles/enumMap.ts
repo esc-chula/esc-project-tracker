@@ -1,11 +1,12 @@
 import { FilingStatus } from "@/src/constant/enum.ts"
 
 export const buttonColors = {
-  [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "bg-[#49E66B] text-white",
+  [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "bg-accepted text-white",
   [FilingStatus.RETURNED]: "bg-pink text-red",
-  [FilingStatus.APPROVED]: "bg-[#49E66B] text-white",
+  [FilingStatus.APPROVED]: "bg-accepted text-white",
   [FilingStatus.WAIT_FOR_SECRETARY]: "bg-[#ECC700] text-[#FBF2A0]",
   [FilingStatus.DRAFT]: "bg-[#C0C0C0] text-white",
+  [FilingStatus.DOCUMENT_CREATED]: "bg-[#C0C0C0] text-white",
 }
 
 export const TextMyProject = {
@@ -14,6 +15,7 @@ export const TextMyProject = {
   [FilingStatus.WAIT_FOR_SECRETARY]: "ส่งให้เลขาตรวจสอบ",
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "ส่งให้กิจการนิสิตแล้ว",
   [FilingStatus.DRAFT]: "ฉบับร่าง",
+  [FilingStatus.DOCUMENT_CREATED]: "สร้างฉบับร่างแล้ว",
 }
 
 export const TextMyFilingStatus = {
@@ -62,6 +64,13 @@ export const FilingStatusToStepper = {
   [FilingStatus.DRAFT]: [
     ["accepted", "disabled"],
     ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  [FilingStatus.DOCUMENT_CREATED]: [
+    ["accepted", "accepted"],
+    ["accepted", "disabled"],
     ["disabled", "disabled"],
     ["disabled", "disabled"],
     ["disabled"],
