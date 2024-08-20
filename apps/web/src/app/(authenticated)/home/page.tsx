@@ -1,30 +1,32 @@
-import { ArrowRight, Folders, Home, Radio } from "lucide-react"
-import Header from "../../../components/header/header"
-import Title from "@/src/components/header/title"
-import MyProjectData from "@/src/components/project/myProjectData"
-import { StatusTable } from "@/src/components/status/StatusTable"
-import { FilingType } from "@/src/interface/filing"
-import Link from "next/link"
-import { Button } from "@/src/components/ui/button"
-import getFilingsByUserId from "@/src/service/getFilingsByUserId"
-import getProjectsByUserId from "@/src/service/getProjectsByUserId"
-import { ProjectWithLastOpen } from "@/src/interface/project"
-import SearchPanel from "@/src/components/all-projects/searchPanel"
+import { ArrowRight, Folders, Home, Radio } from 'lucide-react';
+import Header from '../../../components/header/header';
+import Title from '@/src/components/header/title';
+import MyProjectData from '@/src/components/project/myProjectData';
+import { StatusTable } from '@/src/components/status/StatusTable';
+import { Filing } from '@/src/interface/filing';
+import Link from 'next/link';
+import { Button } from '@/src/components/ui/button';
+import getFilingsByUserId from '@/src/service/getFilingsByUserId';
+import getProjectsByUserId from '@/src/service/getProjectsByUserId';
+import { ProjectWithLastOpen } from '@/src/interface/project';
+import SearchPanel from '@/src/components/all-projects/searchPanel';
 
 export default async function Page() {
   //TODO : Change the userId to the actual userId
   const [filingsDataWithProject, projectsWithLastOpenData] = await Promise.all([
-    getFilingsByUserId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a").catch((err) => {
-      console.error(err)
-      return [] as FilingType[]
+    getFilingsByUserId('d1c0d106-1a4a-4729-9033-1b2b2d52e98a').catch((err) => {
+      console.error(err);
+      return [] as Filing[];
     }),
-    getProjectsByUserId("d1c0d106-1a4a-4729-9033-1b2b2d52e98a").catch((err) => {
-      console.error(err)
-      return [] as ProjectWithLastOpen[]
+    getProjectsByUserId('d1c0d106-1a4a-4729-9033-1b2b2d52e98a').catch((err) => {
+      console.error(err);
+      return [] as ProjectWithLastOpen[];
     }),
-  ])
+  ]);
 
-  const projectsData = projectsWithLastOpenData.map((project) => project.project)
+  const projectsData = projectsWithLastOpenData.map(
+    (project) => project.project,
+  );
   return (
     <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
       <Header>
@@ -80,5 +82,5 @@ export default async function Page() {
         />
       </section>
     </main>
-  )
+  );
 }

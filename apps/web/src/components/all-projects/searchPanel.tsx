@@ -16,7 +16,7 @@ export default function SearchPanel({
   placeHolder: string;
   projectFunc?: (project: Project | Filing) => void;
   FilingFunc?: (Filing: Filing | Project) => void;
-  clearFunc: () => void;
+  clearFunc?: () => void;
 }) {
   return (
     <div className="flex flex-row space-x-4 w-full items-center">
