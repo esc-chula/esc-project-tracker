@@ -2,7 +2,7 @@ import { DocumentActivity, DocumentStatus } from '../constant/enum';
 import { Filing } from './filing';
 import { User } from './user';
 
-export interface DocumentType {
+export interface Document {
   id: string;
   filing: Filing;
   name: string;

@@ -1,5 +1,5 @@
 import { BiSolidFilePdf } from 'react-icons/bi';
-import { DocumentType } from '@/src/interface/document';
+import { Document } from '@/src/interface/document';
 import { Filing } from '@/src/interface/filing';
 import findDocumentsByFilingId from '@/src/service/findDocumentsByFilingId';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
@@ -9,7 +9,7 @@ import { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/findUserByCondition';
 
 export default function FilingMenuItem({ filing }: { filing: Filing }) {
-  const [documents, setDocuments] = useState<DocumentType[]>([]);
+  const [documents, setDocuments] = useState<Document[]>([]);
   const [filingOwner, setFilingOwner] = useState<User | null>(null);
   const [isFetched, setIsFetched] = useState<boolean>(false);
 

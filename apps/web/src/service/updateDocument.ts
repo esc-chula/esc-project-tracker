@@ -1,6 +1,6 @@
-import { DocumentActivity } from "../../../api/src/constant/enum";
-import { trpc } from "../app/trpc";
-import { DocumentType } from "../interface/document";
+import { DocumentActivity } from '../../../api/src/constant/enum';
+import { trpc } from '../app/trpc';
+import { Document } from '../interface/document';
 export default async function updateDocument({
   docId,
   obj,
@@ -13,11 +13,11 @@ export default async function updateDocument({
     pdfName?: string;
     docName?: string;
   };
-}): Promise<DocumentType> {
+}): Promise<Document> {
   try {
     const result = await trpc.document.updateDocument.mutate({ docId, obj });
     return result;
   } catch (error) {
-    throw new Error("failed");
+    throw new Error('failed');
   }
 }
