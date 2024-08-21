@@ -1,44 +1,33 @@
-"use client";
+'use client';
 
-import axios, { type AxiosError } from "axios";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import type { UserAuthResponse } from "@/src/types/auth";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from '@/src/service/signIn';
 
-export default function Auth(): JSX.Element {
-  const searchParams = useSearchParams();
+export default function Auth({
+  searchParams,
+}: {
+  searchParams: {
+    token: string;
+  };
+}): JSX.Element {
+  const router = useRouter();
 
-  const token = searchParams.get("token");
-
-  const [userData, setUserData] = useState<UserAuthResponse | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const token = searchParams.token;
 
   useEffect(() => {
-    if (token) {
-      setLoading(true);
-      axios
-        .post("/api/auth", {
-          token,
-        })
-        .then((res) => {
-          const data = res.data as UserAuthResponse;
-          setUserData(data);
-        })
-        .catch((err: Error | AxiosError) => {
-          setError(err.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [token]);
+    signIn(token)
+      .then(() => {
+        router.push('/home');
+      })
+      .catch(() => {
+        router.push('/');
+      });
+  }, [token, router]);
 
   return (
     <div>
-      <p>Status: {loading ? "fetching user data..." : "redirecting..."}</p>
-      <p>User Data: {JSON.stringify(userData)}</p>
-      <p>Error: {error}</p>
+      <p>loading...</p>
     </div>
   );
 }

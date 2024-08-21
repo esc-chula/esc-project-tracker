@@ -4,6 +4,8 @@ import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user_/user.service';
 import * as argon2 from 'argon2';
 import { User } from '../entities/user.entity';
+import { HttpService } from '@nestjs/axios';
+import { IntaniaAuthResponse } from '../common/types/auth';
 
 @Injectable()
 export class AuthService {
@@ -11,12 +13,43 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private readonly httpService: HttpService,
   ) {}
 
+  async validateUser(token: string): Promise<IntaniaAuthResponse> {
+    try {
+      const validatedUser = this.httpService.axiosRef
+        .post(
+          'https://account.intania.org/api/v1/auth/app/validate',
+          { token },
+          {
+            headers: {
+              Authorization: `Bearer ${this.configService.get<string>(
+                'INTANIA_AUTH_SECRET',
+              )}`,
+            },
+          },
+        )
+        .then((response) => {
+          return response.data.data as IntaniaAuthResponse;
+        });
+
+      return validatedUser;
+    } catch (error) {
+      throw new Error("Request failed when validating user's token");
+    }
+  }
+
   async signIn(
-    studentId: string,
-    username: string,
+    token: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
+    const validatedUser = await this.validateUser(token).catch((error) => {
+      throw new ForbiddenException(error);
+    });
+
+    const studentId = validatedUser.studentId;
+    const username = `${validatedUser.name.th.firstName} ${validatedUser.name.th.lastName}`;
+
     const existedUser = await this.userService.findByStudentID(studentId);
 
     let createdUser: User;

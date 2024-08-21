@@ -17,6 +17,8 @@ import { UserModule } from '../user_/user.module';
 import { UserRouter } from './routers/user.router';
 import { UserFilingModule } from '../user-filing/user-filing.module';
 import { UserFilingRouter } from './routers/user-filing.router';
+import { AuthModule } from '../auth/auth.module';
+import { AuthRouter } from './routers/auth.router';
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import { UserFilingRouter } from './routers/user-filing.router';
     NotificationModule,
     UserModule,
     UserFilingModule,
+    AuthModule,
   ],
   providers: [
     TrpcService,
@@ -39,6 +42,7 @@ import { UserFilingRouter } from './routers/user-filing.router';
     NotificationRouter,
     UserRouter,
     UserFilingRouter,
+    AuthRouter,
   ],
   controllers: [],
   exports: [TrpcService],

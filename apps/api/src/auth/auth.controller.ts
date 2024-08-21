@@ -4,6 +4,7 @@ import { SignInDTO } from './dto/auth.dto';
 import { AccessTokenGuard } from '../common/guards/accessToken.guard';
 import { Request } from 'express';
 import { RefreshTokenGuard } from '../common/guards/refreshToken.guard';
+import { ConfigService } from '@nestjs/config';
 
 interface UserRequest extends Request {
   user?: {
@@ -14,11 +15,14 @@ interface UserRequest extends Request {
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private configService: ConfigService,
+  ) {}
 
   @Post('signin')
-  signIn(@Body() data: SignInDTO) {
-    return this.authService.signIn(data.studentId, data.username);
+  async signIn(@Body() data: SignInDTO) {
+    return this.authService.signIn(data.token);
   }
 
   @UseGuards(AccessTokenGuard)

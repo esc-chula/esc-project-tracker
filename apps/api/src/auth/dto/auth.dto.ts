@@ -1,4 +1,3 @@
 export class SignInDTO {
-  studentId: string;
-  username: string;
+  token: string;
 }

@@ -36,6 +36,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@nestjs/axios':
+        specifier: ^3.0.3
+        version: 3.0.3(@nestjs/common@10.3.8(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.4)(rxjs@7.8.1)
       '@nestjs/common':
         specifier: ^10.3.2
         version: 10.3.8(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -66,6 +69,9 @@ importers:
       aws-sdk:
         specifier: ^2.1652.0
         version: 2.1652.0
+      axios:
+        specifier: ^1.7.0
+        version: 1.7.4
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -257,7 +263,7 @@ importers:
         specifier: ^0.378.0
         version: 0.378.0(react@18.3.1)
       next:
-        specifier: ^14.1.1
+        specifier: ^14.2.1
         version: 14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
@@ -271,6 +277,9 @@ importers:
       react-icons:
         specifier: ^5.2.1
         version: 5.2.1(react@18.3.1)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -282,7 +291,7 @@ importers:
         version: 3.23.8
     devDependencies:
       '@next/eslint-plugin-next':
-        specifier: ^14.1.1
+        specifier: ^14.2.1
         version: 14.2.3
       '@repo/eslint-config':
         specifier: workspace:*
@@ -1130,6 +1139,13 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  '@nestjs/axios@3.0.3':
+    resolution: {integrity: sha512-h6TCn3yJwD6OKqqqfmtRS5Zo4E46Ip2n+gK1sqwzNBC+qxQ9xpCu+ODVRFur6V3alHSCSBxb3nNtt73VEdluyA==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      axios: ^1.3.1
+      rxjs: ^6.0.0 || ^7.0.0
 
   '@nestjs/cli@10.3.2':
     resolution: {integrity: sha512-aWmD1GLluWrbuC4a1Iz/XBk5p74Uj6nIVZj6Ov03JbTfgtWqGFLtXuMetvzMiHxfrHehx/myt2iKAPRhKdZvTg==}
@@ -3676,6 +3692,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   glob@9.3.5:
     resolution: {integrity: sha512-e1LleDykUz2Iu+MTYdkSsuWX8lvAjAcs0Xef0lNIu0S2wOAzuTxCJtcd9S3cijlwYF18EsU3rzb8jPVobxDh9Q==}
@@ -5266,6 +5283,9 @@ packages:
   serve-static@1.15.0:
     resolution: {integrity: sha512-XGuRDNjXUijsUL0vl6nSD7cwURuzEgglbOaFuZM9g3kwDXOWVTck0jLzjPzGD+TazWbboZYu52/9/XPdUgne9g==}
     engines: {node: '>= 0.8.0'}
+
+  server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
 
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
@@ -7452,6 +7472,12 @@ snapshots:
       react-is: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.2
+
+  '@nestjs/axios@3.0.3(@nestjs/common@10.3.8(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.4)(rxjs@7.8.1)':
+    dependencies:
+      '@nestjs/common': 10.3.8(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      axios: 1.7.4
+      rxjs: 7.8.1
 
   '@nestjs/cli@10.3.2(@swc/cli@0.3.12(@swc/core@1.5.7(@swc/helpers@0.5.5))(chokidar@3.6.0))(@swc/core@1.5.7(@swc/helpers@0.5.5))':
     dependencies:
@@ -12323,6 +12349,8 @@ snapshots:
       send: 0.18.0
     transitivePeerDependencies:
       - supports-color
+
+  server-only@0.0.1: {}
 
   set-function-length@1.2.2:
     dependencies:
