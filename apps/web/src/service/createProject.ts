@@ -5,6 +5,7 @@ import type { Project } from "../interface/project"
 export default async function createProject(
   name: string,
   type: ProjectType,
+  owner: string,
   detail?: string
 ): Promise<Project> {
   try {
@@ -12,6 +13,7 @@ export default async function createProject(
       name,
       type,
       detail,
+      owner
     })
 
     return data

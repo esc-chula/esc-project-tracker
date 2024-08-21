@@ -10,10 +10,16 @@ export class UserProj {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
+  @Column({ nullable: true })
+  userId: string;
+
   @ManyToOne(() => Project, {
     onDelete: 'CASCADE',
   })
   project: Project;
+
+  @Column({ nullable: true })
+  projectId: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   lastOpen: Date;
