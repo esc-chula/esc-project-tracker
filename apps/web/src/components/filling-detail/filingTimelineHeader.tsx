@@ -21,9 +21,9 @@ export default function FilingTimelineHeader({
   setShowCreateDocument,
 }: {
   name: string
-  status: FilingStatus | "DOCUMENT_CREATED"
+  status: FilingStatus
   latestPDFUrl?: string
-  setStatus: (status: FilingStatus | "DOCUMENT_CREATED") => void
+  setStatus: (status: FilingStatus) => void
   setDocuments: Dispatch<SetStateAction<Document[]>>
   filingId: string
   showCreateDocument: boolean
@@ -41,7 +41,7 @@ export default function FilingTimelineHeader({
         filingStatus: FilingStatus.DRAFT,
       })
       if (updatedFiling) {
-        setStatus("DOCUMENT_CREATED")
+        setStatus(FilingStatus.DOCUMENT_CREATED)
         setIsOpen(false)
         toast({
           title: "ยกเลิกสำเร็จ",
@@ -176,7 +176,7 @@ export default function FilingTimelineHeader({
             setShowCreateDocument={setShowCreateDocument}
             afterCreateDocument={(createdDocument) => {
               setDocuments((prev) => [createdDocument, ...prev])
-              setStatus("DOCUMENT_CREATED")
+              setStatus(FilingStatus.DOCUMENT_CREATED)
               setDocumentFixed(true)
               setShowCreateDocument(false)
             }}

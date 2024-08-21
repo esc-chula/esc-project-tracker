@@ -2,7 +2,7 @@
 
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/StatusStepper';
-import { FilingStatus, ProjectStatus, ProjectType } from '@/src/constant/enum';
+import { FilingStatus } from '@/src/constant/enum';
 import { Filing } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
@@ -12,56 +12,18 @@ import { useToast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/findDocumentsByFilingId';
 import { Document } from '@/src/interface/document';
-import { DocumentActivity } from '../../../../../../../api/src/constant/enum';
-
-const mockDocument = {
-  id: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-  filing: {
-    id: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-    status: FilingStatus.DRAFT,
-    name: 'Filing 1 weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh',
-    projectCode: '1001',
-    FilingCode: '9001',
-    type: 9,
-    user: {},
-    project: {
-      id: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-      status: ProjectStatus.CONTINUE,
-      name: 'Project 1 weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh',
-      projectCode: '1001',
-      type: ProjectType.ACADEMICS_AFFAIR,
-      detail:
-        'Project 1 details weosiyfgowausyh ngcfowauy afgseahgesrytedgsetyh',
-      reserveDate: new Date('2021-08-01T19:11:00').toString(),
-      createdAt: new Date('2021-08-01T19:11:00').toString(),
-      updatedAt: new Date('2021-08-01T19:11:00').toString(),
-    },
-    createdAt: new Date('2021-08-01T19:11:00').toString(),
-    updatedAt: new Date('2021-08-01T19:11:00').toString(),
-  },
-  name: 'เอกสาร 1',
-  activity: DocumentActivity.CREATE,
-  detail: 'เอกสารนี้เป็นเอกสารที่สร้างใหม่',
-  pdfLink: 'https://www.google.com',
-  docLink: 'https://www.google.com',
-  createdAt: new Date('2021-08-01T19:11:00').toString(),
-  updatedAt: new Date('2021-08-01T19:11:00').toString(),
-};
 
 export default function Page({
   params,
 }: {
   params: { projectId: string; filingId: string };
 }) {
-  const [filing, setFiling] = useState<
-    | (Omit<Filing, 'status'> & { status: FilingStatus | 'DOCUMENT_CREATED' })
-    | null
-  >();
+  const [filing, setFiling] = useState<Filing | null>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
   const { toast } = useToast();
   const setStatus = useMemo(
-    () => (status: FilingStatus | 'DOCUMENT_CREATED') => {
+    () => (status: FilingStatus) => {
       setFiling((prev) => (prev ? { ...prev, status } : null));
     },
     [],
@@ -88,8 +50,6 @@ export default function Page({
     try {
       const documentsData = await findDocumentsByFilingId(params.filingId);
       if (documentsData.length > 0) {
-        if (filingData.status === FilingStatus.DRAFT)
-          setStatus('DOCUMENT_CREATED');
         setDocuments(documentsData);
       }
     } catch (err) {
