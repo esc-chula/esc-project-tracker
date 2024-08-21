@@ -21,8 +21,8 @@ export class Document {
   @Column({ nullable: true })
   filingId: string;
 
-  @Column()
-  filingId: string;
+  // @Column()
+  // filingId: string;
 
   @Column()
   name: string;
