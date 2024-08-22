@@ -1,28 +1,32 @@
-import { DocumentActivity } from "../../../api/src/constant/enum"
-import { trpc } from "../app/trpc"
-import { Document } from "../interface/document"
+import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
+import { trpc } from '../app/trpc';
+import { Document } from '../interface/document';
 
 export default async function createDocument(
   name: string,
   filingId: string,
-  pdfLink: string,
-  docLink: string,
+  pdfName: string,
+  docName: string,
   activity: DocumentActivity,
-  detail?: string | undefined
+  userId: string,
+  detail?: string,
+  status?: DocumentStatus,
 ): Promise<Document> {
   try {
     const data = await trpc.document.createDocument.mutate({
       name,
       filingId,
-      pdfLink,
-      docLink,
+      pdfName,
+      docName,
       activity,
+      userId,
       detail,
-    })
+      status,
+    });
 
-    return data
+    return data;
   } catch (err) {
-    console.log(err)
-    throw new Error("ไม่สามารถสร้างฉบับร่างของเอกสารได้")
+    console.log(err);
+    throw new Error('ไม่สามารถสร้างฉบับร่างของเอกสารได้');
   }
 }

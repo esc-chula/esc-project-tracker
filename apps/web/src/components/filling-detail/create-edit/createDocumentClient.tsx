@@ -1,75 +1,91 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../ui/form"
-import { Select } from "../../ui/select"
-import ButtonPanel from "./buttonPanel"
-import FileInputPanel from "./fileInputPanel"
-import ActivityPanel from "./activityPanel"
-import { Document } from "@/src/interface/document"
-import createDocument from "@/src/service/createDocument"
-import { DocumentActivity } from "@/src/constant/enum"
-import { checkFileType } from "@/src/lib/utils"
-import { useMemo } from "react"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../../ui/form';
+import { Select } from '../../ui/select';
+import ButtonPanel from './buttonPanel';
+import FileInputPanel from './fileInputPanel';
+import ActivityPanel from './activityPanel';
+import { Document } from '@/src/interface/document';
+import createDocument from '@/src/service/createDocument';
+import { DocumentActivity } from '@/src/constant/enum';
+import { checkFileType } from '@/src/lib/utils';
+import { useMemo } from 'react';
 
 export default function CreateDocumentClient({
   setShowCreateDocument,
   afterCreateDocument,
   filingId,
 }: {
-  setShowCreateDocument: (showCreateDocument: boolean) => void
-  afterCreateDocument: (createdDocument: Document) => void
-  filingId: string
+  setShowCreateDocument: (showCreateDocument: boolean) => void;
+  afterCreateDocument: (createdDocument: Document) => void;
+  filingId: string;
 }) {
   const createdFormSchema = z.object({
     // Server side ไม่รู้จัก FileList ***
-    file: (typeof window === "undefined" ? z.any() : z.instanceof(FileList))
-      .refine((file) => file?.length === 1, "กรุณาเลือกไฟล์")
-      .refine((file) => checkFileType(file[0]), "กรุณาเลือกไฟล์ที่มีนามสกุล .docx, .pdf, .doc"),
+    file: (typeof window === 'undefined' ? z.any() : z.instanceof(FileList))
+      .refine((file) => file?.length === 1, 'กรุณาเลือกไฟล์')
+      .refine(
+        (file) => checkFileType(file[0]),
+        'กรุณาเลือกไฟล์ที่มีนามสกุล .docx, .pdf, .doc',
+      ),
 
     activity: z.string().optional(),
-    detail: z.string().min(1, { message: "กรุณากรอกรายละเอียด" }),
+    detail: z.string().min(1, { message: 'กรุณากรอกรายละเอียด' }),
     note: z.string().optional(),
-  })
+  });
 
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
     defaultValues: {
-      activity: "",
-      detail: "",
-      note: "",
+      activity: '',
+      detail: '',
+      note: '',
     },
-  })
+  });
 
-  const fileRef = form.register("file")
+  const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    console.log(values)
+    console.log(values);
     // upload file
     // then createDocument
+    // TODO: change to actual userId
     const newDocument = await createDocument(
       values.detail,
       filingId,
-      "https://www.google.com",
-      "https://www.google.com",
+      'https://www.google.com',
+      'https://www.google.com',
       values.activity as DocumentActivity,
-      values.note
-    )
-    afterCreateDocument(newDocument)
+      'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+      values.note,
+    );
+    afterCreateDocument(newDocument);
   }
 
-  const isDisabled = useMemo(() => form.formState.isSubmitting, [form.formState.isSubmitting])
+  const isDisabled = useMemo(
+    () => form.formState.isSubmitting,
+    [form.formState.isSubmitting],
+  );
 
   return (
     <>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-full p-8 flex flex-col text-start">
+          className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-full p-8 flex flex-col text-start"
+        >
           <div className="flex flex-row space-x-5 w-full">
             <div className="flex flex-col space-y-8">
               <FormField
@@ -93,7 +109,7 @@ export default function CreateDocumentClient({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold text-lg block">
-                      {"รายละเอียดเอกสาร (ชื่อเรื่องที่ระบุในเอกสาร)"}
+                      {'รายละเอียดเอกสาร (ชื่อเรื่องที่ระบุในเอกสาร)'}
                       <span className="text-red">*</span>
                     </FormLabel>
                     <FormControl>
@@ -130,7 +146,9 @@ export default function CreateDocumentClient({
             name="note"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold text-lg block">หมายเหตุ</FormLabel>
+                <FormLabel className="font-bold text-lg block">
+                  หมายเหตุ
+                </FormLabel>
                 <FormControl>
                   <textarea
                     placeholder="หมายเหตุ"
@@ -142,9 +160,12 @@ export default function CreateDocumentClient({
               </FormItem>
             )}
           />
-          <ButtonPanel isDisabled={isDisabled} setShowCreateDocument={setShowCreateDocument} />
+          <ButtonPanel
+            isDisabled={isDisabled}
+            setShowCreateDocument={setShowCreateDocument}
+          />
         </form>
       </Form>
     </>
-  )
+  );
 }
