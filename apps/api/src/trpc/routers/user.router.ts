@@ -15,14 +15,12 @@ export class UserRouter {
       .input(
         z.object({
           id: z.string().optional(),
-          name: z.string().optional(),
           studentId: z.string().optional(),
         }),
       )
       .query(({ input }) => {
         return this.userService.findUserByCondition({
           id: input.id,
-          name: input.name,
           studentId: input.studentId,
         });
       }),
