@@ -1,21 +1,48 @@
-import NameDate from "./nameDate"
-import Image from "next/image"
-import StatusButton from "./statusButton"
-import { FilingStatus } from "@/src/constant/enum"
-import { Collapsible } from "../../ui/collapsible"
-import FileDisplay from "./fileDisplay"
-import { Document } from "@/src/interface/document"
-import { TextDocumentActivity } from "@/src/styles/enumMap"
+import NameDate from './nameDate';
+import Image from 'next/image';
+import StatusButton from './statusButton';
+import { Collapsible } from '../../ui/collapsible';
+import FileDisplay from './fileDisplay';
+import { Document } from '@/src/interface/document';
+import { TextDocumentActivity } from '@/src/styles/enumMap';
 
-export default function DisplayWithStatus({ document }: { document: Document }) {
+export default function DisplayWithStatus({
+  document,
+  warning,
+  displayEditButton,
+  setShowCreateDocument,
+}: {
+  document: Document;
+  warning: boolean;
+  displayEditButton: boolean;
+  setShowCreateDocument: (showCreateDocument: boolean) => void;
+}) {
   return (
     <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
+      {warning && (
+        <Image
+          src="/icons/warning.svg"
+          width={70}
+          height={70}
+          alt="warning-icon"
+          className="transform -translate-x-8 -translate-y-6 absolute"
+        />
+      )}
       <div className="flex flex-row px-8">
         <NameDate
           title="Secretary ESC"
-          date={"ส่งเอกสารเมื่อ " + new Date(document.createdAt).toLocaleString("th-TH")}
-          activity={TextDocumentActivity[document.activity]}>
-          <Image src="/icons/esc-red.svg" width={30} height={30} alt="esc-icon" />
+          date={
+            'ส่งเอกสารเมื่อ ' +
+            new Date(document.createdAt).toLocaleString('th-TH')
+          }
+          activity={TextDocumentActivity[document.activity]}
+        >
+          <Image
+            src="/icons/esc-red.svg"
+            width={30}
+            height={30}
+            alt="esc-icon"
+          />
         </NameDate>
         <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
           <div className="flex flex-row items-center gap-x-6 gap-y-2 flex-wrap">
@@ -29,12 +56,17 @@ export default function DisplayWithStatus({ document }: { document: Document }) 
           <div className="font-bold text-sm">ความคิดเห็น</div>
           <textarea
             className="bg-white rounded-lg min-h-[10vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
-            defaultValue={document.detail}></textarea>
+            defaultValue={document.comment}
+          ></textarea>
         </div>
         <div className="py-8 flex flex-col justify-between w-auto items-end">
-          <StatusButton status={FilingStatus.WAIT_FOR_STUDENT_AFFAIR} />
+          <StatusButton
+            status={document.status}
+            displayEditButton={displayEditButton}
+            setShowCreateDocument={setShowCreateDocument}
+          />
         </div>
       </div>
     </Collapsible>
-  )
+  );
 }

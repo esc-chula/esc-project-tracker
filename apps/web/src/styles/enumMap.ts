@@ -24,6 +24,7 @@ export const TextMyFilingStatus = {
   [FilingStatus.WAIT_FOR_SECRETARY]: "เลขาตรวจสอบ",
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "ส่งให้กิจการนิสิต",
   [FilingStatus.DRAFT]: "ฉบับร่าง",
+  [FilingStatus.DOCUMENT_CREATED]: "สร้างฉบับร่างแล้ว",
 }
 
 export const TextDocumentActivity = {
@@ -46,13 +47,6 @@ export const FilingStatusToStepper = {
     ["rejected", "rejected"],
     ["rejected", "rejected"],
     ["rejected"],
-  ],
-  DOCUMENT_CREATED: [
-    ["accepted", "accepted"],
-    ["accepted", "disabled"],
-    ["disabled", "disabled"],
-    ["disabled", "disabled"],
-    ["disabled"],
   ],
   [FilingStatus.APPROVED]: [
     ["accepted", "accepted"],

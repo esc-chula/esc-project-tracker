@@ -62,7 +62,7 @@ export default function DisplayWithNote({ document }: { document: Document }) {
           </CollapsibleTrigger>
         </div>
       </div>
-      <Note note={document.detail} />
+      <Note note={document.detail ?? '-'} />
     </Collapsible>
   )
 }

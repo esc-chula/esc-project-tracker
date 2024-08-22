@@ -109,6 +109,7 @@ export default function Page({
         <FilingTimeline
           documents={documents}
           status={filing?.status ?? FilingStatus.DRAFT}
+          showCreateDocument={showCreateDocument}
           setShowCreateDocument={setShowCreateDocument}
         />
       </section>

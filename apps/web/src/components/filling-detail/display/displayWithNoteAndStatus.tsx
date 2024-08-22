@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 import NameDate from "./nameDate"
 import Image from "next/image"
 import StatusButton from "./statusButton"
-import { DocumentActivity, FilingStatus } from "@/src/constant/enum"
+import { DocumentActivity, DocumentStatus } from "@/src/constant/enum"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../ui/collapsible"
 import { useState } from "react"
 import FileDisplay from "./fileDisplay"
@@ -47,8 +47,8 @@ export default function DisplayWithNoteAndStatus({
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
             <StatusButton
-              status={FilingStatus.RETURNED}
-              isSubmitAfterReturn={false}
+              status={DocumentStatus.RETURNED}
+              displayEditButton={false}
               setShowCreateDocument={setShowCreateDocument}
             />
             <CollapsibleTrigger

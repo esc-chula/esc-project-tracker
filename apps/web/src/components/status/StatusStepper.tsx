@@ -47,7 +47,7 @@ const steps = [
 export default function DocumentStatusStepper({
   status,
 }: {
-  status: FilingStatus | "DEFAULT" | "DOCUMENT_CREATED" | "LOADING"
+  status: FilingStatus | "DEFAULT" | "LOADING"
 }) {
   const stepStatuses = FilingStatusToStepper[status]
 
