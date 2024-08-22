@@ -10,9 +10,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   // TODO: validate accessToken
 
-  if (!accessToken) {
-    return redirect('/');
-  }
+  // if (!accessToken) {
+  //   return redirect('/');
+  // }
 
   return (
     <div className="flex">

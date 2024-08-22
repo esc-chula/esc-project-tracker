@@ -5,17 +5,20 @@ import { Collapsible } from '../../ui/collapsible';
 import FileDisplay from './fileDisplay';
 import { Document } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
+import { User } from '@/src/interface/user';
 
 export default function DisplayWithStatus({
   document,
   warning,
   displayEditButton,
   setShowCreateDocument,
+  user,
 }: {
   document: Document;
   warning: boolean;
   displayEditButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
+  user?: User;
 }) {
   return (
     <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
@@ -30,7 +33,7 @@ export default function DisplayWithStatus({
       )}
       <div className="flex flex-row px-8">
         <NameDate
-          title="Secretary ESC"
+          title={user?.username ?? 'Secretary ESC'}
           date={
             'ส่งเอกสารเมื่อ ' +
             new Date(document.createdAt).toLocaleString('th-TH')

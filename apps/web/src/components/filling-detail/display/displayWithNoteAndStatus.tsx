@@ -1,60 +1,63 @@
-"use client"
+'use client';
 
-import { ChevronDown, ChevronUp } from "lucide-react"
-import NameDate from "./nameDate"
-import Image from "next/image"
-import StatusButton from "./statusButton"
-import { DocumentActivity, DocumentStatus } from "@/src/constant/enum"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../ui/collapsible"
-import { useState } from "react"
-import FileDisplay from "./fileDisplay"
-import { Document } from "@/src/interface/document"
-import { TextDocumentActivity } from "@/src/styles/enumMap"
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import NameDate from './nameDate';
+import Image from 'next/image';
+import StatusButton from './statusButton';
+import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '../../ui/collapsible';
+import { useState } from 'react';
+import FileDisplay from './fileDisplay';
+import { Document } from '@/src/interface/document';
+import { TextDocumentActivity } from '@/src/styles/enumMap';
+import { User } from '@/src/interface/user';
 
 export default function DisplayWithNoteAndStatus({
-  setShowCreateDocument,
+  user,
   document,
 }: {
-  setShowCreateDocument: (showCreateDocument: boolean) => void
-  document: Document
+  user?: User;
+  document: Document;
 }) {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <div className="w-full relative">
-      {document.activity === DocumentActivity.REPLY && (
-        <Image
-          src="/icons/warning.svg"
-          width={70}
-          height={70}
-          alt="warning-icon"
-          className="transform -translate-x-8 -translate-y-6 absolute"
-        />
-      )}
       <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
         <div className="flex flex-row px-8">
           <NameDate
-            title="Secretary ESC"
-            date={"ส่งเอกสารเมื่อ " + new Date(document.createdAt).toLocaleString("th-TH")}
-            activity={TextDocumentActivity[document.activity]}>
-            <Image src="/icons/esc-red.svg" width={30} height={30} alt="esc-icon" />
+            title={user?.username ?? 'Secretary ESC'}
+            date={
+              'ส่งเอกสารเมื่อ ' +
+              new Date(document.createdAt).toLocaleString('th-TH')
+            }
+            activity={TextDocumentActivity[document.activity]}
+          >
+            <Image
+              src="/icons/esc-red.svg"
+              width={30}
+              height={30}
+              alt="esc-icon"
+            />
           </NameDate>
           <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
             <div className="font-bold text-sm">ความคิดเห็น</div>
             <textarea
               className="bg-white rounded-lg min-h-[15vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
-              defaultValue={document.detail}></textarea>
+              defaultValue={document.detail}
+            ></textarea>
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
-            <StatusButton
-              status={DocumentStatus.RETURNED}
-              displayEditButton={false}
-              setShowCreateDocument={setShowCreateDocument}
-            />
+            <StatusButton status={DocumentStatus.RETURNED} />
             <CollapsibleTrigger
               onClick={() => {
-                setExpanded(!expanded)
-              }}>
+                setExpanded(!expanded);
+              }}
+            >
               {expanded ? <ChevronUp /> : <ChevronDown />}
             </CollapsibleTrigger>
           </div>
@@ -91,5 +94,5 @@ export default function DisplayWithNoteAndStatus({
         </CollapsibleContent>
       </Collapsible>
     </div>
-  )
+  );
 }

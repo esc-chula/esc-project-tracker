@@ -7,17 +7,20 @@ import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import { Document } from '@/src/interface/document';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import { DocumentActivity } from '../../../../api/src/constant/enum';
+import { User } from '@/src/interface/user';
 
 export default function FilingTimeline({
   documents,
   status,
   showCreateDocument,
   setShowCreateDocument,
+  usernameMap,
 }: {
   documents: Document[];
   status: FilingStatus;
   showCreateDocument: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
+  usernameMap: Map<string, User>;
 }) {
   let previousDate = '';
   return (
@@ -35,25 +38,24 @@ export default function FilingTimeline({
             day: 'numeric',
           },
         );
+        const user = usernameMap.get(document.userId ?? '');
         const display =
           document.activity === DocumentActivity.REPLY ? (
             <DisplayWithStatus
               document={document}
+              user={user}
               warning={status === FilingStatus.RETURNED && !showCreateDocument}
               displayEditButton={
                 status === FilingStatus.RETURNED &&
-                documents[0] &&
+                documents.length > 0 &&
                 documents[0].status !== DocumentStatus.DRAFT
               }
               setShowCreateDocument={setShowCreateDocument}
             />
           ) : document.status === DocumentStatus.DRAFT ? (
-            <DisplayWithNote document={document} />
+            <DisplayWithNote document={document} user={user} />
           ) : (
-            <DisplayWithNoteAndStatus
-              setShowCreateDocument={setShowCreateDocument}
-              document={document}
-            />
+            <DisplayWithNoteAndStatus document={document} user={user} />
           );
         if (currentDate !== previousDate) {
           previousDate = currentDate;

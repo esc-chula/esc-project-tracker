@@ -1,9 +1,9 @@
 export interface User {
   id: string;
-  name: string;
   username: string;
   studentId: string;
-  password: string;
+  role: 'student' | 'esc' | 'admin';
   createdAt: string;
   updatedAt: string;
+  refreshToken?: string;
 }

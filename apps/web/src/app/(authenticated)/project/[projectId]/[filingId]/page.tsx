@@ -12,6 +12,8 @@ import { useToast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/findDocumentsByFilingId';
 import { Document } from '@/src/interface/document';
+import { findUserByUserId } from '@/src/service/findUserByUserId';
+import { User } from '@/src/interface/user';
 
 export default function Page({
   params,
@@ -21,6 +23,7 @@ export default function Page({
   const [filing, setFiling] = useState<Filing | null>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
+  const [usernameMap, setUsernameMap] = useState<Map<string, User>>(new Map());
   const { toast } = useToast();
   const setStatus = useMemo(
     () => (status: FilingStatus) => {
@@ -31,6 +34,7 @@ export default function Page({
   const fetchFiling = async () => {
     try {
       const filingData = await getFilingByFilingId(params.filingId);
+      console.log(filingData);
 
       if (filingData) {
         fetchDocuments(filingData);
@@ -49,9 +53,24 @@ export default function Page({
   const fetchDocuments = async (filingData: Filing) => {
     try {
       const documentsData = await findDocumentsByFilingId(params.filingId);
-      if (documentsData.length > 0) {
-        setDocuments(documentsData);
-      }
+      if (documentsData.length === 0) return;
+
+      const uniqueUserIds = new Set(
+        documentsData.map((doc) =>
+          doc.userId ? findUserByUserId(doc.userId) : undefined,
+        ),
+      );
+      const users = await Promise.all(uniqueUserIds);
+
+      const updatedUsernameMap = new Map();
+      users.forEach((user) => {
+        if (user) {
+          updatedUsernameMap.set(user.id, user);
+        }
+      });
+
+      setDocuments(documentsData);
+      setUsernameMap(updatedUsernameMap);
     } catch (err) {
       if (err instanceof Error) {
         toast({
@@ -111,6 +130,7 @@ export default function Page({
           status={filing?.status ?? FilingStatus.DRAFT}
           showCreateDocument={showCreateDocument}
           setShowCreateDocument={setShowCreateDocument}
+          usernameMap={usernameMap}
         />
       </section>
     </main>
