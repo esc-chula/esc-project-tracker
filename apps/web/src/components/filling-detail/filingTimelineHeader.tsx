@@ -40,6 +40,7 @@ export default function FilingTimelineHeader({
         filingId,
         filingStatus: FilingStatus.DRAFT,
       })
+      // update doc statuses
       if (updatedFiling) {
         setStatus(FilingStatus.DOCUMENT_CREATED)
         setIsOpen(false)
@@ -67,6 +68,7 @@ export default function FilingTimelineHeader({
         filingId,
         filingStatus: FilingStatus.WAIT_FOR_SECRETARY,
       })
+      // update doc statuses
       if (updatedFiling) {
         setStatus(FilingStatus.WAIT_FOR_SECRETARY)
         toast({

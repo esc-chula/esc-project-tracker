@@ -70,9 +70,11 @@ export class DocumentRouter {
           obj: z.object({
             name: z.string().optional(),
             activity: z.nativeEnum(DocumentActivity).optional(),
+            status: z.nativeEnum(DocumentStatus).optional(),
             detail: z.string().optional(),
-            pdfLink: z.string().optional(),
-            docLink: z.string().optional(),
+            comment: z.string().optional(),
+            pdfName: z.string().optional(),
+            docName: z.string().optional(),
           }),
         }),
       )
