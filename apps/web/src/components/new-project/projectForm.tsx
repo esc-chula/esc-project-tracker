@@ -72,12 +72,21 @@ export default function ProjectForm({
   >([]);
   const [membersCount, setMembersCount] = useState(1);
   const [isAfterCancelUpdate, setIsAfterCancelUpdate] = useState(false);
-  const [canEdit, setCanEdit] = useState(false);
 
   const initialMembers = useMemo(() => joinUsers || [], [joinUsers]);
   const ownerUser = useMemo(() => {
     return joinUsers?.find((user) => user.id === project?.ownerId) || null;
   }, [joinUsers, project?.ownerId]);
+  const canEdit = useMemo(() => {
+    if (
+      (action === projectFormAction.INFO &&
+        mockCurrentUser.id === project?.ownerId) ||
+      isAdmin
+    ) {
+      return true;
+    }
+    return false;
+  }, [action, isAdmin, project?.ownerId]);
 
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
     resolver: zodResolver(newProjectFormSchema),
@@ -96,18 +105,6 @@ export default function ProjectForm({
     },
     mode: 'onChange',
   });
-
-  useEffect(() => {
-    // if role is user
-    //TODO : use real current user
-    if (
-      (action === projectFormAction.INFO &&
-        mockCurrentUser.id === project?.ownerId) ||
-      isAdmin
-    ) {
-      setCanEdit(true);
-    }
-  }, []);
 
   useEffect(() => {
     const mapOldMembersToForm = () => {
