@@ -284,8 +284,10 @@ export default function ProjectForm({
 
       switch (action) {
         case projectFormAction.USER_CREATE:
+          router.push(`/project/${projectToJoin?.id}`);
+          break;
         case projectFormAction.ADMIN_CREATE:
-          router.push(`project/${projectToJoin?.id}`);
+          window.location.replace(`/admin/project/${projectToJoin?.id}`);
           break;
         case projectFormAction.UPDATE:
           window.location.reload();
@@ -441,7 +443,7 @@ export default function ProjectForm({
                     action === projectFormAction.UPDATE ? (
                     <li>
                       <div className="flex text-sm text-black justify-between w-[85%]">
-                        <span>{ownerUser?.name}</span>
+                        <span>{ownerUser?.username}</span>
                         <span>รหัสนิสิต&emsp;{ownerUser?.studentId}</span>
                       </div>
                     </li>

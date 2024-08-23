@@ -112,7 +112,7 @@ export default function FilingMenuItem({
           </div>
         </td>
         <td className="p-4 py-5 text-nowrap text-center max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap">
-          {filingOwner ? filingOwner.name : '-'}
+          {filingOwner ? filingOwner.username : '-'}
         </td>
         <td className="p-4 py-5 text-nowrap text-center">
           <p className={`rounded-lg px-2 py-1 ${buttonColors[filing.status]}`}>

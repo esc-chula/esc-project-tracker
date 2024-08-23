@@ -80,12 +80,12 @@ export default function ProjectMenuItem({
       <td
         className={`${isAdmin ? 'px-10' : 'px-2 '} py-5 text-center w-[20px] hover:cursor-pointer`}
       >
-        <Link href={`project/${project.id}/info`}>
+        <Link href={`/admin/project/${project.id}/info`}>
           <BsInfoCircleFill size={15} className="text-red w-[15px] h-[16px]" />
         </Link>
       </td>
 
-      {isAdmin && (
+      {!isAdmin && (
         <td className="p-4 py-5 text-nowrap text-center w-[150px]">
           <button
             className={`rounded-lg px-2 py-1 ${buttonStyle(isJoined)} transition-all`}
