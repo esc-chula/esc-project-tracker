@@ -44,6 +44,7 @@ import { UserFilingModule } from './user-filing/user-filing.module';
     AwsModule,
     NotificationModule,
     UserFilingModule,
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
