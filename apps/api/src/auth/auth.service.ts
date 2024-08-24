@@ -44,11 +44,11 @@ export class AuthService {
     token: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const validatedUser = await this.validateUser(token).catch((error) => {
-      throw new ForbiddenException(error);
+      throw new ForbiddenException(error.message);
     });
 
     const studentId = validatedUser.studentId;
-    const username = `${validatedUser.name.th.firstName} ${validatedUser.name.th.lastName}`;
+    let username = `${validatedUser.name.th.firstName} ${validatedUser.name.th.lastName}`;
 
     const existedUser = await this.userService.findByStudentID(studentId);
 
@@ -61,6 +61,7 @@ export class AuthService {
       });
     } else {
       createdUser = existedUser;
+      username = createdUser.username;
     }
 
     const tokens = await this.getTokens(createdUser.id, username);
