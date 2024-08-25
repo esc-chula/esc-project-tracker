@@ -15,8 +15,8 @@ export class FilingController {
     return this.filingService.findByUserID(userID);
   }
 
-  @Get('/filings')
-  findAllfiling() {
+  @Get('/findAllFilings')
+  findAllFiling() {
     return this.filingService.findAllFiling();
   }
 
