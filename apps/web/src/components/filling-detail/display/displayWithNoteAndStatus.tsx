@@ -52,7 +52,7 @@ export default function DisplayWithNoteAndStatus({
             ></textarea>
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
-            <StatusButton status={DocumentStatus.RETURNED} />
+            <StatusButton status={document.status} />
             <CollapsibleTrigger
               onClick={() => {
                 setExpanded(!expanded);

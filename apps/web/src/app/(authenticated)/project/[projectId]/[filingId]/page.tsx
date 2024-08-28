@@ -116,6 +116,7 @@ export default function Page({
               : '...'
           }
           status={filing?.status ?? FilingStatus.DRAFT}
+          documents={documents}
           latestPDFUrl={documents[0]?.pdfName ?? '#'}
           setStatus={setStatus}
           setDocuments={setDocuments}
