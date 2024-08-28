@@ -5,18 +5,14 @@ export default function Title({
   children,
   icon,
   href,
-  isAdmin = false,
 }: {
   children: React.ReactNode;
   icon: React.ReactNode;
   href?: string;
-  isAdmin?: boolean;
 }) {
   return (
     <>
-      <div
-        className={`flex gap-4 font-bold text-intania text-3xl md:text-4xl lg:text-5xl`}
-      >
+      <div className="flex gap-4 font-bold text-intania text-3xl md:text-4xl lg:text-5xl">
         {href && (
           <Link href={href}>
             <ChevronLeft size={24} className="text-black mr-3" />

@@ -30,9 +30,7 @@ export default async function Page() {
   return (
     <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
       <Header>
-        <Title icon={<Home size={40} />} isAdmin>
-          หน้าหลัก
-        </Title>
+        <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>
       <section className="mt-8">
         <SearchPanel

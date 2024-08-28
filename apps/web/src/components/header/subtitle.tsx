@@ -45,9 +45,7 @@ export default function Subtitle({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="text-black" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage
-                    className={`font-semibold text-red leading-10 min-w-36 max-w-96 line-clamp-1`}
-                  >
+                  <BreadcrumbPage className="font-semibold text-red leading-10 min-w-36 max-w-96 line-clamp-1">
                     {document}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
@@ -55,9 +53,7 @@ export default function Subtitle({
             ) : (
               <>
                 <BreadcrumbItem>
-                  <BreadcrumbPage
-                    className={`font-semibold text-red line-clamp-1 leading-10`}
-                  >
+                  <BreadcrumbPage className="font-semibold text-red line-clamp-1 leading-10">
                     {project}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
