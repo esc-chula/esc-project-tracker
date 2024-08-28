@@ -7,14 +7,14 @@ import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';
 import { toast } from '../ui/use-toast';
 import { User } from '@/src/interface/user';
-import { findUserByCondition } from '@/src/service/findUserByCondition';
+import { findUserByCondition } from '@/src/service/user/findUserByCondition';
 import { FilingStatus } from '@/src/constant/enum';
 import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import {
   DocumentActivity,
   DocumentStatus,
 } from '../../../../api/src/constant/enum';
-import findLatestDocumentByFilingId from '@/src/service/findLatestDocumentByFilingId';
+import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import Link from 'next/link';
 
 export default function FilingMenuItem({

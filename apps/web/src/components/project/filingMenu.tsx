@@ -9,12 +9,12 @@ import {
 import SelectType from '../filter/selectType';
 import React from 'react';
 import { useToast } from '../ui/use-toast';
-import findAllFiling from '@/src/service/findAllFiling';
+import findAllFiling from '@/src/service/filing/findAllFiling';
 import { departmentProjectItems } from '@/src/constant/filterProject';
-import findFilingsWithFilter from '@/src/service/findFilingsWithFilter';
-import getFilingByFilingId from '@/src/service/getFilingByFilingId';
+import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
+import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
 import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
-import createDocument from '@/src/service/createDocument';
+import createDocument from '@/src/service/document/createDocument';
 export default function FilingMenu({
   searchedFilingId,
   isUpdateMode,

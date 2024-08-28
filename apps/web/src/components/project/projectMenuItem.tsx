@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { BsInfoCircleFill } from 'react-icons/bs';
-import hasUserProj from '@/src/service/hasUserProj';
-import joinProject from '@/src/service/joinProject';
+import hasUserProj from '@/src/service/user-proj/hasUserProj';
+import joinProject from '@/src/service/user-proj/joinProject';
 import type { Project } from '@/src/interface/project';
 import { useToast } from '../ui/use-toast';
 import Link from 'next/link';

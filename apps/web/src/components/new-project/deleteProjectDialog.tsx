@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import deleteProject from '@/src/service/deleteProject';
+import deleteProject from '@/src/service/project/deleteProject';
 import { useRouter, usePathname } from 'next/navigation';
 import { useToast } from '../ui/use-toast';
 
