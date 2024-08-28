@@ -13,16 +13,10 @@ export class User {
   id: string;
 
   @Column()
-  name: string;
-
-  @Column()
   username: string;
 
   @Column()
   studentId: string;
-
-  @Column()
-  password: string;
 
   @CreateDateColumn()
   createdAt: Date;

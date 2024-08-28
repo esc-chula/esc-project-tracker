@@ -1,35 +1,38 @@
-import { Project } from "@/src/interface/project";
-import ProjectMenuHeader from "./projectMenuHeader";
-import NoData from "../all-projects/noData";
-import ProjectMenuItem from "./projectMenuItem";
-import SelectType from "../filter/selectType";
-import React from "react";
+import { Project } from '@/src/interface/project';
+import ProjectMenuHeader from './projectMenuHeader';
+import NoData from '../all-projects/noData';
+import ProjectMenuItem from './projectMenuItem';
+import SelectType from '../filter/selectType';
+import React from 'react';
 import {
   departmentProjectItems,
   statusProjectItems,
-} from "@/src/constant/filterProject";
-import { useToast } from "../ui/use-toast";
-import { findAllProject } from "@/src/service/findAllProject";
-import findProjectsWithFilter from "@/src/service/findProjectsWithFilter";
-import hasUserProj from "@/src/service/hasUserProj";
-import getProjectByProjectId from "@/src/service/getProjectByProjectId";
+} from '@/src/constant/filterProject';
+import { useToast } from '../ui/use-toast';
+import { findAllProject } from '@/src/service/findAllProject';
+import findProjectsWithFilter from '@/src/service/findProjectsWithFilter';
+import hasUserProj from '@/src/service/hasUserProj';
+import getProjectByProjectId from '@/src/service/getProjectByProjectId';
 
 export default function ProjectMenu({
   searchedProjectId,
+  isAdmin,
 }: {
   searchedProjectId: string | null;
+  isAdmin: boolean;
 }) {
   const { toast } = useToast();
   const [departmentProject, setDepartmentProject] =
-    React.useState<string>("ALL"); // department that projects belong to
-  const [statusProject, setStatusProject] = React.useState<string>("ALL"); // status of project
-  const [typeProject, setTypeProject] = React.useState<string>("ALL"); // join or not
+    React.useState<string>('ALL'); // department that projects belong to
+  const [statusProject, setStatusProject] = React.useState<string>('ALL'); // status of project
+  const [typeProject, setTypeProject] = React.useState<string>('ALL'); // join or not
   const [projects, setProjects] = React.useState<Project[]>([]);
 
   async function filterJoin(eachProject: Project): Promise<boolean> {
+    //TODO: change to actual userId
     const result = await hasUserProj(
-      "c8b285e0-9653-40d5-9865-def3b4792c99",
-      eachProject.id
+      'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+      eachProject.id,
     );
     return result;
   }
@@ -37,7 +40,7 @@ export default function ProjectMenu({
     try {
       let fetchedProject: Project[];
 
-      if (departmentProject === "ALL" && statusProject === "ALL") {
+      if (departmentProject === 'ALL' && statusProject === 'ALL') {
         // case search
         if (searchedProjectId) {
           const projectById = await getProjectByProjectId(searchedProjectId);
@@ -54,9 +57,9 @@ export default function ProjectMenu({
           const projectById = await getProjectByProjectId(searchedProjectId);
           if (projectById) {
             if (
-              (departmentProject === "ALL" ||
+              (departmentProject === 'ALL' ||
                 departmentProject === projectById.type) &&
-              (statusProject === "ALL" || statusProject === projectById.status)
+              (statusProject === 'ALL' || statusProject === projectById.status)
             ) {
               fetchedProject = [projectById];
             } else {
@@ -69,33 +72,30 @@ export default function ProjectMenu({
           // case ปกติ
           fetchedProject = await findProjectsWithFilter(
             statusProject,
-            departmentProject
+            departmentProject,
           );
         }
       }
 
-      if (typeProject === "ALL") {
+      if (typeProject === 'ALL') {
         setProjects(fetchedProject);
       } else {
         const filteredProjects = await Promise.all(
           fetchedProject.map(async (project) => {
             const isJoined = await filterJoin(project);
-            if (typeProject === "join") {
-              return isJoined ? project : null;
-            }
-            return isJoined ? null : project;
-          })
+            return (typeProject === 'JOIN') === isJoined ? project : null;
+          }),
         );
         setProjects(
           filteredProjects.filter(
-            (project): project is Project => project !== null
-          )
+            (project): project is Project => project !== null,
+          ),
         );
       }
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: "ไม่สำเร็จ",
+          title: 'ไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -122,9 +122,9 @@ export default function ProjectMenu({
         <SelectType
           title="ทั้งหมด"
           items={[
-            { value: "ALL", label: "ทั้งหมด" },
-            { value: "join", label: "เข้าร่วม" },
-            { value: "notjoin", label: "ไม่ได้เข้าร่วม" },
+            { value: 'ALL', label: 'ทั้งหมด' },
+            { value: 'JOINED', label: 'เข้าร่วม' },
+            { value: 'NOTJOINED', label: 'ไม่ได้เข้าร่วม' },
           ]}
           sendValue={setTypeProject}
         />
@@ -136,15 +136,18 @@ export default function ProjectMenu({
         />
       ) : (
         <div className="w-full h-[500px] overflow-x-auto overflow-y-auto rounded-t-xl">
-          <table className="w-full">
-            <ProjectMenuHeader />
-            {projects.map((project, index) => (
-              <ProjectMenuItem
-                project={project}
-                key={project.id}
-                index={index + 1}
-              />
-            ))}
+          <table className="w-full text-sm">
+            <ProjectMenuHeader isAdmin={isAdmin} />
+            <tbody>
+              {projects.map((project, index) => (
+                <ProjectMenuItem
+                  project={project}
+                  key={project.id}
+                  index={index + 1}
+                  isAdmin={isAdmin}
+                />
+              ))}
+            </tbody>
           </table>
         </div>
       )}
