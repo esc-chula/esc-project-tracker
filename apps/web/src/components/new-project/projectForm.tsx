@@ -25,11 +25,11 @@ import {
 import { Textarea } from '../ui/textarea';
 import { useEffect, useMemo, useState } from 'react';
 import { projectTypeMap } from '@/src/constant/Map';
-import createProject from '@/src/service/createProject';
+import createProject from '@/src/service/project/createProject';
 import { ProjectType } from '@/src/constant/enum';
 import { useToast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
-import joinProjectByStudentId from '@/src/service/joinProjectByStudentId';
+import joinProjectByStudentId from '@/src/service/user-proj/joinProjectByStudentId';
 import MembersInput from './membersInput';
 import { Project } from '@/src/interface/project';
 import { projectFormAction } from '@/src/constant/formAction';
@@ -39,8 +39,8 @@ import SubmitButtonGroup from './submitButtonGroup';
 import DeleteProjectDialog from './deleteProjectDialog';
 import { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/findUserByCondition';
-import updateProject from '@/src/service/updateProject';
-import leaveProjectByStudentId from '@/src/service/leaveProjectByStudentId';
+import updateProject from '@/src/service/project/updateProject';
+import leaveProjectByStudentId from '@/src/service/user-proj/leaveProjectByStudentId';
 
 const mockCurrentUser = {
   id: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',

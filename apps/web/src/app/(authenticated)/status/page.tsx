@@ -4,7 +4,7 @@ import Header from '../../../components/header/header';
 import Title from '@/src/components/header/title';
 import DocumentStatusStepper from '@/src/components/status/StatusStepper';
 import { StatusTable } from '@/src/components/status/StatusTable';
-import getFilingsByUserId from '@/src/service/getFilingsByUserId';
+import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { Filing } from '@/src/interface/filing';
 import { useToast } from '@/src/components/ui/use-toast';
 import { useEffect, useState } from 'react';

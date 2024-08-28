@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import { Filing } from '@/src/interface/filing';
-import getProjectsByUserId from '@/src/service/getProjectsByUserId';
+import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import SearchBar from '../searchbar/searchBar';
-import getFilingsByUserId from '@/src/service/getFilingsByUserId';
+import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { useToast } from '../ui/use-toast';
 
 export default function MyProjectData({

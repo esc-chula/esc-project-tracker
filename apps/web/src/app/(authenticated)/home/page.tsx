@@ -6,8 +6,8 @@ import { StatusTable } from '@/src/components/status/StatusTable';
 import { Filing } from '@/src/interface/filing';
 import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
-import getFilingsByUserId from '@/src/service/getFilingsByUserId';
-import getProjectsByUserId from '@/src/service/getProjectsByUserId';
+import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
+import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import { ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
 
