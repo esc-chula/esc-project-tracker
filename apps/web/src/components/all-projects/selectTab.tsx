@@ -1,9 +1,7 @@
 'use client';
-import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Box } from '@mui/material';
-
 import SearchPanel from './searchPanel';
 import { Project } from '@/src/interface/project';
 import ProjectMenu from '../project/projectMenu';
@@ -15,9 +13,10 @@ import { useToast } from '../ui/use-toast';
 import { TbEdit } from 'react-icons/tb';
 import { BiSolidSave } from 'react-icons/bi';
 import AddNewProjectButton from './addNewProjectButton';
+import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
 
 interface TabPanelProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   index: number;
   value: number;
 }
@@ -46,25 +45,23 @@ function a11yProps(index: number) {
 }
 
 export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
-  const [value, setValue] = React.useState<number>(0);
-  const [projects, setProjects] = React.useState<Project[]>([]);
-  const [filings, setFilings] = React.useState<FilingType[]>([]);
-  const [searchedProjectID, setSearchedProjectID] = React.useState<
-    string | null
-  >(null);
-  const [searchedFilingID, setSearchedFilingID] = React.useState<string | null>(
+  const [value, setValue] = useState<number>(0);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [searchedProjectID, setSearchedProjectID] = useState<string | null>(
     null,
   );
-  const [isUpdateMode, setIsUpdateMode] = React.useState<boolean>(false);
+  const [searchedFilingID, setSearchedFilingID] = useState<string | null>(null);
+  const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const { toast } = useToast();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
     setSearchedProjectID(null);
     setSearchedFilingID(null);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       try {
         const [fetchedProject, fetchedFiling] = await Promise.all([

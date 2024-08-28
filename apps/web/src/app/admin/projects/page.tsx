@@ -8,7 +8,7 @@ export default function Page() {
     <>
       <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh]">
         <Header>
-          <Title icon={<Folders size={40} />} adminDisplay>
+          <Title icon={<Folders size={40} />} isAdmin>
             โครงการทั้งหมด
           </Title>
         </Header>

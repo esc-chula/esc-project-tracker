@@ -22,11 +22,13 @@ export default function ProjectInfoPage() {
   useEffect(() => {
     const fetchProjectInfo = async () => {
       try {
-        const projectInfo = await getProjectByProjectId(String(projectId));
-        setProject(projectInfo);
-
-        const joinUsers = await findJoinedUsersByProjectId(String(projectId));
+        const [projectInfo, joinUsers] = await Promise.all([
+          getProjectByProjectId(String(projectId)),
+          findJoinedUsersByProjectId(String(projectId)),
+        ]);
         console.log('joinUsers', joinUsers);
+
+        setProject(projectInfo);
         setMembers(joinUsers);
       } catch (err) {
         if (err instanceof Error) {
