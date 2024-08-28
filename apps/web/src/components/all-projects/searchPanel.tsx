@@ -19,20 +19,15 @@ export default function SearchPanel({
   clearFunc?: () => void;
 }) {
   return (
-    <div className="flex flex-row space-x-4 w-full items-center">
-      <div className="flex-grow">
-        <SearchBar
-          Filings={filings || []}
-          projects={projects || []}
-          placeholder={placeHolder}
-          FilingFunc={FilingFunc}
-          projectFunc={projectFunc}
-          clearFunc={clearFunc}
-        />
-      </div>
-      <div className="items-center flex text-center">
-        <AddNewProjectButton />
-      </div>
+    <div className="flex-grow">
+      <SearchBar
+        Filings={filings || []}
+        projects={projects || []}
+        placeholder={placeHolder}
+        FilingFunc={FilingFunc}
+        projectFunc={projectFunc}
+        clearFunc={clearFunc}
+      />
     </div>
   );
 }

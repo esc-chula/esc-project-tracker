@@ -3,21 +3,23 @@ import { User } from '../interface/user';
 
 export async function findUserByCondition({
   id,
-  name,
+  username,
   studentId,
 }: {
   id?: string;
-  name?: string;
+  username?: string;
   studentId?: string;
 }): Promise<User | null> {
+
+
   try {
     return await trpc.user.findUserByCondition.query({
       id,
-      name,
+      username,
       studentId,
     });
   } catch (error) {
     console.error(error);
-    throw new Error('Error file user by condition');
+    throw new Error('Error find user by condition');
   }
 }

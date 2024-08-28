@@ -1,18 +1,18 @@
 'use client';
 import { Radio } from 'lucide-react';
-import Header from '../../../components/header/header';
+import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import DocumentStatusStepper from '@/src/components/status/StatusStepper';
 import { StatusTable } from '@/src/components/status/StatusTable';
 import getFilingsByUserId from '@/src/service/getFilingsByUserId';
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 import { useToast } from '@/src/components/ui/use-toast';
 import { useEffect, useState } from 'react';
 
 export default function Page() {
   // TODO: Change the userId to the actual userId
   const { toast } = useToast();
-  const [statuses, setStatuses] = useState<Filing[]>([]);
+  const [statuses, setStatuses] = useState<FilingType[]>([]);
 
   useEffect(() => {
     const fetchFiling = async () => {

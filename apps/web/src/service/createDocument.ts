@@ -1,32 +1,18 @@
-import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
+import { CreateDocumentDTO } from '../../../api/src/document_/document.dto';
 import { trpc } from '../app/trpc';
 import { Document } from '../interface/document';
 
-export default async function createDocument(
-  name: string,
-  filingId: string,
-  pdfName: string,
-  docName: string,
-  activity: DocumentActivity,
-  userId: string,
-  detail?: string,
-  status?: DocumentStatus,
-): Promise<Document> {
+export default async function createDocument({
+  document,
+}: {
+  document: CreateDocumentDTO;
+}): Promise<Document> {
   try {
-    const data = await trpc.document.createDocument.mutate({
-      name,
-      filingId,
-      pdfName,
-      docName,
-      activity,
-      userId,
-      detail,
-      status,
-    });
-
-    return data;
-  } catch (err) {
-    console.log(err);
-    throw new Error('ไม่สามารถสร้างฉบับร่างของเอกสารได้');
+    console.log(document);
+    const result = await trpc.document.createDocument.mutate(document);
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error('failed to create document');
   }
 }
