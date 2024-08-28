@@ -1,6 +1,6 @@
 'use client';
 import { Radio } from 'lucide-react';
-import Header from '../../../components/header/header';
+import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import DocumentStatusStepper from '@/src/components/status/StatusStepper';
 import { StatusTable } from '@/src/components/status/StatusTable';

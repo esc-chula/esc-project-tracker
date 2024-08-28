@@ -1,36 +1,43 @@
-import { FilingType } from "@/src/interface/filing";
-import NoData from "../all-projects/noData";
-import FilingMenuHeader from "./filingMenuHeader";
-import FilingMenuItem from "./filingMenuItem";
+import { FilingType } from '@/src/interface/filing';
+import NoData from '../all-projects/noData';
+import FilingMenuHeader from './filingMenuHeader';
+import FilingMenuItem from './filingMenuItem';
 import {
   statusFilingItems,
   typeFilingItems,
-} from "@/src/constant/filterFiling";
-import SelectType from "../filter/selectType";
-import React from "react";
-import { useToast } from "../ui/use-toast";
-import findAllFiling from "@/src/service/findAllFiling";
-import { departmentProjectItems } from "@/src/constant/filterProject";
-import findFilingsWithFilter from "@/src/service/findFilingsWithFilter";
-import getFilingByFilingId from "@/src/service/getFilingByFilingId";
+} from '@/src/constant/filterFiling';
+import SelectType from '../filter/selectType';
+import React from 'react';
+import { useToast } from '../ui/use-toast';
+import findAllFiling from '@/src/service/findAllFiling';
+import { departmentProjectItems } from '@/src/constant/filterProject';
+import findFilingsWithFilter from '@/src/service/findFilingsWithFilter';
+import getFilingByFilingId from '@/src/service/getFilingByFilingId';
+import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
+import createDocument from '@/src/service/createDocument';
 export default function FilingMenu({
   searchedFilingId,
+  isUpdateMode,
 }: {
   searchedFilingId: string | null;
+  isUpdateMode: boolean;
 }) {
   const { toast } = useToast();
 
-  const [departmentFiling, setDepartmentFiling] = React.useState<string>("ALL");
-  const [statusFiling, setStatusFiling] = React.useState<string>("ALL");
-  const [typeFiling, setTypeFiling] = React.useState<string>("ALL");
+  const [departmentFiling, setDepartmentFiling] = React.useState<string>('ALL');
+  const [statusFiling, setStatusFiling] = React.useState<string>('ALL');
+  const [typeFiling, setTypeFiling] = React.useState<string>('ALL');
   const [filings, setFilings] = React.useState<FilingType[]>([]);
+  const [prepareUpdatedDocuments, setPrepareUpdatedDocuments] = React.useState<
+    Map<string, CreateDocumentDTO>
+  >(new Map());
 
   async function fetchData() {
     try {
       if (
-        departmentFiling === "ALL" &&
-        statusFiling === "ALL" &&
-        typeFiling === "ALL"
+        departmentFiling === 'ALL' &&
+        statusFiling === 'ALL' &&
+        typeFiling === 'ALL'
       ) {
         // case search
         if (searchedFilingId) {
@@ -48,7 +55,7 @@ export default function FilingMenu({
             statusFiling,
             typeFiling,
             departmentFiling,
-            searchedFilingId
+            searchedFilingId,
           );
           if (fetchedFiling) {
             setFilings(fetchedFiling);
@@ -58,7 +65,7 @@ export default function FilingMenu({
           const fetchedFiling = await findFilingsWithFilter(
             statusFiling,
             typeFiling,
-            departmentFiling
+            departmentFiling,
           );
           if (fetchedFiling) {
             setFilings(fetchedFiling);
@@ -68,7 +75,7 @@ export default function FilingMenu({
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: "ไม่สำเร็จ",
+          title: 'ไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -79,6 +86,56 @@ export default function FilingMenu({
   React.useEffect(() => {
     fetchData();
   }, [departmentFiling, statusFiling, typeFiling, searchedFilingId]);
+
+  const addPrepareUpdatedDocument = (
+    prepareUpdatedDocument: CreateDocumentDTO,
+  ) => {
+    setPrepareUpdatedDocuments((prevDocuments) => {
+      const updatedDocuments = new Map(prevDocuments);
+      updatedDocuments.set(
+        prepareUpdatedDocument.filingId,
+        prepareUpdatedDocument,
+      );
+      return updatedDocuments;
+    });
+  };
+
+  React.useEffect(() => {
+    const createDocuments = async () => {
+      if (!isUpdateMode && prepareUpdatedDocuments.size > 0) {
+        let filingIdsNoUpdated: string[] = [];
+
+        const documentPromises = Array.from(
+          prepareUpdatedDocuments.values(),
+        ).map((newDocument) =>
+          createDocument({ document: newDocument }).catch(() => {
+            filingIdsNoUpdated.push(newDocument.name);
+          }),
+        );
+
+        await Promise.all(documentPromises);
+
+        if (filingIdsNoUpdated.length > 0) {
+          toast({
+            title: `เอกสารบางส่วนไม่สามารถแก้ไขได้`,
+            description: `ไม่สามารถแก้ไขเอกสาร ${filingIdsNoUpdated.join(', ')}`,
+            isError: true,
+            duration: 5000,
+          });
+        } else {
+          toast({
+            title: `แก้ไขเอกสารทั้งหมดสำเร็จ`,
+            description: `แก้ไขเอกสารหมายเลข ${Array.from(prepareUpdatedDocuments.keys()).join(', ')}`,
+            isError: false,
+            duration: 5000,
+          });
+        }
+
+        prepareUpdatedDocuments.clear();
+      }
+    };
+    createDocuments();
+  }, [isUpdateMode]);
 
   return (
     <div className="w-full">
@@ -106,9 +163,18 @@ export default function FilingMenu({
         <div className="w-full h-[500px] overflow-x-auto overflow-y-auto rounded-t-xl">
           <table className="w-full text-sm">
             <FilingMenuHeader />
-            {filings.map((filing, index) => (
-              <FilingMenuItem filing={filing} key={filing.id} />
-            ))}
+            <tbody>
+              {filings.map((filing, index) => (
+                <FilingMenuItem
+                  filing={filing}
+                  key={filing.id}
+                  isUpdateMode={isUpdateMode}
+                  setPrepareUpdatedDocument={(newDocument) => {
+                    addPrepareUpdatedDocument(newDocument as CreateDocumentDTO);
+                  }}
+                />
+              ))}
+            </tbody>
           </table>
         </div>
       )}

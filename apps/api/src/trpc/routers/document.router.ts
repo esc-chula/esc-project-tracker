@@ -5,6 +5,7 @@ import { optional, z } from 'zod';
 
 import { DocumentService } from '../../document_/document.service';
 import { DocumentActivity, DocumentStatus } from '../../constant/enum';
+import { find } from 'rxjs';
 
 @Injectable()
 export class DocumentRouter {
@@ -20,7 +21,6 @@ export class DocumentRouter {
       .query(({ input }) => {
         return this.documentService.findByUserID(input.userId);
       }),
-
     // Get Documents By ProjectID -> Document[]
     findDocumentsByProjectId: this.trpcService.trpc.procedure
       .input(z.object({ projectId: z.string() }))
@@ -33,6 +33,9 @@ export class DocumentRouter {
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.documentService.findDocumentsByFilingId(input.filingId);
+      }),
+      findLatestDocumentByFilingId: this.trpcService.trpc.procedure.input(z.object({ filingId: z.string() })).query(({ input }) => {
+        return this.documentService.findLatestDocumentByFilingId(input.filingId);
       }),
 
     // Create Document -> Document

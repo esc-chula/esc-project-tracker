@@ -9,14 +9,11 @@ export default function Page() {
     <>
       <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh]">
         <Header>
-          <Title icon={<Folders size={40} />} href="/projects">
+          <Title icon={<Folders size={40} />} href="/admin/projects">
             เปิดโครงการใหม่
           </Title>
         </Header>
-        <ProjectForm
-          formAction={projectFormAction.USER_CREATE}
-          isAdmin={false}
-        />
+        <ProjectForm formAction={projectFormAction.ADMIN_CREATE} isAdmin />
       </main>
     </>
   );
