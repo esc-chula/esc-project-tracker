@@ -60,21 +60,13 @@ export class FilingRouter {
         z.object({
           filingId: z.string(),
           filingName: z.string().optional(),
-          FilingStatus: z
-            .enum([
-              FilingStatus.APPROVED,
-              FilingStatus.DRAFT,
-              FilingStatus.RETURNED,
-              FilingStatus.WAIT_FOR_SECRETARY,
-              FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
-            ])
-            .optional(),
+          filingStatus: z.nativeEnum(FilingStatus).optional(),
         }),
       )
       .query(({ input }) => {
         return this.filingService.updateFiling(input.filingId, {
           name: input.filingName,
-          status: input.FilingStatus,
+          status: input.filingStatus,
         });
       }),
     //Delete filing
