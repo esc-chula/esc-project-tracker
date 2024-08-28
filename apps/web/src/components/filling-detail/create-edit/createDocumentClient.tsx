@@ -18,7 +18,7 @@ import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
 import { Document } from '@/src/interface/document';
-import createDocument from '@/src/service/createDocument';
+import createDocument from '@/src/service/document/createDocument';
 import { DocumentActivity } from '@/src/constant/enum';
 import { checkFileType } from '@/src/lib/utils';
 import { useMemo } from 'react';
@@ -62,15 +62,17 @@ export default function CreateDocumentClient({
     // upload file
     // then createDocument
     // TODO: change to actual userId
-    const newDocument = await createDocument(
-      values.detail,
-      filingId,
-      'https://www.google.com',
-      'https://www.google.com',
-      values.activity as DocumentActivity,
-      'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-      values.note,
-    );
+    const newDocument = await createDocument({
+      document: {
+        name: values.detail,
+        filingId,
+        pdfName: 'https://www.google.com',
+        docName: 'https://www.google.com',
+        activity: values.activity as DocumentActivity,
+        userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+        detail: values.note,
+      },
+    });
     afterCreateDocument(newDocument);
   }
 

@@ -20,10 +20,10 @@ import {
 } from '../ui/dialog';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useToast } from '../ui/use-toast';
-import updateFilingName from '@/src/service/updateFiling';
+import updateFilingName from '@/src/service/filing/updateFiling';
 import CreateDocumentClient from './create-edit/createDocumentClient';
 import { Document } from '@/src/interface/document';
-import updateDocument from '@/src/service/updateDocument';
+import updateDocument from '@/src/service/document/updateDocument';
 
 export default function FilingTimelineHeader({
   name,
