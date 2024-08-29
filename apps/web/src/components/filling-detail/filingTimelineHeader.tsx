@@ -1,13 +1,5 @@
 'use client';
-import {
-  CircleCheck,
-  CirclePlus,
-  FileText,
-  Info,
-  Plus,
-  Send,
-  X,
-} from 'lucide-react';
+import { CircleCheck, CirclePlus, FileText, Plus, Send, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
@@ -24,6 +16,7 @@ import updateFilingName from '@/src/service/filing/updateFiling';
 import CreateDocumentClient from './create-edit/createDocumentClient';
 import { Document } from '@/src/interface/document';
 import updateDocument from '@/src/service/document/updateDocument';
+import { BiSolidFilePdf } from 'react-icons/bi';
 
 export default function FilingTimelineHeader({
   name,
@@ -33,6 +26,7 @@ export default function FilingTimelineHeader({
   setStatus,
   setDocuments,
   filingId,
+  projectId,
   showCreateDocument,
   setShowCreateDocument,
 }: {
@@ -43,6 +37,7 @@ export default function FilingTimelineHeader({
   setStatus: (status: FilingStatus) => void;
   setDocuments: Dispatch<SetStateAction<Document[]>>;
   filingId: string;
+  projectId: string;
   showCreateDocument: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
 }) {
@@ -170,7 +165,7 @@ export default function FilingTimelineHeader({
                 target="_blank"
               >
                 <Button className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
-                  <Info className="h-8 w-8 mr-2" />
+                  <BiSolidFilePdf className="h-8 w-8 mr-2" />
                   อ่าน
                 </Button>
               </Link>
@@ -257,6 +252,7 @@ export default function FilingTimelineHeader({
               setShowCreateDocument(false);
             }}
             filingId={filingId}
+            projectId={projectId}
           />
         </div>
       )}

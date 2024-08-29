@@ -52,7 +52,9 @@ export default function FilingTimeline({
               }
               setShowCreateDocument={setShowCreateDocument}
             />
-          ) : document.status === DocumentStatus.DRAFT ? (
+          ) : document.status === DocumentStatus.DRAFT &&
+            (status === FilingStatus.DRAFT ||
+              status === FilingStatus.DOCUMENT_CREATED) ? (
             <DisplayWithNote document={document} user={user} />
           ) : (
             <DisplayWithNoteAndStatus document={document} user={user} />

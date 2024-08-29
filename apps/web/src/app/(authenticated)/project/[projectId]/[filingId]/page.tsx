@@ -120,6 +120,7 @@ export default function Page({
           latestPDFUrl={documents[0]?.pdfName ?? '#'}
           setStatus={setStatus}
           setDocuments={setDocuments}
+          projectId={params.projectId}
           filingId={params.filingId}
           showCreateDocument={showCreateDocument}
           setShowCreateDocument={setShowCreateDocument}
