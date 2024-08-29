@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, CircleUserRound } from 'lucide-react';
 import NameDate from './nameDate';
 import Image from 'next/image';
 import StatusButton from './statusButton';
@@ -15,6 +15,7 @@ import FileDisplay from './fileDisplay';
 import { Document } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
+import { convertDate } from '@/src/lib/utils';
 
 export default function DisplayWithNoteAndStatus({
   user,
@@ -29,20 +30,13 @@ export default function DisplayWithNoteAndStatus({
     <div className="w-full relative">
       <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
         <div className="flex flex-row px-8">
+          {/* +7Hrs */}
           <NameDate
             title={user?.username ?? 'Secretary ESC'}
-            date={
-              'ส่งเอกสารเมื่อ ' +
-              new Date(document.createdAt).toLocaleString('th-TH')
-            }
+            date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}
             activity={TextDocumentActivity[document.activity]}
           >
-            <Image
-              src="/icons/esc-red.svg"
-              width={30}
-              height={30}
-              alt="esc-icon"
-            />
+            <CircleUserRound size={30} className="shrink-0" />
           </NameDate>
           <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
             <div className="font-bold text-sm">ความคิดเห็น</div>
@@ -79,15 +73,17 @@ export default function DisplayWithNoteAndStatus({
               <div className="pl-5 flex flex-col justify-around">
                 <div>ไฟล์แนบ</div>
                 <FileDisplay
-                  fileName="เอกสารสุดยอดสายลับอิอิอิอิอิอิอิอิอิอิvbvbvbvbvbv"
+                  fileName={document.pdfName}
                   fileType="pdf"
                   link=""
                 />
-                <FileDisplay
-                  fileName="เอกสารสุดยอดสายลับอิอิอิอิอิอิอิอิอิอิvbvbvbvbvbv"
-                  fileType="pdf"
-                  link=""
-                />
+                {document.docName !== '-' && (
+                  <FileDisplay
+                    fileName={document.docName}
+                    fileType="doc"
+                    link=""
+                  />
+                )}
               </div>
             </div>
           </div>

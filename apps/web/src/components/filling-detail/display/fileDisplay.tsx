@@ -1,5 +1,6 @@
-import Link from "next/link";
-import { FaFile } from "react-icons/fa6";
+import Link from 'next/link';
+import { BiSolidFilePdf } from 'react-icons/bi';
+import { FaFile } from 'react-icons/fa6';
 
 export default function FileDisplay({
   fileName,
@@ -12,14 +13,18 @@ export default function FileDisplay({
 }) {
   return (
     <Link href={link}>
-      <div className="w-60 bg-white border-black p-2 rounded-lg border-2 flex flex-row space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer">
-        <FaFile size={20} style={{ color: "skyblue" }} />
-        <div className="text-xxs">
+      <div className="w-60 bg-white border-black p-2 rounded-lg border-2 flex space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer">
+        {fileType === 'pdf' ? (
+          <BiSolidFilePdf size={20} className="text-red" />
+        ) : (
+          <FaFile size={20} style={{ color: 'skyblue' }} />
+        )}
+        <div className="text-xxs text-start">
           <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-[10vw] ">
-            เอกสารสุดยอดสายลับอิอิอิอิอิอิอิอิอิอิvbvbvbvbvbv
+            {fileName}
           </div>
           <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-[10vw]">
-            .PDF
+            .{fileType}
           </div>
         </div>
       </div>

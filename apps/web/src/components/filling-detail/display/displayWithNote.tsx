@@ -18,6 +18,7 @@ import FileDisplay from './fileDisplay';
 import { Document } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
+import { convertDate } from '@/src/lib/utils';
 
 export default function DisplayWithNote({
   document,
@@ -33,10 +34,7 @@ export default function DisplayWithNote({
       <div className="flex flex-row px-8">
         <NameDate
           title={user?.username ?? 'นายสมชาย สายชลลลลลลลลลลลลล'}
-          date={
-            'ส่งเอกสารเมื่อ ' +
-            new Date(document.createdAt).toLocaleString('th-TH')
-          }
+          date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}
           activity={TextDocumentActivity[document.activity]}
         >
           <CircleUserRound size={30} className="shrink-0" />
@@ -50,16 +48,14 @@ export default function DisplayWithNote({
           <div>
             <div className="font-bold text-sm">ไฟล์แนบ</div>
             <div className="flex flex-row py-2 gap-5 flex-wrap">
-              <FileDisplay
-                fileName="เอกสารสุดยอดสายลับอิอิอิอิอิอิอิอิอิอิvbvbvbvbvbv"
-                fileType="pdf"
-                link=""
-              />
-              <FileDisplay
-                fileName="เอกสารสุดยอดสายลับอิอิอิอิอิอิอิอิอิอิvbvbvbvbvbv"
-                fileType="pdf"
-                link=""
-              />
+              <FileDisplay fileName={document.pdfName} fileType="pdf" link="" />
+              {document.docName !== '-' && (
+                <FileDisplay
+                  fileName={document.docName}
+                  fileType="doc"
+                  link=""
+                />
+              )}
             </div>
           </div>
         </div>
