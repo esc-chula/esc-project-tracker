@@ -76,6 +76,9 @@ export default function CreateDocumentClient({
           }),
       ]);
 
+      if (!pdfName || (docFile && !docName))
+        throw new Error('Upload file failed');
+
       const [newDocument, _] = await Promise.all([
         createDocument({
           document: {

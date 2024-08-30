@@ -16,9 +16,11 @@ export default async function uploadFileToS3(obj: {
         body: formData,
       },
     );
-    return response.text();
+    const responseJSON = await response.json();
+    if (responseJSON.statusCode !== 201) throw new Error('Upload file failed');
+    return responseJSON.uploadedFileName;
   } catch (e) {
     console.log(e);
-    throw new Error('Can not upload file... try again');
+    throw new Error('อัปโหลดไฟล์ไม่สำเร็จ โปรดตรวจสอบว่าชื่อไฟล์ไม่ใช่ภาษาไทย');
   }
 }

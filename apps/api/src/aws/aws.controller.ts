@@ -19,11 +19,12 @@ export class AwsController {
     file: Express.Multer.File,
     @Body('folderName') folderName: string,
   ) {
-    return await this.awsService.uploadFileToS3(
+    const uploadedFileName = await this.awsService.uploadFileToS3(
       file.originalname,
       file.buffer,
       folderName,
     );
+    return { statusCode: 201, uploadedFileName };
   }
 
   @Post('/getUrlToFile')
