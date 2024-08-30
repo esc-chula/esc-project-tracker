@@ -40,9 +40,13 @@ export class AuthRouter {
         return this.authService.refreshToken(input.userId, input.refreshToken);
       }),
     signOut: this.trpcService.trpc.procedure
-      .input(z.string())
+      .input(
+        z.object({
+          userId: z.string(),
+        }),
+      )
       .query(({ input }) => {
-        return this.authService.signOut(input);
+        return this.authService.signOut(input.userId);
       }),
   });
 }

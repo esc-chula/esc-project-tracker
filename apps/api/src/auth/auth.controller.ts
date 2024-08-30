@@ -10,6 +10,8 @@ interface UserRequest extends Request {
     sub: string;
     username: string;
     role: string;
+    iat: number;
+    exp: number;
     refreshToken?: string;
   };
 }

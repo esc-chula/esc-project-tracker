@@ -2,9 +2,8 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn } from '@/src/service/signIn';
-import LandingPageHeader from '@/src/components/header/LandingPageHeader';
 import { LoaderCircle } from 'lucide-react';
+import { signIn } from '@/src/service/auth';
 
 export default function Auth({
   searchParams,

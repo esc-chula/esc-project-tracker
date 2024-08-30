@@ -40,9 +40,13 @@ export class AuthService {
     }
   }
 
-  async validateJWT(
-    token: string,
-  ): Promise<{ sub: string; username: string; role: string }> {
+  async validateJWT(token: string): Promise<{
+    sub: string;
+    username: string;
+    role: string;
+    iat: number;
+    exp: number;
+  }> {
     try {
       const validatedUser = this.jwtService.verify(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
