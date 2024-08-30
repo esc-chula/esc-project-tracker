@@ -64,7 +64,7 @@ export default function CreateDocumentClient({
       const docFile = values.file[swap ? 0 : 1];
       const folderName = `${projectId}/${filingId}`;
 
-      const [pdfRes, docRes] = await Promise.all([
+      const [pdfName, docName] = await Promise.all([
         uploadFileToS3({
           file: pdfFile,
           folderName,
@@ -75,15 +75,14 @@ export default function CreateDocumentClient({
             folderName,
           }),
       ]);
-      console.log(pdfRes, docRes);
 
       const [newDocument, _] = await Promise.all([
         createDocument({
           document: {
             name: values.detail,
             filingId,
-            pdfName: 'https://www.google.com',
-            docName: 'https://www.google.com',
+            pdfName: pdfName,
+            docName: docName ?? '',
             activity: values.activity as DocumentActivity,
             userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
             detail: values.note,

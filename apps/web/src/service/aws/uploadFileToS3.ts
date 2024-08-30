@@ -16,7 +16,7 @@ export default async function uploadFileToS3(obj: {
         body: formData,
       },
     );
-    return await response.json();
+    return response.text();
   } catch (e) {
     console.log(e);
     throw new Error('Can not upload file... try again');
