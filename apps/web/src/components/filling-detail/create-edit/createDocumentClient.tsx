@@ -19,29 +19,29 @@ import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
 import { Document } from '@/src/interface/document';
 import createDocument from '@/src/service/document/createDocument';
-import { DocumentActivity } from '@/src/constant/enum';
-import { checkFileType } from '@/src/lib/utils';
-import { useMemo } from 'react';
+import { DocumentActivity, FilingStatus } from '@/src/constant/enum';
+import { getFileType, zodDocumentFiles } from '@/src/lib/utils';
+import updateFilingName from '@/src/service/filing/updateFiling';
+import { toast } from '../../ui/use-toast';
+import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 
 export default function CreateDocumentClient({
   setShowCreateDocument,
   afterCreateDocument,
   filingId,
+  projectId,
+  status,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   afterCreateDocument: (createdDocument: Document) => void;
   filingId: string;
+  projectId: string;
+  status: FilingStatus;
 }) {
   const createdFormSchema = z.object({
     // Server side ไม่รู้จัก FileList ***
-    file: (typeof window === 'undefined' ? z.any() : z.instanceof(FileList))
-      .refine((file) => file?.length === 1, 'กรุณาเลือกไฟล์')
-      .refine(
-        (file) => checkFileType(file[0]),
-        'กรุณาเลือกไฟล์ที่มีนามสกุล .docx, .pdf, .doc',
-      ),
-
-    activity: z.string().optional(),
+    file: zodDocumentFiles,
+    activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
     detail: z.string().min(1, { message: 'กรุณากรอกรายละเอียด' }),
     note: z.string().optional(),
   });
@@ -49,7 +49,6 @@ export default function CreateDocumentClient({
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
     defaultValues: {
-      activity: '',
       detail: '',
       note: '',
     },
@@ -58,28 +57,55 @@ export default function CreateDocumentClient({
   const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    console.log(values);
-    // upload file
-    // then createDocument
     // TODO: change to actual userId
-    const newDocument = await createDocument({
-      document: {
-        name: values.detail,
-        filingId,
-        pdfName: 'https://www.google.com',
-        docName: 'https://www.google.com',
-        activity: values.activity as DocumentActivity,
-        userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-        detail: values.note,
-      },
-    });
-    afterCreateDocument(newDocument);
-  }
+    try {
+      const swap = getFileType(values.file[0]) !== 'pdf';
+      const pdfFile = values.file[swap ? 1 : 0];
+      const docFile = values.file[swap ? 0 : 1];
+      const folderName = `${projectId}/${filingId}`;
 
-  const isDisabled = useMemo(
-    () => form.formState.isSubmitting,
-    [form.formState.isSubmitting],
-  );
+      const [pdfRes, docRes] = await Promise.all([
+        uploadFileToS3({
+          file: pdfFile,
+          folderName,
+        }),
+        docFile &&
+          uploadFileToS3({
+            file: docFile,
+            folderName,
+          }),
+      ]);
+      console.log(pdfRes, docRes);
+
+      const [newDocument, _] = await Promise.all([
+        createDocument({
+          document: {
+            name: values.detail,
+            filingId,
+            pdfName: 'https://www.google.com',
+            docName: 'https://www.google.com',
+            activity: values.activity as DocumentActivity,
+            userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+            detail: values.note,
+          },
+        }),
+        status === FilingStatus.DRAFT &&
+          updateFilingName({
+            filingId,
+            filingStatus: FilingStatus.DOCUMENT_CREATED,
+          }),
+      ]);
+      afterCreateDocument(newDocument);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: 'ส่งเอกสารไม่สำเร็จ',
+          description: error.message,
+          isError: true,
+        });
+      }
+    }
+  }
 
   return (
     <>
@@ -163,7 +189,7 @@ export default function CreateDocumentClient({
             )}
           />
           <ButtonPanel
-            isDisabled={isDisabled}
+            isDisabled={form.formState.isSubmitting}
             setShowCreateDocument={setShowCreateDocument}
           />
         </form>

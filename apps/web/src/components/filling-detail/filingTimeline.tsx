@@ -15,14 +15,29 @@ export default function FilingTimeline({
   showCreateDocument,
   setShowCreateDocument,
   usernameMap,
+  handleDeleteDocument,
 }: {
   documents: Document[];
   status: FilingStatus;
   showCreateDocument: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   usernameMap: Map<string, User>;
+  handleDeleteDocument: (documentId: string) => Promise<void>;
 }) {
   let previousDate = '';
+
+  const displayEditButton =
+    status === FilingStatus.RETURNED &&
+    documents.length > 0 &&
+    documents[0].status !== DocumentStatus.DRAFT;
+
+  let returnedDocumentIndex = documents.length;
+  for (let i = 0; i < documents.length; i++) {
+    if (documents[i].status === DocumentStatus.RETURNED) {
+      returnedDocumentIndex = i;
+      break;
+    }
+  }
   return (
     <div className="flex flex-col items-center gap-7">
       {/* 60+40+(32/2)-(3/2) = 114.5 */}
@@ -44,18 +59,20 @@ export default function FilingTimeline({
             <DisplayWithStatus
               document={document}
               user={user}
-              warning={status === FilingStatus.RETURNED && !showCreateDocument}
-              displayEditButton={
-                status === FilingStatus.RETURNED &&
-                documents.length > 0 &&
-                documents[0].status !== DocumentStatus.DRAFT
-              }
+              warning={displayEditButton && !showCreateDocument}
+              displayEditButton={displayEditButton}
               setShowCreateDocument={setShowCreateDocument}
             />
           ) : document.status === DocumentStatus.DRAFT &&
             (status === FilingStatus.DRAFT ||
-              status === FilingStatus.DOCUMENT_CREATED) ? (
-            <DisplayWithNote document={document} user={user} />
+              status === FilingStatus.DOCUMENT_CREATED ||
+              (status === FilingStatus.RETURNED &&
+                index < returnedDocumentIndex)) ? (
+            <DisplayWithNote
+              document={document}
+              user={user}
+              handleDeleteDocument={handleDeleteDocument}
+            />
           ) : (
             <DisplayWithNoteAndStatus document={document} user={user} />
           );

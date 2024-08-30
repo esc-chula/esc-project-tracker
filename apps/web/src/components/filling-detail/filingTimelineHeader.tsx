@@ -1,7 +1,6 @@
 'use client';
-import { CircleCheck, CirclePlus, FileText, Plus, Send, X } from 'lucide-react';
+import { CirclePlus, FileText, Plus, Send, X } from 'lucide-react';
 import { Button } from '../ui/button';
-import Link from 'next/link';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import {
   Dialog,
@@ -10,19 +9,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import updateFilingName from '@/src/service/filing/updateFiling';
 import CreateDocumentClient from './create-edit/createDocumentClient';
 import { Document } from '@/src/interface/document';
 import updateDocument from '@/src/service/document/updateDocument';
-import { BiSolidFilePdf } from 'react-icons/bi';
+import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
+import getUrlToFile from '@/src/service/aws/getUrlToFile';
 
 export default function FilingTimelineHeader({
   name,
   status,
   documents,
-  latestPDFUrl = '#',
+  latestDocument,
   setStatus,
   setDocuments,
   filingId,
@@ -33,7 +33,7 @@ export default function FilingTimelineHeader({
   name: string;
   status: FilingStatus;
   documents: Document[];
-  latestPDFUrl?: string;
+  latestDocument: Document | null;
   setStatus: (status: FilingStatus) => void;
   setDocuments: Dispatch<SetStateAction<Document[]>>;
   filingId: string;
@@ -43,7 +43,7 @@ export default function FilingTimelineHeader({
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [documentFixed, setDocumentFixed] = useState<boolean>(false);
+  const [pdfLink, setPdfLink] = useState<string | undefined>();
   const { toast } = useToast();
 
   const updateDocumentStatuses = async (
@@ -78,11 +78,20 @@ export default function FilingTimelineHeader({
 
   const cancelDocumentSubmission = async () => {
     setIsSubmitting(true);
+
+    let updatedStatus = FilingStatus.DOCUMENT_CREATED;
+    for (let doc of documents) {
+      if (doc.status === DocumentStatus.RETURNED) {
+        updatedStatus = FilingStatus.RETURNED;
+        break;
+      }
+    }
+
     try {
       const [updatedFiling, updatedDocuments] = await Promise.all([
         updateFilingName({
           filingId,
-          filingStatus: FilingStatus.DOCUMENT_CREATED,
+          filingStatus: updatedStatus,
         }),
         updateDocumentStatuses(
           documents,
@@ -93,7 +102,7 @@ export default function FilingTimelineHeader({
       console.log(updatedFiling);
 
       if (updatedFiling) {
-        setStatus(FilingStatus.DOCUMENT_CREATED);
+        setStatus(updatedStatus);
         setDocuments(updatedDocuments);
         setIsOpen(false);
         toast({
@@ -149,6 +158,17 @@ export default function FilingTimelineHeader({
     }
     setIsSubmitting(false);
   };
+  const fetchPdfLink = async () => {
+    const signedUrl = await getUrlToFile({
+      fileName: latestDocument?.pdfName + '.pdf' ?? '',
+      folderName: `${projectId}/${filingId}`,
+    });
+
+    setPdfLink(signedUrl);
+  };
+  useEffect(() => {
+    if (status === FilingStatus.APPROVED) fetchPdfLink();
+  }, []);
   return (
     <>
       <div className="flex items-center justify-between gap-3">
@@ -158,22 +178,7 @@ export default function FilingTimelineHeader({
         </span>
         <span className="flex gap-5">
           {status === FilingStatus.APPROVED ? (
-            <>
-              <Link
-                href={latestPDFUrl}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <Button className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white">
-                  <BiSolidFilePdf className="h-8 w-8 mr-2" />
-                  อ่าน
-                </Button>
-              </Link>
-              <Button className="pointer-events-none mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-accepted text-white">
-                <CircleCheck className="h-8 w-8 mr-2" />
-                สำเร็จ
-              </Button>
-            </>
+            <FilingTimelineHeaderApproved pdfLink={pdfLink ?? ''} />
           ) : (
             <>
               <Button
@@ -225,10 +230,13 @@ export default function FilingTimelineHeader({
               ) : (
                 <Button
                   disabled={
-                    status === FilingStatus.DRAFT ||
-                    (status === FilingStatus.RETURNED && !documentFixed) ||
-                    status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR ||
-                    isSubmitting
+                    isSubmitting ||
+                    !(
+                      (status === FilingStatus.DOCUMENT_CREATED ||
+                        status === FilingStatus.RETURNED) &&
+                      documents.length &&
+                      documents[0].status === DocumentStatus.DRAFT
+                    )
                   }
                   onClick={submitDocument}
                   className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white"
@@ -247,10 +255,11 @@ export default function FilingTimelineHeader({
             setShowCreateDocument={setShowCreateDocument}
             afterCreateDocument={(createdDocument) => {
               setDocuments((prev) => [createdDocument, ...prev]);
-              setStatus(FilingStatus.DOCUMENT_CREATED);
-              setDocumentFixed(true);
+              if (status === FilingStatus.DRAFT)
+                setStatus(FilingStatus.DOCUMENT_CREATED);
               setShowCreateDocument(false);
             }}
+            status={status}
             filingId={filingId}
             projectId={projectId}
           />

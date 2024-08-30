@@ -1,12 +1,12 @@
 import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import { trpc } from '../../app/trpc';
-import { DocumentType } from '../../interface/document';
+import { Document } from '@/src/interface/document';
 
 export default async function createDocument({
   document,
 }: {
   document: CreateDocumentDTO;
-}): Promise<DocumentType> {
+}): Promise<Document> {
   try {
     console.log(document);
     const result = await trpc.document.createDocument.mutate(document);

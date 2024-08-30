@@ -4,7 +4,6 @@ import { ChevronDown, ChevronUp, CircleUserRound } from 'lucide-react';
 import NameDate from './nameDate';
 import Image from 'next/image';
 import StatusButton from './statusButton';
-import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
 import {
   Collapsible,
   CollapsibleContent,
@@ -30,7 +29,6 @@ export default function DisplayWithNoteAndStatus({
     <div className="w-full relative">
       <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
         <div className="flex flex-row px-8">
-          {/* +7Hrs */}
           <NameDate
             title={user?.username ?? 'Secretary ESC'}
             date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}

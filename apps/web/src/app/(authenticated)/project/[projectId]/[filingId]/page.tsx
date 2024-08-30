@@ -14,6 +14,9 @@ import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilin
 import { Document } from '@/src/interface/document';
 import { findUserByUserId } from '@/src/service/findUserByUserId';
 import { User } from '@/src/interface/user';
+import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
+import deleteDocument from '@/src/service/document/deleteDocument';
+import updateFilingName from '@/src/service/filing/updateFiling';
 
 export default function Page({
   params,
@@ -24,6 +27,10 @@ export default function Page({
   const [documents, setDocuments] = useState<Document[]>([]);
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
   const [usernameMap, setUsernameMap] = useState<Map<string, User>>(new Map());
+  const [latestDocument, setLatestDocument] = useState<Document | null>(null);
+  // check uuid
+  // ถ้าสร้าง doc ใหม่ usernameMap ต้องอัปเดตมั้ย?
+  // get Url fileDisplay
   const { toast } = useToast();
   const setStatus = useMemo(
     () => (status: FilingStatus) => {
@@ -31,46 +38,39 @@ export default function Page({
     },
     [],
   );
-  const fetchFiling = async () => {
-    try {
-      const filingData = await getFilingByFilingId(params.filingId);
-      console.log(filingData);
 
-      if (filingData) {
-        fetchDocuments(filingData);
-        setFiling(filingData);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        toast({
-          title: 'ไม่สำเร็จ',
-          description: err.message,
-          isError: true,
-        });
-      }
-    }
+  const getUsernameMap = async (documents: Document[]) => {
+    const uniqueUserIds = new Set(
+      documents.map((doc) =>
+        doc.userId ? findUserByUserId(doc.userId) : undefined,
+      ),
+    );
+    const users = await Promise.all(uniqueUserIds);
+
+    const updatedUsernameMap = new Map();
+    users.forEach((user) => {
+      if (user) updatedUsernameMap.set(user.id, user);
+    });
+    return updatedUsernameMap;
   };
-  const fetchDocuments = async (filingData: Filing) => {
+
+  const fetchData = async () => {
     try {
-      const documentsData = await findDocumentsByFilingId(params.filingId);
+      const [filingData, documentsData, latestDocumentData] = await Promise.all(
+        [
+          getFilingByFilingId(params.filingId),
+          findDocumentsByFilingId(params.filingId),
+          findLatestDocumentByFilingId(params.filingId),
+        ],
+      );
+      if (filingData) setFiling(filingData);
+      if (latestDocumentData) setLatestDocument(latestDocumentData);
+
       if (documentsData.length === 0) return;
+      setDocuments(documentsData);
       // get pdf url
 
-      const uniqueUserIds = new Set(
-        documentsData.map((doc) =>
-          doc.userId ? findUserByUserId(doc.userId) : undefined,
-        ),
-      );
-      const users = await Promise.all(uniqueUserIds);
-
-      const updatedUsernameMap = new Map();
-      users.forEach((user) => {
-        if (user) {
-          updatedUsernameMap.set(user.id, user);
-        }
-      });
-
-      setDocuments(documentsData);
+      const updatedUsernameMap = await getUsernameMap(documentsData);
       setUsernameMap(updatedUsernameMap);
     } catch (err) {
       if (err instanceof Error) {
@@ -82,8 +82,37 @@ export default function Page({
       }
     }
   };
+  const handleDeleteDocument = async (documentId: string) => {
+    try {
+      await Promise.all([
+        filing?.status === FilingStatus.DOCUMENT_CREATED &&
+          updateFilingName({
+            filingId: filing?.id,
+            filingStatus: FilingStatus.DRAFT,
+          }),
+        deleteDocument(documentId),
+      ]);
+
+      const updatedDocuments = documents.filter((doc) => doc.id !== documentId);
+      setDocuments(updatedDocuments);
+      if (filing?.status === FilingStatus.DOCUMENT_CREATED)
+        setStatus(FilingStatus.DRAFT);
+      toast({
+        title: 'ลบสำเร็จ',
+        description: 'ลบเอกสารฉบับร่างสำเร็จ',
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        toast({
+          title: 'ไม่สำเร็จ',
+          description: err.message,
+          isError: true,
+        });
+      }
+    }
+  };
   useEffect(() => {
-    fetchFiling();
+    fetchData();
   }, []);
   return (
     <main className="w-full pt-[68px]">
@@ -117,7 +146,7 @@ export default function Page({
           }
           status={filing?.status ?? FilingStatus.DRAFT}
           documents={documents}
-          latestPDFUrl={documents[0]?.pdfName ?? '#'}
+          latestDocument={latestDocument}
           setStatus={setStatus}
           setDocuments={setDocuments}
           projectId={params.projectId}
@@ -134,6 +163,7 @@ export default function Page({
           showCreateDocument={showCreateDocument}
           setShowCreateDocument={setShowCreateDocument}
           usernameMap={usernameMap}
+          handleDeleteDocument={handleDeleteDocument}
         />
       </section>
     </main>

@@ -16,12 +16,14 @@ export default function FileInputPanel({
         {/* If have file show file name*/}
         {fileList && fileList.length ? (
           <div className="flex flex-col space-y-2 h-full justify-around">
-            {Array.from(fileList).map((file) => (
-              <FileDisplay
-                fileName={file.name.split('.').slice(0, -1).join('.')}
-                fileType={file.name.split('.').pop() ?? ''}
-                link="#"
-              />
+            {Array.from(fileList).map((file, index) => (
+              <div key={index}>
+                <FileDisplay
+                  fileName={file.name.split('.').slice(0, -1).join('.')}
+                  fileType={file.name.split('.').pop() ?? ''}
+                  link="#"
+                />
+              </div>
             ))}
           </div>
         ) : (
