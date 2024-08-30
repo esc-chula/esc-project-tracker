@@ -40,6 +40,20 @@ export class AuthService {
     }
   }
 
+  async validateJWT(
+    token: string,
+  ): Promise<{ sub: string; username: string; role: string }> {
+    try {
+      const validatedUser = this.jwtService.verify(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
+
+      return validatedUser;
+    } catch (error) {
+      throw new ForbiddenException('Invalid JWT token');
+    }
+  }
+
   async signIn(
     token: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
@@ -64,7 +78,11 @@ export class AuthService {
       username = createdUser.username;
     }
 
-    const tokens = await this.getTokens(createdUser.id, username);
+    const tokens = await this.getTokens(
+      createdUser.id,
+      username,
+      createdUser.role,
+    );
     await this.updateRefreshToken(createdUser.id, tokens.refreshToken);
     return tokens;
   }
@@ -91,7 +109,7 @@ export class AuthService {
       refreshToken,
     );
     if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
-    const tokens = await this.getTokens(user.id, user.username);
+    const tokens = await this.getTokens(user.id, user.username, user.role);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
@@ -106,12 +124,14 @@ export class AuthService {
   async getTokens(
     userId: string,
     username: string,
+    role: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
           sub: userId,
           username,
+          role,
         },
         {
           secret: this.configService.get<string>('JWT_SECRET'),
@@ -122,6 +142,7 @@ export class AuthService {
         {
           sub: userId,
           username,
+          role,
         },
         {
           secret: this.configService.get<string>('JWT_SECRET'),
