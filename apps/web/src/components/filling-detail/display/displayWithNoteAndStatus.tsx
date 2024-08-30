@@ -68,20 +68,22 @@ export default function DisplayWithNoteAndStatus({
                   defaultValue={document.detail}
                 />
               </div>
-              <div className="pl-5 flex flex-col justify-around">
+              <div className="pl-5">
                 <div>ไฟล์แนบ</div>
-                <FileDisplay
-                  fileName={document.pdfName}
-                  fileType="pdf"
-                  link=""
-                />
-                {document.docName !== '-' && (
+                <div className="flex flex-col gap-6 pt-2">
                   <FileDisplay
-                    fileName={document.docName}
-                    fileType="doc"
+                    fileName={document.pdfName}
+                    fileType="pdf"
                     link=""
                   />
-                )}
+                  {document.docName !== '' && (
+                    <FileDisplay
+                      fileName={document.docName}
+                      fileType="doc"
+                      link=""
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

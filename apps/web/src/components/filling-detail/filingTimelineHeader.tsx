@@ -160,15 +160,16 @@ export default function FilingTimelineHeader({
   };
   const fetchPdfLink = async () => {
     const signedUrl = await getUrlToFile({
-      fileName: latestDocument?.pdfName + '.pdf' ?? '',
+      fileName: latestDocument?.pdfName ?? '',
       folderName: `${projectId}/${filingId}`,
     });
 
     setPdfLink(signedUrl);
   };
   useEffect(() => {
-    if (status === FilingStatus.APPROVED) fetchPdfLink();
-  }, []);
+    if (status === FilingStatus.APPROVED && latestDocument) fetchPdfLink();
+  }, [status, latestDocument]);
+
   return (
     <>
       <div className="flex items-center justify-between gap-3">

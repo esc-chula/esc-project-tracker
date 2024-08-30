@@ -86,6 +86,7 @@ export default function Page({
     try {
       await Promise.all([
         filing?.status === FilingStatus.DOCUMENT_CREATED &&
+          documents.length === 1 &&
           updateFilingName({
             filingId: filing?.id,
             filingStatus: FilingStatus.DRAFT,
@@ -95,7 +96,10 @@ export default function Page({
 
       const updatedDocuments = documents.filter((doc) => doc.id !== documentId);
       setDocuments(updatedDocuments);
-      if (filing?.status === FilingStatus.DOCUMENT_CREATED)
+      if (
+        filing?.status === FilingStatus.DOCUMENT_CREATED &&
+        documents.length === 1
+      )
         setStatus(FilingStatus.DRAFT);
       toast({
         title: 'ลบสำเร็จ',
