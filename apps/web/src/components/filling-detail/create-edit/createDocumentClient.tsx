@@ -95,10 +95,14 @@ export default function CreateDocumentClient({
           }),
       ]);
       afterCreateDocument(newDocument);
+      toast({
+        title: 'สร้างเอกสารสำเร็จ',
+        description: `สร้างเอกสาร ${newDocument.name} สำเร็จ`,
+      });
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: 'ส่งเอกสารไม่สำเร็จ',
+          title: 'สร้างเอกสารไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
