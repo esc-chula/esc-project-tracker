@@ -8,7 +8,7 @@ import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
 import { useEffect, useMemo, useState } from 'react';
-import { useToast } from '@/src/components/ui/use-toast';
+import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
 import { Document } from '@/src/interface/document';
@@ -17,6 +17,7 @@ import { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import deleteDocument from '@/src/service/document/deleteDocument';
 import updateFilingName from '@/src/service/filing/updateFiling';
+import { isUUID } from '@/src/lib/utils';
 
 export default function Page({
   params,
@@ -28,10 +29,8 @@ export default function Page({
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
   const [usernameMap, setUsernameMap] = useState<Map<string, User>>(new Map());
   const [latestDocument, setLatestDocument] = useState<Document | null>(null);
-  // check uuid
   // ถ้าสร้าง doc ใหม่ usernameMap ต้องอัปเดตมั้ย?
   // get Url fileDisplay
-  const { toast } = useToast();
   const setStatus = useMemo(
     () => (status: FilingStatus) => {
       setFiling((prev) => (prev ? { ...prev, status } : null));
@@ -53,9 +52,19 @@ export default function Page({
     });
     return updatedUsernameMap;
   };
-
   const fetchData = async () => {
     try {
+      if (!isUUID(params.projectId)) {
+        setTimeout(() => {
+          toast({
+            title: 'ไม่พบโปรเจค',
+            description: 'โปรเจคไม่อยู่ในรูป UUID',
+            isError: true,
+          });
+        }, 3000);
+        return;
+      }
+
       const [filingData, documentsData, latestDocumentData] = await Promise.all(
         [
           getFilingByFilingId(params.filingId),
@@ -68,7 +77,6 @@ export default function Page({
 
       if (documentsData.length === 0) return;
       setDocuments(documentsData);
-      // get pdf url
 
       const updatedUsernameMap = await getUsernameMap(documentsData);
       setUsernameMap(updatedUsernameMap);
@@ -142,22 +150,28 @@ export default function Page({
         <DocumentStatusStepper status={filing?.status ?? 'LOADING'} />
       </section>
       <section className="px-15 mb-7">
-        <FilingTimelineHeader
-          name={
-            filing
-              ? filing.projectCode + '-' + filing.FilingCode + ' ' + filing.name
-              : '...'
-          }
-          status={filing?.status ?? FilingStatus.DRAFT}
-          documents={documents}
-          latestDocument={latestDocument}
-          setStatus={setStatus}
-          setDocuments={setDocuments}
-          projectId={params.projectId}
-          filingId={params.filingId}
-          showCreateDocument={showCreateDocument}
-          setShowCreateDocument={setShowCreateDocument}
-        />
+        {filing && (
+          <FilingTimelineHeader
+            name={
+              filing
+                ? filing.projectCode +
+                  '-' +
+                  filing.FilingCode +
+                  ' ' +
+                  filing.name
+                : '...'
+            }
+            status={filing?.status ?? FilingStatus.DRAFT}
+            documents={documents}
+            latestDocument={latestDocument}
+            setStatus={setStatus}
+            setDocuments={setDocuments}
+            projectId={params.projectId}
+            filingId={params.filingId}
+            showCreateDocument={showCreateDocument}
+            setShowCreateDocument={setShowCreateDocument}
+          />
+        )}
       </section>
 
       <section className="px-15 relative">

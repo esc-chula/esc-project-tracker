@@ -48,7 +48,11 @@ export default function DisplayWithStatus({
         <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
           <div className="flex flex-row items-center gap-x-6 gap-y-2 flex-wrap">
             <div className="font-bold text-sm shrink-0">ไฟล์แนบ</div>
-            <FileDisplay fileName={document.pdfName} fileType="pdf" link="" />
+            {document.pdfName !== '' ? (
+              <FileDisplay fileName={document.pdfName} fileType="pdf" link="" />
+            ) : (
+              <div className="text-sm">ไม่มีไฟล์แนบ</div>
+            )}
           </div>
           <div className="font-bold text-sm">ความคิดเห็น</div>
           <textarea
