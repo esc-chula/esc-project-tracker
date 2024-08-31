@@ -104,9 +104,9 @@ export async function refreshToken(): Promise<Tokens> {
 }
 
 export async function authenticate({
-  role,
+  roles,
 }: {
-  role: string;
+  roles: string[];
 }): Promise<Payload> {
   try {
     const cookieStore = cookies();
@@ -118,13 +118,23 @@ export async function authenticate({
 
     const user = await validateToken(accessTokenCookie);
 
-    if (user.role !== role) {
+    if (roles.length > 0 && !roles.includes(user.role)) {
       throw new Error('ไม่มีสิทธิ์เข้าถึง');
     }
 
     return user;
   } catch (err) {
     console.error(err);
+
+    if (err instanceof Error) {
+      if (err.message === 'Token ไม่ถูกต้อง') {
+        await refreshToken();
+        return authenticate({ roles });
+      }
+
+      throw err;
+    }
+
     throw new Error('ไม่มีสิทธิ์เข้าถึง');
   }
 }
