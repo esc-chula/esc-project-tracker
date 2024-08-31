@@ -2,7 +2,8 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn } from '@/src/service/signIn';
+import { LoaderCircle } from 'lucide-react';
+import { signIn } from '@/src/service/auth';
 
 export default function Auth({
   searchParams,
@@ -26,8 +27,9 @@ export default function Auth({
   }, [token, router]);
 
   return (
-    <div>
-      <p>loading...</p>
+    <div className="h-dvh w-full grid place-content-center">
+      {/* lucide spinner */}
+      <LoaderCircle className="animate-spin opacity-10" size={64} />
     </div>
   );
 }

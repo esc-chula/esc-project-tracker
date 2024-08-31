@@ -5,7 +5,7 @@ import { UserService } from '../user_/user.service';
 import * as argon2 from 'argon2';
 import { User } from '../entities/user.entity';
 import { HttpService } from '@nestjs/axios';
-import { IntaniaAuthResponse } from '../common/types/auth';
+import type { IntaniaAuthResponse, JwtPayload } from '../common/types/auth';
 
 @Injectable()
 export class AuthService {
@@ -40,15 +40,27 @@ export class AuthService {
     }
   }
 
+  async validateJWT(token: string): Promise<JwtPayload> {
+    try {
+      const validatedUser = this.jwtService.verify(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
+
+      return validatedUser;
+    } catch (error) {
+      throw new ForbiddenException('Invalid JWT token');
+    }
+  }
+
   async signIn(
     token: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const validatedUser = await this.validateUser(token).catch((error) => {
-      throw new ForbiddenException(error);
+      throw new ForbiddenException(error.message);
     });
 
     const studentId = validatedUser.studentId;
-    const username = `${validatedUser.name.th.firstName} ${validatedUser.name.th.lastName}`;
+    let username = `${validatedUser.name.th.firstName} ${validatedUser.name.th.lastName}`;
 
     const existedUser = await this.userService.findByStudentID(studentId);
 
@@ -61,9 +73,14 @@ export class AuthService {
       });
     } else {
       createdUser = existedUser;
+      username = createdUser.username;
     }
 
-    const tokens = await this.getTokens(createdUser.id, username);
+    const tokens = await this.getTokens(
+      createdUser.id,
+      username,
+      createdUser.role,
+    );
     await this.updateRefreshToken(createdUser.id, tokens.refreshToken);
     return tokens;
   }
@@ -90,7 +107,7 @@ export class AuthService {
       refreshToken,
     );
     if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
-    const tokens = await this.getTokens(user.id, user.username);
+    const tokens = await this.getTokens(user.id, user.username, user.role);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
@@ -105,12 +122,14 @@ export class AuthService {
   async getTokens(
     userId: string,
     username: string,
+    role: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
           sub: userId,
           username,
+          role,
         },
         {
           secret: this.configService.get<string>('JWT_SECRET'),
@@ -121,6 +140,7 @@ export class AuthService {
         {
           sub: userId,
           username,
+          role,
         },
         {
           secret: this.configService.get<string>('JWT_SECRET'),

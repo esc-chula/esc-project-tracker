@@ -4,25 +4,24 @@ import { SignInDTO } from './dto/auth.dto';
 import { AccessTokenGuard } from '../common/guards/accessToken.guard';
 import { Request } from 'express';
 import { RefreshTokenGuard } from '../common/guards/refreshToken.guard';
-import { ConfigService } from '@nestjs/config';
+import { JwtPayload } from '../common/types/auth';
 
 interface UserRequest extends Request {
-  user?: {
-    sub: string;
-    refreshToken?: string;
-  };
+  user?: JwtPayload;
 }
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private configService: ConfigService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @Post('signin')
   async signIn(@Body() data: SignInDTO) {
     return this.authService.signIn(data.token);
+  }
+
+  @Post('jwt/validate')
+  async validateToken(@Body() data: { accessToken: string }) {
+    return this.authService.validateJWT(data.accessToken);
   }
 
   @UseGuards(AccessTokenGuard)
