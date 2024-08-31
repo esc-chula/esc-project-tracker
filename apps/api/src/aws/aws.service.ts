@@ -23,15 +23,22 @@ export class AwsService {
   async uploadFileToS3(fileName: string, file: Buffer, folderName?: string) {
     const currentDate = new Date();
     const dateWithTimestamp = currentDate.toISOString();
-    let storedName = `{${dateWithTimestamp}}-` + fileName;
-    if (folderName) storedName = folderName + '/' + storedName;
-    return await this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: 'project-tracker',
-        Key: storedName,
-        Body: file,
-      }),
-    );
+    let storedFileName = `{${dateWithTimestamp}}-` + fileName;
+    const newFileName = storedFileName;
+    if (folderName) storedFileName = folderName + '/' + storedFileName;
+    try {
+      await this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: 'project-tracker',
+          Key: storedFileName,
+          Body: file,
+        }),
+      );
+    } catch (e) {
+      console.log(e);
+      throw new Error('Cannot Upload to S3 Bucket');
+    }
+    return newFileName;
   }
 
   async getUrlToFile(fileName: string, folderName?: string): Promise<string> {

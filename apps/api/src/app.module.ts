@@ -46,6 +46,7 @@ import { AuthModule } from './auth/auth.module';
     NotificationModule,
     UserFilingModule,
     AuthModule,
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -19,6 +19,8 @@ import { UserFilingModule } from '../user-filing/user-filing.module';
 import { UserFilingRouter } from './routers/user-filing.router';
 import { AuthModule } from '../auth/auth.module';
 import { AuthRouter } from './routers/auth.router';
+import { AwsModule } from '../aws/aws.module';
+import { AwsRouter } from './routers/aws.router';
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { AuthRouter } from './routers/auth.router';
     UserModule,
     UserFilingModule,
     AuthModule,
+    AwsModule,
   ],
   providers: [
     TrpcService,
@@ -43,6 +46,7 @@ import { AuthRouter } from './routers/auth.router';
     UserRouter,
     UserFilingRouter,
     AuthRouter,
+    AwsRouter,
   ],
   controllers: [],
   exports: [TrpcService],
