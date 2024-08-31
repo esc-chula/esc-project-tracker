@@ -4,16 +4,10 @@ import { SignInDTO } from './dto/auth.dto';
 import { AccessTokenGuard } from '../common/guards/accessToken.guard';
 import { Request } from 'express';
 import { RefreshTokenGuard } from '../common/guards/refreshToken.guard';
+import { JwtPayload } from '../common/types/auth';
 
 interface UserRequest extends Request {
-  user?: {
-    sub: string;
-    username: string;
-    role: string;
-    iat: number;
-    exp: number;
-    refreshToken?: string;
-  };
+  user?: JwtPayload;
 }
 
 @Controller('auth')

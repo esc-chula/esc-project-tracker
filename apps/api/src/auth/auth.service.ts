@@ -5,7 +5,7 @@ import { UserService } from '../user_/user.service';
 import * as argon2 from 'argon2';
 import { User } from '../entities/user.entity';
 import { HttpService } from '@nestjs/axios';
-import { IntaniaAuthResponse } from '../common/types/auth';
+import type { IntaniaAuthResponse, JwtPayload } from '../common/types/auth';
 
 @Injectable()
 export class AuthService {
@@ -40,13 +40,7 @@ export class AuthService {
     }
   }
 
-  async validateJWT(token: string): Promise<{
-    sub: string;
-    username: string;
-    role: string;
-    iat: number;
-    exp: number;
-  }> {
+  async validateJWT(token: string): Promise<JwtPayload> {
     try {
       const validatedUser = this.jwtService.verify(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
