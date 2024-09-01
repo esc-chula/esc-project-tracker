@@ -1,3 +1,4 @@
+'use client';
 import { ArrowRight, Folders, Home, Radio } from 'lucide-react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
@@ -12,6 +13,7 @@ import SearchPanel from '@/src/components/all-projects/searchPanel';
 import LastestPanel from '@/src/components/project/latestPanel';
 import findAllFiling from '@/src/service/findAllFiling';
 import findAllProject from '@/src/service/findAllProject';
+import { useEffect, useState } from 'react';
 const mockData: FilingType[] = [
   {
     id: 'm5gr84i91',
@@ -146,18 +148,58 @@ const mockData: FilingType[] = [
     updatedAt: new Date('2021-08-01T19:11:00').toString(),
   },
 ];
-export default async function Page() {
+export default function Page() {
   //TODO : Change the userId to the actual userId
-  const [filingsDataWithProject, projectsWithLastOpenData] = await Promise.all([
-    findAllFiling().catch((err) => {
-      console.error(err);
-      return [] as FilingType[];
-    }),
-    findAllProject().catch((err) => {
-      console.error(err);
-      return [] as ProjectWithLastOpen[];
-    }),
-  ]);
+
+  const [isContinue, setIsContinue] = useState(true);
+  const [isReturn, setIsReturn] = useState(false);
+  const [isApprove, setIsApprove] = useState(false);
+
+  const enableContinue = () => {
+    setIsContinue(true);
+    setIsReturn(false);
+    setIsApprove(false);
+    // TODO: Filter the data
+  };
+
+  const enableReturn = () => {
+    setIsContinue(false);
+    setIsReturn(true);
+    setIsApprove(false);
+    // TODO: Filter the data
+  };
+
+  const enableApprove = () => {
+    setIsContinue(false);
+    setIsReturn(false);
+    setIsApprove(true);
+    // TODO: Filter the data
+  };
+
+  const [filingsDataWithProject, setFilingsDataWithProject] = useState<
+    FilingType[]
+  >([]);
+  const [projectsWithLastOpenData, setProjectsWithLastOpenData] = useState<
+    ProjectWithLastOpen[]
+  >([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [filingsData, projectsData] = await Promise.all([
+          findAllFiling(),
+          findAllProject(),
+        ]);
+        setFilingsDataWithProject(filingsData);
+        setProjectsWithLastOpenData(projectsData);
+      } catch (err) {
+        console.error(err);
+        setFilingsDataWithProject([]);
+        setProjectsWithLastOpenData([]);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const projectsData = projectsWithLastOpenData.map(
     (project: { project: any }) => project.project,
@@ -191,6 +233,36 @@ export default async function Page() {
             </Button>
           </Link>
         </div>
+      </section>
+      <section className="flex items-end mt-5 w-full text-gray-500">
+        <div className={`border-b-2 ${isContinue ? 'border-black' : ''}`}>
+          <Button
+            variant="ghost"
+            className={`${isContinue ? 'font-bold text-black' : ''}`}
+            onClick={enableContinue}
+          >
+            <span>ดำเนินการ</span>
+          </Button>
+        </div>
+        <div className={`border-b-2 ${isReturn ? 'border-rose-500' : ''}`}>
+          <Button
+            variant="ghost"
+            className={` ${isReturn ? 'font-bold text-rose-500 hover:text-rose-500' : ''}`}
+            onClick={enableReturn}
+          >
+            <span>ตีกลับ</span>
+          </Button>
+        </div>
+        <div className={`border-b-2 ${isApprove ? 'border-green-400' : ''}`}>
+          <Button
+            variant="ghost"
+            className={`${isApprove ? 'font-bold text-green-400 hover:text-green-400' : ''}`}
+            onClick={enableApprove}
+          >
+            <span>อนุมัติ</span>
+          </Button>
+        </div>
+        <hr className="border-t-2 w-full" />
       </section>
       <section className="mt-5 shadow-lg rounded-xl">
         <StatusTable data={filingsDataWithProject} compact />
