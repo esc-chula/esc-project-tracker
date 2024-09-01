@@ -1,4 +1,4 @@
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 import NoData from '../all-projects/noData';
 import FilingMenuHeader from './filingMenuHeader';
 import FilingMenuItem from './filingMenuItem';
@@ -27,7 +27,7 @@ export default function FilingMenu({
   const [departmentFiling, setDepartmentFiling] = React.useState<string>('ALL');
   const [statusFiling, setStatusFiling] = React.useState<string>('ALL');
   const [typeFiling, setTypeFiling] = React.useState<string>('ALL');
-  const [filings, setFilings] = React.useState<Filing[]>([]);
+  const [filings, setFilings] = React.useState<FilingType[]>([]);
   const [prepareUpdatedDocuments, setPrepareUpdatedDocuments] = React.useState<
     Map<string, CreateDocumentDTO>
   >(new Map());

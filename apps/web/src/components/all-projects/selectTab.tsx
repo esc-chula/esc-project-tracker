@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import SearchPanel from './searchPanel';
 import { Project } from '@/src/interface/project';
 import ProjectMenu from '../project/projectMenu';
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 import FilingMenu from '../project/filingMenu';
 import { findAllProject } from '@/src/service/project/findAllProject';
 import findAllFiling from '@/src/service/filing/findAllFiling';
@@ -47,7 +47,7 @@ function a11yProps(index: number) {
 export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filings, setFilings] = useState<Filing[]>([]);
+  const [filings, setFilings] = useState<FilingType[]>([]);
   const [searchedProjectID, setSearchedProjectID] = useState<string | null>(
     null,
   );
@@ -92,7 +92,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
           <SearchPanel
             projects={projects}
             placeHolder="ค้นหาโครงการทั้งหมด"
-            projectFunc={(project: Project | Filing) => {
+            projectFunc={(project: Project | FilingType) => {
               setSearchedProjectID(project.id);
             }}
             clearFunc={() => {
@@ -109,7 +109,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
           <SearchPanel
             filings={filings}
             placeHolder="ค้นหาเอกสารทั้งหมด"
-            FilingFunc={(filing: Filing | Project) => {
+            FilingFunc={(filing: FilingType | Project) => {
               setSearchedFilingID(filing.id);
             }}
             clearFunc={() => {

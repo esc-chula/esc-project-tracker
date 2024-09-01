@@ -1,12 +1,12 @@
 import { trpc } from '../../app/trpc';
-import type { Filing } from '../../interface/filing';
+import type { FilingType } from '../../interface/filing';
 
 export default async function createFiling(
   projectId: string,
   filingName: string,
   filingType: number,
   userId: string,
-): Promise<Filing> {
+): Promise<FilingType> {
   try {
     const data = await trpc.filing.createFiling.query({
       projectId,

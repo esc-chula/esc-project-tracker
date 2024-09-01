@@ -1,11 +1,11 @@
-import type { Filing } from '../../interface/filing';
+import type { FilingType } from '../../interface/filing';
 import { trpc } from '../../app/trpc';
 
 export default async function getFilingByProjectId({
   projectId,
 }: {
   projectId: string;
-}): Promise<Filing[]> {
+}): Promise<FilingType[]> {
   try {
     const data = await trpc.filing.findFilingsByProjectId.query({ projectId });
     return data;

@@ -4,7 +4,7 @@
 import type { FilingStatus } from '../constant/enum';
 import { Project } from './project';
 
-export interface Filing {
+export interface FilingType {
   id: string;
   project: Project | { id: string };
   userId: string;

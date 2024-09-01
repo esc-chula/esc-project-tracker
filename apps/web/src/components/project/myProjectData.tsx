@@ -6,7 +6,7 @@ import NoProject from './noProject';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Project, ProjectWithLastOpen } from '@/src/interface/project';
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import SearchBar from '../searchbar/searchBar';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
@@ -18,19 +18,19 @@ export default function MyProjectData({
   projectsWithLastOpenData,
 }: {
   compact?: boolean;
-  filingsData?: Filing[];
+  filingsData?: FilingType[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
 }) {
   const { toast } = useToast();
   const router = useRouter();
-  const redirectToProject = (project: Project | Filing) => {
+  const redirectToProject = (project: Project | FilingType) => {
     router.push(`/project/${project.id}`);
   };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpen[]
   >([]);
-  const [filings, setFilings] = useState<Filing[]>([]);
+  const [filings, setFilings] = useState<FilingType[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>(

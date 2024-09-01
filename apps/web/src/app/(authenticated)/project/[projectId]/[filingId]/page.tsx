@@ -3,7 +3,7 @@
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/StatusStepper';
 import { FilingStatus } from '@/src/constant/enum';
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
@@ -24,7 +24,7 @@ export default function Page({
 }: {
   params: { projectId: string; filingId: string };
 }) {
-  const [filing, setFiling] = useState<Filing | null>(null);
+  const [filing, setFiling] = useState<FilingType | null>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
   const [usernameMap, setUsernameMap] = useState<Map<string, User>>(new Map());

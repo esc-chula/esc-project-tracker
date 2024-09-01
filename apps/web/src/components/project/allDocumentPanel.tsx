@@ -1,38 +1,38 @@
-"use client";
-import AllDocumentCard from "./allDocumentCard";
-import SelectType from "../filter/selectType";
-import { filterStatus } from "@/src/styles/enumMap";
-import { useState, useEffect } from "react";
-import { Filing } from "@/src/interface/filing";
-import { filingTypeMap } from "@/src/constant/Map";
+'use client';
+import AllDocumentCard from './allDocumentCard';
+import SelectType from '../filter/selectType';
+import { filterStatus } from '@/src/styles/enumMap';
+import { useState, useEffect } from 'react';
+import { FilingType } from '@/src/interface/filing';
+import { filingTypeMap } from '@/src/constant/Map';
 
 export default function AllDocumentPanel({
   Filings,
   setFilingsToParentFunc,
 }: {
-  Filings: Filing[];
-  setFilingsToParentFunc: (Filings: Filing[]) => void;
+  Filings: FilingType[];
+  setFilingsToParentFunc: (Filings: FilingType[]) => void;
 }) {
-  const [allFilings, setAllFilings] = useState<Filing[]>(Filings);
-  const [filteredFilings, setFilteredFilings] = useState<Filing[]>(Filings);
-  const [status, setStatus] = useState<string>("all");
-  const [type, setType] = useState<string>("all");
+  const [allFilings, setAllFilings] = useState<FilingType[]>(Filings);
+  const [filteredFilings, setFilteredFilings] = useState<FilingType[]>(Filings);
+  const [status, setStatus] = useState<string>('all');
+  const [type, setType] = useState<string>('all');
 
   useEffect(() => {
-    if (status === "all" && type === "all") {
+    if (status === 'all' && type === 'all') {
       setFilteredFilings(allFilings);
-    } else if (status === "all") {
+    } else if (status === 'all') {
       setFilteredFilings(
-        allFilings.filter((filing) => filing.type.toString() === type)
+        allFilings.filter((filing) => filing.type.toString() === type),
       );
-    } else if (type === "all") {
+    } else if (type === 'all') {
       setFilteredFilings(Filings.filter((filing) => filing.status === status));
     } else {
       setFilteredFilings(
         allFilings.filter(
           (filing) =>
-            filing.status === status && filing.type.toString() === type
-        )
+            filing.status === status && filing.type.toString() === type,
+        ),
       );
     }
     console.log(status);
@@ -75,14 +75,16 @@ export default function AllDocumentPanel({
             FilingStatus={filing.status}
             deleteThisCardFunc={(id: string) => {
               setAllFilings((prevFilings) =>
-                prevFilings.filter((prevFiling) => prevFiling.id !== id)
+                prevFilings.filter((prevFiling) => prevFiling.id !== id),
               );
             }}
             updateThisCardFunc={(id: string, newName: string) => {
               setAllFilings((prevFilings) =>
                 prevFilings.map((prevFiling) =>
-                  prevFiling.id === id ? { ...prevFiling, name: newName } : prevFiling
-                )
+                  prevFiling.id === id
+                    ? { ...prevFiling, name: newName }
+                    : prevFiling,
+                ),
               );
             }}
           />

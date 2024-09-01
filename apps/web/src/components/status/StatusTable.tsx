@@ -23,13 +23,13 @@ import {
 } from '@/src/components/ui/table';
 import { columns } from './StatusTableColumns';
 import StatusTableToolBar from './StatusTableToolBar';
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 
 export function StatusTable({
   data,
   compact = false,
 }: {
-  data: Filing[];
+  data: FilingType[];
   compact?: boolean;
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);

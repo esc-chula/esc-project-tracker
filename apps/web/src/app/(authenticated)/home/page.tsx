@@ -3,7 +3,7 @@ import Header from '../../../components/header/header';
 import Title from '@/src/components/header/title';
 import MyProjectData from '@/src/components/project/myProjectData';
 import { StatusTable } from '@/src/components/status/StatusTable';
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
@@ -16,7 +16,7 @@ export default async function Page() {
   const [filingsDataWithProject, projectsWithLastOpenData] = await Promise.all([
     getFilingsByUserId('d1c0d106-1a4a-4729-9033-1b2b2d52e98a').catch((err) => {
       console.error(err);
-      return [] as Filing[];
+      return [] as FilingType[];
     }),
     getProjectsByUserId('d1c0d106-1a4a-4729-9033-1b2b2d52e98a').catch((err) => {
       console.error(err);

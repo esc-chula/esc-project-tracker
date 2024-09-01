@@ -1,6 +1,6 @@
 import { FilingStatus } from '@/src/constant/enum';
 import { trpc } from '../../app/trpc';
-import type { Filing } from '../../interface/filing';
+import type { FilingType } from '../../interface/filing';
 
 export default async function updateFilingName({
   filingId,
@@ -10,7 +10,7 @@ export default async function updateFilingName({
   filingId: string;
   filingName?: string;
   filingStatus?: FilingStatus;
-}): Promise<Filing | null> {
+}): Promise<FilingType | null> {
   try {
     const data = await trpc.filing.updateFilingName.query({
       filingId,

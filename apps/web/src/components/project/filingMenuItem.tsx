@@ -2,7 +2,7 @@
 
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { Document } from '@/src/interface/document';
-import { Filing } from '@/src/interface/filing';
+import { FilingType } from '@/src/interface/filing';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';
 import { toast } from '../ui/use-toast';
@@ -22,7 +22,7 @@ export default function FilingMenuItem({
   isUpdateMode,
   setPrepareUpdatedDocument,
 }: {
-  filing: Filing;
+  filing: FilingType;
   isUpdateMode: boolean;
   setPrepareUpdatedDocument: (newDocument: CreateDocumentDTO) => void;
 }) {
