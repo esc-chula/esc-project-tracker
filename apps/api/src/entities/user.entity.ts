@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,6 +16,17 @@ export class User {
 
   @Column()
   studentId: string;
+
+  @Column({
+    type: 'enum',
+    enum: ['student', 'esc', 'admin'],
+    default: 'student',
+    nullable: false,
+  })
+  role: 'student' | 'esc' | 'admin';
+
+  @Column({ nullable: true, default: null })
+  refreshToken: string;
 
   @CreateDateColumn()
   createdAt: Date;

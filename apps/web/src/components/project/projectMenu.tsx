@@ -9,10 +9,10 @@ import {
   statusProjectItems,
 } from '@/src/constant/filterProject';
 import { useToast } from '../ui/use-toast';
-import { findAllProject } from '@/src/service/findAllProject';
-import findProjectsWithFilter from '@/src/service/findProjectsWithFilter';
-import hasUserProj from '@/src/service/hasUserProj';
-import getProjectByProjectId from '@/src/service/getProjectByProjectId';
+import { findAllProject } from '@/src/service/project/findAllProject';
+import findProjectsWithFilter from '@/src/service/project/findProjectsWithFilter';
+import hasUserProj from '@/src/service/user-proj/hasUserProj';
+import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 
 export default function ProjectMenu({
   searchedProjectId,

@@ -58,7 +58,7 @@ export default function MembersInput({
                 >
                   {formAction === projectFormAction.INFO && oldMember ? (
                     <div className="flex text-sm text-black w-full justify-between">
-                      <span>{oldMember?.name}</span>
+                      <span>{oldMember?.username}</span>
                       <span>รหัสนิสิต&emsp;{oldMember?.studentId}</span>
                     </div>
                   ) : (

@@ -9,6 +9,8 @@ import { UserProjRouter } from './routers/user-proj.router';
 import { NotificationRouter } from './routers/notification.router';
 import { UserRouter } from './routers/user.router';
 import { UserFilingRouter } from './routers/user-filing.router';
+import { AuthRouter } from './routers/auth.router';
+import { AwsRouter } from './routers/aws.router';
 
 @Injectable()
 export class TrpcRouter {
@@ -21,6 +23,8 @@ export class TrpcRouter {
     private readonly notificationRouter: NotificationRouter,
     private readonly userRouter: UserRouter,
     private readonly userFilingRouter: UserFilingRouter,
+    private readonly authRouter: AuthRouter,
+    private readonly awsRouter: AwsRouter,
   ) {}
   appRouter = this.trpc.router({
     project: this.projectRouter.appRouter,
@@ -30,6 +34,8 @@ export class TrpcRouter {
     notification: this.notificationRouter.appRouter,
     user: this.userRouter.appRouter,
     userFiling: this.userFilingRouter.appRouter,
+    authRouter: this.authRouter.appRouter,
+    aws: this.awsRouter.appRouter,
   });
 
   async applyMiddleware(app: INestApplication) {

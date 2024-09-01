@@ -15,6 +15,7 @@ import { CountFilingModule } from './count-filing/count-filing.module';
 import { AwsModule } from './aws/aws.module';
 import { NotificationModule } from './notification/notification.module';
 import { UserFilingModule } from './user-filing/user-filing.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -44,6 +45,8 @@ import { UserFilingModule } from './user-filing/user-filing.module';
     AwsModule,
     NotificationModule,
     UserFilingModule,
+    AuthModule,
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,19 +1,21 @@
+'use client';
+
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { DocumentType } from '@/src/interface/document';
 import { FilingType } from '@/src/interface/filing';
-import findDocumentsByFilingId from '@/src/service/findDocumentsByFilingId';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';
 import { toast } from '../ui/use-toast';
 import { User } from '@/src/interface/user';
-import { findUserByCondition } from '@/src/service/findUserByCondition';
+import { findUserByCondition } from '@/src/service/user/findUserByCondition';
 import { FilingStatus } from '@/src/constant/enum';
 import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import {
   DocumentActivity,
   DocumentStatus,
 } from '../../../../api/src/constant/enum';
-import findLatestDocumentByFilingId from '@/src/service/findLatestDocumentByFilingId';
+import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
+import Link from 'next/link';
 
 export default function FilingMenuItem({
   filing,
@@ -33,6 +35,7 @@ export default function FilingMenuItem({
 
   const getDocumentAndOwnerDetail = async () => {
     try {
+      // get pdf url
       const docs = await findLatestDocumentByFilingId(filing.id);
       if (docs) {
         setDocuments(docs);
@@ -53,9 +56,7 @@ export default function FilingMenuItem({
       }
     }
   };
-  const handleClick = () => {
-    window.open(document?.pdfName, '_blank');
-  };
+
   useEffect(() => {
     getDocumentAndOwnerDetail();
   }, []);
@@ -140,15 +141,14 @@ export default function FilingMenuItem({
           </div>
         </td>
         <td className="p-4 py-5 text-nowrap text-center w-[60px]">
-          <BiSolidFilePdf
-            size={24}
-            className={`text-red hover:cursor-pointer ${document ? 'opacity-50 hover:cursor-not-allowed' : ''}`}
-            onClick={() => {
-              if (document) {
-                handleClick();
-              }
-            }}
-          />
+          <Link
+            href={document?.pdfName ?? '#'}
+            rel="noopener noreferrer"
+            target="_blank"
+            className={`text-red ${document ? '' : 'opacity-50 pointer-events-none'}`}
+          >
+            <BiSolidFilePdf size={24} />
+          </Link>
         </td>
       </tr>
     )

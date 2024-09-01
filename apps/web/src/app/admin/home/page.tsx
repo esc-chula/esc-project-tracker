@@ -11,8 +11,8 @@ import { Button } from '@/src/components/ui/button';
 import { ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
 import LastestPanel from '@/src/components/project/latestPanel';
-import findAllFiling from '@/src/service/findAllFiling';
-import findAllProject from '@/src/service/findAllProject';
+import findAllFiling from '@/src/service/filing/findAllFiling';
+import findAllProject from '@/src/service/project/findAllProject';
 import { useEffect, useState } from 'react';
 const mockData: FilingType[] = [
   {
@@ -220,9 +220,7 @@ export default function Page() {
   return (
     <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
       <Header>
-        <Title icon={<Home size={40} />} adminDisplay>
-          หน้าหลัก
-        </Title>
+        <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>
       <section className="mt-8">
         <SearchPanel
