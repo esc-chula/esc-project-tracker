@@ -1,5 +1,5 @@
 'use client';
-import { ArrowRight, Folders, Home, Radio } from 'lucide-react';
+import { ArrowRight, Folders, Home, Radio, FileSearch } from 'lucide-react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import MyProjectData from '@/src/components/project/myProjectData';
@@ -155,27 +155,6 @@ export default function Page() {
   const [isReturn, setIsReturn] = useState(false);
   const [isApprove, setIsApprove] = useState(false);
 
-  const enableContinue = () => {
-    setIsContinue(true);
-    setIsReturn(false);
-    setIsApprove(false);
-    // TODO: Filter the data
-  };
-
-  const enableReturn = () => {
-    setIsContinue(false);
-    setIsReturn(true);
-    setIsApprove(false);
-    // TODO: Filter the data
-  };
-
-  const enableApprove = () => {
-    setIsContinue(false);
-    setIsReturn(false);
-    setIsApprove(true);
-    // TODO: Filter the data
-  };
-
   const [filingsDataWithProject, setFilingsDataWithProject] = useState<
     FilingType[]
   >([]);
@@ -200,6 +179,40 @@ export default function Page() {
 
     fetchData();
   }, []);
+
+  const enableContinue = () => {
+    setIsContinue(true);
+    setIsReturn(false);
+    setIsApprove(false);
+    const filteredFilings = filingsDataWithProject.filter(
+      (filing) =>
+        filing.status !== FilingStatus.RETURNED &&
+        filing.status !== FilingStatus.APPROVED,
+    );
+    setFilingsDataWithProject(filteredFilings);
+  };
+
+  const enableReturn = () => {
+    setIsContinue(false);
+    setIsReturn(true);
+    setIsApprove(false);
+
+    const filteredFilings = filingsDataWithProject.filter(
+      (filing) => filing.status === FilingStatus.RETURNED,
+    );
+    setFilingsDataWithProject(filteredFilings);
+  };
+
+  const enableApprove = () => {
+    setIsContinue(false);
+    setIsReturn(false);
+    setIsApprove(true);
+
+    const filteredFilings = filingsDataWithProject.filter(
+      (filing) => filing.status === FilingStatus.APPROVED,
+    );
+    setFilingsDataWithProject(filteredFilings);
+  };
 
   const projectsData = projectsWithLastOpenData.map(
     (project: { project: any }) => project.project,
@@ -270,8 +283,8 @@ export default function Page() {
       <section className="w-full mt-12">
         <div className="flex items-center justify-between gap-3 h-10">
           <span className="flex items-center gap-2 w-0 grow">
-            <Folders className="w-5 h-5 shrink-0" />
-            <div className="font-bold">โครงการของฉัน</div>
+            <FileSearch className="w-5 h-5 shrink-0" />
+            <div className="font-bold">การตรวจสอบล่าสุด</div>
           </span>
           <Link href="/projects">
             <Button variant="link">
