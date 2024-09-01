@@ -1,7 +1,7 @@
 'use client';
 
 import { BiSolidFilePdf } from 'react-icons/bi';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import { FilingType } from '@/src/interface/filing';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';
@@ -26,7 +26,7 @@ export default function FilingMenuItem({
   isUpdateMode: boolean;
   setPrepareUpdatedDocument: (newDocument: CreateDocumentDTO) => void;
 }) {
-  const [document, setDocuments] = useState<Document | null>(null);
+  const [document, setDocuments] = useState<DocumentType | null>(null);
   const [filingOwner, setFilingOwner] = useState<User | null>(null);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [detail, setDetail] = useState<string>(document?.detail || '');

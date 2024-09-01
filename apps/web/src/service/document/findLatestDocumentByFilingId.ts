@@ -1,9 +1,9 @@
 import { trpc } from '../../app/trpc';
-import { Document } from '../../interface/document';
+import { DocumentType } from '../../interface/document';
 
 export default async function findLatestDocumentByFilingId(
   filingId: string,
-): Promise<Document | null> {
+): Promise<DocumentType | null> {
   try {
     const data = await trpc.document.findLatestDocumentByFilingId.query({
       filingId,

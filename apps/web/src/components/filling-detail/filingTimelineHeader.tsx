@@ -13,7 +13,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import updateFilingName from '@/src/service/filing/updateFiling';
 import CreateDocumentClient from './create-edit/createDocumentClient';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import updateDocument from '@/src/service/document/updateDocument';
 import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
@@ -32,10 +32,10 @@ export default function FilingTimelineHeader({
 }: {
   name: string;
   status: FilingStatus;
-  documents: Document[];
-  latestDocument: Document | null;
+  documents: DocumentType[];
+  latestDocument: DocumentType | null;
   setStatus: (status: FilingStatus) => void;
-  setDocuments: Dispatch<SetStateAction<Document[]>>;
+  setDocuments: Dispatch<SetStateAction<DocumentType[]>>;
   filingId: string;
   projectId: string;
   showCreateDocument: boolean;
@@ -47,7 +47,7 @@ export default function FilingTimelineHeader({
   const { toast } = useToast();
 
   const updateDocumentStatuses = async (
-    documents: Document[],
+    documents: DocumentType[],
     fromStatus: DocumentStatus,
     toStatus: DocumentStatus,
   ) => {

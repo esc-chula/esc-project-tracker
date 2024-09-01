@@ -11,7 +11,7 @@ import {
 } from '../../ui/collapsible';
 import { useState } from 'react';
 import FileDisplay from './fileDisplay';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
@@ -21,7 +21,7 @@ export default function DisplayWithNoteAndStatus({
   document,
 }: {
   user?: User;
-  document: Document;
+  document: DocumentType;
 }) {
   const [expanded, setExpanded] = useState(false);
 

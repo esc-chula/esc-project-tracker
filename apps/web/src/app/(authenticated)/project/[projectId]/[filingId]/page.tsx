@@ -11,7 +11,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import { findUserByUserId } from '@/src/service/findUserByUserId';
 import { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
@@ -25,10 +25,12 @@ export default function Page({
   params: { projectId: string; filingId: string };
 }) {
   const [filing, setFiling] = useState<FilingType | null>(null);
-  const [documents, setDocuments] = useState<Document[]>([]);
+  const [documents, setDocuments] = useState<DocumentType[]>([]);
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
   const [usernameMap, setUsernameMap] = useState<Map<string, User>>(new Map());
-  const [latestDocument, setLatestDocument] = useState<Document | null>(null);
+  const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
+    null,
+  );
   // ถ้าสร้าง doc ใหม่ usernameMap ต้องอัปเดตมั้ย?
   // get Url fileDisplay
   const setStatus = useMemo(
@@ -38,7 +40,7 @@ export default function Page({
     [],
   );
 
-  const getUsernameMap = async (documents: Document[]) => {
+  const getUsernameMap = async (documents: DocumentType[]) => {
     const uniqueUserIds = new Set(
       documents.map((doc) =>
         doc.userId ? findUserByUserId(doc.userId) : undefined,

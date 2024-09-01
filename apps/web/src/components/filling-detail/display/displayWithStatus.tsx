@@ -3,7 +3,7 @@ import Image from 'next/image';
 import StatusButton from './statusButton';
 import { Collapsible } from '../../ui/collapsible';
 import FileDisplay from './fileDisplay';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
@@ -15,7 +15,7 @@ export default function DisplayWithStatus({
   setShowCreateDocument,
   user,
 }: {
-  document: Document;
+  document: DocumentType;
   warning: boolean;
   displayEditButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;

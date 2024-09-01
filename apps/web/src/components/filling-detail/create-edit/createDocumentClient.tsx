@@ -17,7 +17,7 @@ import { Select } from '../../ui/select';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import createDocument from '@/src/service/document/createDocument';
 import { DocumentActivity, FilingStatus } from '@/src/constant/enum';
 import { getFileType, zodDocumentFiles } from '@/src/lib/utils';
@@ -33,7 +33,7 @@ export default function CreateDocumentClient({
   status,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
-  afterCreateDocument: (createdDocument: Document) => void;
+  afterCreateDocument: (createdDocument: DocumentType) => void;
   filingId: string;
   projectId: string;
   status: FilingStatus;

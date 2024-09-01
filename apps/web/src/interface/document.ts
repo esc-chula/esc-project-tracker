@@ -1,6 +1,6 @@
 import { DocumentActivity, DocumentStatus } from '../constant/enum';
 
-export interface Document {
+export interface DocumentType {
   id: string;
   filingId?: string;
   name: string;

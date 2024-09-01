@@ -4,7 +4,7 @@ import { Clock } from 'lucide-react';
 import DisplayWithNoteAndStatus from './display/displayWithNoteAndStatus';
 import UpdateDocumentAdmin from './create-edit/updateDocumentAdmin';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import { DocumentActivity } from '../../../../api/src/constant/enum';
 import { User } from '@/src/interface/user';
@@ -17,7 +17,7 @@ export default function FilingTimeline({
   usernameMap,
   handleDeleteDocument,
 }: {
-  documents: Document[];
+  documents: DocumentType[];
   status: FilingStatus;
   showCreateDocument: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;

@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import Note from './note';
 import NameDate from './nameDate';
 import FileDisplay from './fileDisplay';
-import { Document } from '@/src/interface/document';
+import { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
@@ -27,7 +27,7 @@ export default function DisplayWithNote({
   user,
   handleDeleteDocument,
 }: {
-  document: Document;
+  document: DocumentType;
   user?: User;
   handleDeleteDocument: (documentId: string) => Promise<void>;
 }) {

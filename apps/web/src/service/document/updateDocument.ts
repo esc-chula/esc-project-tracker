@@ -3,7 +3,7 @@ import {
   DocumentStatus,
 } from '../../../../api/src/constant/enum';
 import { trpc } from '../../app/trpc';
-import { Document } from '../../interface/document';
+import { DocumentType } from '../../interface/document';
 export default async function updateDocument({
   docId,
   obj,
@@ -18,7 +18,7 @@ export default async function updateDocument({
     pdfName?: string;
     docName?: string;
   };
-}): Promise<Document> {
+}): Promise<DocumentType> {
   try {
     const result = await trpc.document.updateDocument.mutate({ docId, obj });
     return result;
