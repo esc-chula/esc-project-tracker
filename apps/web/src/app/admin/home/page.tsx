@@ -1,8 +1,7 @@
 'use client';
-import { ArrowRight, Folders, Home, Radio, FileSearch } from 'lucide-react';
+import { ArrowRight, Home, Radio, FileSearch } from 'lucide-react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
-import MyProjectData from '@/src/components/project/myProjectData';
 import { StatusTable } from '@/src/components/status/StatusTable';
 import { FilingStatus } from '@/src/constant/enum';
 import { FilingType } from '@/src/interface/filing';
@@ -18,9 +17,9 @@ import { useEffect, useState } from 'react';
 export default function Page() {
   //TODO : Change the userId to the actual userId
 
-  const [isContinue, setIsContinue] = useState(true);
-  const [isReturn, setIsReturn] = useState(false);
-  const [isApprove, setIsApprove] = useState(false);
+  const [isContinued, setIsContinued] = useState(true);
+  const [isReturned, setIsReturned] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
 
   const [filingsDataWithProject, setFilingsDataWithProject] = useState<
     FilingType[]
@@ -48,9 +47,9 @@ export default function Page() {
   }, []);
 
   const enableContinue = () => {
-    setIsContinue(true);
-    setIsReturn(false);
-    setIsApprove(false);
+    setIsContinued(true);
+    setIsReturned(false);
+    setIsApproved(false);
     const filteredFilings = filingsDataWithProject.filter(
       (filing) =>
         filing.status !== FilingStatus.RETURNED &&
@@ -60,9 +59,9 @@ export default function Page() {
   };
 
   const enableReturn = () => {
-    setIsContinue(false);
-    setIsReturn(true);
-    setIsApprove(false);
+    setIsContinued(false);
+    setIsReturned(true);
+    setIsApproved(false);
 
     const filteredFilings = filingsDataWithProject.filter(
       (filing) => filing.status === FilingStatus.RETURNED,
@@ -71,9 +70,9 @@ export default function Page() {
   };
 
   const enableApprove = () => {
-    setIsContinue(false);
-    setIsReturn(false);
-    setIsApprove(true);
+    setIsContinued(false);
+    setIsReturned(false);
+    setIsApproved(true);
 
     const filteredFilings = filingsDataWithProject.filter(
       (filing) => filing.status === FilingStatus.APPROVED,
@@ -113,28 +112,28 @@ export default function Page() {
         </div>
       </section>
       <section className="flex items-end mt-5 w-full text-gray-500">
-        <div className={`border-b-2 ${isContinue ? 'border-black' : ''}`}>
+        <div className={`border-b-2 ${isContinued ? 'border-black' : ''}`}>
           <Button
             variant="ghost"
-            className={`${isContinue ? 'font-bold text-black' : ''}`}
+            className={`${isContinued ? 'font-bold text-black' : ''}`}
             onClick={enableContinue}
           >
             <span>ดำเนินการ</span>
           </Button>
         </div>
-        <div className={`border-b-2 ${isReturn ? 'border-rose-500' : ''}`}>
+        <div className={`border-b-2 ${isReturned ? 'border-rose-500' : ''}`}>
           <Button
             variant="ghost"
-            className={` ${isReturn ? 'font-bold text-rose-500 hover:text-rose-500' : ''}`}
+            className={` ${isReturned ? 'font-bold text-rose-500 hover:text-rose-500' : ''}`}
             onClick={enableReturn}
           >
             <span>ตีกลับ</span>
           </Button>
         </div>
-        <div className={`border-b-2 ${isApprove ? 'border-green-400' : ''}`}>
+        <div className={`border-b-2 ${isApproved ? 'border-green-400' : ''}`}>
           <Button
             variant="ghost"
-            className={`${isApprove ? 'font-bold text-green-400 hover:text-green-400' : ''}`}
+            className={`${isApproved ? 'font-bold text-green-400 hover:text-green-400' : ''}`}
             onClick={enableApprove}
           >
             <span>อนุมัติ</span>

@@ -14,14 +14,14 @@ import {
   DropdownMenuTrigger,
 } from '@/src/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
-import { getUser } from '@/src/service/auth';
+import { getUserName } from '@/src/service/auth';
 
 export default function UserCard() {
   const [userName, setUserName] = useState<String>('Guest');
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await getUser();
-      setUserName(user.userName);
+      const userName = await getUserName();
+      setUserName(userName);
     };
     fetchUser();
   }, []);

@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
-import type { Payload, Tokens, User } from '../interface/auth';
+import type { Payload, Tokens } from '../interface/auth';
 
 export async function signIn(token: string): Promise<Tokens> {
   try {
@@ -139,14 +139,14 @@ export async function authenticate({
   }
 }
 
-export async function getUser(): Promise<User> {
+export async function getUserName(): Promise<String> {
   const cookieStore = cookies();
   const accessTokenCookie = cookieStore.get('accessToken')?.value;
 
   if (!accessTokenCookie) {
-    return { userName: 'Guest' };
+    return 'Guest';
   }
 
   const user = await validateToken(accessTokenCookie);
-  return { userName: user.username };
+  return user.username;
 }

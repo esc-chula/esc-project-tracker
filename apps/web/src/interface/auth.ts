@@ -10,7 +10,3 @@ export interface Payload {
   iat: number;
   exp: number;
 }
-
-export interface User {
-  userName: String;
-}
