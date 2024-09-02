@@ -51,7 +51,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           <span
             className={`text-white text-sm text-center font-semibold overflow-hidden text-nowrap ${expanded ? 'w-full' : 'w-0'}`}
           >
-            DocumentType System
+            Document System
             {isAdmin && <p>(Admin)</p>}
           </span>
           <hr className="w-full bg-white my-5" />

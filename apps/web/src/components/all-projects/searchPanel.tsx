@@ -15,7 +15,7 @@ export default function SearchPanel({
   projects?: Project[];
   placeHolder: string;
   projectFunc?: (project: Project | FilingType) => void;
-  FilingFunc?: (FilingType: FilingType | Project) => void;
+  FilingFunc?: (Filing: FilingType | Project) => void;
   clearFunc?: () => void;
 }) {
   return (

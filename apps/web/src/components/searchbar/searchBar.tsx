@@ -25,7 +25,7 @@ export default function SearchBar({
   projects: Project[];
   Filings: FilingType[];
   projectFunc?: (project: Project | FilingType) => void;
-  FilingFunc?: (FilingType: Project | FilingType) => void;
+  FilingFunc?: (Filing: Project | FilingType) => void;
   clearFunc?: () => void;
 }) {
   const [value, setValue] = useState<Project | FilingType | null>(null);
