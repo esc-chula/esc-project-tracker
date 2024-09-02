@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
-import type { Payload, Tokens } from '../interface/auth';
+import type { Payload, Tokens, User } from '../interface/auth';
 
 export async function signIn(token: string): Promise<Tokens> {
   try {
@@ -137,4 +137,16 @@ export async function authenticate({
 
     throw new Error('ไม่มีสิทธิ์เข้าถึง');
   }
+}
+
+export async function getUser(): Promise<User> {
+  const cookieStore = cookies();
+  const accessTokenCookie = cookieStore.get('accessToken')?.value;
+
+  if (!accessTokenCookie) {
+    return { userName: 'Guest' };
+  }
+
+  const user = await validateToken(accessTokenCookie);
+  return { userName: user.username };
 }

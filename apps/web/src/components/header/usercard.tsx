@@ -1,3 +1,4 @@
+'use client';
 import { Bell, ChevronDown } from 'lucide-react';
 import {
   Avatar,
@@ -12,10 +13,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/src/components/ui/dropdown-menu';
+import { useEffect, useState } from 'react';
+import { getUser } from '@/src/service/auth';
 
-export default function UserCard({ userName }: { userName: string }) {
+export default function UserCard() {
+  const [userName, setUserName] = useState<String>('Guest');
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+      setUserName(user.userName);
+    };
+    fetchUser();
+  }, []);
+
   return (
-    <div className="h-12 w-[284px] flex items-center ml-auto">
+    <div className="h-12 w-[300px] flex items-center ml-auto">
       <div className="pr-4 border-r border-black mr-4 h-full flex items-center">
         <Bell size={28} />
       </div>
@@ -27,7 +39,9 @@ export default function UserCard({ userName }: { userName: string }) {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <div className="flex gap-3">
-              <span className="line-clamp-1 w-full text-left">{userName}</span>
+              <span className="line-clamp-1 w-full text-left min-w-[100px]">
+                {userName}
+              </span>
               <ChevronDown size={24} />
             </div>
           </DropdownMenuTrigger>
