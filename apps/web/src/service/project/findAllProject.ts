@@ -1,7 +1,7 @@
 import { trpc } from '../../app/trpc';
-import { Project } from '../../interface/project';
+import { ProjectWithLastOpen } from '../../interface/project';
 
-export async function findAllProject(): Promise<Project[]> {
+export default async function findAllProject(): Promise<ProjectWithLastOpen[]> {
   try {
     const data = await trpc.project.findAllProject.query();
     return data;

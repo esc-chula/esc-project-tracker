@@ -27,6 +27,11 @@ export class ProjectController {
     return this.projectService.findCountOfProjectType(type);
   }
 
+  @Get('findAllProjects')
+  findAllProjects() {
+    return this.projectService.findAllProjects();
+  }
+
   @Post('createProject')
   createProject(@Body() obj: createProjectDTO) {
     return this.projectService.createProject(obj);

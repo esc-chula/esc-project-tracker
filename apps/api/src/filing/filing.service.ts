@@ -177,13 +177,33 @@ export class FilingService {
   }
 
   async findAllFiling(): Promise<Filing[]> {
-    try {
-      const data = await this.filingRepository.find();
-      return data;
-    } catch (e) {
-      console.log(e);
-      throw new Error('Failed to fetch Filings');
+    const projects = await this.projectService.findAllProjects();
+    if (projects.length === 0) {
+      return [];
     }
+
+    const filingPromises = projects.map((projectWithLastOpen) =>
+      this.findByProjectID(projectWithLastOpen.project.id),
+    );
+    const filingsArrays = await Promise.all(filingPromises);
+
+    const filingsArraysWithProject = [];
+    for (let i = 0; i < filingsArrays.length; i++) {
+      const project = projects[i].project;
+      const filingsWithProject = [];
+      for (let j = 0; j < filingsArrays[i].length; j++) {
+        const filingWithProject = {
+          ...filingsArrays[i][j],
+          project: project,
+        };
+        filingsWithProject.push(filingWithProject);
+      }
+      filingsArraysWithProject.push(filingsWithProject);
+    }
+
+    const filingsWithProject = filingsArraysWithProject.flat();
+
+    return filingsWithProject;
   }
 
   async findFilingsWithFilter(filter: {
