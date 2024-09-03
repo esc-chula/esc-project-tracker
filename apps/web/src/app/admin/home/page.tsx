@@ -7,7 +7,7 @@ import { FilingStatus } from '@/src/constant/enum';
 import { FilingType } from '@/src/interface/filing';
 import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
-import { ProjectWithLastOpen } from '@/src/interface/project';
+import { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
 import LastestPanel from '@/src/components/project/latestPanel';
 import findAllFiling from '@/src/service/filing/findAllFiling';
@@ -81,7 +81,7 @@ export default function Page() {
   };
 
   const projectsData = projectsWithLastOpenData.map(
-    (project: { project: any }) => project.project,
+    (project: { project: Project }) => project.project,
   );
   return (
     <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
@@ -101,7 +101,7 @@ export default function Page() {
             <Radio className="w-5 h-5 shrink-0" />
             <div className="font-bold">สถานะเอกสารล่าสุด</div>
           </span>
-          <Link href="/status">
+          <Link href="/admin/status">
             <Button variant="link">
               <span className="flex items-center gap-1">
                 ดูสถานะทั้งหมด
@@ -150,7 +150,7 @@ export default function Page() {
             <FileSearch className="w-5 h-5 shrink-0" />
             <div className="font-bold">การตรวจสอบล่าสุด</div>
           </span>
-          <Link href="/projects">
+          <Link href="/admin/projects">
             <Button variant="link">
               <span className="flex items-center gap-1">
                 ดูโครงการทั้งหมด
