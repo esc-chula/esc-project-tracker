@@ -19,7 +19,7 @@ export default function FileInputPanel({
             {Array.from(fileList).map((file, index) => (
               <div key={index}>
                 <FileDisplay
-                  fileName={file.name.split('.').slice(0, -1).join('.')}
+                  fileName={file.name}
                   fileType={file.name.split('.').pop() ?? ''}
                   link="#"
                 />

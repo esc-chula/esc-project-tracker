@@ -21,7 +21,7 @@ export default function FileDisplay({
         )}
         <div className="text-xxs text-start">
           <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-[10vw] ">
-            {fileName.split('.').slice(0, -1).join('.').split('}-')[1]}
+            {fileName.split('.').slice(0, -1).join('.')}
           </div>
           <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-[10vw]">
             .{fileType}
