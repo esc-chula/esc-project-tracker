@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import { ReactNode, SyntheticEvent, useState } from 'react';
+import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
 import SearchPanel from '../all-projects/searchPanel';
 import { FilingType } from '@/src/interface/filing';
 import { Project } from '@/src/interface/project';
@@ -7,6 +7,8 @@ import RecentlyFiling from './recently-filing';
 import SelectType from '../filter/selectType';
 import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
+import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
+import { FilingStatus } from '@/src/constant/enum';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -38,27 +40,59 @@ function a11yProps(index: number) {
 }
 
 export default function FilingTab() {
-  const [value, setValue] = useState<number>(0);
-
+  const [tabsValue, setTabsValue] = useState<number>(0);
   const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setTabsValue(newValue);
   };
+  const [filingsForSearch, setFilingsForSearch] = useState<FilingType[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<FilingStatus | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const newSelectedStatus =
+      tabsValue === 0
+        ? null
+        : tabsValue === 1
+          ? FilingStatus.RETURNED
+          : FilingStatus.APPROVED;
+    setSelectedStatus(newSelectedStatus);
+
+    const fetchFiling = async () => {
+      try {
+        const filings = await findFilingsWithFilter(
+          newSelectedStatus || 'ALL',
+          'ALL',
+          'ALL',
+        );
+        setFilingsForSearch(filings);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchFiling();
+  }, [tabsValue]);
 
   return (
     <div className="border-lightgray border-2 rounded-3xl w-[80%] h-full pt-3">
       <div className="w-full flex justify-center border-b-lightgray border-b-2">
         <Box sx={{ borderColor: 'divider' }}>
           <Tabs
-            value={value}
+            value={tabsValue}
             onChange={handleChange}
             sx={{
               '& .MuiTabs-indicator': {
                 backgroundColor:
-                  value === 1 ? 'red' : value === 2 ? 'green' : 'black',
+                  tabsValue === 1 ? 'red' : tabsValue === 2 ? 'green' : 'black',
               },
               '& .MuiTab-root': {
                 '&.Mui-selected': {
-                  color: value === 1 ? 'red' : value === 2 ? 'green' : 'black',
+                  color:
+                    tabsValue === 1
+                      ? 'red'
+                      : tabsValue === 2
+                        ? 'green'
+                        : 'black',
                 },
                 '&:hover': {
                   backgroundColor: 'transparent',
@@ -116,13 +150,13 @@ export default function FilingTab() {
           />
         </div>
       </div>
-      <CustomTabPanel value={value} index={0}>
+      <CustomTabPanel value={tabsValue} index={0}>
         <div>test1</div>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={tabsValue} index={1}>
         <div>test2</div>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
+      <CustomTabPanel value={tabsValue} index={2}>
         <div>test3</div>
       </CustomTabPanel>
     </div>
