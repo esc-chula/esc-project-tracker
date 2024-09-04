@@ -9,6 +9,7 @@ import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import { FilingStatus } from '@/src/constant/enum';
+import FilingNotFound from './filing-not-found';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -26,8 +27,9 @@ function CustomTabPanel(props: TabPanelProps) {
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
+      className="h-full"
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <div className="p-3 h-full">{children}</div>}
     </div>
   );
 }
@@ -44,10 +46,12 @@ export default function FilingTab() {
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabsValue(newValue);
   };
-  const [filingsForSearch, setFilingsForSearch] = useState<FilingType[]>([]);
+  const [TargetFilings, setTargetFilings] = useState<FilingType[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<FilingStatus | null>(
     null,
   );
+  const [selectedType, setSelectedType] = useState<string>('ALL');
+  const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
 
   useEffect(() => {
     const newSelectedStatus =
@@ -62,19 +66,19 @@ export default function FilingTab() {
       try {
         const filings = await findFilingsWithFilter(
           newSelectedStatus || 'ALL',
-          'ALL',
-          'ALL',
+          selectedType,
+          selectedDepartment,
         );
-        setFilingsForSearch(filings);
+        setTargetFilings(filings || []);
       } catch (err) {
         console.log(err);
       }
     };
     fetchFiling();
-  }, [tabsValue]);
+  }, [tabsValue, selectedType, selectedDepartment]);
 
   return (
-    <div className="border-lightgray border-2 rounded-3xl w-[80%] h-full pt-3">
+    <div className="border-lightgray border-2 rounded-3xl w-[80%] h-[80vh] pt-3 flex flex-col">
       <div className="w-full flex justify-center border-b-lightgray border-b-2">
         <Box sx={{ borderColor: 'divider' }}>
           <Tabs
@@ -130,10 +134,9 @@ export default function FilingTab() {
       <div className="w-full mt-5 pl-5 flex flex-col space-y-5">
         <div className="w-full flex flex-row">
           <SearchPanel
-            filings={[]}
+            filings={TargetFilings}
             placeHolder="รหัสเอกสาร"
             FilingFunc={(filing: FilingType | Project) => {}}
-            clearFunc={() => {}}
           />
           <RecentlyFiling />
         </div>
@@ -141,24 +144,26 @@ export default function FilingTab() {
           <SelectType
             title="ฝ่าย"
             items={departmentProjectItems}
-            sendValue={() => {}}
+            sendValue={setSelectedDepartment}
           />
           <SelectType
             title="ประเภท"
             items={typeFilingItems}
-            sendValue={() => {}}
+            sendValue={setSelectedType}
           />
         </div>
       </div>
-      <CustomTabPanel value={tabsValue} index={0}>
-        <div>test1</div>
-      </CustomTabPanel>
-      <CustomTabPanel value={tabsValue} index={1}>
-        <div>test2</div>
-      </CustomTabPanel>
-      <CustomTabPanel value={tabsValue} index={2}>
-        <div>test3</div>
-      </CustomTabPanel>
+      <div className="flex-grow">
+        <CustomTabPanel value={tabsValue} index={0}>
+          <FilingNotFound value={tabsValue} />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabsValue} index={1}>
+          <FilingNotFound value={tabsValue} />
+        </CustomTabPanel>
+        <CustomTabPanel value={tabsValue} index={2}>
+          <FilingNotFound value={tabsValue} />
+        </CustomTabPanel>
+      </div>
     </div>
   );
 }
