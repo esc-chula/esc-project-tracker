@@ -18,9 +18,10 @@ export class AwsController {
     @UploadedFile()
     file: Express.Multer.File,
     @Body('folderName') folderName: string,
+    @Body('fileName') fileName: string,
   ) {
     const uploadedFileName = await this.awsService.uploadFileToS3(
-      file.originalname,
+      fileName,
       file.buffer,
       folderName,
     );

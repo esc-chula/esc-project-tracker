@@ -26,11 +26,18 @@ export class AwsService {
     let storedFileName = `{${dateWithTimestamp}}-` + fileName;
     const newFileName = storedFileName;
     if (folderName) storedFileName = folderName + '/' + storedFileName;
+    console.log(
+      'Uploading file to S3:',
+      storedFileName,
+      ' with fileName length:',
+      storedFileName.length,
+    );
+
     try {
       await this.s3Client.send(
         new PutObjectCommand({
           Bucket: 'project-tracker',
-          Key: storedFileName,
+          Key: fileName,
           Body: file,
         }),
       );

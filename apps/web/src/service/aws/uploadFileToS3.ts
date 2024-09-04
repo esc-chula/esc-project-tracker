@@ -8,7 +8,7 @@ export default async function uploadFileToS3(obj: {
     const formData = new FormData();
     formData.append('file', obj.file);
     if (obj.folderName) formData.append('folderName', obj.folderName);
-
+    formData.append('fileName', obj.file.name);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_SERVER_URL}/aws/upload`,
       {
@@ -21,6 +21,6 @@ export default async function uploadFileToS3(obj: {
     return responseJSON.uploadedFileName;
   } catch (e) {
     console.log(e);
-    throw new Error('อัปโหลดไฟล์ไม่สำเร็จ โปรดตรวจสอบว่าชื่อไฟล์ไม่ใช่ภาษาไทย');
+    throw new Error('อัปโหลดไฟล์ไม่สำเร็จ โปรดตรวจสอบว่าชื่อไฟล์ไม่ยาวเกินไป');
   }
 }
