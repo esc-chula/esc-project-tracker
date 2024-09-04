@@ -2,7 +2,7 @@ import { FaCircleXmark } from 'react-icons/fa6';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { IoFileTray } from 'react-icons/io5';
 
-export default function FilingNotFound({ value }: { value: number }) {
+export default function FilingTabNotFound({ value }: { value: number }) {
   return (
     <div className="w-full h-full flex justify-center items-center flex-col text-gray-300 font-sukhumvit text-2xl">
       {value === 0 ? (

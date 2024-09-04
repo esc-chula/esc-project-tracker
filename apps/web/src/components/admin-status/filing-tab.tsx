@@ -9,7 +9,8 @@ import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import { FilingStatus } from '@/src/constant/enum';
-import FilingNotFound from './filing-not-found';
+import FilingNotFound from './filing-tab-not-found';
+import FilingTabShow from './filing-tab-show';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -29,7 +30,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
       className="h-full"
     >
-      {value === index && <div className="p-3 h-full">{children}</div>}
+      {value === index && <div className="h-full">{children}</div>}
     </div>
   );
 }
@@ -47,8 +48,8 @@ export default function FilingTab() {
     setTabsValue(newValue);
   };
   const [TargetFilings, setTargetFilings] = useState<FilingType[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<FilingStatus | null>(
-    null,
+  const [selectedStatus, setSelectedStatus] = useState<FilingStatus>(
+    FilingStatus.WAIT_FOR_SECRETARY,
   );
   const [selectedType, setSelectedType] = useState<string>('ALL');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
@@ -56,7 +57,7 @@ export default function FilingTab() {
   useEffect(() => {
     const newSelectedStatus =
       tabsValue === 0
-        ? null
+        ? FilingStatus.WAIT_FOR_SECRETARY
         : tabsValue === 1
           ? FilingStatus.RETURNED
           : FilingStatus.APPROVED;
@@ -153,15 +154,15 @@ export default function FilingTab() {
           />
         </div>
       </div>
-      <div className="flex-grow">
+      <div className="flex-grow overflow-y-scroll">
         <CustomTabPanel value={tabsValue} index={0}>
-          <FilingNotFound value={tabsValue} />
+          <FilingTabShow tabValue={0} filings={TargetFilings} />
         </CustomTabPanel>
         <CustomTabPanel value={tabsValue} index={1}>
-          <FilingNotFound value={tabsValue} />
+          <FilingTabShow tabValue={1} filings={TargetFilings} />
         </CustomTabPanel>
         <CustomTabPanel value={tabsValue} index={2}>
-          <FilingNotFound value={tabsValue} />
+          <FilingTabShow tabValue={2} filings={TargetFilings} />
         </CustomTabPanel>
       </div>
     </div>
