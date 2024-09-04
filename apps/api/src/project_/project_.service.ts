@@ -36,7 +36,7 @@ export class ProjectService {
     if (!foundUser) {
       throw new BadRequestException('User not found');
     }
-
+    console.log('foundUser', foundUser);
     const projects = await this.projectRepository
       .createQueryBuilder('project')
       .innerJoin(UserProj, 'userProj', 'project.id = userProj.projectId')
@@ -67,8 +67,21 @@ export class ProjectService {
     return projects;
   }
 
-  async findAllProjects(): Promise<Project[]> {
-    return await this.projectRepository.find();
+  async findAllProjects(): Promise<ProjectWithLastOpenDTO[]> {
+    const projects = await this.projectRepository
+      .createQueryBuilder('project')
+      .innerJoin(UserProj, 'userProj', 'project.id = userProj.projectId')
+      .select(['project', 'userProj.lastOpen'])
+      .getRawAndEntities();
+
+    const projectWithLastOpenDTOs = projects.raw.map((rawProject, index) => {
+      const projectWithLastOpenDTO = new ProjectWithLastOpenDTO();
+      projectWithLastOpenDTO.project = projects.entities[index];
+      projectWithLastOpenDTO.lastOpen = rawProject.userProj_lastOpen;
+      return projectWithLastOpenDTO;
+    });
+
+    return projectWithLastOpenDTOs;
   }
 
   async findCountOfProjectType(type: ProjectType): Promise<number> {

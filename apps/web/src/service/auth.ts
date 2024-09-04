@@ -138,3 +138,15 @@ export async function authenticate({
     throw new Error('ไม่มีสิทธิ์เข้าถึง');
   }
 }
+
+export async function getUserName(): Promise<String> {
+  const cookieStore = cookies();
+  const accessTokenCookie = cookieStore.get('accessToken')?.value;
+
+  if (!accessTokenCookie) {
+    return 'Guest';
+  }
+
+  const user = await validateToken(accessTokenCookie);
+  return user.username;
+}
