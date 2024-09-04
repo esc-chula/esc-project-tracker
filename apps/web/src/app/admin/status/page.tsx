@@ -8,6 +8,7 @@ import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { FilingType } from '@/src/interface/filing';
 import { useToast } from '@/src/components/ui/use-toast';
 import { useEffect, useState } from 'react';
+import FilingsSection from '@/src/components/admin-status/filings-section';
 
 export default function Page() {
   // TODO: Change the userId to the actual userId
@@ -36,22 +37,13 @@ export default function Page() {
 
   return (
     <>
-      <main className="w-full pt-[68px]">
+      <main className="w-full pt-[68px] overflow-y-hidden">
         <div className="pl-15 pr-5">
           <Header>
             <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
           </Header>
         </div>
-
-        <section className="bg-lightpink flex flex-col pt-12 pb-5 items-center mt-5 w-full">
-          <h3 className="mb-8 text-2xl text-intania font-bold">
-            ขั้นตอนการส่งเอกสาร
-          </h3>
-          <DocumentStatusStepper status="DEFAULT" />
-        </section>
-        <section className="w-full pl-15 pr-5">
-          <StatusTable data={statuses} />
-        </section>
+        <FilingsSection />
       </main>
     </>
   );
