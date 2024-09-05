@@ -7,7 +7,7 @@ import { Project } from '@/src/interface/project';
 import ProjectMenu from '../project/projectMenu';
 import { FilingType } from '@/src/interface/filing';
 import FilingMenu from '../project/filingMenu';
-import { findAllProject } from '@/src/service/project/findAllProject';
+import findAllProject from '@/src/service/project/findAllProject';
 import findAllFiling from '@/src/service/filing/findAllFiling';
 import { useToast } from '../ui/use-toast';
 import { TbEdit } from 'react-icons/tb';
@@ -70,7 +70,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
         ]);
 
         setFilings(fetchedFiling);
-        setProjects(fetchedProject);
+        setProjects(fetchedProject.map((project) => project.project));
       } catch (error) {
         if (error instanceof Error) {
           toast({

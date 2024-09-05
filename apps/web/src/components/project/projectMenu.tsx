@@ -9,7 +9,7 @@ import {
   statusProjectItems,
 } from '@/src/constant/filterProject';
 import { useToast } from '../ui/use-toast';
-import { findAllProject } from '@/src/service/project/findAllProject';
+import findAllProject from '@/src/service/project/findAllProject';
 import findProjectsWithFilter from '@/src/service/project/findProjectsWithFilter';
 import hasUserProj from '@/src/service/user-proj/hasUserProj';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
@@ -49,7 +49,10 @@ export default function ProjectMenu({
             : (fetchedProject = []);
         } else {
           // case ปกติ
-          fetchedProject = await findAllProject();
+          const fetchedProjectWithLastOpen = await findAllProject();
+          fetchedProject = fetchedProjectWithLastOpen.map(
+            (project) => project.project,
+          );
         }
       } else {
         // case search
