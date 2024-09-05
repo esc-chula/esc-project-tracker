@@ -38,7 +38,7 @@ import { AiFillEdit } from 'react-icons/ai';
 import SubmitButtonGroup from './submitButtonGroup';
 import DeleteProjectDialog from './deleteProjectDialog';
 import { User } from '@/src/interface/user';
-import { findUserByCondition } from '@/src/service/findUserByCondition';
+import { findUserByCondition } from '@/src/service/user/findUserByCondition';
 import updateProject from '@/src/service/project/updateProject';
 import leaveProjectByStudentId from '@/src/service/user-proj/leaveProjectByStudentId';
 

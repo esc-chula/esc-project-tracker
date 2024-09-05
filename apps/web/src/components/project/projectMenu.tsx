@@ -145,7 +145,7 @@ export default function ProjectMenu({
               {projects.map((project, index) => (
                 <ProjectMenuItem
                   project={project}
-                  key={project.id}
+                  key={index}
                   index={index + 1}
                   isAdmin={isAdmin}
                 />
