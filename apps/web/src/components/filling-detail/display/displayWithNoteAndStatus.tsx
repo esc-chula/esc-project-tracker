@@ -76,7 +76,7 @@ export default function DisplayWithNoteAndStatus({
                     fileType="pdf"
                     link=""
                   />
-                  {document.docName !== '' && (
+                  {document.docName !== '' && document.docName !== '-' && (
                     <FileDisplay
                       fileName={document.docName}
                       fileType="doc"

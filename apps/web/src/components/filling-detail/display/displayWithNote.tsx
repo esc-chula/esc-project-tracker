@@ -55,7 +55,7 @@ export default function DisplayWithNote({
             <div className="font-bold text-sm">ไฟล์แนบ</div>
             <div className="flex flex-row py-2 gap-5 flex-wrap">
               <FileDisplay fileName={document.pdfName} fileType="pdf" link="" />
-              {document.docName !== '' && (
+              {document.docName !== '' && document.docName !== '-' && (
                 <FileDisplay
                   fileName={document.docName}
                   fileType="doc"
