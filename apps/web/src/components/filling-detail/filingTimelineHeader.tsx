@@ -17,6 +17,7 @@ import { DocumentType } from '@/src/interface/document';
 import updateDocument from '@/src/service/document/updateDocument';
 import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
+import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 
 export default function FilingTimelineHeader({
   name,
@@ -29,6 +30,7 @@ export default function FilingTimelineHeader({
   projectId,
   showCreateDocument,
   setShowCreateDocument,
+  isAdmin = false,
 }: {
   name: string;
   status: FilingStatus;
@@ -40,6 +42,7 @@ export default function FilingTimelineHeader({
   projectId: string;
   showCreateDocument: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
+  isAdmin?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -252,18 +255,22 @@ export default function FilingTimelineHeader({
       </div>
       {showCreateDocument && (
         <div className="my-10 w-full">
-          <CreateDocumentClient
-            setShowCreateDocument={setShowCreateDocument}
-            afterCreateDocument={(createdDocument) => {
-              setDocuments((prev) => [createdDocument, ...prev]);
-              if (status === FilingStatus.DRAFT)
-                setStatus(FilingStatus.DOCUMENT_CREATED);
-              setShowCreateDocument(false);
-            }}
-            status={status}
-            filingId={filingId}
-            projectId={projectId}
-          />
+          {isAdmin ? (
+            <CreateDocumentAdmin />
+          ) : (
+            <CreateDocumentClient
+              setShowCreateDocument={setShowCreateDocument}
+              afterCreateDocument={(createdDocument) => {
+                setDocuments((prev) => [createdDocument, ...prev]);
+                if (status === FilingStatus.DRAFT)
+                  setStatus(FilingStatus.DOCUMENT_CREATED);
+                setShowCreateDocument(false);
+              }}
+              status={status}
+              filingId={filingId}
+              projectId={projectId}
+            />
+          )}
         </div>
       )}
       {!showCreateDocument && status === FilingStatus.DRAFT && (

@@ -16,6 +16,7 @@ export default function FilingTimeline({
   setShowCreateDocument,
   usernameMap,
   handleDeleteDocument,
+  isAdmin = false,
 }: {
   documents: DocumentType[];
   status: FilingStatus;
@@ -23,11 +24,17 @@ export default function FilingTimeline({
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   usernameMap: Map<string, User>;
   handleDeleteDocument: (documentId: string) => Promise<void>;
+  isAdmin?: boolean;
 }) {
   let previousDate = '';
 
   const displayEditButton =
     status === FilingStatus.RETURNED &&
+    documents.length > 0 &&
+    documents[0].status !== DocumentStatus.DRAFT;
+  const displayReplyButton =
+    isAdmin &&
+    status === FilingStatus.WAIT_FOR_SECRETARY &&
     documents.length > 0 &&
     documents[0].status !== DocumentStatus.DRAFT;
 
@@ -74,7 +81,12 @@ export default function FilingTimeline({
               handleDeleteDocument={handleDeleteDocument}
             />
           ) : (
-            <DisplayWithNoteAndStatus document={document} user={user} />
+            <DisplayWithNoteAndStatus
+              document={document}
+              user={user}
+              displayReplyButton={displayReplyButton}
+              setShowCreateDocument={setShowCreateDocument}
+            />
           );
         if (currentDate !== previousDate) {
           previousDate = currentDate;

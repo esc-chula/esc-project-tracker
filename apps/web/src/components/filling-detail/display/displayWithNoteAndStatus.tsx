@@ -19,9 +19,13 @@ import { convertDate } from '@/src/lib/utils';
 export default function DisplayWithNoteAndStatus({
   user,
   document,
+  displayReplyButton,
+  setShowCreateDocument,
 }: {
   user?: User;
   document: DocumentType;
+  displayReplyButton: boolean;
+  setShowCreateDocument: (showCreateDocument: boolean) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
 
@@ -44,7 +48,11 @@ export default function DisplayWithNoteAndStatus({
             ></textarea>
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
-            <StatusButton status={document.status} />
+            <StatusButton
+              status={document.status}
+              displayReplyButton={displayReplyButton}
+              setShowCreateDocument={setShowCreateDocument}
+            />
             <CollapsibleTrigger
               onClick={() => {
                 setExpanded(!expanded);
