@@ -8,8 +8,6 @@ export default async function reviewSubmission({
   updatedStatus: boolean;
 }): Promise<DocumentType> {
   try {
-    console.log(id, updatedStatus);
-
     const result = await trpc.document.reviewSubmission.mutate({
       id,
       updatedStatus,

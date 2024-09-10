@@ -48,6 +48,7 @@ export default function FilingTimelineHeader({
   isAdmin?: boolean;
 }) {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState<boolean>(false);
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [pdfLink, setPdfLink] = useState<string | undefined>();
   const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
@@ -66,15 +67,10 @@ export default function FilingTimelineHeader({
         return !isEndFlag;
       })
       .map((doc) =>
-        isAdmin
-          ? reviewSubmission({
-              id: doc.id,
-              updatedStatus: toStatus === DocumentStatus.APPROVED,
-            })
-          : updateDocument({
-              docId: doc.id,
-              obj: { status: toStatus },
-            }),
+        updateDocument({
+          docId: doc.id,
+          obj: { status: toStatus },
+        }),
       );
     const resolvedDocuments = await Promise.all(documentsPromises);
 
@@ -255,28 +251,28 @@ export default function FilingTimelineHeader({
   const reviewDocument = async () => {
     setIsSubmitting(true);
     try {
-      const updatedStatus =
-        reviewButton === 'อนุมัติ'
-          ? FilingStatus.APPROVED
-          : FilingStatus.RETURNED;
-      const [updatedFiling, updatedDocuments] = await Promise.all([
-        updateFilingName({
-          filingId,
-          filingStatus: updatedStatus,
-        }),
-        updateDocumentStatuses(
-          documents,
-          DocumentStatus.DRAFT,
-          reviewButton === 'อนุมัติ'
-            ? DocumentStatus.APPROVED
-            : DocumentStatus.RETURNED,
-        ),
-      ]);
-      console.log(updatedFiling);
+      const updatedStatus = reviewButton === 'อนุมัติ';
 
-      if (updatedFiling) {
-        setStatus(updatedStatus);
-        setDocuments(updatedDocuments);
+      const [reviewedDocument, updatedDocuments] = await Promise.all([
+        reviewSubmission({
+          id: documents[0].id,
+          updatedStatus,
+        }),
+        documents.length > 1
+          ? updateDocumentStatuses(
+              documents.slice(1),
+              DocumentStatus.DRAFT,
+              updatedStatus ? DocumentStatus.APPROVED : DocumentStatus.RETURNED,
+            )
+          : [],
+      ]);
+      console.log(reviewedDocument);
+
+      if (reviewedDocument) {
+        setStatus(
+          updatedStatus ? FilingStatus.APPROVED : FilingStatus.RETURNED,
+        );
+        setDocuments([reviewedDocument, ...updatedDocuments]);
         toast({
           title: 'ตอบกลับเอกสารสำเร็จ',
           description: `${reviewButton}เอกสารสำเร็จ`,
@@ -293,7 +289,7 @@ export default function FilingTimelineHeader({
       }
     }
     setIsSubmitting(false);
-    setIsCancelDialogOpen(false);
+    setIsReviewDialogOpen(false);
   };
   const ReviewSubmissionButton = () => {
     const isDisabled = useMemo(
@@ -301,7 +297,8 @@ export default function FilingTimelineHeader({
         isSubmitting ||
         !(
           (status === FilingStatus.WAIT_FOR_SECRETARY ||
-            status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR) &&
+            status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR ||
+            status === FilingStatus.RETURNED) &&
           documents.length &&
           documents[0].status === DocumentStatus.DRAFT
         ),
@@ -315,8 +312,8 @@ export default function FilingTimelineHeader({
           onValueChange={setReviewButton}
         >
           <Dialog
-            open={isCancelDialogOpen}
-            onOpenChange={setIsCancelDialogOpen}
+            open={isReviewDialogOpen}
+            onOpenChange={setIsReviewDialogOpen}
           >
             <DialogTrigger asChild>
               <Button
