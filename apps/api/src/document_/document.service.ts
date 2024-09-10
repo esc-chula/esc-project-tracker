@@ -104,6 +104,7 @@ export class DocumentService {
       activity,
       userId,
       status,
+      comment,
     } = obj;
     const foundUser = await this.userService.findByUserID(userId);
     if (!foundUser) throw new BadRequestException('User Not Found!');
@@ -117,6 +118,7 @@ export class DocumentService {
     newDocument.docName = docName;
     newDocument.activity = activity;
     newDocument.user = foundUser;
+    if (comment) newDocument.comment = comment;
     if (status) {
       newDocument.status = status;
     }

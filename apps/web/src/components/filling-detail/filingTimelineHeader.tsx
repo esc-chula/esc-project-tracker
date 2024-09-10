@@ -19,6 +19,7 @@ import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select';
+import { IoIosAlert } from 'react-icons/io';
 
 export default function FilingTimelineHeader({
   name,
@@ -45,7 +46,7 @@ export default function FilingTimelineHeader({
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   isAdmin?: boolean;
 }) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [pdfLink, setPdfLink] = useState<string | undefined>();
   const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
@@ -109,7 +110,7 @@ export default function FilingTimelineHeader({
       if (updatedFiling) {
         setStatus(updatedStatus);
         setDocuments(updatedDocuments);
-        setIsOpen(false);
+        setIsCancelDialogOpen(false);
         toast({
           title: 'ยกเลิกสำเร็จ',
           description: `ยกเลิกการส่งเอกสาร ${name} แล้ว`,
@@ -195,7 +196,7 @@ export default function FilingTimelineHeader({
     </Button>
   );
   const CancelSubmissionButton = () => (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
@@ -246,7 +247,47 @@ export default function FilingTimelineHeader({
     </Button>
   );
   const reviewDocument = async () => {
-    console.log('reviewing document');
+    setIsSubmitting(true);
+    try {
+      const updatedStatus =
+        reviewButton === 'อนุมัติ'
+          ? FilingStatus.APPROVED
+          : FilingStatus.RETURNED;
+      const [updatedFiling, updatedDocuments] = await Promise.all([
+        updateFilingName({
+          filingId,
+          filingStatus: updatedStatus,
+        }),
+        updateDocumentStatuses(
+          documents,
+          DocumentStatus.DRAFT,
+          reviewButton === 'อนุมัติ'
+            ? DocumentStatus.APPROVED
+            : DocumentStatus.RETURNED,
+        ),
+      ]);
+      console.log(updatedFiling);
+
+      if (updatedFiling) {
+        setStatus(updatedStatus);
+        setDocuments(updatedDocuments);
+        toast({
+          title: 'ตอบกลับเอกสารสำเร็จ',
+          description: `${reviewButton}เอกสารสำเร็จ`,
+          isError: false,
+        });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: 'ตอบกลับเอกสารไม่สำเร็จ',
+          description: error.message,
+          isError: true,
+        });
+      }
+    }
+    setIsSubmitting(false);
+    setIsCancelDialogOpen(false);
   };
   const ReviewSubmissionButton = () => {
     const isDisabled = useMemo(
@@ -267,12 +308,42 @@ export default function FilingTimelineHeader({
           value={reviewButton}
           onValueChange={setReviewButton}
         >
-          <Button
-            disabled={isDisabled}
-            className={`${reviewButton === 'อนุมัติ' ? 'bg-accepted' : 'bg-red'} disabled:bg-lightgray border-r-white border-r-2 mx-auto rounded-none rounded-l-2xl text-2xl p-4 h-[52px] font-semibold text-white`}
+          <Dialog
+            open={isCancelDialogOpen}
+            onOpenChange={setIsCancelDialogOpen}
           >
-            {reviewButton}
-          </Button>
+            <DialogTrigger asChild>
+              <Button
+                disabled={isDisabled}
+                className={`${reviewButton === 'อนุมัติ' ? 'bg-accepted' : 'bg-red'} disabled:bg-lightgray border-r-white border-r-2 mx-auto rounded-none rounded-l-2xl text-2xl p-4 h-[52px] font-semibold text-white`}
+              >
+                {reviewButton}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <div className="flex flex-col items-center">
+                  <IoIosAlert size={150} className="text-center text-red" />
+                  <DialogTitle className="font-bold text-2xl">
+                    ยืนยันการตอบกลับเอกสาร
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <div className="bg-white rounded-lg space-y-4 flex flex-col items-center text-center ">
+                การอนุมัติหรือตีกลับเอกสารจะไม่สามารถยกเลิกหรือแก้ไขได้
+                หากต้องการแก้ไขเอกสารโปรดตอบกลับใหม่อีกครั้ง
+                <button
+                  className=" disabled:bg-disabled bg-red text-white rounded-lg p-2 px-4 font-bold text-2xl mt-4"
+                  onClick={() => {
+                    reviewDocument();
+                  }}
+                  disabled={isSubmitting}
+                >
+                  ยืนยัน
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
           <SelectTrigger
             className={`${reviewButton === 'อนุมัติ' ? 'bg-accepted' : 'bg-red'} disabled:bg-lightgray mx-auto rounded-none border-none rounded-r-2xl text-2xl px-2 py-4 h-[52px] font-semibold  text-white`}
           />
