@@ -20,6 +20,7 @@ import getUrlToFile from '@/src/service/aws/getUrlToFile';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select';
 import { IoIosAlert } from 'react-icons/io';
+import reviewSubmission from '@/src/service/document/reviewSubmission';
 
 export default function FilingTimelineHeader({
   name,
@@ -65,10 +66,15 @@ export default function FilingTimelineHeader({
         return !isEndFlag;
       })
       .map((doc) =>
-        updateDocument({
-          docId: doc.id,
-          obj: { status: toStatus },
-        }),
+        isAdmin
+          ? reviewSubmission({
+              id: doc.id,
+              updatedStatus: toStatus === DocumentStatus.APPROVED,
+            })
+          : updateDocument({
+              docId: doc.id,
+              obj: { status: toStatus },
+            }),
       );
     const resolvedDocuments = await Promise.all(documentsPromises);
 
