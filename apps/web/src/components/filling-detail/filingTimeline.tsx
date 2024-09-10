@@ -28,16 +28,6 @@ export default function FilingTimeline({
 }) {
   let previousDate = '';
 
-  const displayEditButton =
-    status === FilingStatus.RETURNED &&
-    documents.length > 0 &&
-    documents[0].status !== DocumentStatus.DRAFT;
-  const displayReplyButton =
-    isAdmin &&
-    status === FilingStatus.WAIT_FOR_SECRETARY &&
-    documents.length > 0 &&
-    documents[0].status !== DocumentStatus.DRAFT;
-
   let returnedDocumentIndex = documents.length;
   for (let i = 0; i < documents.length; i++) {
     if (documents[i].status === DocumentStatus.RETURNED) {
@@ -61,6 +51,17 @@ export default function FilingTimeline({
           },
         );
         const user = usernameMap.get(document.userId ?? '');
+        const displayEditButton =
+          document.status === DocumentStatus.RETURNED &&
+          status === FilingStatus.RETURNED &&
+          documents.length > 0 &&
+          documents[0].status !== DocumentStatus.DRAFT;
+        const displayReplyButton =
+          document.status === DocumentStatus.WAIT_FOR_SECRETARY &&
+          isAdmin &&
+          status === FilingStatus.WAIT_FOR_SECRETARY &&
+          documents.length > 0 &&
+          documents[0].status !== DocumentStatus.DRAFT;
         const display =
           document.activity === DocumentActivity.REPLY ? (
             <DisplayWithStatus

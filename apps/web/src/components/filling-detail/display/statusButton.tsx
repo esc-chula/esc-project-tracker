@@ -31,13 +31,13 @@ export default function StatusButton({
         >
           {displayReplyButton ? (
             <>
-              <FaEdit className="text-center items-center mr-3" />
-              <div className="text-center items-center ">แก้ไข</div>
+              <Undo2 className="text-center items-center mr-3" />
+              <div className="text-center items-center ">ตอบกลับ</div>
             </>
           ) : (
             <>
-              <Undo2 className="text-center items-center mr-3" />
-              <div className="text-center items-center ">ตอบกลับ</div>
+              <FaEdit className="text-center items-center mr-3" />
+              <div className="text-center items-center ">แก้ไข</div>
             </>
           )}
         </button>
