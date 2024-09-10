@@ -17,13 +17,13 @@ import { Select } from '../../ui/select';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
-import { zodDocumentFiles } from '@/src/lib/utils';
 import { useMemo } from 'react';
 import { DocumentActivity } from '@/src/constant/enum';
 import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
 import { DocumentType } from '@/src/interface/document';
+import { zodDocumentAdminFile } from '@/src/constant/schema';
 
 export default function CreateDocumentAdmin({
   setShowCreateDocument,
@@ -38,8 +38,7 @@ export default function CreateDocumentAdmin({
 }) {
   const createdFormSchema = z.object({
     // Server side ไม่รู้จัก FileList ***
-    // TODO: set file to optional
-    file: zodDocumentFiles,
+    file: zodDocumentAdminFile,
     activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
     comment: z.string().optional(),
   });
@@ -64,9 +63,9 @@ export default function CreateDocumentAdmin({
       const pdfFile = values.file[0];
       const folderName = `${projectId}/${filingId}`;
 
-      const pdfName = await uploadFileToS3({ file: pdfFile, folderName });
-
-      if (!pdfName) throw new Error('Upload file failed');
+      const pdfName = pdfFile
+        ? await uploadFileToS3({ file: pdfFile, folderName })
+        : '';
 
       const newDocument = await createDocument({
         document: {
@@ -113,7 +112,7 @@ export default function CreateDocumentAdmin({
                       กิจกรรม<span className="text-red">*</span>
                     </FormLabel>
                     <Select onValueChange={field.onChange}>
-                      <ActivityPanel />
+                      <ActivityPanel isAdmin />
                     </Select>
                     <FormMessage />
                   </FormItem>

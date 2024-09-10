@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { projectTypeMap } from './Map';
+import { getFileType } from '../lib/utils';
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString());
 
@@ -54,3 +55,10 @@ export const newProjectFormSchema = z.object({
       });
     }),
 });
+
+export const zodDocumentAdminFile = (
+  typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
+).refine(
+  (file) => file?.length == 0 || getFileType(file[0]) === 'pdf',
+  'เลือกได้แค่ไฟล์ที่มีนามสกุล .pdf ไฟล์เดียว',
+);

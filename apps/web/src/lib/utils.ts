@@ -24,6 +24,7 @@ export function getFileType(file: File | undefined): string | undefined {
   return file.name.split('.').pop();
 }
 
+// TODO: move to schema.ts
 export const zodDocumentFiles = (
   typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
 )
