@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import updateFilingName from '@/src/service/filing/updateFiling';
 import CreateDocumentClient from './create-edit/createDocumentClient';
@@ -18,6 +18,7 @@ import updateDocument from '@/src/service/document/updateDocument';
 import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select';
 
 export default function FilingTimelineHeader({
   name,
@@ -47,6 +48,7 @@ export default function FilingTimelineHeader({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [pdfLink, setPdfLink] = useState<string | undefined>();
+  const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
   const { toast } = useToast();
 
   const updateDocumentStatuses = async (
@@ -172,7 +174,126 @@ export default function FilingTimelineHeader({
   useEffect(() => {
     if (status === FilingStatus.APPROVED && latestDocument) fetchPdfLink();
   }, [status, latestDocument]);
-
+  const AddDocumentButton = () => (
+    <Button
+      variant="outline"
+      disabled={
+        (!isAdmin &&
+          (status === FilingStatus.WAIT_FOR_SECRETARY ||
+            status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR)) ||
+        (isAdmin &&
+          (status === FilingStatus.DRAFT ||
+            status === FilingStatus.DOCUMENT_CREATED))
+      }
+      onClick={() => {
+        setShowCreateDocument(true);
+      }}
+      className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none"
+    >
+      <Plus className="h-8 w-8 mr-2" />
+      เพิ่ม
+    </Button>
+  );
+  const CancelSubmissionButton = () => (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black"
+        >
+          <X className="h-8 w-8 mr-2" />
+          ยกเลิก
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="font-semibold text-2xl">
+            ยกเลิกการส่งเอกสาร
+          </DialogTitle>
+        </DialogHeader>
+        <div className="bg-white rounded-lg space-y-4">
+          ยกเลิกการส่งเอกสารเพื่อเปลี่ยนแปลงข้อมูล
+          โปรดอย่าลืมส่งอีกครั้งเมื่อดำเนินการเสร็จ
+          <div className="text-end">
+            <button
+              className=" disabled:bg-disabled bg-red text-white rounded-lg py-1 px-4 font-semibold"
+              onClick={cancelDocumentSubmission}
+              disabled={isSubmitting}
+            >
+              ยืนยัน
+            </button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+  const SubmissionButton = () => (
+    <Button
+      disabled={
+        isSubmitting ||
+        !(
+          (status === FilingStatus.DOCUMENT_CREATED ||
+            status === FilingStatus.RETURNED) &&
+          documents.length &&
+          documents[0].status === DocumentStatus.DRAFT
+        )
+      }
+      onClick={submitDocument}
+      className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white"
+    >
+      <Send className="h-8 w-8 mr-2" />
+      ส่ง
+    </Button>
+  );
+  const reviewDocument = async () => {
+    console.log('reviewing document');
+  };
+  const ReviewSubmissionButton = () => {
+    const isDisabled = useMemo(
+      () =>
+        isSubmitting ||
+        !(
+          (status === FilingStatus.WAIT_FOR_SECRETARY ||
+            status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR) &&
+          documents.length &&
+          documents[0].status === DocumentStatus.DRAFT
+        ),
+      [isSubmitting, status, documents],
+    );
+    return (
+      <div className="flex">
+        <Select
+          disabled={isDisabled}
+          value={reviewButton}
+          onValueChange={setReviewButton}
+        >
+          <Button
+            disabled={isDisabled}
+            className={`${reviewButton === 'อนุมัติ' ? 'bg-accepted' : 'bg-red'} disabled:bg-lightgray border-r-white border-r-2 mx-auto rounded-none rounded-l-2xl text-2xl p-4 h-[52px] font-semibold text-white`}
+          >
+            {reviewButton}
+          </Button>
+          <SelectTrigger
+            className={`${reviewButton === 'อนุมัติ' ? 'bg-accepted' : 'bg-red'} disabled:bg-lightgray mx-auto rounded-none border-none rounded-r-2xl text-2xl px-2 py-4 h-[52px] font-semibold  text-white`}
+          />
+          <SelectContent className="min-w-0">
+            <SelectItem
+              value="อนุมัติ"
+              className=" font-semibold text-accepted focus:text-accepted"
+            >
+              อนุมัติ
+            </SelectItem>
+            <SelectItem
+              value="ตีกลับ"
+              className="font-semibold text-rejected focus:text-rejected"
+            >
+              ตีกลับ
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    );
+  };
   return (
     <>
       <div className="flex items-center justify-between gap-3">
@@ -185,69 +306,13 @@ export default function FilingTimelineHeader({
             <FilingTimelineHeaderApproved pdfLink={pdfLink ?? ''} />
           ) : (
             <>
-              <Button
-                variant="outline"
-                disabled={
-                  status === FilingStatus.WAIT_FOR_SECRETARY ||
-                  status === FilingStatus.WAIT_FOR_STUDENT_AFFAIR
-                }
-                onClick={() => {
-                  setShowCreateDocument(true);
-                }}
-                className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none"
-              >
-                <Plus className="h-8 w-8 mr-2" />
-                เพิ่ม
-              </Button>
-              {status === FilingStatus.WAIT_FOR_SECRETARY ? (
-                <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black"
-                    >
-                      <X className="h-8 w-8 mr-2" />
-                      ยกเลิก
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle className="font-semibold text-2xl">
-                        ยกเลิกการส่งเอกสาร
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div className="bg-white rounded-lg space-y-4">
-                      ยกเลิกการส่งเอกสารเพื่อเปลี่ยนแปลงข้อมูล
-                      โปรดอย่าลืมส่งอีกครั้งเมื่อดำเนินการเสร็จ
-                      <div className="text-end">
-                        <button
-                          className=" disabled:bg-disabled bg-red text-white rounded-lg py-1 px-4 font-semibold"
-                          onClick={cancelDocumentSubmission}
-                          disabled={isSubmitting}
-                        >
-                          ยืนยัน
-                        </button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+              <AddDocumentButton />
+              {isAdmin ? (
+                <ReviewSubmissionButton />
+              ) : status === FilingStatus.WAIT_FOR_SECRETARY ? (
+                <CancelSubmissionButton />
               ) : (
-                <Button
-                  disabled={
-                    isSubmitting ||
-                    !(
-                      (status === FilingStatus.DOCUMENT_CREATED ||
-                        status === FilingStatus.RETURNED) &&
-                      documents.length &&
-                      documents[0].status === DocumentStatus.DRAFT
-                    )
-                  }
-                  onClick={submitDocument}
-                  className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white"
-                >
-                  <Send className="h-8 w-8 mr-2" />
-                  ส่ง
-                </Button>
+                <SubmissionButton />
               )}
             </>
           )}
@@ -256,7 +321,15 @@ export default function FilingTimelineHeader({
       {showCreateDocument && (
         <div className="my-10 w-full">
           {isAdmin ? (
-            <CreateDocumentAdmin />
+            <CreateDocumentAdmin
+              setShowCreateDocument={setShowCreateDocument}
+              afterCreateDocument={(createdDocument) => {
+                setDocuments((prev) => [createdDocument, ...prev]);
+                setShowCreateDocument(false);
+              }}
+              filingId={filingId}
+              projectId={projectId}
+            />
           ) : (
             <CreateDocumentClient
               setShowCreateDocument={setShowCreateDocument}

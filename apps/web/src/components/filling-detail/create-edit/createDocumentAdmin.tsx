@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -12,47 +12,87 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import {
-  Select,
-} from "../../ui/select";
+} from '../../ui/form';
+import { Select } from '../../ui/select';
+import ButtonPanel from './buttonPanel';
+import FileInputPanel from './fileInputPanel';
+import ActivityPanel from './activityPanel';
+import { zodDocumentFiles } from '@/src/lib/utils';
+import { useMemo } from 'react';
+import { DocumentActivity } from '@/src/constant/enum';
+import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
+import createDocument from '@/src/service/document/createDocument';
+import { toast } from '../../ui/use-toast';
+import { DocumentType } from '@/src/interface/document';
 
-import ButtonPanel from "./buttonPanel";
-import FileInputPanel from "./fileInputPanel";
-import ActivityPanel from "./activityPanel";
-import { checkFileType } from "@/src/lib/utils";
-import { useMemo } from "react";
-
-export default function CreateDocumentAdmin() {
+export default function CreateDocumentAdmin({
+  setShowCreateDocument,
+  afterCreateDocument,
+  filingId,
+  projectId,
+}: {
+  setShowCreateDocument: (showCreateDocument: boolean) => void;
+  afterCreateDocument: (createdDocument: DocumentType) => void;
+  filingId: string;
+  projectId: string;
+}) {
   const createdFormSchema = z.object({
-    file: (typeof window === "undefined"
-      ? z.any()
-      : z.instanceof(FileList)
-    ).refine(
-      (file) => checkFileType(file[0]),
-      "กรุณาเลือกไฟล์ที่มีนามสกุล .docx, .pdf, .doc"
-    ),
-
-    activity: z.string().optional(),
+    // Server side ไม่รู้จัก FileList ***
+    // TODO: set file to optional
+    file: zodDocumentFiles,
+    activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
     comment: z.string().optional(),
   });
 
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
     defaultValues: {
-      activity: "",
-      comment: "",
+      comment: '',
     },
   });
 
-  const isDisabled = useMemo(() => form.formState.isSubmitting, [form.formState.isSubmitting])
+  const isDisabled = useMemo(
+    () => form.formState.isSubmitting,
+    [form.formState.isSubmitting],
+  );
 
-  const fileRef = form.register("file");
+  const fileRef = form.register('file');
 
-  function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof createdFormSchema>) {
+    // TODO: change to actual userId
+    try {
+      const pdfFile = values.file[0];
+      const folderName = `${projectId}/${filingId}`;
+
+      const pdfName = await uploadFileToS3({ file: pdfFile, folderName });
+
+      if (!pdfName) throw new Error('Upload file failed');
+
+      const newDocument = await createDocument({
+        document: {
+          name: 'ตอบกลับเอกสาร',
+          filingId,
+          pdfName: pdfName,
+          docName: '',
+          activity: values.activity as DocumentActivity,
+          userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+          comment: values.comment,
+        },
+      });
+      afterCreateDocument(newDocument);
+      toast({
+        title: 'สร้างเอกสารสำเร็จ',
+        description: `สร้างเอกสาร ${newDocument.name} สำเร็จ`,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: 'สร้างเอกสารไม่สำเร็จ',
+          description: error.message,
+          isError: true,
+        });
+      }
+    }
   }
 
   return (
@@ -115,7 +155,10 @@ export default function CreateDocumentAdmin() {
               </FormItem>
             )}
           />
-          <ButtonPanel isDisabled={isDisabled} />
+          <ButtonPanel
+            isDisabled={isDisabled}
+            setShowCreateDocument={setShowCreateDocument}
+          />
         </form>
       </Form>
     </>
