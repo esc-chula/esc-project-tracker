@@ -136,19 +136,28 @@ export default function FilingTimelineHeader({
     setIsSubmitting(true);
     try {
       const [updatedFiling, updatedDocuments] = await Promise.all([
-        updateFilingName({
-          filingId,
-          filingStatus: FilingStatus.WAIT_FOR_SECRETARY,
-        }),
+        status !== FilingStatus.APPROVED &&
+          updateFilingName({
+            filingId,
+            filingStatus: FilingStatus.WAIT_FOR_SECRETARY,
+          }),
         updateDocumentStatuses(
           documents,
           DocumentStatus.DRAFT,
-          DocumentStatus.WAIT_FOR_SECRETARY,
+          status === FilingStatus.APPROVED
+            ? DocumentStatus.APPROVED
+            : DocumentStatus.WAIT_FOR_SECRETARY,
         ),
       ]);
       console.log(updatedFiling);
 
-      if (updatedFiling) {
+      if (status === FilingStatus.APPROVED) {
+        setDocuments(updatedDocuments);
+        toast({
+          title: 'ส่งเอกสารฉบับแก้ไขสำเร็จ',
+          description: `ส่งเอกสารฉบับแก้ไข ${name} สำเร็จ`,
+        });
+      } else if (updatedFiling) {
         setStatus(FilingStatus.WAIT_FOR_SECRETARY);
         setDocuments(updatedDocuments);
         toast({
@@ -238,7 +247,8 @@ export default function FilingTimelineHeader({
         isSubmitting ||
         !(
           (status === FilingStatus.DOCUMENT_CREATED ||
-            status === FilingStatus.RETURNED) &&
+            status === FilingStatus.RETURNED ||
+            (status === FilingStatus.APPROVED && isAdmin)) &&
           documents.length &&
           documents[0].status === DocumentStatus.DRAFT
         )
