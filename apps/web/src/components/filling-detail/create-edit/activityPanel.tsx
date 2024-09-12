@@ -19,7 +19,7 @@ export default function ActivityPanel({
   return (
     <>
       <FormControl>
-        <SelectTrigger className="border-2 rounded-lg w-[38vw] p-4">
+        <SelectTrigger className="border-2 rounded-lg p-4">
           <SelectValue
             placeholder={
               isAdmin ? 'ตอบกลับหรือแก้ไขเอกสาร' : 'สร้างหรือแก้ไขเอกสาร'

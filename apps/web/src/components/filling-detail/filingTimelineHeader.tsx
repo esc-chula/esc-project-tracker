@@ -22,6 +22,7 @@ import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select';
 import { IoIosAlert } from 'react-icons/io';
 import reviewSubmission from '@/src/service/document/reviewSubmission';
+import UpdateDocumentAdmin from './create-edit/updateDocumentAdmin';
 
 export default function FilingTimelineHeader({
   name,
@@ -402,7 +403,17 @@ export default function FilingTimelineHeader({
       </div>
       {showCreateDocument && (
         <div className="my-10 w-full">
-          {isAdmin ? (
+          {isAdmin && status === FilingStatus.APPROVED ? (
+            <UpdateDocumentAdmin
+              setShowCreateDocument={setShowCreateDocument}
+              afterCreateDocument={(createdDocument) => {
+                setDocuments((prev) => [createdDocument, ...prev]);
+                setShowCreateDocument(false);
+              }}
+              filingId={filingId}
+              projectId={projectId}
+            />
+          ) : isAdmin ? (
             <CreateDocumentAdmin
               setShowCreateDocument={setShowCreateDocument}
               afterCreateDocument={(createdDocument) => {

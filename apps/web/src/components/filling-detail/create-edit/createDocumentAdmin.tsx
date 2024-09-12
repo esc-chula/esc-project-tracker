@@ -17,7 +17,6 @@ import { Select } from '../../ui/select';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
-import { useMemo } from 'react';
 import { DocumentActivity } from '@/src/constant/enum';
 import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 import createDocument from '@/src/service/document/createDocument';
@@ -45,15 +44,7 @@ export default function CreateDocumentAdmin({
 
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
-    defaultValues: {
-      comment: '',
-    },
   });
-
-  const isDisabled = useMemo(
-    () => form.formState.isSubmitting,
-    [form.formState.isSubmitting],
-  );
 
   const fileRef = form.register('file');
 
@@ -65,7 +56,9 @@ export default function CreateDocumentAdmin({
 
       const pdfName = pdfFile
         ? await uploadFileToS3({ file: pdfFile, folderName })
-        : '';
+        : null;
+
+      if (pdfFile && !pdfName) throw new Error('Upload file failed');
 
       const newDocument = await createDocument({
         document: {
@@ -80,13 +73,13 @@ export default function CreateDocumentAdmin({
       });
       afterCreateDocument(newDocument);
       toast({
-        title: 'สร้างเอกสารสำเร็จ',
-        description: `สร้างเอกสาร ${newDocument.name} สำเร็จ`,
+        title: 'สร้างเอกสารตอบกลับสำเร็จ',
+        description: `สร้างเอกสารตอบกลับสำเร็จ`,
       });
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: 'สร้างเอกสารไม่สำเร็จ',
+          title: 'สร้างเอกสารตอบกลับไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -102,7 +95,7 @@ export default function CreateDocumentAdmin({
           className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-full p-8 flex flex-col text-start"
         >
           <div className="flex flex-row space-x-5">
-            <div className="flex flex-col space-y-8">
+            <div className="flex flex-col space-y-8 flex-1">
               <FormField
                 control={form.control}
                 name="activity"
@@ -111,7 +104,11 @@ export default function CreateDocumentAdmin({
                     <FormLabel className="font-bold text-lg">
                       กิจกรรม<span className="text-red">*</span>
                     </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={DocumentActivity.REPLY}
+                      disabled
+                    >
                       <ActivityPanel isAdmin />
                     </Select>
                     <FormMessage />
@@ -119,7 +116,7 @@ export default function CreateDocumentAdmin({
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className="w-full flex-1">
               <FormField
                 control={form.control}
                 name="file"
@@ -155,7 +152,7 @@ export default function CreateDocumentAdmin({
             )}
           />
           <ButtonPanel
-            isDisabled={isDisabled}
+            isDisabled={form.formState.isSubmitting}
             setShowCreateDocument={setShowCreateDocument}
           />
         </form>

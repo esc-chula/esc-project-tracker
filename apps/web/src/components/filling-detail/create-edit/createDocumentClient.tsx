@@ -50,7 +50,6 @@ export default function CreateDocumentClient({
     resolver: zodResolver(createdFormSchema),
     defaultValues: {
       detail: '',
-      note: '',
     },
   });
 
@@ -121,7 +120,7 @@ export default function CreateDocumentClient({
           className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-full p-8 flex flex-col text-start"
         >
           <div className="flex flex-row space-x-5 w-full">
-            <div className="flex flex-col space-y-8">
+            <div className="flex flex-col space-y-8 flex-1">
               <FormField
                 control={form.control}
                 name="activity"
@@ -150,7 +149,7 @@ export default function CreateDocumentClient({
                       <input
                         placeholder="ใส่หัวข้อเอกสาร"
                         {...field}
-                        className="border-2 rounded-lg p-1 px-4 w-[38vw] flex items-center"
+                        className="border-2 rounded-lg p-1 px-4 flex w-full items-center"
                       />
                     </FormControl>
 
@@ -159,7 +158,7 @@ export default function CreateDocumentClient({
                 )}
               />
             </div>
-            <div className="w-full">
+            <div className="w-full flex-1">
               <FormField
                 control={form.control}
                 name="file"
