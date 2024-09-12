@@ -8,6 +8,7 @@ import { DocumentType } from '@/src/interface/document';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import { DocumentActivity } from '../../../../api/src/constant/enum';
 import { User } from '@/src/interface/user';
+import Display from './display/display';
 
 export default function FilingTimeline({
   documents,
@@ -63,7 +64,19 @@ export default function FilingTimeline({
           documents.length > 0 &&
           documents[0].status !== DocumentStatus.DRAFT;
         const display =
-          document.activity === DocumentActivity.REPLY ? (
+          isAdmin &&
+          document.status === DocumentStatus.DRAFT &&
+          document.activity === DocumentActivity.REPLY &&
+          !(
+            status === FilingStatus.DRAFT ||
+            status === FilingStatus.DOCUMENT_CREATED
+          ) ? (
+            <Display
+              document={document}
+              user={user}
+              handleDeleteDocument={handleDeleteDocument}
+            />
+          ) : document.activity === DocumentActivity.REPLY ? (
             <DisplayWithStatus
               document={document}
               user={user}

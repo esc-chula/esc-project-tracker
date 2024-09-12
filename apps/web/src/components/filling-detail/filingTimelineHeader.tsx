@@ -315,7 +315,7 @@ export default function FilingTimelineHeader({
             open={isReviewDialogOpen}
             onOpenChange={setIsReviewDialogOpen}
           >
-            <DialogTrigger asChild>
+            <DialogTrigger>
               <Button
                 disabled={isDisabled}
                 className={`${reviewButton === 'อนุมัติ' ? 'bg-accepted' : 'bg-red'} disabled:bg-lightgray border-r-white border-r-2 mx-auto rounded-none rounded-l-2xl text-2xl p-4 h-[52px] font-semibold text-white`}
