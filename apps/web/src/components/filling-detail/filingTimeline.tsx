@@ -100,6 +100,13 @@ export default function FilingTimeline({
               user={user}
               displayReplyButton={displayReplyButton}
               setShowCreateDocument={setShowCreateDocument}
+              handleDeleteDocument={
+                isAdmin &&
+                status === FilingStatus.APPROVED &&
+                document.status === DocumentStatus.DRAFT
+                  ? handleDeleteDocument
+                  : undefined
+              }
             />
           );
         if (currentDate !== previousDate) {

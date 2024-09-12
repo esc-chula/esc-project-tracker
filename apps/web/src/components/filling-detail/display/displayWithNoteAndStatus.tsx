@@ -15,19 +15,23 @@ import { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
+import DraftDocumentPopover from './draftDocumentPopover';
 
 export default function DisplayWithNoteAndStatus({
   user,
   document,
   displayReplyButton,
   setShowCreateDocument,
+  handleDeleteDocument,
 }: {
   user?: User;
   document: DocumentType;
   displayReplyButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
+  handleDeleteDocument?: (documentId: string) => Promise<void>;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="w-full relative">
@@ -48,11 +52,21 @@ export default function DisplayWithNoteAndStatus({
             ></textarea>
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
-            <StatusButton
-              status={document.status}
-              displayReplyButton={displayReplyButton}
-              setShowCreateDocument={setShowCreateDocument}
-            />
+            {handleDeleteDocument ? (
+              <DraftDocumentPopover
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                handleDeleteButton={() => {
+                  handleDeleteDocument(document.id);
+                }}
+              />
+            ) : (
+              <StatusButton
+                status={document.status}
+                displayReplyButton={displayReplyButton}
+                setShowCreateDocument={setShowCreateDocument}
+              />
+            )}
             <CollapsibleTrigger
               onClick={() => {
                 setExpanded(!expanded);
