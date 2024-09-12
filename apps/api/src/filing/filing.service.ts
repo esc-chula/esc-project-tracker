@@ -256,10 +256,6 @@ export class FilingService {
     const foundFiling = await this.findByFilingID(id);
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
 
-    if (foundFiling.status === status) {
-      throw new BadRequestException('Cant change filing with same status');
-    }
-
     return await this.filingRepository
       .save({
         ...foundFiling,

@@ -157,10 +157,6 @@ export class DocumentService {
       ? DocumentStatus.APPROVED
       : DocumentStatus.RETURNED;
 
-    if (foundDocument.status === newStatus) {
-      throw new BadRequestException('Cant change document with same status');
-    }
-
     const reviewedDocument = await this.updateDocument(docId, {
       status: newStatus,
     }).catch((error) => {
