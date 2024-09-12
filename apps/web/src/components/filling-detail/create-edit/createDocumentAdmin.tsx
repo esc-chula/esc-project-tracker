@@ -44,6 +44,9 @@ export default function CreateDocumentAdmin({
 
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
+    defaultValues: {
+      activity: DocumentActivity.REPLY,
+    },
   });
 
   const fileRef = form.register('file');
@@ -56,9 +59,9 @@ export default function CreateDocumentAdmin({
 
       const pdfName = pdfFile
         ? await uploadFileToS3({ file: pdfFile, folderName })
-        : null;
+        : '';
 
-      if (pdfFile && !pdfName) throw new Error('Upload file failed');
+      if (pdfFile && pdfName === '') throw new Error('Upload file failed');
 
       const newDocument = await createDocument({
         document: {
