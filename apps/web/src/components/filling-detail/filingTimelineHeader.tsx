@@ -4,6 +4,7 @@ import { Button } from '../ui/button';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -289,7 +290,6 @@ export default function FilingTimelineHeader({
       }
     }
     setIsSubmitting(false);
-    setIsReviewDialogOpen(false);
   };
   const ReviewSubmissionButton = () => {
     const isDisabled = useMemo(
@@ -335,7 +335,7 @@ export default function FilingTimelineHeader({
               <div className="bg-white rounded-lg space-y-4 flex flex-col items-center text-center ">
                 การอนุมัติหรือตีกลับเอกสารจะไม่สามารถยกเลิกหรือแก้ไขได้
                 หากต้องการแก้ไขเอกสารโปรดตอบกลับใหม่อีกครั้ง
-                <button
+                <DialogClose
                   className=" disabled:bg-disabled bg-red text-white rounded-lg p-2 px-4 font-bold text-2xl mt-4"
                   onClick={() => {
                     reviewDocument();
@@ -343,7 +343,7 @@ export default function FilingTimelineHeader({
                   disabled={isSubmitting}
                 >
                   ยืนยัน
-                </button>
+                </DialogClose>
               </div>
             </DialogContent>
           </Dialog>
@@ -377,7 +377,15 @@ export default function FilingTimelineHeader({
         </span>
         <span className="flex gap-5">
           {status === FilingStatus.APPROVED ? (
-            <FilingTimelineHeaderApproved pdfLink={pdfLink ?? ''} />
+            isAdmin ? (
+              <>
+                <AddDocumentButton />
+                <FilingTimelineHeaderApproved pdfLink={pdfLink ?? ''} noBadge />
+                <SubmissionButton />
+              </>
+            ) : (
+              <FilingTimelineHeaderApproved pdfLink={pdfLink ?? ''} />
+            )
           ) : (
             <>
               <AddDocumentButton />
