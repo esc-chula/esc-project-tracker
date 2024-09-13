@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/src/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
-import { getUserName } from '@/src/service/auth';
+import { getUserName, signOut } from '@/src/service/auth';
 
 export default function UserCard() {
   const [userName, setUserName] = useState<String>('Guest');
@@ -25,6 +25,10 @@ export default function UserCard() {
     };
     fetchUser();
   }, []);
+
+  const logOut = async () => {
+    await signOut();
+  }
 
   return (
     <div className="h-12 w-[300px] flex items-center ml-auto">
@@ -48,10 +52,7 @@ export default function UserCard() {
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuItem onClick={logOut}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
