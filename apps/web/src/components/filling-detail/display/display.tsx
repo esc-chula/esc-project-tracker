@@ -9,10 +9,6 @@ import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
 import { useState } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
-import { EllipsisVertical } from 'lucide-react';
-import { Dialog, DialogContent, DialogTrigger } from '../../ui/dialog';
-import { IoIosAlert } from 'react-icons/io';
 import DraftDocumentPopover from './draftDocumentPopover';
 
 export default function Display({

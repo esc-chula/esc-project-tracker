@@ -2,7 +2,6 @@
 
 import { ChevronDown, ChevronUp, CircleUserRound } from 'lucide-react';
 import NameDate from './nameDate';
-import Image from 'next/image';
 import StatusButton from './statusButton';
 import {
   Collapsible,

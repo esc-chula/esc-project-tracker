@@ -1,5 +1,4 @@
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
-import Link from 'next/link';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { FaFile } from 'react-icons/fa6';
 

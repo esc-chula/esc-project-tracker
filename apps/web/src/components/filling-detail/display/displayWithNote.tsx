@@ -5,13 +5,7 @@ import {
   Collapsible,
   CollapsibleTrigger,
 } from '@/src/components/ui/collapsible';
-import {
-  CircleUserRound,
-  EllipsisVertical,
-  ChevronDown,
-  ChevronUp,
-} from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
+import { CircleUserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import Note from './note';
 import NameDate from './nameDate';
 import FileDisplay from './fileDisplay';
@@ -19,8 +13,6 @@ import { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
-import { Dialog, DialogContent, DialogTrigger } from '../../ui/dialog';
-import { IoIosAlert } from 'react-icons/io';
 import DraftDocumentPopover from './draftDocumentPopover';
 
 export default function DisplayWithNote({

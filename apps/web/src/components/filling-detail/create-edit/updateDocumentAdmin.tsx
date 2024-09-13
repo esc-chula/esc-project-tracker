@@ -17,7 +17,7 @@ import { Select } from '../../ui/select';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
-import { checkFileType, getFileType, zodDocumentFiles } from '@/src/lib/utils';
+import { getFileType, zodDocumentFiles } from '@/src/lib/utils';
 import { DocumentType } from '@/src/interface/document';
 import { DocumentActivity } from '@/src/constant/enum';
 import { toast } from '../../ui/use-toast';

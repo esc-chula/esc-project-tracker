@@ -2,8 +2,6 @@ import DisplayWithNote from './display/displayWithNote';
 import DisplayWithStatus from './display/displayWithStatus';
 import { Clock } from 'lucide-react';
 import DisplayWithNoteAndStatus from './display/displayWithNoteAndStatus';
-import UpdateDocumentAdmin from './create-edit/updateDocumentAdmin';
-import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import { DocumentType } from '@/src/interface/document';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import { DocumentActivity } from '../../../../api/src/constant/enum';
