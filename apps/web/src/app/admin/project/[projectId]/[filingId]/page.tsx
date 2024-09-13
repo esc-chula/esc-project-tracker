@@ -186,6 +186,7 @@ export default function Page({
           usernameMap={usernameMap}
           handleDeleteDocument={handleDeleteDocument}
           isAdmin
+          folderName={`${params.projectId}/${params.filingId}`}
         />
       </section>
     </main>

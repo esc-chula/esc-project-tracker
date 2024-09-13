@@ -19,14 +19,14 @@ export default function Display({
   document,
   user,
   handleDeleteDocument,
+  folderName,
 }: {
   document: DocumentType;
   user?: User;
   handleDeleteDocument: (documentId: string) => Promise<void>;
+  folderName: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  console.log('document', document);
 
   return (
     <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
@@ -47,7 +47,11 @@ export default function Display({
           <div className="flex flex-row items-center gap-x-6 gap-y-2 flex-wrap">
             <div className="font-bold text-sm shrink-0">ไฟล์แนบ</div>
             {document.pdfName !== '' && document.pdfName !== '-' ? (
-              <FileDisplay fileName={document.pdfName} fileType="pdf" link="" />
+              <FileDisplay
+                fileName={document.pdfName}
+                fileType="pdf"
+                folderName={folderName}
+              />
             ) : (
               <div className="text-sm">ไม่มีไฟล์แนบ</div>
             )}

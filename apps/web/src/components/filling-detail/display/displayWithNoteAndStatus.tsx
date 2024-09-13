@@ -23,12 +23,14 @@ export default function DisplayWithNoteAndStatus({
   displayReplyButton,
   setShowCreateDocument,
   handleDeleteDocument,
+  folderName,
 }: {
   user?: User;
   document: DocumentType;
   displayReplyButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   handleDeleteDocument?: (documentId: string) => Promise<void>;
+  folderName: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -98,13 +100,13 @@ export default function DisplayWithNoteAndStatus({
                   <FileDisplay
                     fileName={document.pdfName}
                     fileType="pdf"
-                    link=""
+                    folderName={folderName}
                   />
                   {document.docName !== '' && document.docName !== '-' && (
                     <FileDisplay
                       fileName={document.docName}
                       fileType="doc"
-                      link=""
+                      folderName={folderName}
                     />
                   )}
                 </div>

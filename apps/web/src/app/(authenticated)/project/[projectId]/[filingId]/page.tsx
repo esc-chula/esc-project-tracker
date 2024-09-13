@@ -184,6 +184,7 @@ export default function Page({
           setShowCreateDocument={setShowCreateDocument}
           usernameMap={usernameMap}
           handleDeleteDocument={handleDeleteDocument}
+          folderName={`${params.projectId}/${params.filingId}`}
         />
       </section>
     </main>

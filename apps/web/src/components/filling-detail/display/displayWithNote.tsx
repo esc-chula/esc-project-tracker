@@ -27,10 +27,12 @@ export default function DisplayWithNote({
   document,
   user,
   handleDeleteDocument,
+  folderName,
 }: {
   document: DocumentType;
   user?: User;
   handleDeleteDocument: (documentId: string) => Promise<void>;
+  folderName: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -54,12 +56,16 @@ export default function DisplayWithNote({
           <div>
             <div className="font-bold text-sm">ไฟล์แนบ</div>
             <div className="flex flex-row py-2 gap-5 flex-wrap">
-              <FileDisplay fileName={document.pdfName} fileType="pdf" link="" />
+              <FileDisplay
+                fileName={document.pdfName}
+                fileType="pdf"
+                folderName={folderName}
+              />
               {document.docName !== '' && document.docName !== '-' && (
                 <FileDisplay
                   fileName={document.docName}
                   fileType="doc"
-                  link=""
+                  folderName={folderName}
                 />
               )}
             </div>

@@ -14,12 +14,14 @@ export default function DisplayWithStatus({
   displayEditButton,
   setShowCreateDocument,
   user,
+  folderName,
 }: {
   document: DocumentType;
   warning: boolean;
   displayEditButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   user?: User;
+  folderName: string;
 }) {
   return (
     <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
@@ -49,7 +51,11 @@ export default function DisplayWithStatus({
           <div className="flex flex-row items-center gap-x-6 gap-y-2 flex-wrap">
             <div className="font-bold text-sm shrink-0">ไฟล์แนบ</div>
             {document.pdfName !== '' && document.pdfName !== '-' ? (
-              <FileDisplay fileName={document.pdfName} fileType="pdf" link="" />
+              <FileDisplay
+                fileName={document.pdfName}
+                fileType="pdf"
+                folderName={folderName}
+              />
             ) : (
               <div className="text-sm">ไม่มีไฟล์แนบ</div>
             )}

@@ -18,6 +18,7 @@ export default function FilingTimeline({
   usernameMap,
   handleDeleteDocument,
   isAdmin = false,
+  folderName,
 }: {
   documents: DocumentType[];
   status: FilingStatus;
@@ -26,6 +27,7 @@ export default function FilingTimeline({
   usernameMap: Map<string, User>;
   handleDeleteDocument: (documentId: string) => Promise<void>;
   isAdmin?: boolean;
+  folderName: string;
 }) {
   let previousDate = '';
 
@@ -77,6 +79,7 @@ export default function FilingTimeline({
               document={document}
               user={user}
               handleDeleteDocument={handleDeleteDocument}
+              folderName={folderName}
             />
           ) : document.activity === DocumentActivity.REPLY ? (
             <DisplayWithStatus
@@ -85,6 +88,7 @@ export default function FilingTimeline({
               warning={displayEditButton && !showCreateDocument}
               displayEditButton={displayEditButton}
               setShowCreateDocument={setShowCreateDocument}
+              folderName={folderName}
             />
           ) : document.status === DocumentStatus.DRAFT &&
             (status === FilingStatus.DRAFT ||
@@ -95,6 +99,7 @@ export default function FilingTimeline({
               document={document}
               user={user}
               handleDeleteDocument={handleDeleteDocument}
+              folderName={folderName}
             />
           ) : (
             <DisplayWithNoteAndStatus
@@ -109,6 +114,7 @@ export default function FilingTimeline({
                   ? handleDeleteDocument
                   : undefined
               }
+              folderName={folderName}
             />
           );
         if (currentDate !== previousDate) {
