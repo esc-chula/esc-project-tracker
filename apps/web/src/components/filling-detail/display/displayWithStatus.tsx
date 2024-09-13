@@ -11,14 +11,14 @@ import { convertDate } from '@/src/lib/utils';
 export default function DisplayWithStatus({
   document,
   warning,
-  displayEditButton,
+  showEditButton,
   setShowCreateDocument,
   user,
   folderName,
 }: {
   document: DocumentType;
   warning: boolean;
-  displayEditButton: boolean;
+  showEditButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   user?: User;
   folderName: string;
@@ -70,7 +70,7 @@ export default function DisplayWithStatus({
         <div className="py-8 flex flex-col justify-between w-auto items-end">
           <StatusButton
             status={document.status}
-            displayEditButton={displayEditButton}
+            showEditButton={showEditButton}
             setShowCreateDocument={setShowCreateDocument}
           />
         </div>

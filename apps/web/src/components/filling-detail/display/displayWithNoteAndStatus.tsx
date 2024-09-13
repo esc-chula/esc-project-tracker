@@ -19,14 +19,14 @@ import DraftDocumentPopover from './draftDocumentPopover';
 export default function DisplayWithNoteAndStatus({
   user,
   document,
-  displayReplyButton,
+  showReplyButton,
   setShowCreateDocument,
   handleDeleteDocument,
   folderName,
 }: {
   user?: User;
   document: DocumentType;
-  displayReplyButton: boolean;
+  showReplyButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   handleDeleteDocument?: (documentId: string) => Promise<void>;
   folderName: string;
@@ -65,7 +65,7 @@ export default function DisplayWithNoteAndStatus({
             ) : (
               <StatusButton
                 status={document.status}
-                displayReplyButton={displayReplyButton}
+                showReplyButton={showReplyButton}
                 setShowCreateDocument={setShowCreateDocument}
               />
             )}

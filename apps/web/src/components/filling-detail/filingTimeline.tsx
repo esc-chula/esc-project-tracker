@@ -51,14 +51,14 @@ export default function FilingTimeline({
           },
         );
         const user = usernameMap.get(document.userId ?? '');
-        const displayEditButton =
+        const showEditButton =
           !isAdmin &&
           document.status === DocumentStatus.RETURNED &&
           status === FilingStatus.RETURNED &&
           documents.length > 0 &&
           documents[0].status !== DocumentStatus.DRAFT &&
           index <= returnedDocumentIndex;
-        const displayReplyButton =
+        const showReplyButton =
           document.status === DocumentStatus.WAIT_FOR_SECRETARY &&
           isAdmin &&
           status === FilingStatus.WAIT_FOR_SECRETARY &&
@@ -83,8 +83,8 @@ export default function FilingTimeline({
             <DisplayWithStatus
               document={document}
               user={user}
-              warning={displayEditButton && !showCreateDocument}
-              displayEditButton={displayEditButton}
+              warning={showEditButton && !showCreateDocument}
+              showEditButton={showEditButton}
               setShowCreateDocument={setShowCreateDocument}
               folderName={folderName}
             />
@@ -103,7 +103,7 @@ export default function FilingTimeline({
             <DisplayWithNoteAndStatus
               document={document}
               user={user}
-              displayReplyButton={displayReplyButton}
+              showReplyButton={showReplyButton}
               setShowCreateDocument={setShowCreateDocument}
               handleDeleteDocument={
                 isAdmin &&

@@ -6,13 +6,13 @@ import { FaEdit } from 'react-icons/fa';
 
 export default function StatusButton({
   status,
-  displayEditButton,
-  displayReplyButton = false,
+  showEditButton,
+  showReplyButton = false,
   setShowCreateDocument,
 }: {
   status: DocumentStatus;
-  displayEditButton?: boolean;
-  displayReplyButton?: boolean;
+  showEditButton?: boolean;
+  showReplyButton?: boolean;
   setShowCreateDocument?: (showCreateDocument: boolean) => void;
 }) {
   return (
@@ -22,14 +22,14 @@ export default function StatusButton({
       >
         {TextMyFilingStatus[status]}
       </div>
-      {(displayEditButton || displayReplyButton) && setShowCreateDocument && (
+      {(showEditButton || showReplyButton) && setShowCreateDocument && (
         <button
           onClick={() => {
             setShowCreateDocument(true);
           }}
           className={`rounded-lg text-center py-2 px-3 font-bold font-sukhumvit bg-white border-red border-2  text-red flex items-center justify-center hover:scale-105 transition-transform duration-300 ease-in-out`}
         >
-          {displayReplyButton ? (
+          {showReplyButton ? (
             <>
               <Undo2 className="text-center items-center mr-3" />
               <div className="text-center items-center ">ตอบกลับ</div>
