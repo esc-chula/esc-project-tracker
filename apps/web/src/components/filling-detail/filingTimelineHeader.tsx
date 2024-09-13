@@ -114,7 +114,6 @@ export default function FilingTimelineHeader({
       if (updatedFiling) {
         setStatus(updatedStatus);
         setDocuments(updatedDocuments);
-        setIsCancelDialogOpen(false);
         toast({
           title: 'ยกเลิกสำเร็จ',
           description: `ยกเลิกการส่งเอกสาร ${name} แล้ว`,
@@ -210,10 +209,11 @@ export default function FilingTimelineHeader({
   );
   const CancelSubmissionButton = () => (
     <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger>
         <Button
+          disabled={isSubmitting}
           variant="outline"
-          className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black"
+          className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black disabled:bg-disabled"
         >
           <X className="h-8 w-8 mr-2" />
           ยกเลิก
@@ -229,13 +229,13 @@ export default function FilingTimelineHeader({
           ยกเลิกการส่งเอกสารเพื่อเปลี่ยนแปลงข้อมูล
           โปรดอย่าลืมส่งอีกครั้งเมื่อดำเนินการเสร็จ
           <div className="text-end">
-            <button
+            <DialogClose
               className=" disabled:bg-disabled bg-red text-white rounded-lg py-1 px-4 font-semibold"
               onClick={cancelDocumentSubmission}
               disabled={isSubmitting}
             >
               ยืนยัน
-            </button>
+            </DialogClose>
           </div>
         </div>
       </DialogContent>
@@ -326,7 +326,7 @@ export default function FilingTimelineHeader({
             open={isReviewDialogOpen}
             onOpenChange={setIsReviewDialogOpen}
           >
-            <DialogTrigger>
+            <DialogTrigger disabled={isDisabled}>
               <Button
                 disabled={isDisabled}
                 className={`${reviewButton === 'อนุมัติ' ? 'bg-accepted' : 'bg-red'} disabled:bg-lightgray border-r-white border-r-2 mx-auto rounded-none rounded-l-2xl text-2xl p-4 h-[52px] font-semibold text-white`}

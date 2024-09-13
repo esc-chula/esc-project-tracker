@@ -22,7 +22,7 @@ export default function StatusButton({
       >
         {TextMyFilingStatus[status]}
       </div>
-      {displayEditButton && setShowCreateDocument && (
+      {(displayEditButton || displayReplyButton) && setShowCreateDocument && (
         <button
           onClick={() => {
             setShowCreateDocument(true);

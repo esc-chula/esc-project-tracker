@@ -31,10 +31,9 @@ export default function FilingTimeline({
 
   let returnedDocumentIndex = documents.length;
   for (let i = 0; i < documents.length; i++) {
-    if (documents[i].status === DocumentStatus.RETURNED) {
+    if (documents[i].status === DocumentStatus.RETURNED)
       returnedDocumentIndex = i;
-      break;
-    }
+    else if (returnedDocumentIndex !== documents.length) break;
   }
   return (
     <div className="flex flex-col items-center gap-7 mb-14">
@@ -53,16 +52,19 @@ export default function FilingTimeline({
         );
         const user = usernameMap.get(document.userId ?? '');
         const displayEditButton =
+          !isAdmin &&
           document.status === DocumentStatus.RETURNED &&
           status === FilingStatus.RETURNED &&
           documents.length > 0 &&
-          documents[0].status !== DocumentStatus.DRAFT;
+          documents[0].status !== DocumentStatus.DRAFT &&
+          index <= returnedDocumentIndex;
         const displayReplyButton =
           document.status === DocumentStatus.WAIT_FOR_SECRETARY &&
           isAdmin &&
           status === FilingStatus.WAIT_FOR_SECRETARY &&
           documents.length > 0 &&
-          documents[0].status !== DocumentStatus.DRAFT;
+          documents[0].status !== DocumentStatus.DRAFT &&
+          index < returnedDocumentIndex;
         const display =
           isAdmin &&
           document.status === DocumentStatus.DRAFT &&

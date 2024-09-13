@@ -161,7 +161,7 @@ export default function UpdateDocumentAdmin({
                 render={({ field }) => (
                   <FormItem className="h-full flex flex-col">
                     <FormLabel className="font-bold text-lg ">
-                      อัปโหลดเอกสาร
+                      อัปโหลดเอกสาร<span className="text-red">*</span>
                     </FormLabel>
                     <FileInputPanel fileRef={fileRef} fileList={field.value} />
                     <FormMessage />
