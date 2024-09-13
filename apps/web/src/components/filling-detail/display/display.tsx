@@ -56,7 +56,8 @@ export default function Display({
           <textarea
             className="bg-white rounded-lg min-h-[10vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
             defaultValue={document.comment}
-          ></textarea>
+            disabled
+          />
         </div>
         <div className="py-8 flex flex-col justify-between w-auto items-end">
           <DraftDocumentPopover

@@ -48,8 +48,9 @@ export default function DisplayWithNoteAndStatus({
             <div className="font-bold text-sm">ความคิดเห็น</div>
             <textarea
               className="bg-white rounded-lg min-h-[15vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
-              defaultValue={document.detail}
-            ></textarea>
+              defaultValue={document.comment}
+              disabled
+            />
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
             {handleDeleteDocument ? (
@@ -88,6 +89,7 @@ export default function DisplayWithNoteAndStatus({
                 <textarea
                   className="w-[40vw] bg-white rounded-lg p-5 font-normal break-words resize-none text-sm text-gray-600 font-sukhumvit h-[20vh]"
                   defaultValue={document.detail}
+                  disabled
                 />
               </div>
               <div className="pl-5">
