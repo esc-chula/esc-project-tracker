@@ -2,7 +2,6 @@
 
 import { ChevronDown, ChevronUp, CircleUserRound } from 'lucide-react';
 import NameDate from './nameDate';
-import Image from 'next/image';
 import StatusButton from './statusButton';
 import {
   Collapsible,
@@ -15,15 +14,25 @@ import { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
+import DraftDocumentPopover from './draftDocumentPopover';
 
 export default function DisplayWithNoteAndStatus({
   user,
   document,
+  showReplyButton,
+  setShowCreateDocument,
+  handleDeleteDocument,
+  folderName,
 }: {
   user?: User;
   document: DocumentType;
+  showReplyButton: boolean;
+  setShowCreateDocument: (showCreateDocument: boolean) => void;
+  handleDeleteDocument?: (documentId: string) => Promise<void>;
+  folderName: string;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="w-full relative">
@@ -40,11 +49,26 @@ export default function DisplayWithNoteAndStatus({
             <div className="font-bold text-sm">ความคิดเห็น</div>
             <textarea
               className="bg-white rounded-lg min-h-[15vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
-              defaultValue={document.detail}
-            ></textarea>
+              defaultValue={document.comment}
+              disabled
+            />
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
-            <StatusButton status={document.status} />
+            {handleDeleteDocument ? (
+              <DraftDocumentPopover
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                handleDeleteButton={() => {
+                  handleDeleteDocument(document.id);
+                }}
+              />
+            ) : (
+              <StatusButton
+                status={document.status}
+                showReplyButton={showReplyButton}
+                setShowCreateDocument={setShowCreateDocument}
+              />
+            )}
             <CollapsibleTrigger
               onClick={() => {
                 setExpanded(!expanded);
@@ -66,6 +90,7 @@ export default function DisplayWithNoteAndStatus({
                 <textarea
                   className="w-[40vw] bg-white rounded-lg p-5 font-normal break-words resize-none text-sm text-gray-600 font-sukhumvit h-[20vh]"
                   defaultValue={document.detail}
+                  disabled
                 />
               </div>
               <div className="pl-5">
@@ -74,13 +99,13 @@ export default function DisplayWithNoteAndStatus({
                   <FileDisplay
                     fileName={document.pdfName}
                     fileType="pdf"
-                    link=""
+                    folderName={folderName}
                   />
                   {document.docName !== '' && document.docName !== '-' && (
                     <FileDisplay
                       fileName={document.docName}
                       fileType="doc"
-                      link=""
+                      folderName={folderName}
                     />
                   )}
                 </div>

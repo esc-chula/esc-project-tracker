@@ -21,7 +21,6 @@ export default function FileInputPanel({
                 <FileDisplay
                   fileName={file.name}
                   fileType={file.name.split('.').pop() ?? ''}
-                  link="#"
                 />
               </div>
             ))}

@@ -1,39 +1,31 @@
+'use client';
+
 import NameDate from './nameDate';
 import Image from 'next/image';
-import StatusButton from './statusButton';
 import { Collapsible } from '../../ui/collapsible';
 import FileDisplay from './fileDisplay';
 import { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
+import { useState } from 'react';
+import DraftDocumentPopover from './draftDocumentPopover';
 
-export default function DisplayWithStatus({
+export default function Display({
   document,
-  warning,
-  showEditButton,
-  setShowCreateDocument,
   user,
+  handleDeleteDocument,
   folderName,
 }: {
   document: DocumentType;
-  warning: boolean;
-  showEditButton: boolean;
-  setShowCreateDocument: (showCreateDocument: boolean) => void;
   user?: User;
+  handleDeleteDocument: (documentId: string) => Promise<void>;
   folderName: string;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
-      {warning && (
-        <Image
-          src="/icons/warning.svg"
-          width={70}
-          height={70}
-          alt="warning-icon"
-          className="transform -translate-x-8 -translate-y-6 absolute"
-        />
-      )}
       <div className="flex flex-row px-8">
         <NameDate
           title={user?.username ?? 'Secretary ESC'}
@@ -68,10 +60,12 @@ export default function DisplayWithStatus({
           />
         </div>
         <div className="py-8 flex flex-col justify-between w-auto items-end">
-          <StatusButton
-            status={document.status}
-            showEditButton={showEditButton}
-            setShowCreateDocument={setShowCreateDocument}
+          <DraftDocumentPopover
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            handleDeleteButton={() => {
+              handleDeleteDocument(document.id);
+            }}
           />
         </div>
       </div>

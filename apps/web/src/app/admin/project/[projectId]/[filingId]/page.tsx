@@ -12,7 +12,7 @@ import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
 import { DocumentType } from '@/src/interface/document';
-import { findUserByUserId } from '@/src/service/user/findUserByUserId';
+import { findUserByUserId } from '@/src/service/findUserByUserId';
 import { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import deleteDocument from '@/src/service/document/deleteDocument';
@@ -172,6 +172,7 @@ export default function Page({
             filingId={params.filingId}
             showCreateDocument={showCreateDocument}
             setShowCreateDocument={setShowCreateDocument}
+            isAdmin
           />
         )}
       </section>
@@ -184,6 +185,7 @@ export default function Page({
           setShowCreateDocument={setShowCreateDocument}
           usernameMap={usernameMap}
           handleDeleteDocument={handleDeleteDocument}
+          isAdmin
           folderName={`${params.projectId}/${params.filingId}`}
         />
       </section>
