@@ -12,7 +12,7 @@ import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
 import { DocumentType } from '@/src/interface/document';
-import { findUserByUserId } from '@/src/service/findUserByUserId';
+import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import deleteDocument from '@/src/service/document/deleteDocument';

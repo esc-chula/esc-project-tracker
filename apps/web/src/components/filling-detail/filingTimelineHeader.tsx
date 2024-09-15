@@ -79,13 +79,11 @@ export default function FilingTimelineHeader({
   const cancelDocumentSubmission = async () => {
     setIsSubmitting(true);
 
-    let updatedStatus = FilingStatus.DOCUMENT_CREATED;
-    for (let doc of documents) {
-      if (doc.status === DocumentStatus.RETURNED) {
-        updatedStatus = FilingStatus.RETURNED;
-        break;
-      }
-    }
+    const updatedStatus = documents.some(
+      (doc) => doc.status === DocumentStatus.RETURNED,
+    )
+      ? FilingStatus.RETURNED
+      : FilingStatus.DOCUMENT_CREATED;
 
     try {
       const [updatedFiling, updatedDocuments] = await Promise.all([

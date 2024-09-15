@@ -1,5 +1,5 @@
-import { trpc } from '../app/trpc';
-import { User } from '../interface/user';
+import { trpc } from '../../app/trpc';
+import { User } from '../../interface/user';
 
 export async function findUserByUserId(userId: string): Promise<User | null> {
   try {

@@ -39,7 +39,7 @@ export default function DisplayWithNote({
     <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
       <div className="flex flex-row px-8">
         <NameDate
-          title={user?.username ?? 'นายสมชาย สายชลลลลลลลลลลลลล'}
+          title={user?.username ?? 'ไม่มีชื่อผู้ใช้'}
           date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}
           activity={TextDocumentActivity[document.activity]}
         >
