@@ -12,12 +12,13 @@ import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
 import { DocumentType } from '@/src/interface/document';
-import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import deleteDocument from '@/src/service/document/deleteDocument';
 import updateFilingName from '@/src/service/filing/updateFiling';
 import { isUUID } from '@/src/lib/utils';
+import getUsersMap from '@/src/service/user/getUsersMap';
+import { getUserId } from '@/src/service/auth';
 
 export default function Page({
   params,
@@ -31,29 +32,13 @@ export default function Page({
   const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
     null,
   );
-  // ถ้าสร้าง doc ใหม่ usernameMap ต้องอัปเดตมั้ย?
-  // get Url fileDisplay
   const setStatus = useMemo(
     () => (status: FilingStatus) => {
-      setFiling((prev) => (prev ? { ...prev, status } : null));
+      setFiling((prev) => (prev ? { ...prev, status } : prev));
     },
     [],
   );
 
-  const getUsernameMap = async (documents: DocumentType[]) => {
-    const uniqueUserIds = new Set(
-      documents.map((doc) =>
-        doc.userId ? findUserByUserId(doc.userId) : undefined,
-      ),
-    );
-    const users = await Promise.all(uniqueUserIds);
-
-    const updatedUsernameMap = new Map();
-    users.forEach((user) => {
-      if (user) updatedUsernameMap.set(user.id, user);
-    });
-    return updatedUsernameMap;
-  };
   const fetchData = async () => {
     try {
       if (!isUUID(params.projectId)) {
@@ -67,20 +52,20 @@ export default function Page({
         return;
       }
 
-      const [filingData, documentsData, latestDocumentData] = await Promise.all(
-        [
+      const [filingData, documentsData, latestDocumentData, userId] =
+        await Promise.all([
           getFilingByFilingId(params.filingId),
           findDocumentsByFilingId(params.filingId),
           findLatestDocumentByFilingId(params.filingId),
-        ],
-      );
+          getUserId(),
+        ]);
       if (filingData) setFiling(filingData);
       if (latestDocumentData) setLatestDocument(latestDocumentData);
 
       if (documentsData.length === 0) return;
       setDocuments(documentsData);
 
-      const updatedUsernameMap = await getUsernameMap(documentsData);
+      const updatedUsernameMap = await getUsersMap(documentsData, userId);
       setUsernameMap(updatedUsernameMap);
     } catch (err) {
       if (err instanceof Error) {
