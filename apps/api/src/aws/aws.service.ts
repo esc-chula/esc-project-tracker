@@ -24,7 +24,7 @@ export class AwsService {
   async uploadFileToS3(fileName: string, file: Buffer, folderName?: string) {
     const currentDate = new Date();
     const dateWithTimestamp = currentDate.toISOString();
-    const fileType = '.' + fileName.split('.').pop() ?? 'pdf';
+    const fileType = '.' + fileName.split('.').pop();
     // '{2024-09-05T16:19:34.142Z}-' has 27 characters
     const truncatedFileName = truncateTextByBytes(
       fileName.slice(0, -fileType.length),

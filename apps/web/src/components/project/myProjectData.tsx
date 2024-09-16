@@ -81,6 +81,7 @@ export default function MyProjectData({
     fetchProjects();
     fetchFiling();
   }, [projects]);
+  // TODO: Fix the dependency array (it is now an infinite loop)
 
   return (
     <div className={compact ? 'w-full' : 'w-[65%]'}>
