@@ -10,6 +10,7 @@ import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
 import { useState } from 'react';
 import DraftDocumentPopover from './draftDocumentPopover';
+import TextareaForDisplay from './textareaForDisplay';
 
 export default function Display({
   document,
@@ -53,11 +54,7 @@ export default function Display({
             )}
           </div>
           <div className="font-bold text-sm">ความคิดเห็น</div>
-          <textarea
-            className="bg-white rounded-lg min-h-[10vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
-            defaultValue={document.comment}
-            disabled
-          />
+          <TextareaForDisplay value={document.comment} />
         </div>
         <div className="py-8 flex flex-col justify-between w-auto items-end">
           <DraftDocumentPopover

@@ -15,6 +15,7 @@ import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
 import DraftDocumentPopover from './draftDocumentPopover';
+import TextareaForDisplay from './textareaForDisplay';
 
 export default function DisplayWithNoteAndStatus({
   user,
@@ -47,11 +48,7 @@ export default function DisplayWithNoteAndStatus({
           </NameDate>
           <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
             <div className="font-bold text-sm">ความคิดเห็น</div>
-            <textarea
-              className="bg-white rounded-lg min-h-[15vh] p-5 font-normal text-gray-600 break-words resize-none w-full text-sm"
-              defaultValue={document.comment}
-              disabled
-            />
+            <TextareaForDisplay value={document.comment} />
           </div>
           <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
             {handleDeleteDocument ? (
@@ -87,11 +84,7 @@ export default function DisplayWithNoteAndStatus({
             <div className="flex flex-row">
               <div className="space-y-2">
                 <div>หมายเหตุ</div>
-                <textarea
-                  className="w-[40vw] bg-white rounded-lg p-5 font-normal break-words resize-none text-sm text-gray-600 font-sukhumvit h-[20vh]"
-                  defaultValue={document.detail}
-                  disabled
-                />
+                <TextareaForDisplay value={document.detail} />
               </div>
               <div className="pl-5">
                 <div>ไฟล์แนบ</div>
