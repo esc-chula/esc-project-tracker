@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import React from "react"
+import React from 'react';
 import {
   ColumnFiltersState,
   SortingState,
@@ -11,8 +11,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { Button } from "@/src/components/ui/button"
+} from '@tanstack/react-table';
+import { Button } from '@/src/components/ui/button';
 import {
   Table,
   TableBody,
@@ -20,17 +20,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/src/components/ui/table"
-import { columns } from "./StatusTableColumns"
-import StatusTableToolBar from "./StatusTableToolBar"
-import { FilingType } from "@/src/interface/filing"
+} from '@/src/components/ui/table';
+import { columns } from './StatusTableColumns';
+import StatusTableToolBar from './StatusTableToolBar';
+import { FilingType } from '@/src/interface/filing';
 
-export function StatusTable({ data, compact = false }: { data: FilingType[]; compact?: boolean }) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
-    updatedAt: !compact,
-  })
+export function StatusTable({
+  data,
+  compact = false,
+}: {
+  data: FilingType[];
+  compact?: boolean;
+}) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({
+      updatedAt: !compact,
+    });
 
   const table = useReactTable({
     data,
@@ -52,7 +61,7 @@ export function StatusTable({ data, compact = false }: { data: FilingType[]; com
         pageSize: compact ? 5 : 10,
       },
     },
-  })
+  });
 
   return (
     <>
@@ -66,9 +75,12 @@ export function StatusTable({ data, compact = false }: { data: FilingType[]; com
                   <TableHead key={header.id} className="text-black px-3">
                     {header.isPlaceholder
                       ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -99,22 +111,24 @@ export function StatusTable({ data, compact = false }: { data: FilingType[]; com
             variant="outline"
             size="sm"
             onClick={() => {
-              table.previousPage()
+              table.previousPage();
             }}
-            disabled={!table.getCanPreviousPage()}>
+            disabled={!table.getCanPreviousPage()}
+          >
             ย้อนหลัง
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
-              table.nextPage()
+              table.nextPage();
             }}
-            disabled={!table.getCanNextPage()}>
+            disabled={!table.getCanNextPage()}
+          >
             ถัดไป
           </Button>
         </div>
       </div>
     </>
-  )
+  );
 }

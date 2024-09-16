@@ -14,7 +14,11 @@ import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
 import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
-import { DocumentActivity,DocumentStatus, FilingStatus } from '../constant/enum';
+import {
+  DocumentActivity,
+  DocumentStatus,
+  FilingStatus,
+} from '../constant/enum';
 
 @Injectable()
 export class DocumentService {
@@ -100,6 +104,7 @@ export class DocumentService {
       activity,
       userId,
       status,
+      comment,
     } = obj;
     const foundUser = await this.userService.findByUserID(userId);
     if (!foundUser) throw new BadRequestException('User Not Found!');
@@ -113,6 +118,7 @@ export class DocumentService {
     newDocument.docName = docName;
     newDocument.activity = activity;
     newDocument.user = foundUser;
+    if (comment) newDocument.comment = comment;
     if (status) {
       newDocument.status = status;
     }
@@ -151,10 +157,6 @@ export class DocumentService {
       ? DocumentStatus.APPROVED
       : DocumentStatus.RETURNED;
 
-    if (foundDocument.status === newStatus) {
-      throw new BadRequestException('Cant change document with same status');
-    }
-
     const reviewedDocument = await this.updateDocument(docId, {
       status: newStatus,
     }).catch((error) => {
@@ -162,13 +164,15 @@ export class DocumentService {
       throw new Error('Failed to update document status');
     });
 
-    await this.filingService.updateStatus(
-      reviewedDocument.filingId,
-      updatedStatus ? FilingStatus.APPROVED : FilingStatus.RETURNED,
-    ).catch((error) => {
-      console.error(error);
-      throw new Error('Failed to update filing status');
-    });
+    await this.filingService
+      .updateStatus(
+        reviewedDocument.filingId,
+        updatedStatus ? FilingStatus.APPROVED : FilingStatus.RETURNED,
+      )
+      .catch((error) => {
+        console.error(error);
+        throw new Error('Failed to update filing status');
+      });
 
     return reviewedDocument;
   }

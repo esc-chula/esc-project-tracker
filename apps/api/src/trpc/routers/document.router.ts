@@ -34,8 +34,12 @@ export class DocumentRouter {
       .query(({ input }) => {
         return this.documentService.findDocumentsByFilingId(input.filingId);
       }),
-      findLatestDocumentByFilingId: this.trpcService.trpc.procedure.input(z.object({ filingId: z.string() })).query(({ input }) => {
-        return this.documentService.findLatestDocumentByFilingId(input.filingId);
+    findLatestDocumentByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.documentService.findLatestDocumentByFilingId(
+          input.filingId,
+        );
       }),
 
     // Create Document -> Document
@@ -50,6 +54,7 @@ export class DocumentRouter {
           activity: z.nativeEnum(DocumentActivity),
           userId: z.string(),
           status: optional(z.nativeEnum(DocumentStatus)),
+          comment: optional(z.string()),
         }),
       )
       .mutation(async ({ input }) => {
@@ -62,6 +67,7 @@ export class DocumentRouter {
           activity: input.activity,
           userId: input.userId,
           status: input.status,
+          comment: input.comment,
         });
       }),
 
@@ -73,9 +79,11 @@ export class DocumentRouter {
           obj: z.object({
             name: z.string().optional(),
             activity: z.nativeEnum(DocumentActivity).optional(),
+            status: z.nativeEnum(DocumentStatus).optional(),
             detail: z.string().optional(),
-            pdfLink: z.string().optional(),
-            docLink: z.string().optional(),
+            comment: z.string().optional(),
+            pdfName: z.string().optional(),
+            docName: z.string().optional(),
           }),
         }),
       )

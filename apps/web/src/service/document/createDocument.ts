@@ -1,6 +1,6 @@
 import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import { trpc } from '../../app/trpc';
-import { DocumentType } from '../../interface/document';
+import { DocumentType } from '@/src/interface/document';
 
 export default async function createDocument({
   document,

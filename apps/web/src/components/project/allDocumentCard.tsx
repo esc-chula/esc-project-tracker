@@ -1,11 +1,11 @@
-"use client";
-import { EllipsisVertical } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.tsx";
-import PopoverEditDocument from "./popoverEditDocument.tsx";
-import PopoverDeleteDocument from "./popoverDeleteDocument.tsx";
-import type { FilingStatus } from "@/src/constant/enum.ts";
-import { buttonColors, TextMyProject } from "@/src/styles/enumMap";
-import { useEffect, useState } from "react";
+'use client';
+import { EllipsisVertical } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.tsx';
+import PopoverEditDocument from './popoverEditDocument.tsx';
+import PopoverDeleteDocument from './popoverDeleteDocument.tsx';
+import type { FilingStatus } from '@/src/constant/enum.ts';
+import { buttonColors, TextMyProject } from '@/src/styles/enumMap';
+import { useEffect, useState } from 'react';
 
 export default function AllDocumentCard({
   FilingId,
@@ -73,11 +73,11 @@ export default function AllDocumentCard({
         </Popover>
       </div>
       <div className="text-2xl font-bold text-center">ตัวอย่างเอกสาร</div>
-      <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-lg ">
+      <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-b-lg ">
         <div className="text-2xl font-bold text-start">
           {projectCode} - {FilingCode}
           <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
-            {fName || "-- ไม่มีชื่อ --"}
+            {fName || '-- ไม่มีชื่อ --'}
           </div>
         </div>
         <div

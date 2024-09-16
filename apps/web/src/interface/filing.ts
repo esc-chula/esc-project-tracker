@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- Necessary for compatibility with the existing codebase */
+// TODO: change any to specific type
 
 import type { FilingStatus } from '../constant/enum';
 import { Project } from './project';
-import { User } from './user';
 
 export interface FilingType {
   id: string;

@@ -1,7 +1,7 @@
 // tailwind config is required for editor support
 
-import type { Config } from "tailwindcss"
-import sharedConfig from "@repo/tailwind-config"
+import type { Config } from "tailwindcss";
+import sharedConfig from "@repo/tailwind-config";
 
 const config = {
   darkMode: ["class"],
@@ -16,6 +16,11 @@ const config = {
   theme: {
     fontFamily: {
       sukhumvit: ["var(--sukhumvit-set-font)", "sans-serif"],
+    },
+    borderRadius: {
+      xl: "0.75rem",
+      "2xl": "1.25rem",
+      full: "9999px",
     },
     container: {
       center: true,
@@ -106,9 +111,12 @@ const config = {
         slideIn: "slideIn 0.3s forwards",
         slideOut: "slideOut 0.3s forwards",
       },
+      fontSize: {
+        xxs: ["0.625rem", { lineHeight: "0.6rem" }],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

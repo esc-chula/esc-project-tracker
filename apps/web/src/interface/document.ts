@@ -1,17 +1,16 @@
-import { DocumentActivity, DocumentStatus } from '../../../api/src/constant/enum';
-import { FilingType } from './filing';
-import { User } from './user';
+import { DocumentActivity, DocumentStatus } from '../constant/enum';
 
 export interface DocumentType {
   id: string;
-  filing: FilingType;
+  filingId?: string;
   name: string;
   activity: DocumentActivity;
   status: DocumentStatus;
-  detail: string;
+  detail?: string;
+  comment?: string;
   pdfName: string;
   docName: string;
-  userId: string;
+  userId?: string;
   createdAt: string;
   updatedAt: string;
 }

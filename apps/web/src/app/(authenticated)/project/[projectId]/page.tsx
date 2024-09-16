@@ -6,7 +6,7 @@ import { Project } from '@/src/interface/project';
 import { useEffect, useState } from 'react';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 import { useToast } from '@/src/components/ui/use-toast';
-import updateLastOpen from '@/src/service/updateLastOpen';
+import updateLastOpen from '@/src/service/user-proj/updateLastOpen';
 
 export default function Page({ params }: { params: { projectId: string } }) {
   const [project, setProject] = useState<Project | null>(null);

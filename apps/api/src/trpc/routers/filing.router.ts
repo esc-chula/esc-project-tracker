@@ -60,21 +60,13 @@ export class FilingRouter {
         z.object({
           filingId: z.string(),
           filingName: z.string().optional(),
-          FilingStatus: z
-            .enum([
-              FilingStatus.APPROVED,
-              FilingStatus.DRAFT,
-              FilingStatus.RETURNED,
-              FilingStatus.WAIT_FOR_SECRETARY,
-              FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
-            ])
-            .optional(),
+          filingStatus: z.nativeEnum(FilingStatus).optional(),
         }),
       )
       .query(({ input }) => {
         return this.filingService.updateFiling(input.filingId, {
           name: input.filingName,
-          status: input.FilingStatus,
+          status: input.filingStatus,
         });
       }),
     //Delete filing
@@ -83,6 +75,13 @@ export class FilingRouter {
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
       }),
+    // Get Filing By FilingID -> Filing
+    getFilingByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findByFilingID(input.filingId);
+      }),
+
     //findFilingWithFilter
     findFilingsWithFilter: this.trpcService.trpc.procedure
       .input(

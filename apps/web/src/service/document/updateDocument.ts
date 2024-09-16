@@ -1,4 +1,7 @@
-import { DocumentActivity } from '../../../../api/src/constant/enum';
+import {
+  DocumentActivity,
+  DocumentStatus,
+} from '../../../../api/src/constant/enum';
 import { trpc } from '../../app/trpc';
 import { DocumentType } from '../../interface/document';
 export default async function updateDocument({
@@ -9,7 +12,9 @@ export default async function updateDocument({
   obj: {
     name?: string;
     activity?: DocumentActivity;
+    status?: DocumentStatus;
     detail?: string;
+    comment?: string;
     pdfName?: string;
     docName?: string;
   };

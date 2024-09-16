@@ -26,5 +26,11 @@ export class UserRouter {
           studentId: input.studentId,
         });
       }),
+
+    findUserByUserId: this.trpcService.trpc.procedure
+      .input(z.object({ userId: z.string() }))
+      .query(({ input }) => {
+        return this.userService.findByUserID(input.userId);
+      }),
   });
 }

@@ -18,7 +18,36 @@ export const TextMyProject = {
   [FilingStatus.DOCUMENT_CREATED]: "สร้างฉบับร่างแล้ว",
 }
 
+export const TextMyFilingStatus = {
+  [FilingStatus.APPROVED]: "อนุมัติ",
+  [FilingStatus.RETURNED]: "ตีกลับ",
+  [FilingStatus.WAIT_FOR_SECRETARY]: "เลขาตรวจสอบ",
+  [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "ส่งให้กิจการนิสิต",
+  [FilingStatus.DRAFT]: "ฉบับร่าง",
+  [FilingStatus.DOCUMENT_CREATED]: "สร้างฉบับร่างแล้ว",
+}
+
+export const TextDocumentActivity = {
+  CREATE: "สร้างเอกสาร",
+  EDIT: "แก้ไขเอกสาร",
+  REPLY: "ตอบกลับ",
+}
+
 export const FilingStatusToStepper = {
+  LOADING: [
+    ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled", "disabled"],
+    ["disabled"],
+  ],
+  DEFAULT: [
+    ["rejected", "rejected"],
+    ["rejected", "rejected"],
+    ["rejected", "rejected"],
+    ["rejected", "rejected"],
+    ["rejected"],
+  ],
   [FilingStatus.APPROVED]: [
     ["accepted", "accepted"],
     ["accepted", "accepted"],

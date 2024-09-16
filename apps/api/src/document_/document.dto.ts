@@ -9,4 +9,5 @@ export class CreateDocumentDTO {
   activity: DocumentActivity;
   userId: string;
   status?: DocumentStatus;
+  comment?: string;
 }

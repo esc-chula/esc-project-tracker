@@ -5,6 +5,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import truncateTextByBytes from '../common/utils/truncateTextByBytes';
 
 @Injectable()
 export class AwsService {
@@ -23,9 +24,18 @@ export class AwsService {
   async uploadFileToS3(fileName: string, file: Buffer, folderName?: string) {
     const currentDate = new Date();
     const dateWithTimestamp = currentDate.toISOString();
-    let storedFileName = `{${dateWithTimestamp}}-` + fileName;
+    const fileType = '.' + fileName.split('.').pop() ?? 'pdf';
+    // '{2024-09-05T16:19:34.142Z}-' has 27 characters
+    const truncatedFileName = truncateTextByBytes(
+      fileName.slice(0, -fileType.length),
+      255 - fileType.length - 27,
+    );
+
+    let storedFileName =
+      `{${dateWithTimestamp}}-` + truncatedFileName + fileType;
     const newFileName = storedFileName;
     if (folderName) storedFileName = folderName + '/' + storedFileName;
+
     try {
       await this.s3Client.send(
         new PutObjectCommand({
@@ -59,7 +69,7 @@ export class AwsService {
         Key: pathToFile,
         ResponseContentDisposition: 'inline', // Force the PDF to be displayed in the browser
         ResponseContentType:
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Ensure it's treated as a PDF
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Ensure it's treated as a .docx
       });
     }
 

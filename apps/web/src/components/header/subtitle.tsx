@@ -9,12 +9,12 @@ import {
 
 export default function Subtitle({
   project,
-  document,
+  filing,
   projectId,
   origin,
 }: {
   project: string;
-  document?: string;
+  filing?: string;
   projectId?: string;
   origin?: string;
 }) {
@@ -33,7 +33,7 @@ export default function Subtitle({
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-black" />
-            {document ? (
+            {filing ? (
               <>
                 <BreadcrumbItem>
                   <BreadcrumbLink
@@ -45,8 +45,8 @@ export default function Subtitle({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="text-black" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-semibold text-red leading-10 min-w-36 max-w-96 line-clamp-1">
-                    {document}
+                  <BreadcrumbPage className="font-semibold text-red leading-10 min-w-36 max-w-[17vw] line-clamp-1">
+                    {filing}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </>

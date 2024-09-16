@@ -150,3 +150,15 @@ export async function getUserName(): Promise<String> {
   const user = await validateToken(accessTokenCookie);
   return user.username;
 }
+
+export async function getUserId(): Promise<string> {
+  const cookieStore = cookies();
+  const accessTokenCookie = cookieStore.get('accessToken')?.value;
+
+  if (!accessTokenCookie) {
+    throw new Error('ผู้ใช้ไม่ได้เข้าสู่ระบบ');
+  }
+
+  const user = await validateToken(accessTokenCookie);
+  return user.sub;
+}
