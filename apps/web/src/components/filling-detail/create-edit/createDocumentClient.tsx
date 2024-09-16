@@ -20,10 +20,11 @@ import ActivityPanel from './activityPanel';
 import { DocumentType } from '@/src/interface/document';
 import createDocument from '@/src/service/document/createDocument';
 import { DocumentActivity, FilingStatus } from '@/src/constant/enum';
-import { getFileType, zodDocumentFiles } from '@/src/lib/utils';
+import { getFileType } from '@/src/lib/utils';
 import updateFilingName from '@/src/service/filing/updateFiling';
 import { toast } from '../../ui/use-toast';
 import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
+import { zodDocumentFiles } from '@/src/constant/schema';
 
 export default function CreateDocumentClient({
   setShowCreateDocument,

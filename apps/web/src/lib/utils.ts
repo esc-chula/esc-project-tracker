@@ -24,17 +24,6 @@ export function getFileType(file: File | undefined): string | undefined {
   return file.name.split('.').pop();
 }
 
-// TODO: move to schema.ts
-export const zodDocumentFiles = (
-  typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
-)
-  .refine((file) => file?.length > 0, 'กรุณาเลือกไฟล์')
-  .refine((file) => file?.length <= 2, 'เลือกได้มากสุด 2 ไฟล์')
-  .refine(
-    (file) => getFileType(file[0]) === 'pdf' || getFileType(file[1]) === 'pdf',
-    'กรุณาเลือกไฟล์ที่มีนามสกุล .pdf อย่างน้อย 1 ไฟล์',
-  );
-
 export function convertDate(dateString: string) {
   const date = new Date(dateString);
   return new Date(date.getTime() + 7 * 60 * 60 * 1000).toLocaleString('th-TH', {

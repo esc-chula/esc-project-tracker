@@ -17,12 +17,13 @@ import { Select } from '../../ui/select';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
-import { getFileType, zodDocumentFiles } from '@/src/lib/utils';
+import { getFileType } from '@/src/lib/utils';
 import { DocumentType } from '@/src/interface/document';
 import { DocumentActivity } from '@/src/constant/enum';
 import { toast } from '../../ui/use-toast';
 import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 import createDocument from '@/src/service/document/createDocument';
+import { zodDocumentFiles } from '@/src/constant/schema';
 
 export default function UpdateDocumentAdmin({
   setShowCreateDocument,
