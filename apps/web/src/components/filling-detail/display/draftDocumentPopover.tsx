@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from '../../ui/dialog';
-import { EllipsisVertical } from 'lucide-react';
+import { EllipsisVertical, Trash2 } from 'lucide-react';
 import { IoIosAlert } from 'react-icons/io';
 import { MouseEvent } from 'react';
 
@@ -29,7 +29,10 @@ export default function DraftDocumentPopover({
         className="w-auto flex flex-col"
       >
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger>ลบ</DialogTrigger>
+          <DialogTrigger className="flex gap-2">
+            <Trash2 />
+            ลบ
+          </DialogTrigger>
           <DialogContent className="max-w-sm">
             <div className="bg-white rounded-lg space-y-4">
               <div className="flex justify-center">
