@@ -10,15 +10,18 @@ import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import { ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
+import { getUserId } from '@/src/service/auth';
 
 export default async function Page() {
   //TODO : Change the userId to the actual userId
+  const userId = await getUserId();
+  console.log(userId);
   const [filingsDataWithProject, projectsWithLastOpenData] = await Promise.all([
-    getFilingsByUserId('d1c0d106-1a4a-4729-9033-1b2b2d52e98a').catch((err) => {
+    getFilingsByUserId(userId).catch((err) => {
       console.error(err);
       return [] as FilingType[];
     }),
-    getProjectsByUserId('d1c0d106-1a4a-4729-9033-1b2b2d52e98a').catch((err) => {
+    getProjectsByUserId(userId).catch((err) => {
       console.error(err);
       return [] as ProjectWithLastOpen[];
     }),
