@@ -10,9 +10,10 @@ import { Button } from '@/src/components/ui/button';
 import { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
 import LastestPanel from '@/src/components/project/latestPanel';
-import findAllFiling from '@/src/service/filing/findAllFiling';
-import findAllProject from '@/src/service/project/findAllProject';
 import { useEffect, useState } from 'react';
+import { getUserId } from '@/src/service/auth';
+import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
+import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 
 export default function Page() {
   //TODO : Change the userId to the actual userId
@@ -30,9 +31,10 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const userId = await getUserId();
         const [filingsData, projectsData] = await Promise.all([
-          findAllFiling(),
-          findAllProject(),
+          getFilingsByUserId(userId),
+          getProjectsByUserId(userId),
         ]);
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);

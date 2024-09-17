@@ -70,7 +70,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
         ]);
 
         setFilings(fetchedFiling);
-        setProjects(fetchedProject.map((project) => project.project));
+        setProjects(fetchedProject);
       } catch (error) {
         if (error instanceof Error) {
           toast({
