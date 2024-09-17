@@ -2,38 +2,38 @@ import { FilingStatus } from './enum';
 
 export const statusFilingItems = [
   {
-    label: 'สถานะ',
+    label: 'ทุกสถานะ',
     value: 'ALL',
-  },
-  {
-    label: 'เรียบร้อย',
-    value: FilingStatus.APPROVED,
   },
   {
     label: 'ฉบับร่าง',
     value: FilingStatus.DRAFT,
   },
   {
-    label: 'เอกสารถูกตีกลับ',
-    value: FilingStatus.RETURNED,
+    label: 'สร้างฉบับร่างแล้ว',
+    value: FilingStatus.DOCUMENT_CREATED,
   },
   {
     label: 'ส่งให้เลขาตรวจสอบ',
     value: FilingStatus.WAIT_FOR_SECRETARY,
   },
   {
+    label: 'เอกสารถูกตีกลับ',
+    value: FilingStatus.RETURNED,
+  },
+  {
     label: 'ส่งให้กิจการนิสิตแล้ว',
     value: FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
   },
   {
-    label: 'สร้างฉบับร่างแล้ว',
-    value: FilingStatus.DOCUMENT_CREATED,
+    label: 'เรียบร้อย',
+    value: FilingStatus.APPROVED,
   },
 ];
 
 export const typeFilingItems = [
   {
-    label: 'ประเภท',
+    label: 'ทุกประเภท',
     value: 'ALL',
   },
   {

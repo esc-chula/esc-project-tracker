@@ -6,41 +6,50 @@ import PopoverDeleteDocument from './popoverDeleteDocument.tsx';
 import type { FilingStatus } from '@/src/constant/enum.ts';
 import { buttonColors, TextMyProject } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function AllDocumentCard({
-  FilingId,
+  filingId,
   projectCode,
   FilingCode,
-  FilingName,
-  FilingStatus,
+  filingName,
+  filingStatus,
+  projectId,
   deleteThisCardFunc,
   updateThisCardFunc,
 }: {
-  FilingId: string;
+  filingId: string;
   projectCode: string;
   FilingCode: string;
-  FilingName: string;
-  FilingStatus: FilingStatus;
+  filingName: string;
+  filingStatus: FilingStatus;
+  projectId: string;
   deleteThisCardFunc: (id: string) => void;
   updateThisCardFunc: (id: string, newName: string) => void;
 }) {
-  const [fName, setFName] = useState<string>(FilingName);
+  const [fName, setFName] = useState<string>(filingName);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (isDeleted) {
-      deleteThisCardFunc(FilingId);
+      deleteThisCardFunc(filingId);
     }
   }, [isDeleted]);
 
   useEffect(() => {
-    if (fName !== FilingName) {
-      updateThisCardFunc(FilingId, fName);
+    if (fName !== filingName) {
+      updateThisCardFunc(filingId, fName);
     }
   }, [fName]);
 
   return (
-    <div className="bg-background shadow-xl rounded-lg space-y-14 pt-2 hover:cursor-pointer hover:shadow-2xl duration-300">
+    <div
+      onClick={() => {
+        router.push(`/project/${projectId}/${filingId}`);
+      }}
+      className="bg-background shadow-xl rounded-lg space-y-14 pt-2 hover:cursor-pointer hover:shadow-2xl duration-300"
+    >
       <div
         className="flex justify-end p-2 py-5"
         onClick={(e) => {
@@ -57,14 +66,14 @@ export default function AllDocumentCard({
             className="w-auto flex flex-col"
           >
             <PopoverEditDocument
-              oldFilingName={FilingName}
-              filingId={FilingId}
+              oldFilingName={filingName}
+              filingId={filingId}
               setNewNameParentFunc={(newName) => {
                 setFName(newName);
               }}
             />
             <PopoverDeleteDocument
-              filingId={FilingId}
+              filingId={filingId}
               setDeletedParentFunc={(deleted: boolean) => {
                 setIsDeleted(deleted);
               }}
@@ -81,9 +90,9 @@ export default function AllDocumentCard({
           </div>
         </div>
         <div
-          className={`inline-block rounded-lg text-center py-2 px-3 text-sm font-bold font-sukhumvit min-w-[60%] ${buttonColors[FilingStatus]}`}
+          className={`inline-block rounded-lg text-center py-2 px-3 text-sm font-bold font-sukhumvit min-w-[60%] ${buttonColors[filingStatus]}`}
         >
-          {TextMyProject[FilingStatus]}
+          {TextMyProject[filingStatus]}
         </div>
       </div>
     </div>

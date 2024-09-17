@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import { Project } from '@/src/interface/project';
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
-  const [Filings, setFilings] = useState<FilingType[]>([]);
+  const [filings, setFilings] = useState<FilingType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -46,8 +46,8 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
   }, [projectId]);
 
   useEffect(() => {
-    console.log(Filings);
-  }, [Filings]);
+    console.log(filings);
+  }, [filings]);
 
   return (
     <div className="space-y-4 w-full ">
@@ -58,7 +58,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
         </div>
         <div className="flex-grow mx-4">
           <SearchBar
-            filings={Filings}
+            filings={filings}
             projects={[]}
             placeholder="ค้นหาเอกสาร"
             projectFunc={redirectToProject}
@@ -77,7 +77,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
       </div>
       {isFetched && (
         <>
-          {Filings.length === 0 ? (
+          {filings.length === 0 ? (
             <NoDocument
               projectId={projectId}
               setNewFilingToParent={(filing: FilingType) => {
@@ -85,12 +85,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
               }}
             />
           ) : (
-            <AllDocumentPanel
-              Filings={Filings}
-              setFilingsToParentFunc={(newFilings: FilingType[]) => {
-                setFilings(newFilings);
-              }}
-            />
+            <AllDocumentPanel filings={filings} setFilings={setFilings} />
           )}
         </>
       )}

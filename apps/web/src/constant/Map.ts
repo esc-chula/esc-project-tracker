@@ -46,6 +46,7 @@ export const filingTypeMap = [
 ];
 
 export const projectTypeMap = [
+  { label: "ทุกประเภท", value: 'all',},
   {
     label: "10 - โครงการฝ่ายกิจการภายใน",
     value: ProjectType.INTERNAL_AFFAIR,
