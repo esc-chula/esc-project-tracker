@@ -26,6 +26,9 @@ export default function MyProjectData({
   const redirectToProject = (project: Project | FilingType) => {
     router.push(`/project/${project.id}`);
   };
+  const redirectToFiling = (filing: FilingType) => {
+    router.push(`/project/${filing.projectId}/${filing.id}`);
+  };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpen[]
@@ -92,6 +95,7 @@ export default function MyProjectData({
             projects={projects}
             placeholder="ค้นหาโครงการหรือเอกสาร"
             projectFunc={redirectToProject}
+            filingFunc={redirectToFiling}
           />
         )}
       </div>

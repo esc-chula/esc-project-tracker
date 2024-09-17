@@ -86,7 +86,7 @@ export default function ProjectMenu({
         const filteredProjects = await Promise.all(
           fetchedProject.map(async (project) => {
             const isJoined = await filterJoin(project);
-            return (typeProject === 'JOIN') === isJoined ? project : null;
+            return (typeProject === 'JOINED') === isJoined ? project : null;
           }),
         );
         setProjects(

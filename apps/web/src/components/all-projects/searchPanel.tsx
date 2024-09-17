@@ -13,8 +13,8 @@ export default function SearchPanel({
   filings?: FilingType[];
   projects?: Project[];
   placeHolder: string;
-  projectFunc?: (project: Project | FilingType) => void;
-  filingFunc?: (filing: FilingType | Project) => void;
+  projectFunc?: (project: Project) => void;
+  filingFunc?: (filing: FilingType) => void;
   clearFunc?: () => void;
 }) {
   return (

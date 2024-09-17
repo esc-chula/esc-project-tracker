@@ -8,11 +8,21 @@ import { useEffect, useState } from 'react';
 import { FilingType } from '@/src/interface/filing';
 import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
 import { useToast } from '../ui/use-toast';
+import { useRouter } from 'next/navigation';
+import { Project } from '@/src/interface/project';
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [Filings, setFilings] = useState<FilingType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const { toast } = useToast();
+  const router = useRouter();
+
+  const redirectToProject = (project: Project | FilingType) => {
+    router.push(`/project/${project.id}`);
+  };
+  const redirectToFiling = (filing: FilingType) => {
+    router.push(`/project/${filing.projectId}/${filing.id}`);
+  };
 
   useEffect(() => {
     const fetchFilings = async () => {
@@ -40,7 +50,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
   }, [Filings]);
 
   return (
-    <div className="space-y-4 w-[65%] ">
+    <div className="space-y-4 w-full ">
       <div className="flex flex-row justify-between items-center">
         <div className="font-sukhumvit text-lg sm::text-base flex items-center font-bold ">
           <FileText style={{ marginRight: '10' }} />
@@ -51,6 +61,8 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
             filings={Filings}
             projects={[]}
             placeholder="ค้นหาเอกสาร"
+            projectFunc={redirectToProject}
+            filingFunc={redirectToFiling}
           />
         </div>
 
