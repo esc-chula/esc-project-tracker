@@ -16,16 +16,16 @@ import Link from 'next/link';
 export default function SearchBar({
   placeholder,
   projects,
-  Filings,
+  filings,
   projectFunc,
-  FilingFunc,
+  filingFunc,
   clearFunc,
 }: {
   placeholder: string;
   projects: Project[];
-  Filings: FilingType[];
+  filings: FilingType[];
   projectFunc?: (project: Project | FilingType) => void;
-  FilingFunc?: (Filing: Project | FilingType) => void;
+  filingFunc?: (filing: Project | FilingType) => void;
   clearFunc?: () => void;
 }) {
   const [value, setValue] = useState<Project | FilingType | null>(null);
@@ -41,8 +41,8 @@ export default function SearchBar({
       if (projectFunc && 'reserveDate' in option) {
         projectFunc(option);
       } else {
-        if (FilingFunc) {
-          FilingFunc(option);
+        if (filingFunc) {
+          filingFunc(option);
         } else {
           console.log('No function to call');
         }
@@ -58,7 +58,7 @@ export default function SearchBar({
     <div className="min-w-[40vw] max-w-full">
       <Autocomplete
         value={value}
-        options={[...Filings, ...projects]}
+        options={[...filings, ...projects]}
         noOptionsText="ไม่พบข้อมูล"
         onChange={(event, newValue) => {
           handleSelect(newValue);

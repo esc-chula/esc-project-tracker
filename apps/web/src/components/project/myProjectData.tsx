@@ -84,11 +84,11 @@ export default function MyProjectData({
   // TODO: Fix the dependency array (it is now an infinite loop)
 
   return (
-    <div className={compact ? 'w-full' : 'w-[65%]'}>
+    <div className="w-full">
       <div className="mb-5">
         {!compact && (
           <SearchBar
-            Filings={filings}
+            filings={filings}
             projects={projects}
             placeholder="ค้นหาโครงการหรือเอกสาร"
             projectFunc={redirectToProject}

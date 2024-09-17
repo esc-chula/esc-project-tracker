@@ -48,7 +48,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
         </div>
         <div className="flex-grow mx-4">
           <SearchBar
-            Filings={Filings}
+            filings={Filings}
             projects={[]}
             placeholder="ค้นหาเอกสาร"
           />
