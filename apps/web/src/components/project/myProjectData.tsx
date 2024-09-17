@@ -59,7 +59,7 @@ export default function MyProjectData({
         }
       }
     };
-    const fetchFiling = async () => {
+    const fetchFilings = async () => {
       //TODO : Change the userId to the actual userId
       if (userId) {
         try {
@@ -79,8 +79,8 @@ export default function MyProjectData({
       }
     };
     fetchProjects();
-    fetchFiling();
-  }, [projects]);
+    fetchFilings();
+  }, []);
   // TODO: Fix the dependency array (it is now an infinite loop)
 
   return (
@@ -108,9 +108,7 @@ export default function MyProjectData({
               <AllProjectPanel
                 projects={projects}
                 userId={userId}
-                setProjectsToParentFunc={(newProjects: Project[]) => {
-                  setProjects(newProjects);
-                }}
+                setProjects={setProjects}
               />
             </>
           )}
