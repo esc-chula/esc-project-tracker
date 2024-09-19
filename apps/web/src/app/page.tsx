@@ -2,7 +2,6 @@ import OnboardingPageHeader from '@/src/components/header/OnboardingPageHeader';
 import { Button } from '@/src/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import LoginButton from '../components/common/login-button';
 
 export default function Page() {
   return (
@@ -26,14 +25,13 @@ export default function Page() {
           className="rounded-[80px] bg-gradient-red text-2xl font-bold px-12 py-[10px] h-16"
           asChild
         >
-          <Link href="#">เข้าสู่ระบบ</Link>
+          {/* insert callbackurl here */}
+          <Link
+            href={`https://account.intania.org/?appId=${process.env.INTANIA_AUTH_APP_ID}&callbackUrl=${process.env.INTANIA_AUTH_REDIRECT_URL}`}
+          >
+            เริ่มต้น
+          </Link>
         </Button>
-        <div className="flex flex-wrap ml-9 my-5">
-          <div className="w-full max-w-full sm:w-1/4 mx-auto text-center">
-            <p className="text-lg text-slate-500 py-1">ESC Project Tracker</p>
-            <LoginButton />
-          </div>
-        </div>
       </main>
     </>
   );
