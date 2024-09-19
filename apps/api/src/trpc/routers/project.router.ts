@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProjectService } from '../../project_/project_.service';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { ProjectType } from '../../constant/enum';
+import { ProjectStatus, ProjectType } from '../../constant/enum';
 
 @Injectable()
 export class ProjectRouter {
@@ -13,7 +13,7 @@ export class ProjectRouter {
 
   appRouter = this.trpcService.router({
     //Get All Project
-    getAllProject: this.trpcService.trpc.procedure.query(() => {
+    findAllProject: this.trpcService.trpc.procedure.query(() => {
       return this.projectService.findAllProjects();
     }),
 
@@ -37,6 +37,7 @@ export class ProjectRouter {
           name: z.string(),
           type: z.nativeEnum(ProjectType),
           detail: z.string().optional(),
+          owner: z.string(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -44,6 +45,7 @@ export class ProjectRouter {
           name: input.name,
           type: input.type,
           detail: input.detail,
+          owner: input.owner,
         });
       }),
 
@@ -54,6 +56,7 @@ export class ProjectRouter {
           name: z.string(),
           type: z.nativeEnum(ProjectType),
           detail: z.string().optional(),
+          owner: z.string(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -61,7 +64,55 @@ export class ProjectRouter {
           name: input.name,
           type: input.type,
           detail: input.detail,
+          owner: input.owner,
         });
+      }),
+
+    findProjectsWithFilter: this.trpcService.trpc.procedure
+      .input(z.object({ status: z.string(), department: z.string() }))
+      .query(({ input }) => {
+        return this.projectService.findProjectsWithFilter({
+          status: input.status,
+          department: input.department,
+        });
+      }),
+
+    findProjectsForSearchBar: this.trpcService.trpc.procedure
+      .input(z.object({ input: z.string() }))
+      .query(({ input }) => {
+        return this.projectService.findProjectsForSearchBar(input.input);
+      }),
+
+    //TODO
+    /*
+    ROLE ADMIN GUARD
+    */
+    deleteProject: this.trpcService.trpc.procedure
+      .input(z.object({ projectId: z.string().uuid() }))
+      .mutation(async ({ input }) => {
+        return await this.projectService.deleteProject(input.projectId);
+      }),
+
+    //TODO
+    /*
+    ROLE ADMIN GUARD
+    */
+    updateProject: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          projectId: z.string().uuid(),
+          updatedProject: z.object({
+            name: z.string().optional(),
+            detail: z.string().optional(),
+            reserveDate: z.date().optional(),
+            status: z.nativeEnum(ProjectStatus).optional(),
+            type: z.nativeEnum(ProjectType).optional(),
+          }),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const { projectId, updatedProject } = input;
+        return this.projectService.updateProject(projectId, updatedProject);
       }),
   });
 }

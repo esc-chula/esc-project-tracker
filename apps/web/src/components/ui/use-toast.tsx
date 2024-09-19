@@ -2,7 +2,6 @@
 
 // Inspired by react-hot-toast library
 import * as React from "react";
-
 import type { ToastActionElement, ToastProps } from "@/src/components/ui/toast";
 
 const TOAST_LIMIT = 1;
@@ -96,8 +95,8 @@ export const reducer = (state: State, action: Action): State => {
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
-        state.toasts.forEach((toast) => {
-          addToRemoveQueue(toast.id);
+        state.toasts.forEach((toastState) => {
+          addToRemoveQueue(toastState.id);
         });
       }
 
@@ -127,7 +126,7 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-const listeners: Array<(state: State) => void> = [];
+const listeners: ((state: State) => void)[] = [];
 
 let memoryState: State = { toasts: [] };
 

@@ -1,17 +1,22 @@
-"use client";
+'use client';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { HiDocumentAdd } from "react-icons/hi";
-import { filingTypeMap } from "@/src/constant/Map";
-import { useState } from "react";
-import createFiling from "@/src/service/createFiling";
-import { FilingType } from "@/src/interface/filing";
-import { useToast } from "../ui/use-toast";
+} from '../ui/dialog';
+import { HiDocumentAdd } from 'react-icons/hi';
+import { filingTypeMap } from '@/src/constant/Map';
+import { useState } from 'react';
+import createFiling from '@/src/service/filing/createFiling';
+import { FilingType } from '@/src/interface/filing';
+import { useToast } from '../ui/use-toast';
+
+/* TODO : 
+use Current User ID
+*/
+const mockCurrentUserId = 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a';
 
 export default function PopoverAddDocument({
   children,
@@ -23,18 +28,23 @@ export default function PopoverAddDocument({
   addFilingToParent: (filing: FilingType) => void;
 }) {
   const [filingType, setFilingType] = useState<number>(0);
-  const [filingName, setFilingName] = useState<string>("");
+  const [filingName, setFilingName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const { toast } = useToast();
 
   const submitCreate = async () => {
     try {
-      if (filingName !== "") {
-        const data = await createFiling(projectId, filingName, filingType);
+      if (filingName !== '') {
+        const data = await createFiling(
+          projectId,
+          filingName,
+          filingType,
+          mockCurrentUserId,
+        );
 
         addFilingToParent(data);
         toast({
-          title: "สร้างสำเร็จ",
+          title: 'สร้างสำเร็จ',
           description: `เอกสาร ${data.projectCode} - ${data.FilingCode} ถูกสร้างเรียบร้อยแล้ว`,
         });
         setOpen(false);
@@ -42,7 +52,7 @@ export default function PopoverAddDocument({
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: "ไม่สำเร็จ",
+          title: 'ไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -72,7 +82,9 @@ export default function PopoverAddDocument({
             placeholder="ชื่อเอกสาร"
             className="border-black border-2 w-full p-2 rounded-lg"
             value={filingName}
-            onChange={(e) => setFilingName(e.target.value.trim())}
+            onChange={(e) => {
+              setFilingName(e.target.value.trim());
+            }}
             required
           ></input>
 
@@ -83,12 +95,14 @@ export default function PopoverAddDocument({
               className="border-black border-2 w-full p-2 rounded-lg"
               defaultValue={0}
               value={filingType}
-              onChange={(e) => setFilingType(parseInt(e.target.value))}
+              onChange={(e) => {
+                setFilingType(parseInt(e.target.value));
+              }}
             >
               {filingTypeMap.map((type) => (
                 <option value={type.value} key={type.value}>
                   {type.value.toString()}
-                  {"  "} {type.label}
+                  {'  '} {type.label}
                 </option>
               ))}
             </select>

@@ -17,6 +17,11 @@ const config = {
     fontFamily: {
       sukhumvit: ["var(--sukhumvit-set-font)", "sans-serif"],
     },
+    borderRadius: {
+      xl: "0.75rem",
+      "2xl": "1.25rem",
+      full: "9999px",
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -34,6 +39,8 @@ const config = {
         accepted: "var(--accepted)",
         pending: "var(--pending)",
         disabled: "var(--disabled)",
+        lightgray: "var(--lightgray)",
+        darkpink: "var(--darkpink)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -104,6 +111,9 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         slideIn: "slideIn 0.3s forwards",
         slideOut: "slideOut 0.3s forwards",
+      },
+      fontSize: {
+        xxs: ["0.625rem", { lineHeight: "0.6rem" }],
       },
     },
   },

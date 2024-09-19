@@ -1,4 +1,5 @@
 {
+  "name": "esc-project-tracker",
   "private": true,
   "scripts": {
     "build": "dotenv -- turbo build",
@@ -10,17 +11,32 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "dotenv-cli": "^7.3.0",
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.11",
-    "turbo": "latest"
+    "dotenv-cli": "^7.4.2",
+    "eslint": "^9.10.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "turbo": "^2.1.2"
   },
   "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.651.1",
     "dotenv": "^16.4.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "braces@<3.0.3": ">=3.0.3",
+      "micromatch@<4.0.8": ">=4.0.8",
+      "webpack@>=5.0.0-alpha.0 <5.94.0": ">=5.94.0",
+      "body-parser@<1.20.3": ">=1.20.3",
+      "send@<0.19.0": ">=0.19.0",
+      "serve-static@<1.16.0": ">=1.16.0",
+      "express@<4.20.0": ">=4.20.0",
+      "fast-xml-parser@<4.4.1": ">=4.4.1",
+      "path-to-regexp@>=2.0.0 <3.3.0": ">=3.3.0",
+      "path-to-regexp@<0.1.10": ">=0.1.10"
+    }
   }
 }

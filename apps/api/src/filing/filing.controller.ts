@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { FilingService } from './filing.service';
 
 @Controller('filing')
@@ -15,8 +15,13 @@ export class FilingController {
     return this.filingService.findByUserID(userID);
   }
 
-  @Get('/filings')
-  findAllfiling() {
+  @Get('/findAllFilings')
+  findAllFiling() {
     return this.filingService.findAllFiling();
+  }
+
+  @Post('/testSearch')
+  findFilingsForSearchBar(@Body() obj: { input: string }) {
+    return this.filingService.findFilingsForSearchBar(obj.input);
   }
 }

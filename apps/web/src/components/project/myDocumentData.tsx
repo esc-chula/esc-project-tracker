@@ -1,15 +1,13 @@
-"use client";
-import { MockFiling, MockProject } from "@/src/mock/type";
-import SearchBar from "../searchbar/searchBar";
-import { FileText } from "lucide-react";
-import NoDocument from "./noDocument";
-import AllDocumentPanel from "./allDocumentPanel";
-import PopoverAddDocument from "./popoverAddDocument";
-import { useEffect, useState } from "react";
-import { FilingType } from "@/src/interface/filing";
-import { trpc } from "@/src/app/trpc";
-import getFilingByProjectId from "@/src/service/getFilingByProjectId";
-import { useToast } from "../ui/use-toast";
+'use client';
+import SearchBar from '../searchbar/searchBar';
+import { FileText } from 'lucide-react';
+import NoDocument from './noDocument';
+import AllDocumentPanel from './allDocumentPanel';
+import PopoverAddDocument from './popoverAddDocument';
+import { useEffect, useState } from 'react';
+import { FilingType } from '@/src/interface/filing';
+import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
+import { useToast } from '../ui/use-toast';
 
 export default function MyDocumentData({ projectId }: { projectId: string }) {
   const [Filings, setFilings] = useState<FilingType[]>([]);
@@ -26,7 +24,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
         } catch (err) {
           if (err instanceof Error) {
             toast({
-              title: "ไม่สำเร็จ",
+              title: 'ไม่สำเร็จ',
               description: err.message,
               isError: true,
             });
@@ -45,7 +43,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
     <div className="space-y-4 w-[65%] ">
       <div className="flex flex-row justify-between items-center">
         <div className="font-sukhumvit text-lg sm::text-base flex items-center font-bold ">
-          <FileText style={{ marginRight: "10" }} />
+          <FileText style={{ marginRight: '10' }} />
           เอกสาร
         </div>
         <div className="flex-grow mx-4">
@@ -53,7 +51,6 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
             Filings={Filings}
             projects={[]}
             placeholder="ค้นหาเอกสาร"
-            FilingFunc={() => {}}
           />
         </div>
 
@@ -78,8 +75,8 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
           ) : (
             <AllDocumentPanel
               Filings={Filings}
-              setFilingsToParentFunc={(Filings: FilingType[]) => {
-                setFilings((prevFilings) => Filings);
+              setFilingsToParentFunc={(newFilings: FilingType[]) => {
+                setFilings(newFilings);
               }}
             />
           )}

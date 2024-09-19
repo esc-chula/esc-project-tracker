@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
-import { optional, string, z } from 'zod';
+import { z } from 'zod';
 import { FilingStatus } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
 
@@ -12,6 +12,12 @@ export class FilingRouter {
   ) {}
 
   appRouter = this.trpcService.router({
+    //Get Filing By ID
+    findFilingByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findByFilingID(input.filingId);
+      }),
     //Get All Filing
     findAllFiling: this.trpcService.trpc.procedure.query(() => {
       return this.filingService.findAllFiling();
@@ -35,6 +41,7 @@ export class FilingRouter {
           projectId: z.string(),
           filingName: z.string(),
           filingType: z.number(),
+          userId: z.string(),
         }),
       )
       .query(({ input }) => {
@@ -42,6 +49,7 @@ export class FilingRouter {
           input.projectId,
           input.filingName,
           input.filingType,
+          input.userId,
         );
       }),
 
@@ -52,21 +60,13 @@ export class FilingRouter {
         z.object({
           filingId: z.string(),
           filingName: z.string().optional(),
-          FilingStatus: z
-            .enum([
-              FilingStatus.APPROVED,
-              FilingStatus.DRAFT,
-              FilingStatus.RETURNED,
-              FilingStatus.WAIT_FOR_SECRETARY,
-              FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
-            ])
-            .optional(),
+          filingStatus: z.nativeEnum(FilingStatus).optional(),
         }),
       )
       .query(({ input }) => {
         return this.filingService.updateFiling(input.filingId, {
           name: input.filingName,
-          status: input.FilingStatus,
+          status: input.filingStatus,
         });
       }),
     //Delete filing
@@ -74,6 +74,37 @@ export class FilingRouter {
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
+      }),
+    // Get Filing By FilingID -> Filing
+    getFilingByFilingId: this.trpcService.trpc.procedure
+      .input(z.object({ filingId: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findByFilingID(input.filingId);
+      }),
+
+    //findFilingWithFilter
+    findFilingsWithFilter: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          status: z.string(),
+          type: z.string(),
+          department: z.string(),
+          id: z.string().optional(),
+        }),
+      )
+      .query(({ input }) => {
+        return this.filingService.findFilingsWithFilter({
+          status: input.status,
+          type: input.type,
+          department: input.department,
+          id: input.id,
+        });
+      }),
+
+    findFilingsForSearchBar: this.trpcService.trpc.procedure
+      .input(z.object({ input: z.string() }))
+      .query(({ input }) => {
+        return this.filingService.findFilingsForSearchBar(input.input);
       }),
   });
 }

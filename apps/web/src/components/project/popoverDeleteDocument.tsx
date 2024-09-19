@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Trash2, SquarePen } from "lucide-react";
+import { Trash2 } from 'lucide-react';
 
 import {
   Dialog,
@@ -8,10 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { IoIosAlert } from "react-icons/io";
-import deleteFiling from "@/src/service/deleteFiling";
-import { useToast } from "../ui/use-toast";
+} from '../ui/dialog';
+import { IoIosAlert } from 'react-icons/io';
+import deleteFiling from '@/src/service/filing/deleteFiling';
+import { useToast } from '../ui/use-toast';
 
 export default function PopoverDeleteDocument({
   filingId,
@@ -27,7 +27,7 @@ export default function PopoverDeleteDocument({
       const data = await deleteFiling(filingId);
       if (data) {
         toast({
-          title: "ลบสำเร็จ",
+          title: 'ลบสำเร็จ',
           description: `เอกสารหมายเลข ${data.projectCode} - ${data.FilingCode} ถูกลบเรียบร้อยแล้ว`,
         });
         setDeletedParentFunc(true);
@@ -35,7 +35,7 @@ export default function PopoverDeleteDocument({
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: "ไม่สำเร็จ",
+          title: 'ไม่สำเร็จ',
           description: error.message,
           isError: true,
         });

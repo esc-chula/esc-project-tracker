@@ -1,14 +1,14 @@
-import { ChevronLeft } from "lucide-react"
-import Link from "next/link"
+import { ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Title({
   children,
   icon,
   href,
 }: {
-  children: React.ReactNode
-  icon: React.ReactNode
-  href?: string
+  children: React.ReactNode;
+  icon: React.ReactNode;
+  href?: string;
 }) {
   return (
     <>
@@ -22,5 +22,5 @@ export default function Title({
         {children}
       </div>
     </>
-  )
+  );
 }

@@ -7,13 +7,12 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
 } from "@/src/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/src/components/ui/popover"
-import { Check, ChevronDown, CirclePlus } from "lucide-react"
+import { Check, ChevronDown } from "lucide-react"
 import { Separator } from "../ui/separator"
 
 interface DataTableFacetedFilterProps<TData, TValue> {
@@ -40,7 +39,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Button variant="secondary" size="sm" className="h-10 border-dashed text-base">
           {title}
           <ChevronDown className="ml-2 h-4 w-4" />
-          {selectedValues?.size > 0 && (
+          {selectedValues.size && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge variant="secondary" className="rounded-sm px-1 font-normal lg:hidden">

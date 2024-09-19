@@ -1,16 +1,15 @@
-"use client";
-import { EllipsisVertical, SquarePen } from "lucide-react";
-import { useState } from "react";
-import updateFilingName from "@/src/service/updateFiling";
+'use client';
+import { SquarePen } from 'lucide-react';
+import { useState } from 'react';
+import updateFilingName from '@/src/service/filing/updateFiling';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { useToast } from "../ui/use-toast";
+} from '../ui/dialog';
+import { useToast } from '../ui/use-toast';
 
 export default function PopoverEditDocument({
   filingId,
@@ -21,15 +20,15 @@ export default function PopoverEditDocument({
   oldFilingName: string;
   setNewNameParentFunc: (newName: string) => void;
 }) {
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { toast } = useToast();
 
   const submitUpdate = async () => {
-    if (name === "") {
+    if (name === '') {
       toast({
-        title: "ไม่สำเร็จ",
-        description: "กรุณากรอกชื่อเอกสาร",
+        title: 'ไม่สำเร็จ',
+        description: 'กรุณากรอกชื่อเอกสาร',
         isError: true,
       });
       return;
@@ -42,7 +41,7 @@ export default function PopoverEditDocument({
       });
       if (data) {
         toast({
-          title: "สำเร็จ",
+          title: 'สำเร็จ',
           description: `เอกสาร ${oldFilingName} ถูกเปลี่ยนชื่อเป็น ${data.name}`,
           isError: false,
         });
@@ -52,7 +51,7 @@ export default function PopoverEditDocument({
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: "ไม่สำเร็จ",
+          title: 'ไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -76,7 +75,9 @@ export default function PopoverEditDocument({
             type="text"
             placeholder={oldFilingName}
             value={name}
-            onChange={(e) => setName(e.target.value.trim())}
+            onChange={(e) => {
+              setName(e.target.value.trim());
+            }}
             className="border-black border-2 w-full p-2 rounded-lg"
           ></input>
           <div className="text-end">

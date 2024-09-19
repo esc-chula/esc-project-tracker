@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
-import { Repository } from 'typeorm';
-import { UserProj } from '../entities/userProj.entity';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
+import { CreateUserDTO, UpdateUserDTO } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -11,11 +11,39 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  findByUserID(id: string) {
+  async createUser(user: CreateUserDTO) {
+    const createdUser = await this.userRepository.save({
+      ...user,
+      role: 'student',
+    });
+    return createdUser;
+  }
+
+  async findByUserID(id: string) {
     if (!isUUID(id)) {
       throw new BadRequestException('Id is not in UUID format');
     }
-    const user = this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({ where: { id } });
     return user;
+  }
+
+  async findByStudentID(studentId: string) {
+    const user = await this.userRepository.findOne({
+      where: { studentId },
+    });
+    return user;
+  }
+
+  async findUserByCondition(condition: FindOptionsWhere<User>) {
+    const user = await this.userRepository.findOne({ where: condition });
+    return user;
+  }
+
+  async update(id: string, updateUser: UpdateUserDTO) {
+    const updatedUser = await this.userRepository.save({
+      id,
+      ...updateUser,
+    });
+    return updatedUser;
   }
 }

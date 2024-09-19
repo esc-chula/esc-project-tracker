@@ -1,20 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { DocumentActivity, DocumentStatus } from '../constant/enum';
 
-@Controller('document')
-export class DocumentController {
+export class CreateDocumentDTO {
+  filingId: string;
   name: string;
-
-  Code: string;
-
-  projectCode: string;
-
-  type: number;
-
-  detail: string;
-
-  pdfLink: string;
-
-  docLink: string;
-
-  projectID: string;
+  detail?: string;
+  pdfName: string;
+  docName: string;
+  activity: DocumentActivity;
+  userId: string;
+  status?: DocumentStatus;
+  comment?: string;
 }
