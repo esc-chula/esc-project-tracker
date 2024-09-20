@@ -8,15 +8,11 @@ import {
 } from '../ui/dialog';
 import { HiDocumentAdd } from 'react-icons/hi';
 import { filingTypeMap } from '@/src/constant/Map';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import createFiling from '@/src/service/filing/createFiling';
 import { FilingType } from '@/src/interface/filing';
 import { useToast } from '../ui/use-toast';
-
-/* TODO : 
-use Current User ID
-*/
-const mockCurrentUserId = 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a';
+import { getUserId } from '@/src/service/auth';
 
 export default function PopoverAddDocument({
   children,
@@ -30,7 +26,16 @@ export default function PopoverAddDocument({
   const [filingType, setFilingType] = useState<number>(0);
   const [filingName, setFilingName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string>('');
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const userId = await getUserId();
+      setUserId(userId);
+    };
+    fetchUserId();
+  },[]);
 
   const submitCreate = async () => {
     try {
@@ -39,7 +44,7 @@ export default function PopoverAddDocument({
           projectId,
           filingName,
           filingType,
-          mockCurrentUserId,
+          userId,
         );
 
         addFilingToParent(data);

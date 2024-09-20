@@ -24,6 +24,7 @@ import { toast } from '../../ui/use-toast';
 import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 import createDocument from '@/src/service/document/createDocument';
 import { zodDocumentFiles } from '@/src/constant/schema';
+import { getUserId } from '@/src/service/auth';
 
 export default function UpdateDocumentAdmin({
   setShowCreateDocument,
@@ -55,12 +56,12 @@ export default function UpdateDocumentAdmin({
   const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    // TODO: change to actual userId
     try {
       const swap = getFileType(values.file[0]) !== 'pdf';
       const pdfFile = values.file[swap ? 1 : 0];
       const docFile = values.file[swap ? 0 : 1];
       const folderName = `${projectId}/${filingId}`;
+      const userId = await getUserId();
 
       const [pdfName, docName] = await Promise.all([
         uploadFileToS3({
@@ -84,7 +85,7 @@ export default function UpdateDocumentAdmin({
           pdfName: pdfName,
           docName: docName ?? '',
           activity: values.activity as DocumentActivity,
-          userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+          userId: userId,
           detail: values.note,
           comment: values.comment,
         },

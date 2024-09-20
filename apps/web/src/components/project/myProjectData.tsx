@@ -4,13 +4,14 @@ import LastestPanel from './latestPanel';
 import AllProjectPanel from './allProjectPanel';
 import NoProject from './noProject';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import { FilingType } from '@/src/interface/filing';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import SearchBar from '../searchbar/searchBar';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { useToast } from '../ui/use-toast';
+import { getUserId } from '@/src/service/auth';
 
 export default function MyProjectData({
   compact = false,
@@ -33,12 +34,13 @@ export default function MyProjectData({
   const [filings, setFilings] = useState<FilingType[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const [userId, setUserId] = useState<string>(
-    'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-  );
+  const [userId, setUserId] = useState<string>();
 
-  //TODO : Change the userId to the actual userId
   useEffect(() => {
+    const fetchUserId = async () => {
+      const userId = await getUserId();
+      setUserId(userId);
+    };
     const fetchProjects = async () => {
       if (userId) {
         try {
@@ -60,7 +62,6 @@ export default function MyProjectData({
       }
     };
     const fetchFiling = async () => {
-      //TODO : Change the userId to the actual userId
       if (userId) {
         try {
           const data = filingsData?.length
@@ -78,9 +79,10 @@ export default function MyProjectData({
         }
       }
     };
+    fetchUserId();
     fetchProjects();
     fetchFiling();
-  }, [projects]);
+  }, [projects, userId]);
   // TODO: Fix the dependency array (it is now an infinite loop)
 
   return (
