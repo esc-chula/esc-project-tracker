@@ -7,4 +7,6 @@ export const authErrors = {
   refreshTokenError: 'Error refreshing token',
   forbidden: 'Forbidden',
   setCookiesError: 'Error setting cookies',
+  getCookiesError: 'Error getting cookies',
+  parsedJwtError: 'Error parsing JWT',
 };

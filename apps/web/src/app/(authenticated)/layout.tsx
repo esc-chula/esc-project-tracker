@@ -12,7 +12,6 @@ export default async function Layout({
 }) {
   await authenticate({
     roles: ['student', 'admin'],
-    tryRefresh: true,
   });
   return (
     <div className="flex">

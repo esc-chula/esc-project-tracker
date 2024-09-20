@@ -1,26 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
-export const runtime = 'edge';
-
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const newAccessToken = request.headers.get('X-New-Access-Token');
   const newRefreshToken = request.headers.get('X-New-Refresh-Token');
 
-  const response = new NextResponse('Cookies updated', { status: 200 });
-
-  if (newAccessToken) {
-    response.cookies.set('accessToken', newAccessToken, {
-      httpOnly: true,
-      secure: true,
-    });
+  if (!newAccessToken || !newRefreshToken) {
+    return new NextResponse('There are no new tokens', { status: 400 });
   }
 
-  if (newRefreshToken) {
-    response.cookies.set('refreshToken', newRefreshToken, {
-      httpOnly: true,
-      secure: true,
-    });
-  }
+  const cookieStore = cookies();
 
-  return response;
+  cookieStore.set('accessToken', newAccessToken);
+
+  cookieStore.set('refreshToken', newRefreshToken);
+
+  return new NextResponse('Cookies updated', { status: 200 });
 }
