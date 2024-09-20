@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { Toaster } from '@/src/components/alert/toaster';
 import Navbar from '@/src/components/navbar/navbar';
 import { authenticate } from '@/src/service/auth';
+import { cookies } from 'next/headers';
 
 export default async function Layout({
   children,
@@ -10,11 +11,9 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   await authenticate({
-    roles: [],
-  }).catch(() => {
-    redirect('/');
+    roles: ['student', 'admin'],
+    tryRefresh: true,
   });
-
   return (
     <div className="flex">
       <Navbar />
