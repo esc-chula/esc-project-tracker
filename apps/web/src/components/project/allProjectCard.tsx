@@ -3,7 +3,6 @@ import { EllipsisVertical, Info } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import PopoverExitProject from './popoverExitProject';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function AllProjectCard({
@@ -20,13 +19,6 @@ export default function AllProjectCard({
   leaveThisProjectFunc: (id: string) => void;
 }) {
   const router = useRouter();
-  const [isDeleted, setIsDeleted] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isDeleted) {
-      leaveThisProjectFunc(projectId);
-    }
-  }, [isDeleted]);
 
   return (
     <div
@@ -60,8 +52,8 @@ export default function AllProjectCard({
               userId={userId}
               projectId={projectId}
               projectCode={projectCode}
-              deletedParentFunc={(deleted: boolean) => {
-                setIsDeleted(deleted);
+              deletedParentFunc={() => {
+                leaveThisProjectFunc(projectId);
               }}
             />
           </PopoverContent>

@@ -47,55 +47,55 @@ export const filingTypeMap = [
 
 export const projectTypeMap = [
   {
-    label: "โครงการฝ่ายกิจการภายใน",
+    label: "10 - โครงการฝ่ายกิจการภายใน",
     value: ProjectType.INTERNAL_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายศิลปะและวัฒนธรรม",
+    label: "11 - โครงการฝ่ายศิลปะและวัฒนธรรม",
     value: ProjectType.ARTS_CULTURE_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายกีฬา",
+    label: "12 - โครงการฝ่ายกีฬา",
     value: ProjectType.SPORTS_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์",
+    label: "13 - โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์",
     value: ProjectType.SOCIAL_SERVICE_AFFAIR,
   },
   {
-    label: "โครงการสวัสดิการนิสิตและสิ่งแวดล้อม",
+    label: "14 - โครงการสวัสดิการนิสิตและสิ่งแวดล้อม",
     value: ProjectType.STUDENTS_WELFARE_ENV_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายกิจการภายนอก",
+    label: "20 - โครงการฝ่ายกิจการภายนอก",
     value: ProjectType.EXTERNAL_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายนิสิตสัมพันธ์",
+    label: "30 - โครงการฝ่ายนิสิตสัมพันธ์",
     value: ProjectType.NISITSUMPAN_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายเทคโนโลยี",
+    label: "40 - โครงการฝ่ายเทคโนโลยี",
     value: ProjectType.TECH_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายพัฒนาองค์กร",
+    label: "50 - โครงการฝ่ายพัฒนาองค์กร",
     value: ProjectType.ORGANIZATION_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายประชาสัมพันธ์และการตลาด",
+    label: "60 - โครงการฝ่ายประชาสัมพันธ์และการตลาด",
     value: ProjectType.PR_MARGETING_AFFAIR,
   },
   {
-    label: "โครงการฝ่ายวิชาการ",
+    label: "70 - โครงการฝ่ายวิชาการ",
     value: ProjectType.ACADEMICS_AFFAIR,
   },
   {
-    label: "โครงการอื่นๆของกวศ.",
+    label: "80 - โครงการอื่นๆของกวศ.",
     value: ProjectType.OTHER_ESC,
   },
   {
-    label: "โครงการฝ่ายสำนักงานและพัสดุ",
+    label: "90 - โครงการฝ่ายสำนักงานและพัสดุ",
     value: ProjectType.OFFICE_SUPPLY_AFFAIR,
   },
 ];

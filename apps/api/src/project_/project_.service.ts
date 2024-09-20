@@ -67,33 +67,30 @@ export class ProjectService {
     return projects;
   }
 
-  async findAllProjects(): Promise<ProjectWithLastOpenDTO[]> {
-    const projects = await this.projectRepository
-      .createQueryBuilder('project')
-      .innerJoin(UserProj, 'userProj', 'project.id = userProj.projectId')
-      .select(['project', 'userProj.lastOpen'])
-      .getRawMany();
+  async findAllProjects(): Promise<Project[]> {
+    const projects = await this.projectRepository.find();
 
-    const projectWithLastOpenDTOs = projects.map((rawProject, index) => {
-      const projectWithLastOpenDTO = new ProjectWithLastOpenDTO();
-      projectWithLastOpenDTO.project = {
-        id: rawProject.project_id,
-        name: rawProject.project_name,
-        type: rawProject.project_type,
-        detail: rawProject.project_detail,
-        status: rawProject.project_status,
-        owner: rawProject.project_owner,
-        projectCode: rawProject.project_projectCode,
-        createdAt: rawProject.project_createdAt,
-        updatedAt: rawProject.project_updatedAt,
-        ownerId: rawProject.project_ownerId,
-        reserveDate: rawProject.project_reserveDate,
-      };
-      projectWithLastOpenDTO.lastOpen = rawProject.userProj_lastOpen;
-      return projectWithLastOpenDTO;
-    });
+    // const projectWithLastOpenDTOs = projects.map((rawProject, index) => {
+    //   const projectWithLastOpenDTO = new ProjectWithLastOpenDTO();
+    //   projectWithLastOpenDTO.project = {
+    //     id: rawProject.project_id,
+    //     name: rawProject.project_name,
+    //     type: rawProject.project_type,
+    //     detail: rawProject.project_detail,
+    //     status: rawProject.project_status,
+    //     owner: rawProject.project_owner,
+    //     projectCode: rawProject.project_projectCode,
+    //     createdAt: rawProject.project_createdAt,
+    //     updatedAt: rawProject.project_updatedAt,
+    //     ownerId: rawProject.project_ownerId,
+    //     reserveDate: rawProject.project_reserveDate,
+    //   };
+    //   projectWithLastOpenDTO.lastOpen = rawProject.userProj_lastOpen;
+    //   return projectWithLastOpenDTO;
+    // });
 
-    return projectWithLastOpenDTOs;
+    return projects;
+    // return projectWithLastOpenDTOs;
   }
 
   async findCountOfProjectType(type: ProjectType): Promise<number> {

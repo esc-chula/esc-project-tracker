@@ -6,11 +6,11 @@ export interface DocumentType {
   name: string;
   activity: DocumentActivity;
   status: DocumentStatus;
-  detail?: string;
-  comment?: string;
+  detail: string;
+  comment: string;
   pdfName: string;
   docName: string;
   userId?: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }

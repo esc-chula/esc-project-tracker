@@ -1,79 +1,29 @@
-import { ProjectStatus, ProjectType } from "./enum";
+import { ProjectStatus } from './enum';
+import { projectTypeMap } from './Map';
 
 export const statusProjectItems = [
   {
-    label: "สถานะ",
-    value: "ALL",
+    label: 'สถานะ',
+    value: 'ALL',
   },
   {
-    label: "CONTINUE",
+    label: 'กำลังดำเนินกิจกรรม',
     value: ProjectStatus.CONTINUE,
   },
   {
-    label: "CLOSED",
+    label: 'ปิดโครงการเรียบร้อย',
     value: ProjectStatus.CLOSED,
   },
   {
-    label: "WAIT_FOR_CLOSE",
+    label: 'รอปิดโครงการ',
     value: ProjectStatus.WAIT_FOR_CLOSE,
   },
 ];
 
 export const departmentProjectItems = [
   {
-    label: "ฝ่าย",
-    value: "ALL",
+    label: 'ฝ่าย',
+    value: 'ALL',
   },
-  {
-    label: "โครงการฝ่ายกิจการภายใน",
-    value: ProjectType.INTERNAL_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายศิลปะและวัฒนธรรม",
-    value: ProjectType.ARTS_CULTURE_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายกีฬา",
-    value: ProjectType.SPORTS_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์",
-    value: ProjectType.SOCIAL_SERVICE_AFFAIR,
-  },
-  {
-    label: "โครงการสวัสดิการนิสิตและสิ่งแวดล้อม",
-    value: ProjectType.STUDENTS_WELFARE_ENV_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายกิจการภายนอก",
-    value: ProjectType.EXTERNAL_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายนิสิตสัมพันธ์",
-    value: ProjectType.NISITSUMPAN_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายเทคโนโลยี",
-    value: ProjectType.TECH_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายพัฒนาองค์กร",
-    value: ProjectType.ORGANIZATION_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายประชาสัมพันธ์และการตลาด",
-    value: ProjectType.PR_MARGETING_AFFAIR,
-  },
-  {
-    label: "โครงการฝ่ายวิชาการ",
-    value: ProjectType.ACADEMICS_AFFAIR,
-  },
-  {
-    label: "โครงการอื่นๆของกวศ.",
-    value: ProjectType.OTHER_ESC,
-  },
-  {
-    label: "โครงการฝ่ายสำนักงานและพัสดุ",
-    value: ProjectType.OFFICE_SUPPLY_AFFAIR,
-  },
+  ...projectTypeMap,
 ];

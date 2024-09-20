@@ -69,7 +69,7 @@ export const columns: ColumnDef<FilingType>[] = [
   },
   {
     accessorKey: 'detailsPath',
-    accessorFn: (row) => '/project/' + row.project.id + '/' + row.id,
+    accessorFn: (row) => '/project/' + row.projectId + '/' + row.id,
     header: () => null,
     cell: ({ row }) => (
       <Link href={row.getValue('detailsPath')}>
