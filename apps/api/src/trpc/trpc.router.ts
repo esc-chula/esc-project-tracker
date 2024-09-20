@@ -1,6 +1,7 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 import { TrpcService } from './trpc.service';
 import * as trpcExpress from '@trpc/server/adapters/express';
+import * as cookieParser from 'cookie-parser';
 
 import { ProjectRouter } from './routers/project.router';
 import { FilingRouter } from './routers/filing.router';
@@ -11,6 +12,7 @@ import { UserRouter } from './routers/user.router';
 import { UserFilingRouter } from './routers/user-filing.router';
 import { AuthRouter } from './routers/auth.router';
 import { AwsRouter } from './routers/aws.router';
+import { createContext } from '../common/context/getAccessToken';
 
 @Injectable()
 export class TrpcRouter {
@@ -41,7 +43,10 @@ export class TrpcRouter {
   async applyMiddleware(app: INestApplication) {
     app.use(
       `/trpc`,
-      trpcExpress.createExpressMiddleware({ router: this.appRouter }),
+      trpcExpress.createExpressMiddleware({
+        router: this.appRouter,
+        createContext,
+      }),
     );
   }
 }
