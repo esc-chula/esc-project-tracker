@@ -56,12 +56,22 @@ export const newProjectFormSchema = z.object({
     }),
 });
 
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 10; // 10MB
+
 export const zodDocumentAdminFile = (
   typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
-).refine(
-  (file) => file?.length == 0 || getFileType(file[0]) === 'pdf',
-  'เลือกได้แค่ไฟล์ที่มีนามสกุล .pdf ไฟล์เดียว',
-);
+)
+  .refine(
+    (file) =>
+      file?.length == 0 ||
+      (file?.length == 1 && getFileType(file[0]) === 'pdf'),
+    'เลือกได้แค่ไฟล์ที่มีนามสกุล .pdf ไฟล์เดียว',
+  )
+  .refine(
+    (file: FileList) =>
+      Array.from(file).every((f) => f.size <= MAX_UPLOAD_SIZE),
+    'ไฟล์ใหญ่เกิน 10MB',
+  );
 
 export const zodDocumentFiles = (
   typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
@@ -71,4 +81,9 @@ export const zodDocumentFiles = (
   .refine(
     (file) => getFileType(file[0]) === 'pdf' || getFileType(file[1]) === 'pdf',
     'กรุณาเลือกไฟล์ที่มีนามสกุล .pdf อย่างน้อย 1 ไฟล์',
+  )
+  .refine(
+    (file: FileList) =>
+      Array.from(file).every((f) => f.size <= MAX_UPLOAD_SIZE),
+    'ไฟล์ใหญ่เกิน 10MB',
   );

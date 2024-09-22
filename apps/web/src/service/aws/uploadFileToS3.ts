@@ -21,6 +21,6 @@ export default async function uploadFileToS3(obj: {
     return responseJSON.uploadedFileName;
   } catch (e) {
     console.log(e);
-    throw new Error('อัปโหลดไฟล์ไม่สำเร็จ โปรดตรวจสอบว่าชื่อไฟล์ไม่ยาวเกินไป');
+    throw new Error('อัปโหลดไฟล์ไม่สำเร็จ');
   }
 }
