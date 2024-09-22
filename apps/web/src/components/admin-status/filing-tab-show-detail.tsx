@@ -1,12 +1,12 @@
 'use client';
 import { FilingType } from '@/src/interface/filing';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaFile } from 'react-icons/fa';
 import { toast } from '../ui/use-toast';
-import findProjectsWithFilter from '@/src/service/project/findProjectsWithFilter';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 import { DocumentType } from '@/src/interface/document';
+import { formatDate } from '@/src/lib/formateDate';
 
 export default function FilingTabShowDetail({
   filing,
@@ -14,7 +14,9 @@ export default function FilingTabShowDetail({
   filing: FilingType;
 }) {
   const [projectName, setProjectName] = useState<string | undefined>(undefined);
-  const [latestDocument, setLatestDocument] = useState<any>(undefined); // Update type as needed
+  const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchProjectName = async () => {
@@ -51,17 +53,15 @@ export default function FilingTabShowDetail({
     fetchLatestDocument();
   }, [filing]);
 
-  useEffect(() => {
-    console.log(filing);
-  }, []);
-
   return (
     <div className="w-full p-2 border-y-lightgray border-y-2 px-4 space-y-2">
       <div className="flex flex-row justify-between items-center">
         <div className="font-bold text-black truncate overflow-hidden whitespace-nowrap w-[50%]">
           {projectName || 'ไม่มีชื่อโครงการ'}
         </div>
-        <div className="flex-shrink-0">10 มิ.ย. 67</div>
+        <div className="flex-shrink-0">
+          {formatDate(latestDocument?.createdAt) || '--'}
+        </div>
       </div>
 
       <div className="flex flex-row space-x-2 items-center">
@@ -72,6 +72,7 @@ export default function FilingTabShowDetail({
           {filing.name || 'ไม่มีชื่อเอกสาร'}
         </div>
       </div>
+
       {/*
       TODO : use fileDisplay from feat/filing-detail*/}
       <div className="py-2 px-4 border-black flex flex-row border-2 rounded-xl w-[80%] space-x-2 items-center">
