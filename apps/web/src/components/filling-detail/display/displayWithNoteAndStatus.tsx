@@ -82,7 +82,7 @@ export default function DisplayWithNoteAndStatus({
               <span className="font-normal">{document.name}</span>
             </div>
             <div className="flex flex-row">
-              <div className="space-y-2">
+              <div className="space-y-2 w-[40vw]">
                 <div>หมายเหตุ</div>
                 <TextareaForDisplay value={document.detail} />
               </div>

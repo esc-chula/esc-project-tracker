@@ -10,14 +10,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { useToast } from '../ui/use-toast';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { toast } from '../ui/use-toast';
 import updateFilingName from '@/src/service/filing/updateFiling';
 import CreateDocumentClient from './create-edit/createDocumentClient';
 import { DocumentType } from '@/src/interface/document';
 import updateDocument from '@/src/service/document/updateDocument';
 import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
-import getUrlToFile from '@/src/service/aws/getUrlToFile';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select';
 import { IoIosAlert } from 'react-icons/io';
@@ -52,9 +51,7 @@ export default function FilingTimelineHeader({
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState<boolean>(false);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [pdfLink, setPdfLink] = useState<string | undefined>();
   const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
-  const { toast } = useToast();
 
   const updateDocumentStatuses = async (
     documents: DocumentType[],
@@ -174,17 +171,6 @@ export default function FilingTimelineHeader({
     }
     setIsSubmitting(false);
   };
-  const fetchPdfLink = async () => {
-    const signedUrl = await getUrlToFile({
-      fileName: latestDocument?.pdfName ?? '',
-      folderName: `${projectId}/${filingId}`,
-    });
-
-    setPdfLink(signedUrl);
-  };
-  useEffect(() => {
-    if (status === FilingStatus.APPROVED && latestDocument) fetchPdfLink();
-  }, [status, latestDocument]);
   const AddDocumentButton = () => (
     <Button
       variant="outline"
@@ -389,11 +375,18 @@ export default function FilingTimelineHeader({
             isAdmin ? (
               <>
                 <AddDocumentButton />
-                <FilingTimelineHeaderApproved pdfLink={pdfLink ?? ''} noBadge />
+                <FilingTimelineHeaderApproved
+                  fileName={latestDocument?.pdfName ?? ''}
+                  folderName={`${projectId}/${filingId}`}
+                  noBadge
+                />
                 <SubmissionButton />
               </>
             ) : (
-              <FilingTimelineHeaderApproved pdfLink={pdfLink ?? ''} />
+              <FilingTimelineHeaderApproved
+                fileName={latestDocument?.pdfName ?? ''}
+                folderName={`${projectId}/${filingId}`}
+              />
             )
           ) : (
             <>
