@@ -8,14 +8,14 @@ import { useEffect, useState } from 'react';
 import { toast } from '../ui/use-toast';
 import { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/user/findUserByCondition';
-import { FilingStatus } from '@/src/constant/enum';
-import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import {
   DocumentActivity,
   DocumentStatus,
-} from '../../../../api/src/constant/enum';
+  FilingStatus,
+} from '@/src/constant/enum';
+import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
-import Link from 'next/link';
+import getUrlToFile from '@/src/service/aws/getUrlToFile';
 
 export default function FilingMenuItem({
   filing,
@@ -55,6 +55,14 @@ export default function FilingMenuItem({
         return;
       }
     }
+  };
+
+  const handleClick = async () => {
+    const signedUrl = await getUrlToFile({
+      fileName: document?.pdfName ?? '',
+      folderName: `${filing.projectId}/${filing.id}`,
+    });
+    window.open(signedUrl, '_blank');
   };
 
   useEffect(() => {
@@ -141,14 +149,12 @@ export default function FilingMenuItem({
           </div>
         </td>
         <td className="p-4 py-5 text-nowrap text-center w-[60px]">
-          <Link
-            href={document?.pdfName ?? '#'}
-            rel="noopener noreferrer"
-            target="_blank"
-            className={`text-red ${document ? '' : 'opacity-50 pointer-events-none'}`}
+          <div
+            onClick={() => handleClick()}
+            className={`text-red ${document && document.pdfName !== '' && document.pdfName !== '-' ? ' cursor-pointer' : 'opacity-50 pointer-events-none'}`}
           >
             <BiSolidFilePdf size={24} />
-          </Link>
+          </div>
         </td>
       </tr>
     )

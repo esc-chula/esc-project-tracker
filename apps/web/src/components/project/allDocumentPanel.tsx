@@ -1,64 +1,56 @@
 'use client';
 import AllDocumentCard from './allDocumentCard';
 import SelectType from '../filter/selectType';
-import { filterStatus } from '@/src/styles/enumMap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { FilingType } from '@/src/interface/filing';
-import { filingTypeMap } from '@/src/constant/Map';
+import {
+  statusFilingItems,
+  typeFilingItems,
+} from '@/src/constant/filterFiling';
 
 export default function AllDocumentPanel({
-  Filings,
-  setFilingsToParentFunc,
+  filings,
+  setFilings,
 }: {
-  Filings: FilingType[];
-  setFilingsToParentFunc: (Filings: FilingType[]) => void;
+  filings: FilingType[];
+  setFilings: Dispatch<SetStateAction<FilingType[]>>;
 }) {
-  const [allFilings, setAllFilings] = useState<FilingType[]>(Filings);
-  const [filteredFilings, setFilteredFilings] = useState<FilingType[]>(Filings);
-  const [status, setStatus] = useState<string>('all');
-  const [type, setType] = useState<string>('all');
+  const [filteredFilings, setFilteredFilings] = useState<FilingType[]>(filings);
+  const [status, setStatus] = useState<string>('ALL');
+  const [type, setType] = useState<string>('ALL');
 
   useEffect(() => {
-    if (status === 'all' && type === 'all') {
-      setFilteredFilings(allFilings);
-    } else if (status === 'all') {
+    if (status === 'ALL' && type === 'ALL') {
+      setFilteredFilings(filings);
+    } else if (status === 'ALL') {
       setFilteredFilings(
-        allFilings.filter((filing) => filing.type.toString() === type),
+        filings.filter((filing) => filing.type.toString() === type),
       );
-    } else if (type === 'all') {
-      setFilteredFilings(Filings.filter((filing) => filing.status === status));
+    } else if (type === 'ALL') {
+      setFilteredFilings(filings.filter((filing) => filing.status === status));
     } else {
       setFilteredFilings(
-        allFilings.filter(
+        filings.filter(
           (filing) =>
             filing.status === status && filing.type.toString() === type,
         ),
       );
     }
-    console.log(status);
-  }, [status, type, allFilings, Filings]);
-
-  useEffect(() => {
-    setFilingsToParentFunc(allFilings);
-  }, [allFilings]);
-
-  useEffect(() => {
-    setAllFilings(Filings);
-  }, [Filings]);
+  }, [status, type, filings]);
 
   return (
     <div className="space-y-5 pt-5 pb-10">
       <div className="flex flex-row space-x-5">
         <SelectType
           title="สถานะ"
-          items={filterStatus}
+          items={statusFilingItems}
           sendValue={(value) => {
             setStatus(value);
           }}
         />
         <SelectType
           title="ประเภท"
-          items={filingTypeMap}
+          items={typeFilingItems}
           sendValue={(value) => {
             setType(value);
           }}
@@ -68,18 +60,19 @@ export default function AllDocumentPanel({
         {filteredFilings.map((filing) => (
           <AllDocumentCard
             key={filing.id}
-            FilingId={filing.id}
+            filingId={filing.id}
             projectCode={filing.projectCode}
             FilingCode={filing.FilingCode}
-            FilingName={filing.name}
-            FilingStatus={filing.status}
+            filingName={filing.name}
+            filingStatus={filing.status}
+            projectId={filing.projectId}
             deleteThisCardFunc={(id: string) => {
-              setAllFilings((prevFilings) =>
+              setFilings((prevFilings) =>
                 prevFilings.filter((prevFiling) => prevFiling.id !== id),
               );
             }}
             updateThisCardFunc={(id: string, newName: string) => {
-              setAllFilings((prevFilings) =>
+              setFilings((prevFilings) =>
                 prevFilings.map((prevFiling) =>
                   prevFiling.id === id
                     ? { ...prevFiling, name: newName }

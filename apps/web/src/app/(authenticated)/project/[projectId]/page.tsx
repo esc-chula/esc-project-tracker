@@ -28,7 +28,6 @@ export default function Page({ params }: { params: { projectId: string } }) {
           }
         }
       };
-      ('d1c0d106-1a4a-4729-9033-1b2b2d52e98a');
 
       //TODO : Change the userId to the actual userId
       const updateLastOpenFetch = async () => {
