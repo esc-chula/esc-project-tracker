@@ -11,6 +11,7 @@ import { UserRouter } from './routers/user.router';
 import { UserFilingRouter } from './routers/user-filing.router';
 import { AuthRouter } from './routers/auth.router';
 import { AwsRouter } from './routers/aws.router';
+import { createContext } from '../common/context/extractTokens';
 
 @Injectable()
 export class TrpcRouter {
@@ -41,7 +42,10 @@ export class TrpcRouter {
   async applyMiddleware(app: INestApplication) {
     app.use(
       `/trpc`,
-      trpcExpress.createExpressMiddleware({ router: this.appRouter }),
+      trpcExpress.createExpressMiddleware({
+        router: this.appRouter,
+        createContext,
+      }),
     );
   }
 }

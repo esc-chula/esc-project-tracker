@@ -36,7 +36,7 @@ export class ProjectService {
     if (!foundUser) {
       throw new BadRequestException('User not found');
     }
-    console.log('foundUser', foundUser);
+    // console.log('foundUser', foundUser);
     const projects = await this.projectRepository
       .createQueryBuilder('project')
       .innerJoin(UserProj, 'userProj', 'project.id = userProj.projectId')

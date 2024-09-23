@@ -3,162 +3,247 @@
 import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
 import type { Payload, Tokens } from '../interface/auth';
+import { User } from '../interface/user';
+import { authErrors } from '../errors/auth';
 
-export async function signIn(token: string): Promise<Tokens> {
+export async function setCookies(
+  accessToken: string,
+  refreshToken: string,
+): Promise<void> {
   try {
-    const data = await trpc.authRouter.signin.query({ token });
-
-    const cookieStore = cookies();
-    cookieStore.set('accessToken', data.accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-    cookieStore.set('refreshToken', data.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
+    const response = await fetch('http://localhost:3000/api/set-cookies', {
+      method: 'POST',
+      headers: {
+        'X-New-Access-Token': accessToken,
+        'X-New-Refresh-Token': refreshToken,
+      },
     });
 
-    return data;
+    if (!response.ok) {
+      console.error('Error updating cookies', response.statusText);
+      throw new Error(authErrors.setCookiesError);
+    }
   } catch (err) {
     console.error(err);
-    throw new Error('ไม่สามารถเข้าสู่ระบบได้');
+    throw new Error(authErrors.setCookiesError);
   }
+}
+
+export async function getCookies(): Promise<{
+  accessToken: string;
+  refreshToken: string;
+}> {
+  try {
+    // const response = await fetch('http://localhost:3000/api/get-cookies', {
+    //   method: 'GET',
+    // });
+
+    // if (!response.ok) {
+    //   console.error('Error getting cookies', response.statusText);
+    //   throw new Error(authErrors.getCookiesError);
+    // }
+
+    // return await response.json();
+    const cookieStore = cookies();
+
+    const accessToken = cookieStore.get('accessToken')?.value;
+    const refreshToken = cookieStore.get('refreshToken')?.value;
+
+    if (!accessToken || !refreshToken) {
+      throw new Error(authErrors.getCookiesError);
+    }
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  } catch (err) {
+    console.error(err);
+    throw new Error(authErrors.getCookiesError);
+  }
+}
+
+export async function signIn(token: string): Promise<Tokens> {
+  const data = await trpc.authRouter.signin.query({ token }).catch((err) => {
+    console.error(err);
+    throw new Error(authErrors.signInError);
+  });
+
+  const cookieStore = cookies();
+
+  cookieStore.set('accessToken', data.accessToken, {
+    httpOnly: true,
+    secure: true,
+  });
+
+  cookieStore.set('refreshToken', data.refreshToken, {
+    httpOnly: true,
+    secure: true,
+  });
+
+  return data;
 }
 
 export async function validateToken(accessToken: string): Promise<Payload> {
-  try {
-    return await trpc.authRouter.validateToken.query({ accessToken });
-  } catch (err) {
-    console.error(err);
-    throw new Error('Token ไม่ถูกต้อง');
-  }
+  return await trpc.authRouter.validateToken
+    .query({ accessToken })
+    .catch((err) => {
+      console.error(err);
+      throw new Error(authErrors.tokenInvalid);
+    });
 }
 
 export async function signOut(): Promise<void> {
-  try {
-    const cookieStore = cookies();
-    const accessTokenCookie = cookieStore.get('accessToken')?.value;
-
-    if (!accessTokenCookie) {
-      throw new Error('ผู้ใช้ไม่ได้เข้าสู่ระบบ');
-    }
-
-    const user = await validateToken(accessTokenCookie);
-
-    await trpc.authRouter.signOut.query({ userId: user.sub });
-
-    cookieStore.set('accessToken', '', {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      expires: new Date(0),
-    });
-
-    cookieStore.set('refreshToken', '', {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      expires: new Date(0),
-    });
-  } catch (err) {
+  const { accessToken: accessTokenCookie } = await getCookies().catch((err) => {
     console.error(err);
-    throw new Error('ไม่สามารถออกจากระบบได้');
+    throw new Error(authErrors.getCookiesError);
+  });
+
+  if (!accessTokenCookie) {
+    throw new Error(authErrors.notAuthenticated);
   }
-}
 
-export async function refreshToken(): Promise<Tokens> {
-  try {
-    const cookieStore = cookies();
-    const accessTokenCookie = cookieStore.get('accessToken')?.value;
-    const refreshTokenCookie = cookieStore.get('refreshToken')?.value;
+  const jwtPayload = await parseJwt(accessTokenCookie);
 
-    if (!accessTokenCookie || !refreshTokenCookie) {
-      throw new Error('ผู้ใช้ไม่ได้เข้าสู่ระบบ');
-    }
-
-    const user = await validateToken(accessTokenCookie);
-
-    const data = await trpc.authRouter.refreshToken.query({
-      userId: user.sub,
-      refreshToken: refreshTokenCookie,
+  await trpc.authRouter.signOut
+    .query({ userId: jwtPayload.sub })
+    .catch((err) => {
+      console.error(err);
+      throw new Error(authErrors.signOutError);
     });
 
-    cookieStore.set('accessToken', data.accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-    cookieStore.set('refreshToken', data.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-
-    return data;
-  } catch (err) {
+  await setCookies('', '').catch((err) => {
     console.error(err);
-    throw new Error('ไม่สามารถรีเฟรช Token ได้');
-  }
+    throw new Error(authErrors.setCookiesError);
+  });
 }
 
 export async function authenticate({
-  roles,
+  roles = [],
 }: {
-  roles: string[];
-}): Promise<Payload> {
-  try {
-    const cookieStore = cookies();
-    const accessTokenCookie = cookieStore.get('accessToken')?.value;
+  roles?: string[];
+}): Promise<User> {
+  const { accessToken: accessTokenCookie, refreshToken: refreshTokenCookie } =
+    await getCookies().catch((err) => {
+      console.error(err);
+      throw new Error(authErrors.getCookiesError);
+    });
 
-    if (!accessTokenCookie) {
-      throw new Error('ผู้ใช้ไม่ได้เข้าสู่ระบบ');
-    }
-
-    const user = await validateToken(accessTokenCookie);
-
-    if (roles.length > 0 && !roles.includes(user.role)) {
-      throw new Error('ไม่มีสิทธิ์เข้าถึง');
-    }
-
-    return user;
-  } catch (err) {
-    console.error(err);
-
-    if (err instanceof Error) {
-      if (err.message === 'Token ไม่ถูกต้อง') {
-        await refreshToken();
-        return authenticate({ roles });
-      }
-
-      throw err;
-    }
-
-    throw new Error('ไม่มีสิทธิ์เข้าถึง');
+  if (!accessTokenCookie || !refreshTokenCookie) {
+    throw new Error(authErrors.notAuthenticated);
   }
+
+  console.log('Validating existed token...', accessTokenCookie);
+
+  let invalidToken = false;
+  const userJwt = await validateToken(accessTokenCookie).catch(() => {
+    invalidToken = true;
+  });
+
+  console.log(invalidToken, userJwt);
+
+  let user: User;
+  if (invalidToken || !userJwt) {
+    console.log('Refreshing token...', refreshTokenCookie);
+
+    const jwtPayload = await parseJwt(accessTokenCookie);
+    const newTokens = await trpc.authRouter.refreshToken
+      .query({
+        userId: jwtPayload.sub,
+        refreshToken: refreshTokenCookie,
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error(authErrors.refreshTokenError);
+      });
+
+    await setCookies(newTokens.accessToken, newTokens.refreshToken).catch(
+      (err) => {
+        console.error(err);
+        throw new Error(authErrors.setCookiesError);
+      },
+    );
+
+    console.log('Validating new token...', newTokens.accessToken);
+
+    const newJwtPayload = await validateToken(newTokens.accessToken).catch(
+      (err) => {
+        console.error(err);
+        throw new Error(authErrors.tokenInvalid);
+      },
+    );
+    const foundedUser = await trpc.user.findUserByUserId
+      .query({
+        userId: newJwtPayload.sub,
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error(authErrors.userNotFound);
+      });
+    if (!foundedUser) {
+      throw new Error(authErrors.userNotFound);
+    }
+
+    user = foundedUser;
+  } else {
+    const foundedUser = await trpc.user.findUserByUserId
+      .query({
+        userId: userJwt.sub,
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error(authErrors.userNotFound);
+      });
+    if (!foundedUser) {
+      throw new Error(authErrors.userNotFound);
+    }
+
+    user = foundedUser;
+  }
+
+  if (roles && roles.length > 0 && !roles.includes(user.role)) {
+    throw new Error(authErrors.forbidden);
+  }
+
+  return user;
 }
 
-export async function getUserName(): Promise<String> {
-  const cookieStore = cookies();
-  const accessTokenCookie = cookieStore.get('accessToken')?.value;
+export async function getUsername(): Promise<string> {
+  const { accessToken: accessTokenCookie } = await getCookies();
 
   if (!accessTokenCookie) {
     return 'Guest';
   }
 
-  const user = await validateToken(accessTokenCookie);
-  return user.username;
+  const jwtPayload = await parseJwt(accessTokenCookie);
+  return jwtPayload.username;
 }
 
 export async function getUserId(): Promise<string> {
-  const cookieStore = cookies();
-  const accessTokenCookie = cookieStore.get('accessToken')?.value;
+  const { accessToken: accessTokenCookie } = await getCookies();
 
   if (!accessTokenCookie) {
-    throw new Error('ผู้ใช้ไม่ได้เข้าสู่ระบบ');
+    throw new Error(authErrors.notAuthenticated);
   }
 
-  const user = await validateToken(accessTokenCookie);
-  return user.sub;
+  const jwtPayload = await parseJwt(accessTokenCookie);
+  return jwtPayload.sub;
+}
+
+export async function parseJwt(token: string): Promise<Payload> {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join(''),
+    );
+
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error(error);
+    throw new Error(authErrors.parsedJwtError);
+  }
 }

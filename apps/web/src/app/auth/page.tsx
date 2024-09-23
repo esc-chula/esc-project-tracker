@@ -22,7 +22,7 @@ export default function Auth({
         router.push('/home');
       })
       .catch(() => {
-        router.push('/');
+        router.push('/login');
       });
   }, [token, router]);
 

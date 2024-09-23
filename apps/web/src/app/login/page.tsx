@@ -1,12 +1,13 @@
-import LandingPageHeader from "@/src/components/header/LandingPageHeader"
+import LoginButton from '@/src/components/common/login-button';
+import LandingPageHeader from '@/src/components/header/LandingPageHeader';
 
 export default function Page() {
   return (
-    <>
-      <main className=" bg-gray-400 w-full">
-        <LandingPageHeader />
-        Login
-      </main>
-    </>
-  )
+    <main className="flex flex-col py-10 px-4 items-center w-full gap-10">
+      <LandingPageHeader />
+      <div className="flex flex-col items-center">
+        <LoginButton />
+      </div>
+    </main>
+  );
 }
