@@ -33,6 +33,9 @@ export async function getCookies(): Promise<{
   accessToken: string;
   refreshToken: string;
 }> {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+  const refreshToken = cookieStore.get('refreshToken')?.value;
   try {
     // const response = await fetch('http://localhost:3000/api/get-cookies', {
     //   method: 'GET',
@@ -44,10 +47,6 @@ export async function getCookies(): Promise<{
     // }
 
     // return await response.json();
-    const cookieStore = cookies();
-
-    const accessToken = cookieStore.get('accessToken')?.value;
-    const refreshToken = cookieStore.get('refreshToken')?.value;
 
     if (!accessToken || !refreshToken) {
       throw new Error(authErrors.getCookiesError);

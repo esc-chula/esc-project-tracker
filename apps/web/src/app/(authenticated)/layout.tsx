@@ -3,6 +3,8 @@ import { Toaster } from '@/src/components/alert/toaster';
 import Navbar from '@/src/components/navbar/navbar';
 import { authenticate } from '@/src/service/auth';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Layout({
   children,
 }: {
