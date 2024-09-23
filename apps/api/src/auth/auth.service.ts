@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   async signOut(userId: string) {
-    await this.userService.update(userId, { refreshToken: null });
+    await this.userService.update(userId, { refreshToken: undefined });
   }
 
   async me(userId: string) {

@@ -26,7 +26,6 @@ export class TrpcService {
         },
       });
     } catch (err) {
-      console.log('Middleware Error: ' + err.message);
       if (err instanceof Error) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',

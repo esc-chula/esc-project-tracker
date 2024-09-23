@@ -31,7 +31,7 @@ export class DocumentService {
     private readonly filingService: FilingService,
   ) {}
 
-  async findByDocID(id: string): Promise<Document> {
+  async findByDocID(id: string): Promise<Document | null> {
     return await this.documentRepository.findOne({ where: { id } });
   }
 
