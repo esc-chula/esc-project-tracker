@@ -63,14 +63,13 @@ export default function Page({
       if (filingData) setFiling(filingData);
       if (latestDocumentData) setLatestDocument(latestDocumentData);
 
-      if (documentsData.length === 0) return;
-      setDocuments(documentsData);
-
       const [updatedUsernameMap] = await Promise.all([
         getUsersMap(documentsData, userId),
         userOpenFiling(userId, params.filingId),
       ]);
       setUsernameMap(updatedUsernameMap);
+
+      if (documentsData.length > 0) setDocuments(documentsData);
     } catch (err) {
       if (err instanceof Error) {
         toast({
