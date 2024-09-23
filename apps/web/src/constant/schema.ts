@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { projectTypeMap } from './Map';
 import { getFileType } from '../lib/utils';
+import { DocumentActivity } from './enum';
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString());
 
@@ -87,3 +88,11 @@ export const zodDocumentFiles = (
       Array.from(file).every((f) => f.size <= MAX_UPLOAD_SIZE),
     'ไฟล์ใหญ่เกิน 10MB',
   );
+
+export const createdFormSchema = z.object({
+  file: zodDocumentFiles,
+  activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
+  detail: z.string().min(1, { message: 'กรุณากรอกรายละเอียด' }),
+  note: z.string().optional(),
+  comment: z.string().optional(),
+});
