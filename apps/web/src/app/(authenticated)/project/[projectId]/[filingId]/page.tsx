@@ -19,6 +19,7 @@ import updateFilingName from '@/src/service/filing/updateFiling';
 import { isUUID } from '@/src/lib/utils';
 import getUsersMap from '@/src/service/user/getUsersMap';
 import { getUserId } from '@/src/service/auth';
+import userOpenFiling from '@/src/service/user-filing/userOpenFiling';
 
 export default function Page({
   params,
@@ -62,11 +63,13 @@ export default function Page({
       if (filingData) setFiling(filingData);
       if (latestDocumentData) setLatestDocument(latestDocumentData);
 
-      if (documentsData.length === 0) return;
-      setDocuments(documentsData);
-
-      const updatedUsernameMap = await getUsersMap(documentsData, userId);
+      const [updatedUsernameMap] = await Promise.all([
+        getUsersMap(documentsData, userId),
+        userOpenFiling(userId, params.filingId),
+      ]);
       setUsernameMap(updatedUsernameMap);
+
+      if (documentsData.length > 0) setDocuments(documentsData);
     } catch (err) {
       if (err instanceof Error) {
         toast({

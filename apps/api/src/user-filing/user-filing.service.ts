@@ -37,7 +37,7 @@ export class UserFilingService {
     return userFilings;
   }
 
-  async userOpenFiling(userId: string, filingId: string): Promise<UserFiling> {
+  async userOpenFiling(userId: string, filingId: string) {
     if (!isUUID(userId) || !isUUID(filingId)) {
       throw new BadRequestException('Id is not in UUID format');
     }
@@ -58,6 +58,9 @@ export class UserFilingService {
       lastOpen: new Date(),
     };
 
-    return await this.userFilingRepository.save(preparedUserFiling);
+    return await this.userFilingRepository.upsert(preparedUserFiling, {
+      conflictPaths: ['user', 'filing'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }
