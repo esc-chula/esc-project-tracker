@@ -5,7 +5,6 @@ import { optional, z } from 'zod';
 
 import { DocumentService } from '../../document_/document.service';
 import { DocumentActivity, DocumentStatus } from '../../constant/enum';
-import { find } from 'rxjs';
 
 @Injectable()
 export class DocumentRouter {

@@ -2,8 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CountFiling } from '../entities/countFiling.entity';
 import { Repository } from 'typeorm';
-import { validate as isUUID } from 'uuid';
-import { ProjectService } from '../project_/project_.service';
 
 @Injectable()
 export class CountFilingService {
