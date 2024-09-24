@@ -37,11 +37,11 @@ export default function MembersInput({
 }) {
   const [oldMember, setOldMember] = useState<User | undefined>(undefined);
   useEffect(() => {
-    if (memberBeforeUpdated) {
-      const oldMember = memberBeforeUpdated.find(
+    if (memberBeforeUpdated.length > 0) {
+      const updatedOldMember = memberBeforeUpdated.find(
         (user) => user.studentId === member,
       );
-      setOldMember(oldMember);
+      setOldMember(updatedOldMember);
     }
   }, [member]);
   return (
@@ -58,8 +58,8 @@ export default function MembersInput({
                 >
                   {formAction === projectFormAction.INFO && oldMember ? (
                     <div className="flex text-sm text-black w-full justify-between">
-                      <span>{oldMember?.username}</span>
-                      <span>รหัสนิสิต&emsp;{oldMember?.studentId}</span>
+                      <span>{oldMember.username}</span>
+                      <span>รหัสนิสิต&emsp;{oldMember.studentId}</span>
                     </div>
                   ) : (
                     <>
@@ -79,7 +79,9 @@ export default function MembersInput({
                         variant="ghost"
                         size="sm"
                         className="px-2"
-                        onClick={(e) => handleDelete(e, index)}
+                        onClick={(e) => {
+                          handleDelete(e, index);
+                        }}
                       >
                         <CircleMinus className="h-5 w-5 stroke-darkpink" />
                       </Button>

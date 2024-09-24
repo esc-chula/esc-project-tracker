@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-export async function POST(request: NextRequest) {
+export function POST(request: NextRequest) {
   const newAccessToken = request.headers.get('X-New-Access-Token');
   const newRefreshToken = request.headers.get('X-New-Refresh-Token');
 

@@ -117,7 +117,7 @@ export default function Page() {
         <div className={`border-b-2 ${isContinued ? 'border-black' : ''}`}>
           <Button
             variant="ghost"
-            className={`${isContinued ? 'font-bold text-black' : ''}`}
+            className={isContinued ? 'font-bold text-black' : ''}
             onClick={enableContinue}
           >
             <span>ดำเนินการ</span>
@@ -135,7 +135,9 @@ export default function Page() {
         <div className={`border-b-2 ${isApproved ? 'border-green-400' : ''}`}>
           <Button
             variant="ghost"
-            className={`${isApproved ? 'font-bold text-green-400 hover:text-green-400' : ''}`}
+            className={
+              isApproved ? 'font-bold text-green-400 hover:text-green-400' : ''
+            }
             onClick={enableApprove}
           >
             <span>อนุมัติ</span>
