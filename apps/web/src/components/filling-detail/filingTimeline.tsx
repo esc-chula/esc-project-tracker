@@ -138,11 +138,17 @@ export default function FilingTimeline({
                 ? 'วันนี้'
                 : currentDate}
             </div>
-            <DocumentCard document={document} index={index} />
+            <div key={index} className="w-full relative">
+              <DocumentCard document={document} index={index} />
+            </div>
           </>
         );
       }
-      return <DocumentCard document={document} index={index} />;
+      return (
+        <div key={index} className="w-full relative">
+          <DocumentCard document={document} index={index} />
+        </div>
+      );
     });
 
   return (
