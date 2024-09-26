@@ -36,77 +36,75 @@ export default function DisplayWithNoteAndStatus({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full relative">
-      <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
-        <div className="flex flex-row px-8">
-          <NameDate
-            title={user?.username ?? 'Secretary ESC'}
-            date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}
-            activity={TextDocumentActivity[document.activity]}
-          >
-            <CircleUserRound size={30} className="shrink-0" />
-          </NameDate>
-          <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
-            <div className="font-bold text-sm">ความคิดเห็น</div>
-            <TextareaForDisplay value={document.comment} />
-          </div>
-          <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
-            {handleDeleteDocument ? (
-              <DraftDocumentPopover
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                handleDeleteButton={() => {
-                  handleDeleteDocument(document.id);
-                }}
-              />
-            ) : (
-              <StatusButton
-                status={document.status}
-                showReplyButton={showReplyButton}
-                setShowCreateDocument={setShowCreateDocument}
-              />
-            )}
-            <CollapsibleTrigger
-              onClick={() => {
-                setExpanded(!expanded);
-              }}
-            >
-              {expanded ? <ChevronUp /> : <ChevronDown />}
-            </CollapsibleTrigger>
-          </div>
+    <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
+      <div className="flex flex-row px-8">
+        <NameDate
+          title={user?.username ?? 'Secretary ESC'}
+          date={`ส่งเอกสารเมื่อ ${convertDate(document.createdAt)}`}
+          activity={TextDocumentActivity[document.activity]}
+        >
+          <CircleUserRound size={30} className="shrink-0" />
+        </NameDate>
+        <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
+          <div className="font-bold text-sm">ความคิดเห็น</div>
+          <TextareaForDisplay value={document.comment} />
         </div>
-        <CollapsibleContent>
-          <div className="border-t-2 px-8 py-4 font-bold text-sm flex flex-col space-y-4 ">
-            <div>
-              <span className="font-bold">รายละเอียดเอกสาร: </span>
-              <span className="font-normal">{document.name}</span>
+        <div className="py-8 flex flex-col justify-between w-auto items-end space-y-5">
+          {handleDeleteDocument ? (
+            <DraftDocumentPopover
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              handleDeleteButton={() => {
+                handleDeleteDocument(document.id);
+              }}
+            />
+          ) : (
+            <StatusButton
+              status={document.status}
+              showReplyButton={showReplyButton}
+              setShowCreateDocument={setShowCreateDocument}
+            />
+          )}
+          <CollapsibleTrigger
+            onClick={() => {
+              setExpanded(!expanded);
+            }}
+          >
+            {expanded ? <ChevronUp /> : <ChevronDown />}
+          </CollapsibleTrigger>
+        </div>
+      </div>
+      <CollapsibleContent>
+        <div className="border-t-2 px-8 py-4 font-bold text-sm flex flex-col space-y-4 ">
+          <div>
+            <span className="font-bold">รายละเอียดเอกสาร: </span>
+            <span className="font-normal">{document.name}</span>
+          </div>
+          <div className="flex flex-row">
+            <div className="space-y-2 w-[40vw]">
+              <div>หมายเหตุ</div>
+              <TextareaForDisplay value={document.detail} />
             </div>
-            <div className="flex flex-row">
-              <div className="space-y-2 w-[40vw]">
-                <div>หมายเหตุ</div>
-                <TextareaForDisplay value={document.detail} />
-              </div>
-              <div className="pl-5">
-                <div>ไฟล์แนบ</div>
-                <div className="flex flex-col gap-6 pt-2">
+            <div className="pl-5">
+              <div>ไฟล์แนบ</div>
+              <div className="flex flex-col gap-6 pt-2">
+                <FileDisplay
+                  fileName={document.pdfName}
+                  fileType="pdf"
+                  folderName={folderName}
+                />
+                {document.docName !== '' && document.docName !== '-' && (
                   <FileDisplay
-                    fileName={document.pdfName}
-                    fileType="pdf"
+                    fileName={document.docName}
+                    fileType="doc"
                     folderName={folderName}
                   />
-                  {document.docName !== '' && document.docName !== '-' && (
-                    <FileDisplay
-                      fileName={document.docName}
-                      fileType="doc"
-                      folderName={folderName}
-                    />
-                  )}
-                </div>
+                )}
               </div>
             </div>
           </div>
-        </CollapsibleContent>
-      </Collapsible>
-    </div>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
