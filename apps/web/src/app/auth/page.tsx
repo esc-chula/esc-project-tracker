@@ -15,9 +15,9 @@ export default function Auth({
   const router = useRouter();
 
   const token = searchParams.token;
-  {
-    /* apply callbackurl here */
-  }
+
+  /* apply callbackurl here */
+
   useEffect(() => {
     signIn(token)
       .then(() => {

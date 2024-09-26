@@ -19,7 +19,7 @@ export function checkFileType(file: File | undefined) {
 }
 
 export function getFileType(file: File | undefined): string | undefined {
-  if (!file || !file.name) return undefined;
+  if (!file?.name) return undefined;
 
   return file.name.split('.').pop();
 }

@@ -110,12 +110,12 @@ export default function ProjectForm({
     const mapOldMembersToForm = () => {
       if (action === projectFormAction.INFO) {
         const initialMember = [ownerUser?.studentId || ''];
-        const otherMembers = initialMembers.reduce((result, user) => {
+        const otherMembers = initialMembers.reduce((result: string[], user) => {
           if (user.id !== ownerUser?.id) {
             result.push(user.studentId);
           }
           return result;
-        }, [] as string[]);
+        }, []);
 
         initialMember.push(...otherMembers);
         setStudentIdsInitialMembers(initialMember);
@@ -179,12 +179,13 @@ export default function ProjectForm({
       type: values.type as ProjectType,
     })
       .catch((err) => {
-        toast({
-          title: `ไม่สามารถอัพเดทโครง ${project?.projectCode} ${project?.name} ได้`,
-          description: err.message,
-          isError: true,
-          duration: 5000,
-        });
+        if (err instanceof Error)
+          toast({
+            title: `ไม่สามารถอัพเดทโครง ${project?.projectCode} ${project?.name} ได้`,
+            description: err.message,
+            isError: true,
+            duration: 5000,
+          });
       })
       .then(() => {
         toast({
@@ -207,10 +208,10 @@ export default function ProjectForm({
       } else {
         const ownerStudentId =
           values.members.find((member) => member !== undefined) || '';
-
-        return await findUserByCondition({ studentId: ownerStudentId }).then(
-          (user) => user?.id || '',
-        );
+        const foundUser = await findUserByCondition({
+          studentId: ownerStudentId,
+        });
+        return foundUser?.id ?? '';
       }
     };
 
@@ -226,16 +227,16 @@ export default function ProjectForm({
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
     let projCreated = false;
-    var projectToJoin: Project | null = null;
-    var userToAdd: (string | undefined)[] = values.members;
-    var userToLeave: (string | undefined)[] = [];
+    let projectToJoin: Project | null = null;
+    let userToAdd: (string | undefined)[] = values.members;
+    let userToLeave: (string | undefined)[] = [];
     try {
       if (
         action === projectFormAction.USER_CREATE ||
         action === projectFormAction.ADMIN_CREATE
       ) {
         const newProject = await onSubmitCreate(values);
-        projectToJoin = newProject as Project;
+        projectToJoin = newProject;
         projCreated = true;
         toast({
           title: 'เปิดโครงการสำเร็จ',
@@ -246,7 +247,7 @@ export default function ProjectForm({
         const userAddAndLeave = await onSubmitUpdate(values);
         userToAdd = userAddAndLeave.membersToAdd;
         userToLeave = userAddAndLeave.membersToLeave;
-        projectToJoin = project as Project;
+        projectToJoin = project ? project : null;
       }
 
       let addStudentIdsNotFound: string[] = [];

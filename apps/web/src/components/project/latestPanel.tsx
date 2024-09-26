@@ -22,7 +22,7 @@ export default function LastestPanel({
 
   useEffect(() => {
     const newSortedProjects = projectsWithLastOpen
-    .filter(project => project.lastOpen !== null) 
+    .filter(project => project.lastOpen !== '') 
     .sort((a, b) => new Date(b.lastOpen).getTime() - new Date(a.lastOpen).getTime());
     
     setSortedProjects(newSortedProjects);

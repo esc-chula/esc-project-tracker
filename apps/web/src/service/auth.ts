@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
 import type { Payload, Tokens } from '../interface/auth';
-import { User } from '../interface/user';
+import type { User } from '../interface/user';
 import { authErrors } from '../errors/auth';
 
 export async function setCookies(
@@ -200,7 +200,7 @@ export async function authenticate({
     user = foundedUser;
   }
 
-  if (roles && roles.length > 0 && !roles.includes(user.role)) {
+  if (roles.length > 0 && !roles.includes(user.role)) {
     throw new Error(authErrors.forbidden);
   }
 
@@ -240,7 +240,7 @@ export async function parseJwt(token: string): Promise<Payload> {
         .join(''),
     );
 
-    return JSON.parse(jsonPayload);
+    return JSON.parse(jsonPayload) as Payload;
   } catch (error) {
     console.error(error);
     throw new Error(authErrors.parsedJwtError);

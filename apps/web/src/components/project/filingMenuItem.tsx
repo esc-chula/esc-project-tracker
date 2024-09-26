@@ -89,74 +89,76 @@ export default function FilingMenuItem({
 
   if (!isFetched) return null;
   return (
-    isFetched && (
-      <tr className="border-b-2 border-gray-200">
-        <td className="p-4 py-5 text-nowrap text-center min-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
-          {filing.projectCode + '-' + filing.FilingCode}
-        </td>
-        <td className="p-4 py-5 text-nowrap max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
-          {filing.name}
-        </td>
-        <td className="p-4 py-5 text-nowrap text-center">
-          {filing.createdAt.slice(0, 10)}
-        </td>
-        <td className="relative w-[150px] h-[40px]">
-          <div className="absolute inset-0 flex items-center justify-center">
-            {isUpdateMode && filing.status === FilingStatus.APPROVED ? (
-              <textarea
-                value={name}
-                className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none transition-all duration-300 ease-in-out focus:h-36 focus:z-40"
-                placeholder="-"
-                onChange={(e) => {
-                  setName(e.target.value as string);
-                  setIsDirty(true);
-                }}
-                onBlur={() => updateFiling()}
-              />
-            ) : (
-              <div className="text-nowrap text-center w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                {name || '-'}
-              </div>
-            )}
-          </div>
-        </td>
-        <td className="p-4 py-5 text-nowrap text-center max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap">
-          {filingOwner ? filingOwner.username : '-'}
-        </td>
-        <td className="p-4 py-5 text-nowrap text-center">
-          <p className={`rounded-lg px-2 py-1 ${buttonColors[filing.status]}`}>
-            {TextMyProject[filing.status]}
-          </p>
-        </td>
-        <td className="relative w-[150px] h-[40px]">
-          <div className="absolute inset-0 flex items-center justify-center">
-            {isUpdateMode && filing.status === FilingStatus.APPROVED ? (
-              <textarea
-                value={detail}
-                className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none transition-all duration-300 ease-in-out focus:h-36 focus:z-40"
-                placeholder="-"
-                onChange={(e) => {
-                  setDetail(e.target.value as string);
-                  setIsDirty(true);
-                }}
-                onBlur={() => updateFiling()}
-              />
-            ) : (
-              <div className="text-nowrap text-center w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                {detail || '-'}
-              </div>
-            )}
-          </div>
-        </td>
-        <td className="p-4 py-5 text-nowrap text-center w-[60px]">
-          <div
-            onClick={() => handleClick()}
-            className={`text-red ${document && document.pdfName !== '' && document.pdfName !== '-' ? ' cursor-pointer' : 'opacity-50 pointer-events-none'}`}
-          >
-            <BiSolidFilePdf size={24} />
-          </div>
-        </td>
-      </tr>
-    )
+    <tr className="border-b-2 border-gray-200">
+      <td className="p-4 py-5 text-nowrap text-center min-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {filing.projectCode + '-' + filing.FilingCode}
+      </td>
+      <td className="p-4 py-5 text-nowrap max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {filing.name}
+      </td>
+      <td className="p-4 py-5 text-nowrap text-center">
+        {filing.createdAt.slice(0, 10)}
+      </td>
+      <td className="relative w-[150px] h-[40px]">
+        <div className="absolute inset-0 flex items-center justify-center">
+          {isUpdateMode && filing.status === FilingStatus.APPROVED ? (
+            <textarea
+              value={name}
+              className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none transition-all duration-300 ease-in-out focus:h-36 focus:z-40"
+              placeholder="-"
+              onChange={(e) => {
+                setName(e.target.value);
+                setIsDirty(true);
+              }}
+              onBlur={() => {
+                updateFiling();
+              }}
+            />
+          ) : (
+            <div className="text-nowrap text-center w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              {name || '-'}
+            </div>
+          )}
+        </div>
+      </td>
+      <td className="p-4 py-5 text-nowrap text-center max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {filingOwner ? filingOwner.username : '-'}
+      </td>
+      <td className="p-4 py-5 text-nowrap text-center">
+        <p className={`rounded-lg px-2 py-1 ${buttonColors[filing.status]}`}>
+          {TextMyProject[filing.status]}
+        </p>
+      </td>
+      <td className="relative w-[150px] h-[40px]">
+        <div className="absolute inset-0 flex items-center justify-center">
+          {isUpdateMode && filing.status === FilingStatus.APPROVED ? (
+            <textarea
+              value={detail}
+              className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none transition-all duration-300 ease-in-out focus:h-36 focus:z-40"
+              placeholder="-"
+              onChange={(e) => {
+                setDetail(e.target.value);
+                setIsDirty(true);
+              }}
+              onBlur={() => {
+                updateFiling();
+              }}
+            />
+          ) : (
+            <div className="text-nowrap text-center w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              {detail || '-'}
+            </div>
+          )}
+        </div>
+      </td>
+      <td className="p-4 py-5 text-nowrap text-center w-[60px]">
+        <div
+          onClick={() => handleClick()}
+          className={`text-red ${document && document.pdfName !== '' && document.pdfName !== '-' ? ' cursor-pointer' : 'opacity-50 pointer-events-none'}`}
+        >
+          <BiSolidFilePdf size={24} />
+        </div>
+      </td>
+    </tr>
   );
 }
