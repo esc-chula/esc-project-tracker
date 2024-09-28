@@ -37,7 +37,7 @@ export default function Page() {
 
   const [filingsRawData, setFilingsRawData] = useState<FilingType[]>([]);
   const [latestFilings, setLatestFilings] = useState<FilingType[]>([]);
-  
+
   const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
     [],
   );
@@ -72,6 +72,7 @@ export default function Page() {
     };
 
     fetchData();
+    enableContinue();
   }, []);
 
   const enableContinue = () => {
