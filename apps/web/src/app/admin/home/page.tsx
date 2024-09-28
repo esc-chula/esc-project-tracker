@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import { getUserId } from '@/src/service/auth';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
+import { UserFiling } from '@/src/interface/user-filing';
+import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
 
 export default function Page() {
   //TODO : Change the userId to the actual userId
@@ -28,20 +30,27 @@ export default function Page() {
   const [projectsWithLastOpenData, setProjectsWithLastOpenData] = useState<
     ProjectWithLastOpen[]
   >([]);
+  const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
+    [],
+  );
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userId = await getUserId();
-        const [filingsData, projectsData] = await Promise.all([
-          getFilingsByUserId(userId),
-          getProjectsByUserId(userId),
-        ]);
+        const [filingsData, projectsData, filingsDataWithLastOpen] =
+          await Promise.all([
+            getFilingsByUserId(userId),
+            getProjectsByUserId(userId),
+            findUserFilingOrderByLastOpen(userId),
+          ]);
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);
+        setFilingsWithLastOpen(filingsDataWithLastOpen);
       } catch (err) {
         console.error(err);
         setFilingsDataWithProject([]);
         setProjectsWithLastOpenData([]);
+        setFilingsWithLastOpen([]);
       }
     };
 
@@ -144,14 +153,17 @@ export default function Page() {
         <hr className="border-t-2 w-full" />
       </section>
       <section className="mt-5 shadow-lg rounded-xl">
+        {/* TODO: findLatestFilings & BUG */}
         <StatusTable data={filingsDataWithProject} compact />
       </section>
+      {/* TODO: Modify to be Filings With Last Open */}
       <section className="w-full mt-12">
         <div className="flex items-center justify-between gap-3 h-10">
           <span className="flex items-center gap-2 w-0 grow">
             <FileSearch className="w-5 h-5 shrink-0" />
             <div className="font-bold">การตรวจสอบล่าสุด</div>
           </span>
+          {/* TODO: This still link to projects */}
           <Link href="/admin/projects">
             <Button variant="link">
               <span className="flex items-center gap-1">
@@ -163,7 +175,7 @@ export default function Page() {
         </div>
       </section>
       <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <LastestPanel projectsWithLastOpen={projectsWithLastOpenData} compact />
+        <LastestPanel filingsWithLastOpen={filingsWithLastOpen} compact />
       </section>
     </main>
   );
