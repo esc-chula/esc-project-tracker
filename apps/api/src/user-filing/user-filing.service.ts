@@ -21,9 +21,9 @@ export class UserFilingService {
     userId: string,
     limit?: number,
   ): Promise<UserFilingDTO[]> {
-    // if (!isUUID(userId)) {
-    //   throw new BadRequestException('Id is not in UUID format');
-    // }
+    if (!isUUID(userId)) {
+      throw new BadRequestException('Id is not in UUID format');
+    }
 
     const userFilings = await this.userFilingRepository
       .createQueryBuilder('userFiling')
