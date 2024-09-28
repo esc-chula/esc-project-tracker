@@ -7,11 +7,16 @@ import { toast } from '../ui/use-toast';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 import { DocumentType } from '@/src/interface/document';
 import { formatDate } from '@/src/lib/formateDate';
+import FileDisplay from '../filling-detail/display/fileDisplay';
 
 export default function FilingTabShowDetail({
   filing,
+  isContinue,
+  sentSelectedFilingIdToParent,
 }: {
   filing: FilingType;
+  isContinue?: boolean;
+  sentSelectedFilingIdToParent?: (id: string) => void;
 }) {
   const [projectName, setProjectName] = useState<string | undefined>(undefined);
   const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
@@ -54,7 +59,14 @@ export default function FilingTabShowDetail({
   }, [filing]);
 
   return (
-    <div className="w-full p-2 border-y-lightgray border-y-2 px-4 space-y-2">
+    <div
+      className={`w-full p-2 border-y-lightgray border-y-2 px-4 space-y-2 ${isContinue ? 'hover:bg-lightgray' : ''}`}
+      onClick={() => {
+        if (isContinue) {
+          sentSelectedFilingIdToParent?.(filing.id);
+        }
+      }}
+    >
       <div className="flex flex-row justify-between items-center">
         <div className="font-bold text-black truncate overflow-hidden whitespace-nowrap w-[50%]">
           {projectName || 'ไม่มีชื่อโครงการ'}
@@ -73,17 +85,7 @@ export default function FilingTabShowDetail({
         </div>
       </div>
 
-      {/*
-      TODO : use fileDisplay from feat/filing-detail*/}
-      <div className="py-2 px-4 border-black flex flex-row border-2 rounded-xl w-[80%] space-x-2 items-center">
-        <FaFile size={20} className="text-orange-500 flex-shrink-0" />
-        <div className="flex flex-col text-xs flex-grow">
-          <div className="truncate overflow-hidden whitespace-nowrap w-[80%]">
-            เอกสารเปิดโคร การสำหรับหหหหหหหหหหหหหsssssssssssssss
-          </div>
-          <div className="mt-1">.PDF</div>
-        </div>
-      </div>
+      <FileDisplay fileName={latestDocument?.pdfName || ''} fileType="pdf" />
     </div>
   );
 }

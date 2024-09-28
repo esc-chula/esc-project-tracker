@@ -42,7 +42,11 @@ function a11yProps(index: number) {
   };
 }
 
-export default function FilingTab() {
+export default function FilingTab({
+  sentSelectedFilingIdToParent,
+}: {
+  sentSelectedFilingIdToParent: (id: string) => void;
+}) {
   const [tabsValue, setTabsValue] = useState<number>(0);
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabsValue(newValue);
@@ -53,6 +57,11 @@ export default function FilingTab() {
   );
   const [selectedType, setSelectedType] = useState<string>('ALL');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
+  const [selectedFilingId, setSelectedFilingId] = useState<string>('');
+
+  useEffect(() => {
+    sentSelectedFilingIdToParent(selectedFilingId);
+  }, [selectedFilingId]);
 
   useEffect(() => {
     const newSelectedStatus =
@@ -79,7 +88,7 @@ export default function FilingTab() {
   }, [tabsValue, selectedType, selectedDepartment]);
 
   return (
-    <div className="border-lightgray border-2 rounded-3xl w-[80%] h-[80vh] pt-3 flex flex-col">
+    <div className="border-lightgray border-2 rounded-xl w-[30vw] h-[80vh] pt-3 flex flex-col">
       <div className="w-full flex justify-center border-b-lightgray border-b-2">
         <Box sx={{ borderColor: 'divider' }}>
           <Tabs
@@ -137,7 +146,7 @@ export default function FilingTab() {
           <SearchPanel
             filings={TargetFilings}
             placeHolder="รหัสเอกสาร"
-            FilingFunc={(filing: FilingType | Project) => {}}
+            filingFunc={(filing: FilingType | Project) => {}}
           />
           <RecentlyFiling />
         </div>
@@ -154,9 +163,16 @@ export default function FilingTab() {
           />
         </div>
       </div>
-      <div className="flex-grow overflow-y-scroll">
+      <div className="flex-grow overflow-y-scroll no-scrollbar">
         <CustomTabPanel value={tabsValue} index={0}>
-          <FilingTabShow tabValue={0} filings={TargetFilings} />
+          <FilingTabShow
+            tabValue={0}
+            filings={TargetFilings}
+            isContinue
+            sentSelectedFilingIdToParent={(id: string) => {
+              setSelectedFilingId(id);
+            }}
+          />
         </CustomTabPanel>
         <CustomTabPanel value={tabsValue} index={1}>
           <FilingTabShow tabValue={1} filings={TargetFilings} />

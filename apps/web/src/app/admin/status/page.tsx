@@ -9,6 +9,7 @@ import { FilingType } from '@/src/interface/filing';
 import { useToast } from '@/src/components/ui/use-toast';
 import { useEffect, useState } from 'react';
 import FilingsSection from '@/src/components/admin-status/filings-section';
+import FilingReplyArea from '@/src/components/admin-status/filing-reply-area';
 
 export default function Page() {
   // TODO: Change the userId to the actual userId
@@ -38,7 +39,7 @@ export default function Page() {
   return (
     <>
       <main className="w-full pt-[68px] overflow-y-hidden">
-        <div className="pl-15 pr-5">
+        <div className="pl-15 pr-5 pb-5">
           <Header>
             <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
           </Header>
