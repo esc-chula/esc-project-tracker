@@ -13,7 +13,7 @@ export default function LatestPanel({
   projectsWithLastOpen,
   compact = false,
 }: {
-  filingsWithLastOpen?: FilingType[];
+  filingsWithLastOpen?: UserFiling[];
   projectsWithLastOpen?: ProjectWithLastOpen[];
   compact?: boolean;
 }) {
@@ -26,7 +26,7 @@ export default function LatestPanel({
     [],
   );
 
-  const [sortedFilings, setSortedFilings] = useState<FilingType[]>([]);
+  const [sortedFilings, setSortedFilings] = useState<UserFiling[]>([]);
 
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
@@ -46,10 +46,10 @@ export default function LatestPanel({
     if (filingsWithLastOpen) {
       setIsProject(false);
       const newSortedFilings = filingsWithLastOpen
-        .filter((filing) => filing.updatedAt !== null)
+        .filter((filing) => filing.lastOpen !== null)
         .sort(
           (a, b) =>
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+            new Date(b.lastOpen).getTime() - new Date(a.lastOpen).getTime(),
         );
 
       setSortedFilings(newSortedFilings);
@@ -80,11 +80,11 @@ export default function LatestPanel({
             <div className="flex space-x-8">
               {sortedFilings.map((filing) => (
                 <LatestItem
-                  key={filing.id}
-                  projectId={filing.projectId}
-                  projectCode={filing.FilingCode}
-                  projectName={filing.name}
-                  filingId={filing.id}
+                  key={filing.filing.id}
+                  projectId={filing.filing.projectId}
+                  projectCode={filing.filing.FilingCode}
+                  projectName={filing.filing.name}
+                  filingId={filing.filing.id}
                 />
               ))}
             </div>

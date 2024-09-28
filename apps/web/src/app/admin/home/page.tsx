@@ -15,7 +15,7 @@ import { getUserId } from '@/src/service/auth';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import { UserFiling } from '@/src/interface/user-filing';
-import findUserFilingOrderByLastOpen from '@/src/service/filing/findUserFilingOrderByLastOpen';
+import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
 import findLatestFilings from '@/src/service/filing/findLatestFilings';
 import { toast, useToast } from '@/src/components/ui/use-toast';
 
@@ -37,7 +37,8 @@ export default function Page() {
 
   const [filingsRawData, setFilingsRawData] = useState<FilingType[]>([]);
   const [latestFilings, setLatestFilings] = useState<FilingType[]>([]);
-  const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<FilingType[]>(
+  
+  const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
     [],
   );
   useEffect(() => {
