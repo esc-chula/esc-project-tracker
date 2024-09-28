@@ -2,15 +2,19 @@ import { SquarePen } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { IoReturnUpBack } from 'react-icons/io5';
 
-export default function FilingReplyButtons({}) {
+export default function FilingReplyButtons({
+  setShowComment,
+}: {
+  setShowComment: (value: boolean) => void;
+}) {
   return (
     <div className="space-y-4">
       <div className="space-x-4">
         <Button
           variant="outline"
-          /* onClick={() => {
-          setShowCreateDocument(true);
-        }} */
+          onClick={() => {
+            setShowComment(true);
+          }}
           className="mx-auto rounded-xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none"
         >
           <IoReturnUpBack className="h-8 w-8 mr-2" />

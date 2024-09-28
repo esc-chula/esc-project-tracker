@@ -16,7 +16,7 @@ export default function FilingReplyHeader({
   name: string | undefined;
 }) {
   return (
-    <div className="font-sukhumvit text-xl font-bold flex items-center justify-between w-full">
+    <div className="font-sukhumvit text-2xl font-bold flex items-center justify-between w-full">
       <div className="flex flex-row">
         <CgFileDocument size={30} className=" mr-2 text-center" />
         <div>

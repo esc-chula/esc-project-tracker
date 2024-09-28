@@ -11,6 +11,7 @@ import FilingReplyDetail from './filing-reply-detail';
 import { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import FilingReplyComment from './filing-reply-comment';
+import FilingReplyButtons from './filing-reply-buttons';
 export default function FilingReplyArea({
   selectedFilingId,
 }: {
@@ -21,6 +22,7 @@ export default function FilingReplyArea({
   );
   const [filingDetail, setFilingDetail] = useState<FilingType | null>(null);
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
+  const [isShowComment, setIsShowComment] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchFilingDetail = async () => {
@@ -77,6 +79,7 @@ export default function FilingReplyArea({
     if (filingDetail?.userId) {
       fetchOwnerDetail();
     }
+    setIsShowComment(false);
   }, [filingDetail]);
 
   return (
@@ -102,8 +105,23 @@ export default function FilingReplyArea({
             filing={filingDetail}
             owner={ownerDetail?.username || 'Secretary ESC'}
           />
-          {/* <FilingReplyButtons /> */}
-          <FilingReplyComment />
+          {isShowComment ? (
+            <FilingReplyComment
+              filingId={selectedFilingId}
+              latestDocument={latestDocument}
+              filing={filingDetail}
+              projectId={filingDetail?.projectId || ''}
+              setShowComment={(value: boolean) => {
+                setIsShowComment(value);
+              }}
+            />
+          ) : (
+            <FilingReplyButtons
+              setShowComment={(value: boolean) => {
+                setIsShowComment(value);
+              }}
+            />
+          )}
         </div>
       )}
     </div>
