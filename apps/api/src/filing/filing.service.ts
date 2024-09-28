@@ -268,21 +268,21 @@ export class FilingService {
   }
 
   async findLatestFilings() {
-    const approvedFilings = await this.filingRepository
+    const approvedFilings = this.filingRepository
       .createQueryBuilder('filing')
       .where('filing.status = :status', { status: FilingStatus.APPROVED })
       .orderBy('filing.updatedAt', 'DESC')
       .limit(3)
       .getMany();
 
-    const returnedFilings = await this.filingRepository
+    const returnedFilings = this.filingRepository
       .createQueryBuilder('filing')
       .where('filing.status = :status', { status: FilingStatus.RETURNED })
       .orderBy('filing.updatedAt', 'DESC')
       .limit(3)
       .getMany();
 
-    const pendingFilings = await this.filingRepository
+    const pendingFilings = this.filingRepository
       .createQueryBuilder('filing')
       .where('filing.status = :status', {
         status: FilingStatus.WAIT_FOR_SECRETARY,

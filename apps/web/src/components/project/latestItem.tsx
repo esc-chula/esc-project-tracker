@@ -21,7 +21,10 @@ export default function LatestItem({
       onClick={() => {
         if (isAdmin) {
           router.push(`/admin/project/${projectId}/${filingId}`);
-        } else router.push(`/project/${projectId}`);
+        } else if (filingId) {
+          router.push(`/project/${projectId}/${filingId}`)
+        } 
+        else router.push(`/project/${projectId}`);
       }}
     >
       <div className="flex items-center justify-center">
