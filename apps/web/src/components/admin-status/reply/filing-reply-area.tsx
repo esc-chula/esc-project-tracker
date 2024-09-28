@@ -7,6 +7,10 @@ import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
 import { FilingType } from '@/src/interface/filing';
 import { DocumentType } from '@/src/interface/document';
 import FilingReplyHeader from './filing-reply-header';
+import FilingReplyDetail from './filing-reply-detail';
+import { User } from '@/src/interface/user';
+import { findUserByUserId } from '@/src/service/user/findUserByUserId';
+import FilingReplyButtons from './filing-reply-buttons';
 export default function FilingReplyArea({
   selectedFilingId,
 }: {
@@ -16,6 +20,7 @@ export default function FilingReplyArea({
     null,
   );
   const [filingDetail, setFilingDetail] = useState<FilingType | null>(null);
+  const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchFilingDetail = async () => {
@@ -47,11 +52,47 @@ export default function FilingReplyArea({
         }
       }
     };
+
+    const fetchOwnerDetail = async () => {
+      try {
+        const data = await findUserByUserId(filingDetail?.userId || '');
+        setOwnerDetail(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            title: 'ดึงข้อมูลเจ้าของเอกสาร ' + filingDetail?.id + ' ไม่สำเร็จ',
+            description: err.message,
+            isError: true,
+          });
+        }
+      }
+    };
     if (selectedFilingId !== '') {
       fetchFilingDetail();
       fetchLatestDocument();
     }
   }, [selectedFilingId]);
+
+  useEffect(() => {
+    const fetchOwnerDetail = async () => {
+      try {
+        const data = await findUserByUserId(filingDetail?.userId || '');
+        setOwnerDetail(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            title: 'ดึงข้อมูลเจ้าของเอกสาร ' + filingDetail?.id + ' ไม่สำเร็จ',
+            description: err.message,
+            isError: true,
+          });
+        }
+      }
+    };
+    if (filingDetail?.userId) {
+      fetchOwnerDetail();
+    }
+  }, [filingDetail]);
+
   return (
     <div className="h-[80vh] w-[50vw] pl-15 overflow flex justify-center">
       {selectedFilingId === '' ? (
@@ -62,12 +103,20 @@ export default function FilingReplyArea({
           </div>
         </div>
       ) : (
-        <div className="flex w-full">
+        <div className="flex w-full flex-col space-y-4 pt-4">
           <FilingReplyHeader
+            projectId={filingDetail?.projectId || ''}
+            filingId={selectedFilingId}
             projectCode={filingDetail?.projectCode}
             filingCode={filingDetail?.FilingCode}
             name={filingDetail?.name}
           />
+          <FilingReplyDetail
+            latestDocument={latestDocument}
+            filing={filingDetail}
+            owner={ownerDetail?.username || 'Secretary ESC'}
+          />
+          <FilingReplyButtons />
         </div>
       )}
     </div>

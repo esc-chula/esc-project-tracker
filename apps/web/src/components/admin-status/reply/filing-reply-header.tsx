@@ -1,11 +1,16 @@
 import { CgFileDocument } from 'react-icons/cg';
 import { HiMiniArrowLongRight } from 'react-icons/hi2';
+import { redirect } from 'next/navigation';
 
 export default function FilingReplyHeader({
+  projectId,
+  filingId,
   projectCode,
   filingCode,
   name,
 }: {
+  projectId: string;
+  filingId: string;
   projectCode: string | undefined;
   filingCode: string | undefined;
   name: string | undefined;
@@ -21,7 +26,12 @@ export default function FilingReplyHeader({
           {name || 'เอกสารไม่มีชื่อ'}
         </div>
       </div>
-      <div className="text-sm font-normal">
+      <div
+        className="text-sm font-normal hover:cursor-pointer"
+        onClick={() => {
+          window.location.replace(`/admin/project/${projectId}/${filingId}`);
+        }}
+      >
         รายละเอียดเพิ่มเติม <HiMiniArrowLongRight className="inline-block" />
       </div>
     </div>
