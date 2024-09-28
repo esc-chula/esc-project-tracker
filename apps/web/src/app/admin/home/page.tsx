@@ -75,8 +75,7 @@ export default function Page() {
     if (isContinued) {
       const filteredFilings = fetchLatestFilings.filter(
         (filing) =>
-          filing.status !== FilingStatus.RETURNED &&
-          filing.status !== FilingStatus.APPROVED,
+          filing.status === FilingStatus.WAIT_FOR_SECRETARY
       );
       setLatestFilings(filteredFilings);
     }
