@@ -16,6 +16,7 @@ import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import { UserFiling } from '@/src/interface/user-filing';
 import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
+import findLatestFilings from '@/src/service/filing/findLatestFilings';
 
 export default function Page() {
   //TODO : Change the userId to the actual userId
@@ -30,6 +31,11 @@ export default function Page() {
   const [projectsWithLastOpenData, setProjectsWithLastOpenData] = useState<
     ProjectWithLastOpen[]
   >([]);
+
+  const [fetchLatestFilings, setFetchLatestFilings] = useState<FilingType[]>(
+    [],
+  );
+  const [latestFilings, setLatestFilings] = useState<FilingType[]>([]);
   const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
     [],
   );
@@ -37,58 +43,73 @@ export default function Page() {
     const fetchData = async () => {
       try {
         const userId = await getUserId();
-        const [filingsData, projectsData, filingsDataWithLastOpen] =
-          await Promise.all([
-            getFilingsByUserId(userId),
-            getProjectsByUserId(userId),
-            findUserFilingOrderByLastOpen(userId),
-          ]);
+        const [
+          filingsData,
+          projectsData,
+          filingsDataWithLastOpen,
+          latestFilings,
+        ] = await Promise.all([
+          getFilingsByUserId(userId),
+          getProjectsByUserId(userId),
+          findUserFilingOrderByLastOpen(userId),
+          findLatestFilings(),
+        ]);
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);
         setFilingsWithLastOpen(filingsDataWithLastOpen);
+        setFetchLatestFilings(latestFilings);
       } catch (err) {
         console.error(err);
         setFilingsDataWithProject([]);
         setProjectsWithLastOpenData([]);
         setFilingsWithLastOpen([]);
+        setFetchLatestFilings([]);
       }
     };
 
     fetchData();
   }, []);
 
+  // TODO: Status ??
+  useEffect(() => {
+    if (isContinued) {
+      const filteredFilings = fetchLatestFilings.filter(
+        (filing) =>
+          filing.status !== FilingStatus.RETURNED &&
+          filing.status !== FilingStatus.APPROVED,
+      );
+      setLatestFilings(filteredFilings);
+    }
+    if (isReturned) {
+      const filteredFilings = fetchLatestFilings.filter(
+        (filing) => filing.status === FilingStatus.RETURNED,
+      );
+      setLatestFilings(filteredFilings);
+    }
+    if (isApproved) {
+      const filteredFilings = fetchLatestFilings.filter(
+        (filing) => filing.status === FilingStatus.APPROVED,
+      );
+      setLatestFilings(filteredFilings);
+    }
+  }, [isContinued, isReturned, isApproved]);
+
   const enableContinue = () => {
     setIsContinued(true);
     setIsReturned(false);
     setIsApproved(false);
-    const filteredFilings = filingsDataWithProject.filter(
-      (filing) =>
-        filing.status !== FilingStatus.RETURNED &&
-        filing.status !== FilingStatus.APPROVED,
-    );
-    setFilingsDataWithProject(filteredFilings);
   };
 
   const enableReturn = () => {
     setIsContinued(false);
     setIsReturned(true);
     setIsApproved(false);
-
-    const filteredFilings = filingsDataWithProject.filter(
-      (filing) => filing.status === FilingStatus.RETURNED,
-    );
-    setFilingsDataWithProject(filteredFilings);
   };
 
   const enableApprove = () => {
     setIsContinued(false);
     setIsReturned(false);
     setIsApproved(true);
-
-    const filteredFilings = filingsDataWithProject.filter(
-      (filing) => filing.status === FilingStatus.APPROVED,
-    );
-    setFilingsDataWithProject(filteredFilings);
   };
 
   const projectsData = projectsWithLastOpenData.map(
@@ -153,10 +174,8 @@ export default function Page() {
         <hr className="border-t-2 w-full" />
       </section>
       <section className="mt-5 shadow-lg rounded-xl">
-        {/* TODO: findLatestFilings & BUG */}
-        <StatusTable data={filingsDataWithProject} compact />
+        <StatusTable data={latestFilings} compact />
       </section>
-      {/* TODO: Modify to be Filings With Last Open */}
       <section className="w-full mt-12">
         <div className="flex items-center justify-between gap-3 h-10">
           <span className="flex items-center gap-2 w-0 grow">

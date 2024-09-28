@@ -80,9 +80,10 @@ export default function LastestPanel({
               {sortedFilings.map((project) => (
                 <LatestItem
                   key={project.filing.id}
-                  projectId={project.filing.id}
+                  projectId={project.filing.projectId}
                   projectCode={project.filing.FilingCode}
                   projectName={project.filing.name}
+                  filingId={project.filing.id}
                 />
               ))}
             </div>

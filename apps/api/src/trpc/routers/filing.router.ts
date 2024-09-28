@@ -106,5 +106,9 @@ export class FilingRouter {
       .query(({ input }) => {
         return this.filingService.findFilingsForSearchBar(input.input);
       }),
+
+    findLatestFilings: this.trpcService.trpc.procedure.query(() => {
+      return this.filingService.findLatestFilings();
+    }),
   });
 }

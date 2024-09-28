@@ -266,4 +266,13 @@ export class FilingService {
         throw new Error('Failed to update filing status');
       });
   }
+
+  async findLatestFilings() {
+    const filings = await this.filingRepository
+      .createQueryBuilder('filing')
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+    return filings;
+  }
 }
