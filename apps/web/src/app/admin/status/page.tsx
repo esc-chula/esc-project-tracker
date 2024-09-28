@@ -38,7 +38,7 @@ export default function Page() {
 
   return (
     <>
-      <main className="w-full pt-[68px] overflow-y-hidden">
+      <main className="w-full pt-[68px] overflow-y-auto">
         <div className="pl-15 pr-5 pb-5">
           <Header>
             <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>

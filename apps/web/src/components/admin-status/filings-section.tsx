@@ -7,7 +7,7 @@ export default function FilingsSection() {
   const [selectedFilingId, setSelectedFilingId] = useState<string>('');
 
   return (
-    <div className="h-full pl-15 overflow flex flex-row">
+    <div className="pl-15 overflow flex flex-row">
       <FilingTab
         sentSelectedFilingIdToParent={(id: string) => setSelectedFilingId(id)}
       />

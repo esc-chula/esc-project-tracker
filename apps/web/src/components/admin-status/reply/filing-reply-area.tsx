@@ -10,7 +10,7 @@ import FilingReplyHeader from './filing-reply-header';
 import FilingReplyDetail from './filing-reply-detail';
 import { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
-import FilingReplyButtons from './filing-reply-buttons';
+import FilingReplyComment from './filing-reply-comment';
 export default function FilingReplyArea({
   selectedFilingId,
 }: {
@@ -53,20 +53,6 @@ export default function FilingReplyArea({
       }
     };
 
-    const fetchOwnerDetail = async () => {
-      try {
-        const data = await findUserByUserId(filingDetail?.userId || '');
-        setOwnerDetail(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          toast({
-            title: 'ดึงข้อมูลเจ้าของเอกสาร ' + filingDetail?.id + ' ไม่สำเร็จ',
-            description: err.message,
-            isError: true,
-          });
-        }
-      }
-    };
     if (selectedFilingId !== '') {
       fetchFilingDetail();
       fetchLatestDocument();
@@ -94,7 +80,7 @@ export default function FilingReplyArea({
   }, [filingDetail]);
 
   return (
-    <div className="h-[80vh] w-[50vw] pl-15 overflow flex justify-center">
+    <div className="min-h-full w-[50vw] pl-15 overflow flex justify-center overflow-hidden">
       {selectedFilingId === '' ? (
         <div className="h-full items-center flex flex-col justify-center text-3xl text-gray-300 space-y-2">
           <FaFolderOpen size={100} />
@@ -103,7 +89,7 @@ export default function FilingReplyArea({
           </div>
         </div>
       ) : (
-        <div className="flex w-full flex-col space-y-4 pt-4">
+        <div className="flex w-full flex-col space-y-4 py-4">
           <FilingReplyHeader
             projectId={filingDetail?.projectId || ''}
             filingId={selectedFilingId}
@@ -116,7 +102,8 @@ export default function FilingReplyArea({
             filing={filingDetail}
             owner={ownerDetail?.username || 'Secretary ESC'}
           />
-          <FilingReplyButtons />
+          {/* <FilingReplyButtons /> */}
+          <FilingReplyComment />
         </div>
       )}
     </div>
