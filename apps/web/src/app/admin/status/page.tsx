@@ -9,7 +9,7 @@ import { FilingType } from '@/src/interface/filing';
 import { useToast } from '@/src/components/ui/use-toast';
 import { useEffect, useState } from 'react';
 import FilingsSection from '@/src/components/admin-status/filings-section';
-import FilingReplyArea from '@/src/components/admin-status/filing-reply-area';
+import FilingReplyArea from '@/src/components/admin-status/reply/filing-reply-area';
 
 export default function Page() {
   // TODO: Change the userId to the actual userId

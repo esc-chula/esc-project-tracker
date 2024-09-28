@@ -3,20 +3,24 @@ import { FilingType } from '@/src/interface/filing';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import { useEffect, useState } from 'react';
 import { FaFile } from 'react-icons/fa';
-import { toast } from '../ui/use-toast';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 import { DocumentType } from '@/src/interface/document';
 import { formatDate } from '@/src/lib/formateDate';
-import FileDisplay from '../filling-detail/display/fileDisplay';
+import { toast } from '../../ui/use-toast';
+import FileDisplay from '../../filling-detail/display/fileDisplay';
 
 export default function FilingTabShowDetail({
   filing,
   isContinue,
   sentSelectedFilingIdToParent,
+  isActive,
+  setActiveFiling,
 }: {
   filing: FilingType;
   isContinue?: boolean;
   sentSelectedFilingIdToParent?: (id: string) => void;
+  isActive: boolean;
+  setActiveFiling: (id: string) => void;
 }) {
   const [projectName, setProjectName] = useState<string | undefined>(undefined);
   const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
@@ -60,10 +64,13 @@ export default function FilingTabShowDetail({
 
   return (
     <div
-      className={`w-full p-2 border-y-lightgray border-y-2 px-4 space-y-2 ${isContinue ? 'hover:bg-lightgray' : ''}`}
+      className={`w-full p-2 border-y-lightgray border-y-2 px-4 space-y-2 ${isContinue ? 'hover:bg-orange-50' : ''} ${
+        isActive ? 'bg-orange-50' : ''
+      }`}
       onClick={() => {
         if (isContinue) {
           sentSelectedFilingIdToParent?.(filing.id);
+          setActiveFiling(filing.id);
         }
       }}
     >

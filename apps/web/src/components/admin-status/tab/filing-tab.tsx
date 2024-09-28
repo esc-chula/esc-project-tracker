@@ -1,10 +1,10 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
-import SearchPanel from '../all-projects/searchPanel';
+import SearchPanel from '../../all-projects/searchPanel';
 import { FilingType } from '@/src/interface/filing';
 import { Project } from '@/src/interface/project';
 import RecentlyFiling from './recently-filing';
-import SelectType from '../filter/selectType';
+import SelectType from '../../filter/selectType';
 import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';

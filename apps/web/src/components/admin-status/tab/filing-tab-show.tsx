@@ -34,6 +34,8 @@ export default function FilingTabShow({
           filing={filing}
           isContinue={isContinue}
           sentSelectedFilingIdToParent={setSelectedFilingId}
+          isActive={selectedFilingId === filing.id}
+          setActiveFiling={setSelectedFilingId}
         />
       ))}
     </div>

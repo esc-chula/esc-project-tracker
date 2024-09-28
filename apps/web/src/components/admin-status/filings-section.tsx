@@ -1,6 +1,6 @@
 'use client';
-import FilingTab from './filing-tab';
-import FilingReplyArea from './filing-reply-area';
+import FilingTab from './tab/filing-tab';
+import FilingReplyArea from './reply/filing-reply-area';
 import { useState } from 'react';
 
 export default function FilingsSection() {
