@@ -1,9 +1,9 @@
-import { Folders } from 'lucide-react';
-import Header from '../../../components/header/header';
-import Title from '@/src/components/header/title';
-import MyProjectData from '@/src/components/project/myProjectData';
+import { Folders } from "lucide-react";
+import Header from "../../../components/header/header";
+import Title from "@/src/components/header/title";
+import MyProjectData from "@/src/components/project/myProjectData";
 
-export default async function Page() {
+export default function Page() {
   return (
     <>
       <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh]">
