@@ -9,17 +9,20 @@ import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
 import { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
-import LastestPanel from '@/src/components/project/latestPanel';
+import LatestPanel from '@/src/components/project/latestPanel';
 import { useEffect, useState } from 'react';
 import { getUserId } from '@/src/service/auth';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import { UserFiling } from '@/src/interface/user-filing';
-import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
+import findUserFilingOrderByLastOpen from '@/src/service/filing/findUserFilingOrderByLastOpen';
 import findLatestFilings from '@/src/service/filing/findLatestFilings';
+import { toast, useToast } from '@/src/components/ui/use-toast';
 
 export default function Page() {
   //TODO : Change the userId to the actual userId
+
+  const { toast } = useToast();
 
   const [isContinued, setIsContinued] = useState(true);
   const [isReturned, setIsReturned] = useState(false);
@@ -32,11 +35,9 @@ export default function Page() {
     ProjectWithLastOpen[]
   >([]);
 
-  const [fetchLatestFilings, setFetchLatestFilings] = useState<FilingType[]>(
-    [],
-  );
+  const [filingsRawData, setFilingsRawData] = useState<FilingType[]>([]);
   const [latestFilings, setLatestFilings] = useState<FilingType[]>([]);
-  const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
+  const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<FilingType[]>(
     [],
   );
   useEffect(() => {
@@ -57,58 +58,49 @@ export default function Page() {
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);
         setFilingsWithLastOpen(filingsDataWithLastOpen);
-        setFetchLatestFilings(latestFilings);
+        setFilingsRawData(latestFilings);
       } catch (err) {
-        console.error(err);
-        setFilingsDataWithProject([]);
-        setProjectsWithLastOpenData([]);
-        setFilingsWithLastOpen([]);
-        setFetchLatestFilings([]);
+        if (err instanceof Error) {
+          toast({
+            title: 'ไม่สำเร็จ',
+            description: err.message,
+            isError: true,
+          });
+        }
       }
     };
 
     fetchData();
   }, []);
 
-  // TODO: Status ??
-  useEffect(() => {
-    if (isContinued) {
-      const filteredFilings = fetchLatestFilings.filter(
-        (filing) =>
-          filing.status === FilingStatus.WAIT_FOR_SECRETARY
-      );
-      setLatestFilings(filteredFilings);
-    }
-    if (isReturned) {
-      const filteredFilings = fetchLatestFilings.filter(
-        (filing) => filing.status === FilingStatus.RETURNED,
-      );
-      setLatestFilings(filteredFilings);
-    }
-    if (isApproved) {
-      const filteredFilings = fetchLatestFilings.filter(
-        (filing) => filing.status === FilingStatus.APPROVED,
-      );
-      setLatestFilings(filteredFilings);
-    }
-  }, [isContinued, isReturned, isApproved]);
-
   const enableContinue = () => {
     setIsContinued(true);
     setIsReturned(false);
     setIsApproved(false);
+    const filteredFilings = filingsRawData.filter(
+      (filing) => filing.status === FilingStatus.WAIT_FOR_SECRETARY,
+    );
+    setLatestFilings(filteredFilings);
   };
 
   const enableReturn = () => {
     setIsContinued(false);
     setIsReturned(true);
     setIsApproved(false);
+    const filteredFilings = filingsRawData.filter(
+      (filing) => filing.status === FilingStatus.RETURNED,
+    );
+    setLatestFilings(filteredFilings);
   };
 
   const enableApprove = () => {
     setIsContinued(false);
     setIsReturned(false);
     setIsApproved(true);
+    const filteredFilings = filingsRawData.filter(
+      (filing) => filing.status === FilingStatus.APPROVED,
+    );
+    setLatestFilings(filteredFilings);
   };
 
   const projectsData = projectsWithLastOpenData.map(
@@ -181,7 +173,6 @@ export default function Page() {
             <FileSearch className="w-5 h-5 shrink-0" />
             <div className="font-bold">การตรวจสอบล่าสุด</div>
           </span>
-          {/* TODO: This still link to projects */}
           <Link href="/admin/projects">
             <Button variant="link">
               <span className="flex items-center gap-1">
@@ -193,7 +184,7 @@ export default function Page() {
         </div>
       </section>
       <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <LastestPanel filingsWithLastOpen={filingsWithLastOpen} compact />
+        <LatestPanel filingsWithLastOpen={filingsWithLastOpen} compact />
       </section>
     </main>
   );

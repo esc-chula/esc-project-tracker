@@ -268,11 +268,56 @@ export class FilingService {
   }
 
   async findLatestFilings() {
-    const filings = await this.filingRepository
+    const approvedFilings = await this.filingRepository
       .createQueryBuilder('filing')
+      .where('filing.status = :status', { status: FilingStatus.APPROVED })
       .orderBy('filing.updatedAt', 'DESC')
       .limit(3)
       .getMany();
-    return filings;
+
+    const returnedFilings = await this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', { status: FilingStatus.RETURNED })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const pendingFilings = await this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', {
+        status: FilingStatus.WAIT_FOR_SECRETARY,
+      })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const filings = await Promise.all([
+      approvedFilings,
+      returnedFilings,
+      pendingFilings,
+    ]);
+    return filings.flat();
+  }
+
+  async findUserFilingOrderByLastOpen(
+    userId: string,
+    limit?: number,
+  ): Promise<Filing[]> {
+    if (!isUUID(userId)) {
+      throw new BadRequestException('Id is not in UUID format');
+    }
+
+    const userFilings = this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.userId = :userId', { userId })
+      .orderBy('filing.lastOpen', 'DESC')
+      .limit(limit || 20)
+      .getMany()
+      .catch((error) => {
+        console.error(error);
+        throw new BadRequestException('Error when getting user filing');
+      });
+
+    return userFilings;
   }
 }

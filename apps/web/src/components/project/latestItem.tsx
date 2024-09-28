@@ -6,19 +6,21 @@ export default function LatestItem({
   projectCode,
   projectName,
   filingId,
+  isAdmin = false,
 }: {
   projectId: string;
   projectCode: string;
   projectName: string;
   filingId?: string;
+  isAdmin?: boolean;
 }) {
   const router = useRouter();
   return (
     <div
       className="bg-card text-card-foreground rounded-md flex flex-row py-1 px-8 space-x-5 border-2 border-black hover:cursor-pointer hover:scale-105 duration-200"
       onClick={() => {
-        if (filingId) {
-          router.push(`/project/${projectId}/${filingId}`);
+        if (isAdmin) {
+          router.push(`/admin/project/${projectId}/${filingId}`);
         } else router.push(`/project/${projectId}`);
       }}
     >

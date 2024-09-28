@@ -6,13 +6,14 @@ import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { useEffect, useState } from 'react';
 import { UserFiling } from '@/src/interface/user-filing';
 import { set } from 'zod';
+import { FilingType } from '@/src/interface/filing';
 
-export default function LastestPanel({
+export default function LatestPanel({
   filingsWithLastOpen,
   projectsWithLastOpen,
   compact = false,
 }: {
-  filingsWithLastOpen?: UserFiling[];
+  filingsWithLastOpen?: FilingType[];
   projectsWithLastOpen?: ProjectWithLastOpen[];
   compact?: boolean;
 }) {
@@ -25,7 +26,7 @@ export default function LastestPanel({
     [],
   );
 
-  const [sortedFilings, setSortedFilings] = useState<UserFiling[]>([]);
+  const [sortedFilings, setSortedFilings] = useState<FilingType[]>([]);
 
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
@@ -45,10 +46,10 @@ export default function LastestPanel({
     if (filingsWithLastOpen) {
       setIsProject(false);
       const newSortedFilings = filingsWithLastOpen
-        .filter((filing) => filing.lastOpen !== null)
+        .filter((filing) => filing.updatedAt !== null)
         .sort(
           (a, b) =>
-            new Date(b.lastOpen).getTime() - new Date(a.lastOpen).getTime(),
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
         );
 
       setSortedFilings(newSortedFilings);
@@ -77,13 +78,13 @@ export default function LastestPanel({
             </div>
           ) : (
             <div className="flex space-x-8">
-              {sortedFilings.map((project) => (
+              {sortedFilings.map((filing) => (
                 <LatestItem
-                  key={project.filing.id}
-                  projectId={project.filing.projectId}
-                  projectCode={project.filing.FilingCode}
-                  projectName={project.filing.name}
-                  filingId={project.filing.id}
+                  key={filing.id}
+                  projectId={filing.projectId}
+                  projectCode={filing.FilingCode}
+                  projectName={filing.name}
+                  filingId={filing.id}
                 />
               ))}
             </div>

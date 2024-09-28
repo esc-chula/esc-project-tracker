@@ -3,6 +3,7 @@ import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
 import { FilingStatus } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
+import { find } from 'rxjs';
 
 @Injectable()
 export class FilingRouter {
@@ -110,5 +111,11 @@ export class FilingRouter {
     findLatestFilings: this.trpcService.trpc.procedure.query(() => {
       return this.filingService.findLatestFilings();
     }),
+
+    findUserFilingOrderByLastOpen: this.trpcService.trpc.procedure
+      .input(z.object({ userId: z.string(), limit: z.number().optional() }))
+      .query(({ input }) => {
+        return this.filingService.findUserFilingOrderByLastOpen(input.userId, input.limit);
+      }),
   });
 }
