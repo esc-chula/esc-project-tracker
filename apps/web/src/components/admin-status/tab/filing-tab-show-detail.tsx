@@ -23,6 +23,7 @@ export default function FilingTabShowDetail({
   setActiveFiling: (id: string) => void;
 }) {
   const [projectName, setProjectName] = useState<string | undefined>(undefined);
+  const [projectId, setProjectId] = useState<string | undefined>(undefined);
   const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
     null,
   );
@@ -31,7 +32,8 @@ export default function FilingTabShowDetail({
     const fetchProjectName = async () => {
       try {
         const project = await getProjectByProjectId(filing.projectId);
-        setProjectName(project?.name);
+        setProjectName(project?.name || '');
+        setProjectId(project?.id || '');
       } catch (error) {
         if (error instanceof Error) {
           toast({
@@ -92,7 +94,11 @@ export default function FilingTabShowDetail({
         </div>
       </div>
 
-      <FileDisplay fileName={latestDocument?.pdfName || ''} fileType="pdf" />
+      <FileDisplay
+        fileName={latestDocument?.pdfName || ''}
+        fileType="pdf"
+        folderName={`${projectId}/${filing.id}`}
+      />
     </div>
   );
 }

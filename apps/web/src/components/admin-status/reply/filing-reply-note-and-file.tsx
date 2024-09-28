@@ -3,8 +3,12 @@ import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
 
 export default function FilingReplyNoteAndFile({
+  projectId,
+  filingId,
   latestDocument,
 }: {
+  projectId: string;
+  filingId: string;
   latestDocument: DocumentType | null;
 }) {
   return (
@@ -22,11 +26,13 @@ export default function FilingReplyNoteAndFile({
                 <FileDisplay
                   fileName={latestDocument?.docName || ''}
                   fileType="doc"
+                  folderName={`${projectId}/${filingId}`}
                 />
               )}
             <FileDisplay
               fileName={latestDocument?.pdfName || ''}
               fileType="pdf"
+              folderName={`${projectId}/${filingId}`}
             />
           </div>
         </div>

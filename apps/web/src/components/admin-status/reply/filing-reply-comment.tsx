@@ -39,10 +39,11 @@ export default function FilingReplyComment({
   projectId: string;
   setShowComment: (value: boolean) => void;
 }) {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [pdfName, setPdfName] = useState<string>('');
   const [comment, setComment] = useState<string>('');
+  const [lastestReplyDocumentId, setLastestReplyDocumentId] =
+    useState<string>('');
 
   useEffect(() => {
     const fetchLatestReplyDocument = async () => {
@@ -53,6 +54,7 @@ export default function FilingReplyComment({
           setIsSubmitted(true);
           setPdfName(docs?.pdfName || '');
           setComment(docs?.comment || '');
+          setLastestReplyDocumentId(docs?.id || '');
         }
       } catch (error) {
         console.error(error);
@@ -112,9 +114,9 @@ export default function FilingReplyComment({
           comment: values.comment,
         },
       });
-      //afterCreateDocument(newDocument);
       setPdfName(newDocument.pdfName);
       setComment(newDocument.comment);
+      setLastestReplyDocumentId(newDocument.id);
       setIsSubmitted(true);
 
       toast({
@@ -139,11 +141,18 @@ export default function FilingReplyComment({
           <IoReturnUpBack className="h-8 w-8 mr-2 inline-block" />
           ตอบกลับ
         </div>
-        <ReviewSubmitButton isSubmitted={isSubmitted} />
+        <ReviewSubmitButton
+          isSubmitted={isSubmitted}
+          latestReplyDocumentId={lastestReplyDocumentId}
+        />
       </div>
 
       {isSubmitted ? (
-        <FilingReplyAfterSubmit pdfName={pdfName} comment={comment} />
+        <FilingReplyAfterSubmit
+          pdfName={pdfName}
+          comment={comment}
+          folderName={`${projectId}/${filingId}`}
+        />
       ) : (
         <Form {...form}>
           <form

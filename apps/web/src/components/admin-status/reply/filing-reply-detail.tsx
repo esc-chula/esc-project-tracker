@@ -7,11 +7,13 @@ import NameDateStatus from './name-date-status';
 import FilingReplyNoteAndFile from './filing-reply-note-and-file';
 
 export default function FilingReplyDetail({
-  filing,
+  projectId,
+  filingId,
   latestDocument,
   owner,
 }: {
-  filing: FilingType | null;
+  projectId: string;
+  filingId: string;
   latestDocument: DocumentType | null;
   owner: string;
 }) {
@@ -24,7 +26,11 @@ export default function FilingReplyDetail({
       >
         <Image src="/icons/esc-red.svg" width={30} height={30} alt="esc-icon" />
       </NameDateStatus>
-      <FilingReplyNoteAndFile latestDocument={latestDocument} />
+      <FilingReplyNoteAndFile
+        latestDocument={latestDocument}
+        projectId={projectId}
+        filingId={filingId}
+      />
     </div>
   );
 }

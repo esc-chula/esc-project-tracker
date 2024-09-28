@@ -16,19 +16,55 @@ import {
   SelectTrigger,
 } from '../../ui/select';
 import { useEffect, useState } from 'react';
+import reviewSubmission from '@/src/service/document/reviewSubmission';
+import { toast } from '../../ui/use-toast';
 
 export default function ReviewSubmitButton({
   isSubmitted,
+  latestReplyDocumentId,
 }: {
   isSubmitted: boolean;
+  latestReplyDocumentId: string;
 }) {
   const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
     setIsDisabled(!isSubmitted);
-  }, [isSubmitted]);
+    if (isSubmitting) {
+      setIsDisabled(true);
+    }
+  }, [isSubmitted, isSubmitting]);
+
+  const reviewDocument = async () => {
+    setIsSubmitting(true);
+    try {
+      const updatedStatus = reviewButton === 'อนุมัติ';
+
+      console.log('latestReplyDocumentId', latestReplyDocumentId);
+      await reviewSubmission({
+        id: latestReplyDocumentId,
+        updatedStatus,
+      });
+
+      toast({
+        title: 'ตอบกลับเอกสารสำเร็จ',
+        description: `${reviewButton}เอกสารสำเร็จ`,
+        isError: false,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: 'ตอบกลับเอกสารไม่สำเร็จ',
+          description: error.message,
+          isError: true,
+        });
+      }
+    }
+    setIsSubmitting(false);
+  };
 
   return (
     <div className="flex">
@@ -61,10 +97,9 @@ export default function ReviewSubmitButton({
               <DialogClose
                 className=" disabled:bg-disabled bg-red text-white rounded-lg p-2 px-4 font-bold text-2xl mt-4"
                 onClick={() => {
-                  /* reviewDocument(); */
+                  reviewDocument();
                 }}
-                /*                 disabled={isSubmitting}
-                 */
+                disabled={isSubmitting}
               >
                 ยืนยัน
               </DialogClose>

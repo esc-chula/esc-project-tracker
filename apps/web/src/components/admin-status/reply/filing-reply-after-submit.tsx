@@ -1,4 +1,3 @@
-import { DocumentType } from '@/src/interface/document';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
 
@@ -20,8 +19,7 @@ export default function FilingReplyAfterSubmit({
             <FileDisplay
               fileName={pdfName}
               fileType="pdf"
-              /*               folderName={folderName}
-               */
+              folderName={folderName}
             />
           ) : (
             <div className="text-sm">ไม่มีไฟล์แนบ</div>

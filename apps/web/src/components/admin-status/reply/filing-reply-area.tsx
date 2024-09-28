@@ -102,7 +102,8 @@ export default function FilingReplyArea({
           />
           <FilingReplyDetail
             latestDocument={latestDocument}
-            filing={filingDetail}
+            projectId={filingDetail?.projectId || ''}
+            filingId={selectedFilingId}
             owner={ownerDetail?.username || 'Secretary ESC'}
           />
           {isShowComment ? (
