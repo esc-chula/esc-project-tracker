@@ -21,8 +21,10 @@ import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
 import { FilingType } from '@/src/interface/filing';
 import { DocumentType } from '@/src/interface/document';
-import { DocumentActivity } from '@/src/constant/enum';
+import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
 import ReviewSubmitButton from './review-submit-button';
+import FilingReplyAfterSubmit from './filing-reply-after-submit';
+import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
 
 export default function FilingReplyComment({
   filingId,
@@ -39,6 +41,25 @@ export default function FilingReplyComment({
 }) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [pdfName, setPdfName] = useState<string>('');
+  const [comment, setComment] = useState<string>('');
+
+  useEffect(() => {
+    const fetchLatestReplyDocument = async () => {
+      try {
+        const docs = await findLatestReplyDocumentByFilingId(filingId);
+        console.log('latest reply doc', docs);
+        if (docs) {
+          setIsSubmitted(true);
+          setPdfName(docs?.pdfName || '');
+          setComment(docs?.comment || '');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchLatestReplyDocument();
+  }, [filingId]);
 
   const createdFormSchema = z.object({
     file: zodDocumentAdminFile.optional(),
@@ -83,7 +104,8 @@ export default function FilingReplyComment({
           filingId,
           pdfName: fileName,
           docName: '',
-          activity: latestDocument?.activity || DocumentActivity.REPLY,
+          activity: DocumentActivity.REPLY,
+          status: DocumentStatus.DRAFT,
           // TODO change to actual userId
           userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
           detail: latestDocument?.detail || '',
@@ -91,6 +113,8 @@ export default function FilingReplyComment({
         },
       });
       //afterCreateDocument(newDocument);
+      setPdfName(newDocument.pdfName);
+      setComment(newDocument.comment);
       setIsSubmitted(true);
 
       toast({
@@ -118,57 +142,64 @@ export default function FilingReplyComment({
         <ReviewSubmitButton isSubmitted={isSubmitted} />
       </div>
 
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="bg-lightgray rounded-xl font-sukhumvit w-full px-5 pt-5 pb-3 flex text-start flex-col space-y-3"
-        >
-          <div className="flex flex-row justify-between">
-            <div className="w-[45%] justify-between space-x-5">
-              <FormField
-                control={form.control}
-                name="comment"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel className="font-bold text-sm block">
-                      ความคิดเห็น
-                    </FormLabel>
-                    <FormControl>
-                      <textarea
-                        placeholder="เพิ่มความคิดเห็น"
-                        {...field}
-                        className="border-2 rounded-lg p-4 w-full h-[20vh] resize-none"
+      {isSubmitted ? (
+        <FilingReplyAfterSubmit pdfName={pdfName} comment={comment} />
+      ) : (
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="bg-lightgray rounded-xl font-sukhumvit w-full px-5 pt-5 pb-3 flex text-start flex-col space-y-3"
+          >
+            <div className="flex flex-row justify-between">
+              <div className="w-[45%] justify-between space-x-5">
+                <FormField
+                  control={form.control}
+                  name="comment"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="font-bold text-sm block">
+                        ความคิดเห็น
+                      </FormLabel>
+                      <FormControl>
+                        <textarea
+                          placeholder="เพิ่มความคิดเห็น"
+                          {...field}
+                          className="border-2 rounded-lg p-4 w-full h-[20vh] resize-none"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-[45%]">
+                <FormField
+                  control={form.control}
+                  name="file"
+                  render={({ field }) => (
+                    <FormItem className="h-full flex flex-col">
+                      <FormLabel className="font-bold text-sm ">
+                        อัปโหลดเอกสาร
+                      </FormLabel>
+                      <FileInputPanel
+                        fileRef={fileRef}
+                        fileList={field.value}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <div>
+              <ButtonPanel
+                isDisabled={form.formState.isSubmitting}
+                setShowCreateDocument={setShowComment}
               />
             </div>
-            <div className="w-[45%]">
-              <FormField
-                control={form.control}
-                name="file"
-                render={({ field }) => (
-                  <FormItem className="h-full flex flex-col">
-                    <FormLabel className="font-bold text-sm ">
-                      อัปโหลดเอกสาร
-                    </FormLabel>
-                    <FileInputPanel fileRef={fileRef} fileList={field.value} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div>
-            <ButtonPanel
-              isDisabled={form.formState.isSubmitting}
-              setShowCreateDocument={setShowComment}
-            />
-          </div>
-        </form>
-      </Form>
+          </form>
+        </Form>
+      )}
     </div>
   );
 }

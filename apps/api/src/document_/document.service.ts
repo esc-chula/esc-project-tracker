@@ -94,6 +94,21 @@ export class DocumentService {
     return data;
   }
 
+  async findLatestReplyDocumentByFilingId(
+    filingId: string,
+  ): Promise<Document | null> {
+    const data = await this.documentRepository.findOne({
+      where: {
+        filing: { id: filingId },
+        activity: DocumentActivity.REPLY,
+        status: DocumentStatus.DRAFT,
+      },
+      order: { createdAt: 'DESC' },
+    });
+
+    return data;
+  }
+
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
     const {
       filingId,
