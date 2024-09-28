@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LoaderCircle } from 'lucide-react';
-import { signIn } from '@/src/service/auth';
 
 export default function Auth({
   searchParams,
@@ -17,13 +16,29 @@ export default function Auth({
   const token = searchParams.token;
 
   useEffect(() => {
-    signIn(token)
-      .then(() => {
-        router.push('/home');
+    async function signIn() {
+      await fetch('http://localhost:3000/api/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token,
+        }),
       })
-      .catch(() => {
-        router.push('/login');
-      });
+        .then((res) => {
+          if (res.status !== 200) {
+            router.push('/login');
+          }
+          router.push('/home');
+        })
+        .catch((err) => {
+          console.error('Error signing in: ', err);
+          router.push('/login');
+        });
+    }
+
+    signIn();
   }, [token, router]);
 
   return (

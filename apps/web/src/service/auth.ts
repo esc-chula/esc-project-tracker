@@ -11,18 +11,19 @@ export async function setCookies(
   refreshToken: string,
 ): Promise<void> {
   try {
-    const response = await fetch('http://localhost:3000/api/set-cookies', {
-      method: 'POST',
-      headers: {
-        'X-New-Access-Token': accessToken,
-        'X-New-Refresh-Token': refreshToken,
-      },
+    const cookieStore = cookies();
+
+    cookieStore.set('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
     });
 
-    if (!response.ok) {
-      console.error('Error updating cookies', response.statusText);
-      throw new Error(authErrors.setCookiesError);
-    }
+    cookieStore.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
   } catch (err) {
     console.error(err);
     throw new Error(authErrors.setCookiesError);
@@ -34,16 +35,6 @@ export async function getCookies(): Promise<{
   refreshToken: string;
 }> {
   try {
-    // const response = await fetch('http://localhost:3000/api/get-cookies', {
-    //   method: 'GET',
-    // });
-
-    // if (!response.ok) {
-    //   console.error('Error getting cookies', response.statusText);
-    //   throw new Error(authErrors.getCookiesError);
-    // }
-
-    // return await response.json();
     const cookieStore = cookies();
 
     const accessToken = cookieStore.get('accessToken')?.value;
@@ -74,11 +65,13 @@ export async function signIn(token: string): Promise<Tokens> {
   cookieStore.set('accessToken', data.accessToken, {
     httpOnly: true,
     secure: true,
+    sameSite: 'strict',
   });
 
   cookieStore.set('refreshToken', data.refreshToken, {
     httpOnly: true,
     secure: true,
+    sameSite: 'strict',
   });
 
   return data;
