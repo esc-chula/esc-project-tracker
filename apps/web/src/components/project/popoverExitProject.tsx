@@ -1,11 +1,10 @@
 'use client';
-import { LogOut } from 'lucide-react';
 
+import { LogOut } from 'lucide-react';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
 import { IoIosAlert } from 'react-icons/io';
@@ -21,7 +20,7 @@ export default function PopoverExitProject({
   projectId: string;
   userId: string;
   projectCode: string;
-  deletedParentFunc: (deleted: boolean) => void;
+  deletedParentFunc: () => void;
 }) {
   const handleLeaveProject = async () => {
     try {
@@ -30,9 +29,8 @@ export default function PopoverExitProject({
         toast({
           title: 'สำเร็จ',
           description: `ออกจากโปรเจค ${projectCode} เรียบร้อย`,
-          isError: false,
         });
-        deletedParentFunc(true);
+        deletedParentFunc();
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -54,9 +52,6 @@ export default function PopoverExitProject({
       </DialogTrigger>
 
       <DialogContent className="w-96">
-        <DialogHeader>
-          <DialogTitle></DialogTitle>
-        </DialogHeader>
         <div className="bg-white rounded-lg space-y-4">
           <div className="flex justify-center">
             <IoIosAlert size={100} className=" text-red" />
@@ -64,13 +59,15 @@ export default function PopoverExitProject({
           <div className="text-center font-sukhumvit font-bold text-xl">
             ยืนยันการออกจากโครงการ
           </div>
-          <div className="text-center ">
-            <button
-              className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
-              onClick={handleLeaveProject}
-            >
-              ยืนยัน
-            </button>
+          <div className="text-center">
+            <DialogClose>
+              <button
+                className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
+                onClick={handleLeaveProject}
+              >
+                ยืนยัน
+              </button>
+            </DialogClose>
           </div>
         </div>
       </DialogContent>

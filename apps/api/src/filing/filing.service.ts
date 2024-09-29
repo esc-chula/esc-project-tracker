@@ -182,15 +182,15 @@ export class FilingService {
       return [];
     }
 
-    const filingPromises = projects.map((projectWithLastOpen) =>
-      this.findByProjectID(projectWithLastOpen.project.id),
+    const filingPromises = projects.map((project) =>
+      this.findByProjectID(project.id),
     );
     const filingsArrays = await Promise.all(filingPromises);
 
-    const filingsArraysWithProject = [];
+    const filingsArraysWithProject: Filing[][] = [];
     for (let i = 0; i < filingsArrays.length; i++) {
-      const project = projects[i].project;
-      const filingsWithProject = [];
+      const project = projects[i];
+      const filingsWithProject: Filing[] = [];
       for (let j = 0; j < filingsArrays[i].length; j++) {
         const filingWithProject = {
           ...filingsArrays[i][j],
@@ -265,5 +265,37 @@ export class FilingService {
         console.error(error);
         throw new Error('Failed to update filing status');
       });
+  }
+
+  async findLatestFilings() {
+    const approvedFilings = this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', { status: FilingStatus.APPROVED })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const returnedFilings = this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', { status: FilingStatus.RETURNED })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const pendingFilings = this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', {
+        status: FilingStatus.WAIT_FOR_SECRETARY,
+      })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const filings = await Promise.all([
+      approvedFilings,
+      returnedFilings,
+      pendingFilings,
+    ]);
+    return filings.flat();
   }
 }

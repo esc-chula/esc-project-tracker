@@ -1,6 +1,5 @@
 import { FilingType } from '@/src/interface/filing';
 import SearchBar from '../searchbar/searchBar';
-import AddNewProjectButton from './addNewProjectButton';
 import { Project } from '@/src/interface/project';
 
 export default function SearchPanel({
@@ -8,23 +7,23 @@ export default function SearchPanel({
   projects,
   placeHolder,
   projectFunc,
-  FilingFunc,
+  filingFunc,
   clearFunc,
 }: {
   filings?: FilingType[];
   projects?: Project[];
   placeHolder: string;
-  projectFunc?: (project: Project | FilingType) => void;
-  FilingFunc?: (Filing: FilingType | Project) => void;
+  projectFunc?: (project: Project) => void;
+  filingFunc?: (filing: FilingType) => void;
   clearFunc?: () => void;
 }) {
   return (
     <div className="flex-grow">
       <SearchBar
-        Filings={filings || []}
+        filings={filings || []}
         projects={projects || []}
         placeholder={placeHolder}
-        FilingFunc={FilingFunc}
+        filingFunc={filingFunc}
         projectFunc={projectFunc}
         clearFunc={clearFunc}
       />
