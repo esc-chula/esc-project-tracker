@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
 import { UserProjService } from '../../user-proj/user-proj.service';
+import { ProjectService } from '../../project_/project_.service';
+import { TRPCError } from '@trpc/server';
 
 @Injectable()
 export class UserProjRouter {
   constructor(
     private readonly userProjService: UserProjService,
     private readonly trpcService: TrpcService,
+    private readonly projectService: ProjectService,
   ) {}
 
   appRouter = this.trpcService.router({
@@ -41,14 +44,24 @@ export class UserProjRouter {
       }),
 
     //Delete User Project (User leave Project)
-    deleteUserProject: this.trpcService.trpc.procedure
+    deleteUserProject: this.trpcService.protectedProcedure
       .input(
         z.object({
           userId: z.string(),
           projectId: z.string(),
         }),
       )
-      .query(({ input }) => {
+      .query(async ({ input, ctx }) => {
+        const project = await this.projectService.findByProjectID(
+          input.projectId,
+        );
+        if (project.ownerId === ctx.payload.sub) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Owner cannot leave project',
+          });
+        }
+
         return this.userProjService.deleteUserProject({
           obj: { userId: input.userId, projectId: input.projectId },
         });

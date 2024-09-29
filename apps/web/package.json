@@ -36,7 +36,7 @@
     "embla-carousel-react": "^8.3.0",
     "embla-carousel-wheel-gestures": "8.0.0-rc05",
     "lucide-react": "^0.378.0",
-    "next": "^14.2.12",
+    "next": "^14.2.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
@@ -47,12 +47,12 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^14.2.12",
+    "@next/eslint-plugin-next": "^14.2.13",
     "@repo/eslint-config": "workspace:*",
     "@repo/tailwind-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.16.5",
-    "@types/react": "^18.3.7",
+    "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
