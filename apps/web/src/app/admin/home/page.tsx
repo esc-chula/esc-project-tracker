@@ -17,13 +17,9 @@ import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import { UserFiling } from '@/src/interface/user-filing';
 import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
 import findLatestFilings from '@/src/service/filing/findLatestFilings';
-import { toast, useToast } from '@/src/components/ui/use-toast';
+import { toast } from '@/src/components/ui/use-toast';
 
 export default function Page() {
-  //TODO : Change the userId to the actual userId
-
-  const { toast } = useToast();
-
   const [isContinued, setIsContinued] = useState(true);
   const [isReturned, setIsReturned] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -60,6 +56,10 @@ export default function Page() {
         setProjectsWithLastOpenData(projectsData);
         setFilingsWithLastOpen(filingsDataWithLastOpen);
         setFilingsRawData(latestFilings);
+        const filteredFilings = latestFilings.filter(
+          (filing) => filing.status === FilingStatus.WAIT_FOR_SECRETARY,
+        );
+        setLatestFilings(filteredFilings);
       } catch (err) {
         if (err instanceof Error) {
           toast({
@@ -72,7 +72,6 @@ export default function Page() {
     };
 
     fetchData();
-    enableContinue();
   }, []);
 
   const enableContinue = () => {
