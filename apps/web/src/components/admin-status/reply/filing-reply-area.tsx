@@ -12,6 +12,7 @@ import { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import FilingReplyComment from './filing-reply-comment';
 import FilingReplyButtons from './filing-reply-buttons';
+import { FilingStatus } from '@/src/constant/enum';
 export default function FilingReplyArea({
   selectedFilingId,
 }: {
@@ -23,12 +24,25 @@ export default function FilingReplyArea({
   const [filingDetail, setFilingDetail] = useState<FilingType | null>(null);
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
   const [isShowComment, setIsShowComment] = useState<boolean>(false);
+  const [isContinueStatus, setIsContinueStatus] = useState<boolean>(false);
+  const [targetFilingId, setTargetFilingId] =
+    useState<string>(selectedFilingId);
 
   useEffect(() => {
     const fetchFilingDetail = async () => {
       try {
         const data = await getFilingByFilingId(selectedFilingId);
         setFilingDetail(data);
+        if (
+          data?.status == FilingStatus.APPROVED ||
+          data?.status == FilingStatus.RETURNED
+        ) {
+          setIsContinueStatus(false);
+          setIsShowComment(true);
+        } else {
+          setIsContinueStatus(true);
+          setIsShowComment(false);
+        }
       } catch (err) {
         if (err instanceof Error) {
           toast({
@@ -58,6 +72,7 @@ export default function FilingReplyArea({
     if (selectedFilingId !== '') {
       fetchFilingDetail();
       fetchLatestDocument();
+      setTargetFilingId(selectedFilingId);
     }
   }, [selectedFilingId]);
 
@@ -79,7 +94,6 @@ export default function FilingReplyArea({
     if (filingDetail?.userId) {
       fetchOwnerDetail();
     }
-    setIsShowComment(false);
   }, [filingDetail]);
 
   return (
@@ -108,9 +122,9 @@ export default function FilingReplyArea({
           />
           {isShowComment ? (
             <FilingReplyComment
-              filingId={selectedFilingId}
+              filingId={targetFilingId}
+              isContinueStatus={isContinueStatus}
               latestDocument={latestDocument}
-              filing={filingDetail}
               projectId={filingDetail?.projectId || ''}
               setShowComment={(value: boolean) => {
                 setIsShowComment(value);

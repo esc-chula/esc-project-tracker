@@ -168,17 +168,28 @@ export default function FilingTab({
           <FilingTabShow
             tabValue={0}
             filings={TargetFilings}
-            isContinue
             sentSelectedFilingIdToParent={(id: string) => {
               setSelectedFilingId(id);
             }}
           />
         </CustomTabPanel>
         <CustomTabPanel value={tabsValue} index={1}>
-          <FilingTabShow tabValue={1} filings={TargetFilings} />
+          <FilingTabShow
+            tabValue={1}
+            filings={TargetFilings}
+            sentSelectedFilingIdToParent={(id: string) => {
+              setSelectedFilingId(id);
+            }}
+          />
         </CustomTabPanel>
         <CustomTabPanel value={tabsValue} index={2}>
-          <FilingTabShow tabValue={2} filings={TargetFilings} />
+          <FilingTabShow
+            tabValue={2}
+            filings={TargetFilings}
+            sentSelectedFilingIdToParent={(id: string) => {
+              setSelectedFilingId(id);
+            }}
+          />
         </CustomTabPanel>
       </div>
     </div>

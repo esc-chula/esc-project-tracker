@@ -19,7 +19,6 @@ import { getFileType } from '@/src/lib/utils';
 import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
-import { FilingType } from '@/src/interface/filing';
 import { DocumentType } from '@/src/interface/document';
 import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
 import ReviewSubmitButton from './review-submit-button';
@@ -27,40 +26,47 @@ import FilingReplyAfterSubmit from './filing-reply-after-submit';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
 
 export default function FilingReplyComment({
+  isContinueStatus,
   filingId,
   latestDocument,
-  filing,
   projectId,
   setShowComment,
 }: {
+  isContinueStatus: boolean;
   filingId: string;
   latestDocument: DocumentType | null;
-  filing: FilingType | null;
   projectId: string;
   setShowComment: (value: boolean) => void;
 }) {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [pdfName, setPdfName] = useState<string>('');
   const [comment, setComment] = useState<string>('');
-  const [lastestReplyDocumentId, setLastestReplyDocumentId] =
+  const [latestReplyDocumentId, setLatestReplyDocumentId] =
     useState<string>('');
 
   useEffect(() => {
     const fetchLatestReplyDocument = async () => {
       try {
         const docs = await findLatestReplyDocumentByFilingId(filingId);
-        console.log('latest reply doc', docs);
+        console.log('before if docs', docs);
         if (docs) {
           setIsSubmitted(true);
           setPdfName(docs?.pdfName || '');
           setComment(docs?.comment || '');
-          setLastestReplyDocumentId(docs?.id || '');
+          setLatestReplyDocumentId(docs?.id || '');
+          console.log('new doc', docs);
         }
       } catch (error) {
         console.error(error);
       }
     };
     fetchLatestReplyDocument();
+  }, [filingId]);
+
+  useEffect(() => {
+    console.log('latestReplyDocumentId', latestReplyDocumentId);
+    console.log('comment', comment);
+    console.log('pdfName', pdfName);
   }, [filingId]);
 
   const createdFormSchema = z.object({
@@ -116,7 +122,7 @@ export default function FilingReplyComment({
       });
       setPdfName(newDocument.pdfName);
       setComment(newDocument.comment);
-      setLastestReplyDocumentId(newDocument.id);
+      setLatestReplyDocumentId(newDocument.id);
       setIsSubmitted(true);
 
       toast({
@@ -141,13 +147,15 @@ export default function FilingReplyComment({
           <IoReturnUpBack className="h-8 w-8 mr-2 inline-block" />
           ตอบกลับ
         </div>
-        <ReviewSubmitButton
-          isSubmitted={isSubmitted}
-          latestReplyDocumentId={lastestReplyDocumentId}
-        />
+        {isContinueStatus && (
+          <ReviewSubmitButton
+            isSubmitted={isSubmitted}
+            latestReplyDocumentId={latestReplyDocumentId}
+          />
+        )}
       </div>
 
-      {isSubmitted ? (
+      {isSubmitted || !isContinueStatus ? (
         <FilingReplyAfterSubmit
           pdfName={pdfName}
           comment={comment}

@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 export default function FilingTabShow({
   tabValue,
   filings,
-  isContinue,
   sentSelectedFilingIdToParent,
 }: {
   tabValue: number;
@@ -18,10 +17,10 @@ export default function FilingTabShow({
   const [selectedFilingId, setSelectedFilingId] = useState<string>('');
 
   useEffect(() => {
-    if (isContinue && selectedFilingId) {
+    if (selectedFilingId) {
       sentSelectedFilingIdToParent?.(selectedFilingId);
     }
-  }, [selectedFilingId, isContinue]);
+  }, [selectedFilingId]);
 
   if (filings.length === 0) {
     return <FilingTabNotFound value={tabValue} />;
@@ -32,7 +31,6 @@ export default function FilingTabShow({
         <FilingTabShowDetail
           key={index}
           filing={filing}
-          isContinue={isContinue}
           sentSelectedFilingIdToParent={setSelectedFilingId}
           isActive={selectedFilingId === filing.id}
           setActiveFiling={setSelectedFilingId}
