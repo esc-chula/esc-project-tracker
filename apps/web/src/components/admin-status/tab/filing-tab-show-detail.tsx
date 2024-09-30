@@ -25,6 +25,7 @@ export default function FilingTabShowDetail({
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
   const [latestPendingDocument, setLatestPendingDocument] =
     useState<DocumentType | null>(null);
+  const [isFetched, setIsFetched] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProjectName = async () => {
@@ -58,9 +59,17 @@ export default function FilingTabShowDetail({
       }
     };
 
-    fetchProjectName();
-    fetchLatestPendingDocument();
+    const fetchData = async () => {
+      await Promise.all([fetchProjectName(), fetchLatestPendingDocument()]);
+      setIsFetched(true);
+    };
+
+    fetchData();
   }, [filing]);
+
+  if (!isFetched) {
+    return;
+  }
 
   return (
     <div
@@ -74,7 +83,7 @@ export default function FilingTabShowDetail({
     >
       <div className="flex flex-row justify-between items-center">
         <div className="font-bold text-black truncate overflow-hidden whitespace-nowrap w-[50%]">
-          {projectName || 'ไม่มีชื่อโครงการ'}
+          {projectName || '...'}
         </div>
         <div className="flex-shrink-0">
           {formatDate(latestPendingDocument?.createdAt) || '--'}
@@ -83,10 +92,10 @@ export default function FilingTabShowDetail({
 
       <div className="flex flex-row space-x-2 items-center">
         <div className="flex-shrink-0">
-          {filing.projectCode || 'xxxx'}-{filing.FilingCode || 'xxxx'}
+          {filing.projectCode || '....'}-{filing.FilingCode || '....'}
         </div>
         <div className="truncate overflow-hidden whitespace-nowrap w-[50%] pr-5">
-          {filing.name || 'ไม่มีชื่อเอกสาร'}
+          {filing.name || '...'}
         </div>
       </div>
 

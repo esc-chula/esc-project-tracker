@@ -44,20 +44,21 @@ function a11yProps(index: number) {
 
 export default function FilingTab({
   sentSelectedFilingIdToParent,
+  reviewedFilingId,
 }: {
   sentSelectedFilingIdToParent: (id: string) => void;
+  reviewedFilingId: string;
 }) {
   const [tabsValue, setTabsValue] = useState<number>(0);
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabsValue(newValue);
   };
   const [TargetFilings, setTargetFilings] = useState<FilingType[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<FilingStatus>(
-    FilingStatus.WAIT_FOR_SECRETARY,
-  );
+
   const [selectedType, setSelectedType] = useState<string>('ALL');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
   const [selectedFilingId, setSelectedFilingId] = useState<string>('');
+  const [isFetched, setIsFetched] = useState<boolean>(false);
 
   useEffect(() => {
     sentSelectedFilingIdToParent(selectedFilingId);
@@ -70,9 +71,9 @@ export default function FilingTab({
         : tabsValue === 1
           ? FilingStatus.RETURNED
           : FilingStatus.APPROVED;
-    setSelectedStatus(newSelectedStatus);
 
     const fetchFiling = async () => {
+      setIsFetched(false);
       try {
         const filings = await findFilingsWithFilter(
           newSelectedStatus || 'ALL',
@@ -82,10 +83,22 @@ export default function FilingTab({
         setTargetFilings(filings || []);
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsFetched(true);
       }
     };
+
     fetchFiling();
   }, [tabsValue, selectedType, selectedDepartment]);
+
+  useEffect(() => {
+    if (reviewedFilingId) {
+      const newFilings = TargetFilings.filter(
+        (filing) => filing.id !== reviewedFilingId,
+      );
+      setTargetFilings(newFilings);
+    }
+  }, [reviewedFilingId]);
 
   return (
     <div className="border-lightgray border-2 rounded-xl w-[30vw] h-[80vh] pt-3 flex flex-col">
@@ -165,31 +178,37 @@ export default function FilingTab({
       </div>
       <div className="flex-grow overflow-y-scroll no-scrollbar">
         <CustomTabPanel value={tabsValue} index={0}>
-          <FilingTabShow
-            tabValue={0}
-            filings={TargetFilings}
-            sentSelectedFilingIdToParent={(id: string) => {
-              setSelectedFilingId(id);
-            }}
-          />
+          {isFetched && (
+            <FilingTabShow
+              tabValue={0}
+              filings={TargetFilings}
+              sentSelectedFilingIdToParent={(id: string) => {
+                setSelectedFilingId(id);
+              }}
+            />
+          )}
         </CustomTabPanel>
         <CustomTabPanel value={tabsValue} index={1}>
-          <FilingTabShow
-            tabValue={1}
-            filings={TargetFilings}
-            sentSelectedFilingIdToParent={(id: string) => {
-              setSelectedFilingId(id);
-            }}
-          />
+          {isFetched && (
+            <FilingTabShow
+              tabValue={1}
+              filings={TargetFilings}
+              sentSelectedFilingIdToParent={(id: string) => {
+                setSelectedFilingId(id);
+              }}
+            />
+          )}
         </CustomTabPanel>
         <CustomTabPanel value={tabsValue} index={2}>
-          <FilingTabShow
-            tabValue={2}
-            filings={TargetFilings}
-            sentSelectedFilingIdToParent={(id: string) => {
-              setSelectedFilingId(id);
-            }}
-          />
+          {isFetched && (
+            <FilingTabShow
+              tabValue={2}
+              filings={TargetFilings}
+              sentSelectedFilingIdToParent={(id: string) => {
+                setSelectedFilingId(id);
+              }}
+            />
+          )}
         </CustomTabPanel>
       </div>
     </div>

@@ -16,8 +16,10 @@ import { toast } from '../../ui/use-toast';
 
 export default function FilingReplyArea({
   selectedFilingId,
+  setFilingReviewed,
 }: {
   selectedFilingId: string;
+  setFilingReviewed: (value: string) => void;
 }) {
   const [filingDetail, setFilingDetail] = useState<FilingType | null>(null);
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
@@ -138,6 +140,7 @@ export default function FilingReplyArea({
               setShowComment={(value: boolean) => {
                 setIsShowComment(value);
               }}
+              setFilingReviewed={setFilingReviewed}
             />
           ) : (
             <FilingReplyButtons

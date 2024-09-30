@@ -21,7 +21,7 @@ export default function NameDateStatus({
         </div>
       </div>
       <div className="flex items-end justify-end">
-        <span className="font-bold">กิจกรรม: </span>
+        <span className="font-bold">{'กิจกรรม: '}</span>
         <span>{activity}</span>
       </div>
     </div>

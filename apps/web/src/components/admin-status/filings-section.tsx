@@ -5,13 +5,18 @@ import { useState } from 'react';
 
 export default function FilingsSection() {
   const [selectedFilingId, setSelectedFilingId] = useState<string>('');
+  const [reviewedFilingId, setReviewedFilingId] = useState<string>('');
 
   return (
     <div className="pl-15 overflow flex flex-row">
       <FilingTab
         sentSelectedFilingIdToParent={(id: string) => setSelectedFilingId(id)}
+        reviewedFilingId={reviewedFilingId}
       />
-      <FilingReplyArea selectedFilingId={selectedFilingId} />
+      <FilingReplyArea
+        selectedFilingId={selectedFilingId}
+        setFilingReviewed={setReviewedFilingId}
+      />
     </div>
   );
 }

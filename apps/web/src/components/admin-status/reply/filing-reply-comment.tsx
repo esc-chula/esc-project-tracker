@@ -38,6 +38,7 @@ export default function FilingReplyComment({
   newDocumentName,
   newDocumentDetail,
   setShowComment,
+  setFilingReviewed,
 }: {
   isPending: boolean;
   filingStatus: FilingStatus;
@@ -46,6 +47,7 @@ export default function FilingReplyComment({
   newDocumentName: string;
   newDocumentDetail: string;
   setShowComment: (value: boolean) => void;
+  setFilingReviewed: (value: string) => void;
 }) {
   const [isPendingSubmitted, setIsPendingSubmitted] = useState<boolean>(false);
   const [isPendingReviewed, setIsPendingReviewed] = useState<boolean>(false);
@@ -158,9 +160,10 @@ export default function FilingReplyComment({
   }
 
   useEffect(() => {
-    console.log('documentStatus from comment:', documentStatus);
-  }, [documentStatus]);
-
+    if (isPendingReviewed) {
+      setFilingReviewed(filingId);
+    }
+  }, [isPendingReviewed]);
   if (!isFetched) {
     return;
   }
