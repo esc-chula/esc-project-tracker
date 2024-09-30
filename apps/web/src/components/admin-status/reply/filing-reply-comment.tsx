@@ -27,7 +27,6 @@ import {
 import ReviewSubmitButton from './review-submit-button';
 import FilingReplyAfterSubmit from './filing-reply-after-submit';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
-import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import { DocumentType } from '@/src/interface/document';
 import FilingReplyAfterSubmitEditing from './filing-reply-after-submit-editing';
 
@@ -204,6 +203,8 @@ export default function FilingReplyComment({
               documentStatus={documentStatus}
               folderName={`${projectId}/${filingId}`}
               document={document}
+              isPendingSubmitted={isPendingSubmitted}
+              sentIsSubmitted={setIsPendingSubmitted}
             />
           )}
         </>

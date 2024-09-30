@@ -29,11 +29,14 @@ export default function FilingReplyNoteAndFile({
                   folderName={`${projectId}/${filingId}`}
                 />
               )}
-            <FileDisplay
-              fileName={latestDocument?.pdfName || ''}
-              fileType="pdf"
-              folderName={`${projectId}/${filingId}`}
-            />
+            {latestDocument?.pdfName !== '' &&
+              latestDocument?.pdfName !== '-' && (
+                <FileDisplay
+                  fileName={latestDocument?.pdfName || ''}
+                  fileType="pdf"
+                  folderName={`${projectId}/${filingId}`}
+                />
+              )}
           </div>
         </div>
         <div className="space-y-2">

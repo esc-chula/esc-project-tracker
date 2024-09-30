@@ -90,7 +90,8 @@ export default function FilingReplyArea({
       } catch (err) {
         if (err instanceof Error) {
           toast({
-            title: 'ดึงข้อมูลเจ้าของเอกสาร ' + filingDetail?.id + ' ไม่สำเร็จ',
+            title:
+              'ดึงข้อมูลเจ้าของเอกสาร ' + filingDetail?.name + ' ไม่สำเร็จ',
             description: err.message,
             isError: true,
           });

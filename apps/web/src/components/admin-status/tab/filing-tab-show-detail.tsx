@@ -97,11 +97,18 @@ export default function FilingTabShowDetail({
         </div>
       </div>
 
-      <FileDisplay
-        fileName={latestPendingDocument?.pdfName || ''}
-        fileType="pdf"
-        folderName={`${projectId}/${filing.id}`}
-      />
+      {latestPendingDocument?.pdfName !== '' &&
+      latestPendingDocument?.pdfName !== '-' ? (
+        <div className="flex flex-row space-x-4">
+          <FileDisplay
+            fileName={latestPendingDocument?.pdfName || ''}
+            fileType="pdf"
+            folderName={`${projectId}/${filing.id}`}
+          />
+        </div>
+      ) : (
+        <div className="text-red">ไม่พบเอกสาร</div>
+      )}
     </div>
   );
 }
