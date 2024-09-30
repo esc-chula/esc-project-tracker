@@ -1,6 +1,5 @@
 import { CgFileDocument } from 'react-icons/cg';
 import { HiMiniArrowLongRight } from 'react-icons/hi2';
-import { redirect } from 'next/navigation';
 
 export default function FilingReplyHeader({
   projectId,

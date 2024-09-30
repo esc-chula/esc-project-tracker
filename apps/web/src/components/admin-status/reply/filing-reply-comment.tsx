@@ -19,7 +19,6 @@ import { getFileType } from '@/src/lib/utils';
 import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
-import { DocumentType } from '@/src/interface/document';
 import {
   DocumentActivity,
   DocumentStatus,
@@ -28,46 +27,79 @@ import {
 import ReviewSubmitButton from './review-submit-button';
 import FilingReplyAfterSubmit from './filing-reply-after-submit';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
+import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
+import { DocumentType } from '@/src/interface/document';
 
 export default function FilingReplyComment({
+  isPending,
   filingStatus,
-  isContinueStatus,
   filingId,
-  latestDocument,
   projectId,
+  newDocumentName,
+  newDocumentDetail,
   setShowComment,
 }: {
+  isPending: boolean;
   filingStatus: FilingStatus;
-  isContinueStatus: boolean;
   filingId: string;
-  latestDocument: DocumentType | null;
   projectId: string;
+  newDocumentName: string;
+  newDocumentDetail: string;
   setShowComment: (value: boolean) => void;
 }) {
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [pdfName, setPdfName] = useState<string>('');
-  const [comment, setComment] = useState<string>('');
+  const [isPendingSubmitted, setIsPendingSubmitted] = useState<boolean>(false);
   const [latestReplyDocumentId, setLatestReplyDocumentId] =
     useState<string>('');
+  const [isFetched, setIsFetched] = useState<boolean>(false);
+  const [document, setDocument] = useState<DocumentType | null>(null);
 
-  // check ว่า เป็นเอกสารที่ reply แต่ยังไม่ review
+  //check
+  useEffect(() => {
+    console.log('isPending:', isPending);
+    console.log('isPendingSubmitted:', isPendingSubmitted);
+  }, [isPending, isPendingSubmitted]);
+  // check เป็น pending ที่่มี reply
   useEffect(() => {
     const fetchLatestReplyDocument = async () => {
       try {
-        const docs = await findLatestReplyDocumentByFilingId(filingId);
-        if (docs) {
-          setIsSubmitted(true);
-          setPdfName(docs?.pdfName || '');
-          setComment(docs?.comment || '');
-          setLatestReplyDocumentId(docs?.id || '');
+        if (isPending) {
+          const docs = await findLatestReplyDocumentByFilingId(filingId);
+          if (docs) {
+            setIsPendingSubmitted(true);
+            setDocument(docs);
+          }
         }
       } catch (error) {
         console.error(error);
       }
     };
-    fetchLatestReplyDocument();
+
+    // ถ้าไม่ใช่ pending ใช้ latest document
+    const fetchLatestDocument = async () => {
+      try {
+        if (!isPending) {
+          const docs = await findLatestDocumentByFilingId(filingId);
+          setLatestReplyDocumentId(docs?.id || '');
+          setDocument(docs);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: 'ดึงเอกสาร ID ' + filingId + ' ไม่สำเร็จ',
+            description: error.message,
+            isError: true,
+          });
+        }
+      }
+    };
+    if (filingId !== '') {
+      fetchLatestReplyDocument();
+      fetchLatestDocument();
+    }
+    setIsFetched(true);
   }, [filingId]);
 
+  //FORM ========================================
   const createdFormSchema = z.object({
     file: zodDocumentAdminFile.optional(),
     comment: z.string().optional(),
@@ -107,7 +139,7 @@ export default function FilingReplyComment({
 
       const newDocument = await createDocument({
         document: {
-          name: latestDocument?.name || '',
+          name: newDocumentName,
           filingId,
           pdfName: fileName,
           docName: '',
@@ -115,14 +147,13 @@ export default function FilingReplyComment({
           status: DocumentStatus.DRAFT,
           // TODO change to actual userId
           userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-          detail: latestDocument?.detail || '',
+          detail: newDocumentDetail,
           comment: values.comment,
         },
       });
-      setPdfName(newDocument.pdfName);
-      setComment(newDocument.comment);
       setLatestReplyDocumentId(newDocument.id);
-      setIsSubmitted(true);
+      setIsPendingSubmitted(true);
+      setDocument(newDocument);
 
       toast({
         title: 'แก้ไขเอกสารสำเร็จ',
@@ -139,6 +170,10 @@ export default function FilingReplyComment({
     }
   }
 
+  if (!isFetched) {
+    return;
+  }
+
   return (
     <div className="flex w-full flex-col space-y-4">
       <div className="flex justify-between w-full items-center">
@@ -146,22 +181,19 @@ export default function FilingReplyComment({
           <IoReturnUpBack className="h-8 w-8 mr-2 inline-block" />
           ตอบกลับ
         </div>
-        {isContinueStatus && (
+        {isPending && (
           <ReviewSubmitButton
-            isSubmitted={isSubmitted}
+            isSubmitted={isPendingSubmitted}
             latestReplyDocumentId={latestReplyDocumentId}
           />
         )}
       </div>
 
-      {isSubmitted || !isContinueStatus ? (
+      {(isPending && isPendingSubmitted) || !isPending ? (
         <FilingReplyAfterSubmit
-          filingStatus={filingStatus}
-          latestDocument={latestDocument}
-          isContinueStatus={isContinueStatus}
           filingId={filingId}
-          pdfName={pdfName}
-          comment={comment}
+          filingStatus={filingStatus}
+          document={document}
           folderName={`${projectId}/${filingId}`}
         />
       ) : (

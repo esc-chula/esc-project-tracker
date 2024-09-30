@@ -8,6 +8,7 @@ import { DocumentType } from '@/src/interface/document';
 import { formatDate } from '@/src/lib/formateDate';
 import { toast } from '../../ui/use-toast';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
+import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
 
 export default function FilingTabShowDetail({
   filing,
@@ -22,9 +23,8 @@ export default function FilingTabShowDetail({
 }) {
   const [projectName, setProjectName] = useState<string | undefined>(undefined);
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
-  const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
-    null,
-  );
+  const [latestPendingDocument, setLatestPendingDocument] =
+    useState<DocumentType | null>(null);
 
   useEffect(() => {
     const fetchProjectName = async () => {
@@ -43,10 +43,10 @@ export default function FilingTabShowDetail({
       }
     };
 
-    const fetchLatestDocument = async () => {
+    const fetchLatestPendingDocument = async () => {
       try {
-        const docs = await findLatestDocumentByFilingId(filing.id);
-        setLatestDocument(docs);
+        const docs = await findLatestPendingDocumentByFilingId(filing.id);
+        setLatestPendingDocument(docs);
       } catch (error) {
         if (error instanceof Error) {
           toast({
@@ -59,7 +59,7 @@ export default function FilingTabShowDetail({
     };
 
     fetchProjectName();
-    fetchLatestDocument();
+    fetchLatestPendingDocument();
   }, [filing]);
 
   return (
@@ -77,7 +77,7 @@ export default function FilingTabShowDetail({
           {projectName || 'ไม่มีชื่อโครงการ'}
         </div>
         <div className="flex-shrink-0">
-          {formatDate(latestDocument?.createdAt) || '--'}
+          {formatDate(latestPendingDocument?.createdAt) || '--'}
         </div>
       </div>
 
@@ -91,7 +91,7 @@ export default function FilingTabShowDetail({
       </div>
 
       <FileDisplay
-        fileName={latestDocument?.pdfName || ''}
+        fileName={latestPendingDocument?.pdfName || ''}
         fileType="pdf"
         folderName={`${projectId}/${filing.id}`}
       />
