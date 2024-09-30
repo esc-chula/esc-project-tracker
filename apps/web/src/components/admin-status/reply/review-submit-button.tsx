@@ -18,13 +18,18 @@ import {
 import { useEffect, useState } from 'react';
 import reviewSubmission from '@/src/service/document/reviewSubmission';
 import { toast } from '../../ui/use-toast';
+import { DocumentStatus } from '@/src/constant/enum';
 
 export default function ReviewSubmitButton({
   isSubmitted,
   latestReplyDocumentId,
+  setIsPendingReviewed,
+  setDocumentStatus,
 }: {
   isSubmitted: boolean;
   latestReplyDocumentId: string;
+  setIsPendingReviewed: (value: boolean) => void;
+  setDocumentStatus: (value: DocumentStatus) => void;
 }) {
   const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
@@ -48,6 +53,12 @@ export default function ReviewSubmitButton({
         updatedStatus,
       });
 
+      if (updatedStatus) {
+        setDocumentStatus(DocumentStatus.APPROVED);
+      } else {
+        setDocumentStatus(DocumentStatus.RETURNED);
+      }
+
       toast({
         title: 'ตอบกลับเอกสารสำเร็จ',
         description: `${reviewButton}เอกสารสำเร็จ`,
@@ -63,6 +74,7 @@ export default function ReviewSubmitButton({
       }
     }
     setIsSubmitting(false);
+    setIsPendingReviewed(true);
   };
 
   return (

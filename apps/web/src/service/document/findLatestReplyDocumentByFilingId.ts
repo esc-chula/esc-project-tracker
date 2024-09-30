@@ -11,6 +11,6 @@ export default async function findLatestReplyDocumentByFilingId(
     return data;
   } catch (e) {
     console.log(e);
-    throw new Error('Cant get latest reply doc');
+    throw new Error('Cant get latest reply document');
   }
 }

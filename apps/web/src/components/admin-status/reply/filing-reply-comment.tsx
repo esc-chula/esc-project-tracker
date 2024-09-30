@@ -48,56 +48,43 @@ export default function FilingReplyComment({
   setShowComment: (value: boolean) => void;
 }) {
   const [isPendingSubmitted, setIsPendingSubmitted] = useState<boolean>(false);
+  const [isPendingReviewed, setIsPendingReviewed] = useState<boolean>(false);
   const [latestReplyDocumentId, setLatestReplyDocumentId] =
     useState<string>('');
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [document, setDocument] = useState<DocumentType | null>(null);
+  const [documentStatus, setDocumentStatus] = useState<DocumentStatus>(
+    DocumentStatus.WAIT_FOR_SECRETARY,
+  );
 
-  //check
   useEffect(() => {
-    console.log('isPending:', isPending);
-    console.log('isPendingSubmitted:', isPendingSubmitted);
-  }, [isPending, isPendingSubmitted]);
-  // check เป็น pending ที่่มี reply
-  useEffect(() => {
-    const fetchLatestReplyDocument = async () => {
+    const fetchDocuments = async () => {
       try {
-        if (isPending) {
-          const docs = await findLatestReplyDocumentByFilingId(filingId);
-          if (docs) {
-            setIsPendingSubmitted(true);
-            setDocument(docs);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // ถ้าไม่ใช่ pending ใช้ latest document
-    const fetchLatestDocument = async () => {
-      try {
-        if (!isPending) {
-          const docs = await findLatestDocumentByFilingId(filingId);
-          setLatestReplyDocumentId(docs?.id || '');
+        // latest reply document
+        const docs = await findLatestReplyDocumentByFilingId(filingId);
+        if (docs) {
+          setIsPendingSubmitted(true);
           setDocument(docs);
+          setLatestReplyDocumentId(docs.id);
+          setDocumentStatus(docs.status);
         }
       } catch (error) {
         if (error instanceof Error) {
           toast({
-            title: 'ดึงเอกสาร ID ' + filingId + ' ไม่สำเร็จ',
+            title: `ดึงเอกสาร ID ${filingId} ไม่สำเร็จ`,
             description: error.message,
             isError: true,
           });
         }
+      } finally {
+        setIsFetched(true);
       }
     };
-    if (filingId !== '') {
-      fetchLatestReplyDocument();
-      fetchLatestDocument();
+
+    if (filingId) {
+      fetchDocuments();
     }
-    setIsFetched(true);
-  }, [filingId]);
+  }, [filingId, isPending]);
 
   //FORM ========================================
   const createdFormSchema = z.object({
@@ -170,6 +157,10 @@ export default function FilingReplyComment({
     }
   }
 
+  useEffect(() => {
+    console.log('documentStatus from comment:', documentStatus);
+  }, [documentStatus]);
+
   if (!isFetched) {
     return;
   }
@@ -181,10 +172,12 @@ export default function FilingReplyComment({
           <IoReturnUpBack className="h-8 w-8 mr-2 inline-block" />
           ตอบกลับ
         </div>
-        {isPending && (
+        {isPending && !isPendingReviewed && (
           <ReviewSubmitButton
             isSubmitted={isPendingSubmitted}
             latestReplyDocumentId={latestReplyDocumentId}
+            setIsPendingReviewed={setIsPendingReviewed}
+            setDocumentStatus={setDocumentStatus}
           />
         )}
       </div>
@@ -192,7 +185,7 @@ export default function FilingReplyComment({
       {(isPending && isPendingSubmitted) || !isPending ? (
         <FilingReplyAfterSubmit
           filingId={filingId}
-          filingStatus={filingStatus}
+          documentStatus={documentStatus}
           document={document}
           folderName={`${projectId}/${filingId}`}
         />

@@ -101,7 +101,6 @@ export class DocumentService {
       where: {
         filing: { id: filingId },
         activity: DocumentActivity.REPLY,
-        status: DocumentStatus.DRAFT,
       },
       order: { createdAt: 'DESC' },
     });
