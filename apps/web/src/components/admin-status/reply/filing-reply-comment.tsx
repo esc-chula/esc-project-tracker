@@ -37,6 +37,7 @@ export default function FilingReplyComment({
   projectId,
   newDocumentName,
   newDocumentDetail,
+  documentCode,
   setShowComment,
   setFilingReviewed,
 }: {
@@ -46,6 +47,7 @@ export default function FilingReplyComment({
   projectId: string;
   newDocumentName: string;
   newDocumentDetail: string;
+  documentCode: string;
   setShowComment: (value: boolean) => void;
   setFilingReviewed: (value: string) => void;
 }) {
@@ -78,7 +80,7 @@ export default function FilingReplyComment({
       } catch (error) {
         if (error instanceof Error) {
           toast({
-            title: `ดึงเอกสาร ID ${filingId} ไม่สำเร็จ`,
+            title: `ดึงข้อมูลการตอบกลับของเอกสาร ${documentCode} ไม่สำเร็จ`,
             description: error.message,
             isError: true,
           });
@@ -150,13 +152,13 @@ export default function FilingReplyComment({
       setDocument(newDocument);
 
       toast({
-        title: 'แก้ไขเอกสารสำเร็จ',
-        description: `แก้ไขเอกสาร ${newDocument.name} สำเร็จ`,
+        title: 'บันทึกการตอบกลับของเอกสารสำเร็จ',
+        description: `บันทึกการตอบกลับของเอกสาร ${documentCode} สำเร็จ`,
       });
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: 'แก้ไขเอกสารไม่สำเร็จ',
+          title: 'บันทึกการตอบกลับเอกสารไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -200,10 +202,11 @@ export default function FilingReplyComment({
             />
           ) : (
             <FilingReplyAfterSubmit
+              documentCode={documentCode}
               documentStatus={documentStatus}
               folderName={`${projectId}/${filingId}`}
               document={document}
-              isPendingSubmitted={isPendingSubmitted}
+              isPendingReviewed={isPendingReviewed}
               sentIsSubmitted={setIsPendingSubmitted}
             />
           )}

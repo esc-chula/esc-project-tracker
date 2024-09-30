@@ -1,7 +1,7 @@
 import { DocumentType } from '@/src/interface/document';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
-import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
+import { DocumentStatus } from '@/src/constant/enum';
 import StatusButton from '../../filling-detail/display/statusButton';
 import EditAndDeleteReply from './edit-and-delete-reply';
 
@@ -9,13 +9,15 @@ export default function FilingReplyAfterSubmit({
   documentStatus,
   folderName,
   document,
-  isPendingSubmitted,
+  isPendingReviewed,
+  documentCode,
   sentIsSubmitted,
 }: {
   documentStatus: DocumentStatus;
   folderName?: string;
   document: DocumentType | null;
-  isPendingSubmitted: boolean;
+  isPendingReviewed: boolean;
+  documentCode: string;
   sentIsSubmitted: (value: boolean) => void;
 }) {
   return (
@@ -34,20 +36,19 @@ export default function FilingReplyAfterSubmit({
               <div className="text-sm">ไม่มีไฟล์แนบ</div>
             )}
           </div>
-          {document?.status === DocumentStatus.DRAFT &&
-          document?.activity === DocumentActivity.REPLY ? (
-            <>
-              {isPendingSubmitted && (
-                <EditAndDeleteReply
-                  documentId={document?.id || ''}
-                  sentIsSubmitted={sentIsSubmitted}
-                />
-              )}
-            </>
-          ) : (
+
+          {document?.status === DocumentStatus.APPROVED ||
+          document?.status === DocumentStatus.RETURNED ||
+          (document?.status === DocumentStatus.DRAFT && isPendingReviewed) ? (
             <div>
               <StatusButton status={documentStatus} />
             </div>
+          ) : (
+            <EditAndDeleteReply
+              documentCode={documentCode}
+              documentId={document?.id || ''}
+              sentIsSubmitted={sentIsSubmitted}
+            />
           )}
         </div>
         <div className="font-bold text-sm">ความคิดเห็น</div>

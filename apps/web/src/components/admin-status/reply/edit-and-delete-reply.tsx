@@ -17,9 +17,11 @@ import deleteDocument from '@/src/service/document/deleteDocument';
 
 export default function EditAndDeleteReply({
   documentId,
+  documentCode,
   sentIsSubmitted,
 }: {
   documentId: string;
+  documentCode: string;
   sentIsSubmitted: (val: boolean) => void;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -29,7 +31,7 @@ export default function EditAndDeleteReply({
       await deleteDocument(documentId);
       toast({
         title: 'ลบการตอบกลับของเอกสารสำเร็จ',
-        description: 'การตอบกลับของเอกสารถูกลบแล้ว',
+        description: `การตอบกลับของเอกสาร ${documentCode} ถูกลบสำเร็จ`,
         isError: false,
       });
       sentIsSubmitted(false);

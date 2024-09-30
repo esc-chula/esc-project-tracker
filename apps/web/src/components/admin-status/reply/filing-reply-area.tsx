@@ -34,6 +34,7 @@ export default function FilingReplyArea({
   const [latestPendingDocumentDetail, setLatestPendingDocumentDetail] =
     useState<DocumentType | null>(null);
   const [projectId, setProjectId] = useState<string>('');
+  const [documentCode, setDocumentCode] = useState<string>('');
 
   useEffect(() => {
     setIsFetched(false);
@@ -46,10 +47,11 @@ export default function FilingReplyArea({
         setFilingStatus(data?.status || FilingStatus.WAIT_FOR_SECRETARY);
         setIsPending(data?.status === FilingStatus.WAIT_FOR_SECRETARY);
         setProjectId(data?.projectId || '');
+        setDocumentCode(data?.projectCode + '-' + data?.FilingCode);
       } catch (err) {
         if (err instanceof Error) {
           toast({
-            title: 'ดึงเอกสาร ID ' + selectedFilingId + ' ไม่สำเร็จ',
+            title: `ดึงข้อมูลของเจ้าของเอกสาร ${documentCode} ไม่สำเร็จ`,
             description: err.message,
             isError: true,
           });
@@ -67,7 +69,7 @@ export default function FilingReplyArea({
       } catch (error) {
         if (error instanceof Error) {
           toast({
-            title: 'ดึงข้อมูลเอกสาร ID: ' + selectedFilingId + ' ไม่สำเร็จ',
+            title: `ดึงข้อมูลของเจ้าของเอกสาร ${documentCode} ไม่สำเร็จ`,
             description: error.message,
             isError: true,
           });
@@ -90,8 +92,7 @@ export default function FilingReplyArea({
       } catch (err) {
         if (err instanceof Error) {
           toast({
-            title:
-              'ดึงข้อมูลเจ้าของเอกสาร ' + filingDetail?.name + ' ไม่สำเร็จ',
+            title: `ดึงข้อมูลของเจ้าของเอกสาร ${documentCode} ไม่สำเร็จ`,
             description: err.message,
             isError: true,
           });
@@ -122,9 +123,8 @@ export default function FilingReplyArea({
           <FilingReplyHeader
             projectId={filingDetail?.projectId || ''}
             filingId={selectedFilingId}
-            projectCode={filingDetail?.projectCode}
-            filingCode={filingDetail?.FilingCode}
             name={filingDetail?.name}
+            documentCode={documentCode}
           />
           <FilingReplyDetail
             documentDetail={latestPendingDocumentDetail}
@@ -140,6 +140,7 @@ export default function FilingReplyArea({
               projectId={filingDetail?.projectId || ''}
               newDocumentDetail={latestPendingDocumentDetail?.detail || ''}
               newDocumentName={latestPendingDocumentDetail?.name || ''}
+              documentCode={documentCode}
               setShowComment={(value: boolean) => {
                 setIsShowComment(value);
               }}
