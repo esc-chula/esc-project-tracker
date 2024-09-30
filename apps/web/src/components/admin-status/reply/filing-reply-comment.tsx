@@ -20,18 +20,24 @@ import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
 import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
 import { DocumentType } from '@/src/interface/document';
-import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
+import {
+  DocumentActivity,
+  DocumentStatus,
+  FilingStatus,
+} from '@/src/constant/enum';
 import ReviewSubmitButton from './review-submit-button';
 import FilingReplyAfterSubmit from './filing-reply-after-submit';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
 
 export default function FilingReplyComment({
+  filingStatus,
   isContinueStatus,
   filingId,
   latestDocument,
   projectId,
   setShowComment,
 }: {
+  filingStatus: FilingStatus;
   isContinueStatus: boolean;
   filingId: string;
   latestDocument: DocumentType | null;
@@ -44,29 +50,22 @@ export default function FilingReplyComment({
   const [latestReplyDocumentId, setLatestReplyDocumentId] =
     useState<string>('');
 
+  // check ว่า เป็นเอกสารที่ reply แต่ยังไม่ review
   useEffect(() => {
     const fetchLatestReplyDocument = async () => {
       try {
         const docs = await findLatestReplyDocumentByFilingId(filingId);
-        console.log('before if docs', docs);
         if (docs) {
           setIsSubmitted(true);
           setPdfName(docs?.pdfName || '');
           setComment(docs?.comment || '');
           setLatestReplyDocumentId(docs?.id || '');
-          console.log('new doc', docs);
         }
       } catch (error) {
         console.error(error);
       }
     };
     fetchLatestReplyDocument();
-  }, [filingId]);
-
-  useEffect(() => {
-    console.log('latestReplyDocumentId', latestReplyDocumentId);
-    console.log('comment', comment);
-    console.log('pdfName', pdfName);
   }, [filingId]);
 
   const createdFormSchema = z.object({
@@ -157,6 +156,10 @@ export default function FilingReplyComment({
 
       {isSubmitted || !isContinueStatus ? (
         <FilingReplyAfterSubmit
+          filingStatus={filingStatus}
+          latestDocument={latestDocument}
+          isContinueStatus={isContinueStatus}
+          filingId={filingId}
           pdfName={pdfName}
           comment={comment}
           folderName={`${projectId}/${filingId}`}

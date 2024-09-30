@@ -25,6 +25,9 @@ export default function FilingReplyArea({
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
   const [isShowComment, setIsShowComment] = useState<boolean>(false);
   const [isContinueStatus, setIsContinueStatus] = useState<boolean>(false);
+  const [filingStatus, setFilingStatus] = useState<FilingStatus>(
+    FilingStatus.DOCUMENT_CREATED,
+  );
   const [targetFilingId, setTargetFilingId] =
     useState<string>(selectedFilingId);
 
@@ -33,6 +36,7 @@ export default function FilingReplyArea({
       try {
         const data = await getFilingByFilingId(selectedFilingId);
         setFilingDetail(data);
+        setFilingStatus(data?.status || FilingStatus.DOCUMENT_CREATED);
         if (
           data?.status == FilingStatus.APPROVED ||
           data?.status == FilingStatus.RETURNED
@@ -122,6 +126,7 @@ export default function FilingReplyArea({
           />
           {isShowComment ? (
             <FilingReplyComment
+              filingStatus={filingStatus}
               filingId={targetFilingId}
               isContinueStatus={isContinueStatus}
               latestDocument={latestDocument}

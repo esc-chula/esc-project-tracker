@@ -43,7 +43,6 @@ export default function ReviewSubmitButton({
     try {
       const updatedStatus = reviewButton === 'อนุมัติ';
 
-      console.log('latestReplyDocumentId', latestReplyDocumentId);
       await reviewSubmission({
         id: latestReplyDocumentId,
         updatedStatus,
