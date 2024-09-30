@@ -33,6 +33,7 @@ export default function FilingReplyArea({
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [latestPendingDocumentDetail, setLatestPendingDocumentDetail] =
     useState<DocumentType | null>(null);
+  const [projectId, setProjectId] = useState<string>('');
 
   useEffect(() => {
     setIsFetched(false);
@@ -44,6 +45,7 @@ export default function FilingReplyArea({
         setFilingDetail(data);
         setFilingStatus(data?.status || FilingStatus.WAIT_FOR_SECRETARY);
         setIsPending(data?.status === FilingStatus.WAIT_FOR_SECRETARY);
+        setProjectId(data?.projectId || '');
       } catch (err) {
         if (err instanceof Error) {
           toast({
@@ -144,6 +146,8 @@ export default function FilingReplyArea({
             />
           ) : (
             <FilingReplyButtons
+              filingId={targetFilingId}
+              projectId={projectId}
               setShowComment={(value: boolean) => {
                 setIsShowComment(value);
               }}

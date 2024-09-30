@@ -1,25 +1,18 @@
-'use client';
 import { DocumentType } from '@/src/interface/document';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
-import { useEffect, useState } from 'react';
-import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
+import { DocumentStatus } from '@/src/constant/enum';
 import StatusButton from '../../filling-detail/display/statusButton';
 
 export default function FilingReplyAfterSubmit({
   documentStatus,
   folderName,
-  filingId,
   document,
 }: {
   documentStatus: DocumentStatus;
   folderName?: string;
-  filingId: string;
   document: DocumentType | null;
 }) {
-  useEffect(() => {
-    console.log('documentStatusหห', documentStatus);
-  }, [documentStatus]);
   return (
     <div className="bg-lightgray rounded-xl font-sukhumvit w-full px-5 pt-5 pb-3 flex text-start flex-col space-y-3">
       <div className="px-8 py-4 font-bold space-y-4 w-full grow">

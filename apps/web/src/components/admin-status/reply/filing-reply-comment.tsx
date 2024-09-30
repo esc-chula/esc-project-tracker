@@ -29,6 +29,7 @@ import FilingReplyAfterSubmit from './filing-reply-after-submit';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import { DocumentType } from '@/src/interface/document';
+import FilingReplyAfterSubmitEditing from './filing-reply-after-submit-editing';
 
 export default function FilingReplyComment({
   isPending,
@@ -58,6 +59,7 @@ export default function FilingReplyComment({
   const [documentStatus, setDocumentStatus] = useState<DocumentStatus>(
     DocumentStatus.WAIT_FOR_SECRETARY,
   );
+  const [isEditedDocument, setIsEditedDocument] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -69,6 +71,10 @@ export default function FilingReplyComment({
           setDocument(docs);
           setLatestReplyDocumentId(docs.id);
           setDocumentStatus(docs.status);
+
+          if (docs.activity === DocumentActivity.EDIT) {
+            setIsEditedDocument(true);
+          }
         }
       } catch (error) {
         if (error instanceof Error) {
@@ -173,7 +179,7 @@ export default function FilingReplyComment({
       <div className="flex justify-between w-full items-center">
         <div className="font-bold text-xl">
           <IoReturnUpBack className="h-8 w-8 mr-2 inline-block" />
-          ตอบกลับ
+          {isEditedDocument ? 'การแก้ไข' : 'ตอบกลับ'}
         </div>
         {isPending && !isPendingReviewed && (
           <ReviewSubmitButton
@@ -186,12 +192,21 @@ export default function FilingReplyComment({
       </div>
 
       {(isPending && isPendingSubmitted) || !isPending ? (
-        <FilingReplyAfterSubmit
-          filingId={filingId}
-          documentStatus={documentStatus}
-          document={document}
-          folderName={`${projectId}/${filingId}`}
-        />
+        <>
+          {isEditedDocument ? (
+            <FilingReplyAfterSubmitEditing
+              documentStatus={documentStatus}
+              document={document}
+              folderName={`${projectId}/${filingId}`}
+            />
+          ) : (
+            <FilingReplyAfterSubmit
+              documentStatus={documentStatus}
+              folderName={`${projectId}/${filingId}`}
+              document={document}
+            />
+          )}
+        </>
       ) : (
         <Form {...form}>
           <form

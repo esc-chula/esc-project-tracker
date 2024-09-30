@@ -12,14 +12,14 @@ export default function FilingReplyNoteAndFile({
   latestDocument: DocumentType | null;
 }) {
   return (
-    <div className="border-t-2 py-4 font-bold text-sm flex flex-col space-y-4 ">
+    <div className="border-t-2 py-4 font-bold flex flex-col space-y-4 ">
       <div>
         <span className="font-bold">รายละเอียดเอกสาร: </span>
         <span className="font-normal">{latestDocument?.name}</span>
       </div>
       <div className="flex flex-col space-y-4">
         <div className="">
-          <div>ไฟล์แนบ</div>
+          <div className="text-sm">ไฟล์แนบ</div>
           <div className="flex flex-row gap-6 pt-2">
             {latestDocument?.docName !== '' &&
               latestDocument?.docName !== '-' && (

@@ -3,8 +3,12 @@ import { Button } from '../../ui/button';
 import { IoReturnUpBack } from 'react-icons/io5';
 
 export default function FilingReplyButtons({
+  filingId,
+  projectId,
   setShowComment,
 }: {
+  filingId: string;
+  projectId: string;
   setShowComment: (value: boolean) => void;
 }) {
   return (
@@ -20,12 +24,13 @@ export default function FilingReplyButtons({
           <IoReturnUpBack className="h-8 w-8 mr-2" />
           ตอบกลับ
         </Button>
-        {/* TODO EDIT action */}
         <Button
           variant="outline"
-          /* onClick={() => {
-          setShowCreateDocument(true);
-        }} */
+          onClick={() => {
+            window.location.replace(
+              `/admin/project/${projectId}/${filingId}?showCreateDocument=true`,
+            );
+          }}
           className="mx-auto rounded-xl text-2xl pl-3 pr-4 py-4 h-[52px] text-red font-semibold border-red disabled:bg-lightgray disabled:text-white disabled:border-none"
         >
           <SquarePen className="h-8 w-8 mr-2" />

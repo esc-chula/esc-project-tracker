@@ -1,11 +1,9 @@
 'use client';
 import { FilingType } from '@/src/interface/filing';
-import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import { useEffect, useState } from 'react';
-import { FaFile } from 'react-icons/fa';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 import { DocumentType } from '@/src/interface/document';
-import { formatDate } from '@/src/lib/formateDate';
+import { formatDateMoment } from '@/src/lib/utils';
 import { toast } from '../../ui/use-toast';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
@@ -86,7 +84,7 @@ export default function FilingTabShowDetail({
           {projectName || '...'}
         </div>
         <div className="flex-shrink-0">
-          {formatDate(latestPendingDocument?.createdAt) || '--'}
+          {formatDateMoment(latestPendingDocument?.createdAt) || '--'}
         </div>
       </div>
 
