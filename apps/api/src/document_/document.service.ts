@@ -109,6 +109,23 @@ export class DocumentService {
     return data;
   }
 
+  async findLatestPendingDocumentByFilingId(
+    filingId: string,
+  ): Promise<Document | null> {
+    const data = await this.documentRepository.findOne({
+      where: {
+        filing: { id: filingId },
+        activity: DocumentActivity.CREATE || DocumentActivity.EDIT,
+        status: DocumentStatus.WAIT_FOR_SECRETARY,
+      },
+      order: { createdAt: 'DESC' },
+    });
+
+    return data;
+  }
+
+
+
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
     const {
       filingId,

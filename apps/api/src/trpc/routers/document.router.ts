@@ -46,6 +46,11 @@ export class DocumentRouter {
       }
       ),
 
+      findLatestPendingByFilingId: this.trpcService.trpc.procedure.input(z.object({ filingId: z.string() })).query(({ input }) => {
+        return this.documentService.findLatestPendingDocumentByFilingId(input.filingId);
+      }
+      ),
+
     // Create Document -> Document
     createDocument: this.trpcService.trpc.procedure
       .input(
