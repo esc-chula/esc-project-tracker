@@ -96,12 +96,12 @@ export class DocumentRouter {
     deleteDocument: this.trpcService.protectedProcedure
       .input(z.object({ id: z.string() }))
       .mutation(async ({ input, ctx }) => {
-        const isProjectMember = await this.trpcService.isProjectMember(
+        const { isMember } = await this.trpcService.isProjectMember(
           ctx.payload.sub,
           input.id,
           'document',
         );
-        if (!isProjectMember.isMember)
+        if (!isMember)
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'User is not a member of the project',
