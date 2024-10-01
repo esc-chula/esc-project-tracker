@@ -92,6 +92,7 @@ export class TrpcService {
           );
           if (!filingByDoc) throw new Error('Filing not found');
           projectId = filingByDoc.projectId;
+          break;
         default:
           throw new Error('Invalid idType');
       }
