@@ -1,54 +1,45 @@
-import AllProjectCard from "./allProjectCard";
+import AllProjectCard from './allProjectCard';
 
-import { Project } from "@/src/interface/project";
-import { filterProjectStatus } from "@/src/styles/enumMap";
-import { useState, useEffect } from "react";
-import { projectTypeMap } from "@/src/constant/Map";
-import SelectType from "../filter/selectType";
+import { Project } from '@/src/interface/project';
+import { filterProjectStatus } from '@/src/styles/enumMap';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { projectTypeMap } from '@/src/constant/Map';
+import SelectType from '../filter/selectType';
 
 export default function AllProjectPanel({
   projects,
   userId,
-  setProjectsToParentFunc,
+  setProjects,
 }: {
   projects: Project[];
   userId: string;
-  setProjectsToParentFunc: (projects: Project[]) => void;
+  setProjects: Dispatch<SetStateAction<Project[]>>;
 }) {
-  const [allProjects, setAllProjects] = useState<Project[]>(projects);
   const [usedProjects, setUsedProjects] = useState<Project[]>(projects);
-  const [projectState, setProjectState] = useState<string>("all");
-  const [projectType, setProject] = useState<string>("all");
+  const [projectState, setProjectState] = useState<string>('all');
+  const [projectType, setProject] = useState<string>('all');
 
   useEffect(() => {
-    if (projectState === "all" && projectType === "all") {
-      setUsedProjects(allProjects);
-    } else if (projectState === "all") {
+    if (projectState === 'all' && projectType === 'all') {
+      setUsedProjects(projects);
+    } else if (projectState === 'all') {
       setUsedProjects(
-        allProjects.filter((project) => project.type.toString() === projectType)
+        projects.filter((project) => project.type.toString() === projectType),
       );
-    } else if (projectType === "all") {
+    } else if (projectType === 'all') {
       setUsedProjects(
-        allProjects.filter((project) => project.status === projectState)
+        projects.filter((project) => project.status === projectState),
       );
     } else {
       setUsedProjects(
-        allProjects.filter(
+        projects.filter(
           (project) =>
             project.status === projectState &&
-            project.type.toString() === projectType
-        )
+            project.type.toString() === projectType,
+        ),
       );
     }
-  }, [projectState, projectType, allProjects, projects]);
-
-  useEffect(() => {
-    setAllProjects(projects);
-  }, [projects]);
-
-  useEffect(() => {
-    setProjectsToParentFunc(allProjects);
-  }, [allProjects]);
+  }, [projectState, projectType, projects]);
 
   return (
     <div className="space-y-5 pt-5 pb-10 ">
@@ -78,8 +69,8 @@ export default function AllProjectPanel({
             projectName={project.name}
             userId={userId}
             leaveThisProjectFunc={(id: string) => {
-              setAllProjects((prevProjects) =>
-                prevProjects.filter((prevProject) => prevProject.id !== id)
+              setProjects((prevProjects: Project[]) =>
+                prevProjects.filter((prevProject) => prevProject.id !== id),
               );
             }}
           />

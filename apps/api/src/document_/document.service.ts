@@ -90,7 +90,7 @@ export class DocumentService {
       },
       order: { createdAt: 'DESC' },
     });
-    console.log(data);
+
     return data;
   }
 

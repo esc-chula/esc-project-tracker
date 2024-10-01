@@ -27,6 +27,9 @@ export default function MyProjectData({
   const redirectToProject = (project: Project | FilingType) => {
     router.push(`/project/${project.id}`);
   };
+  const redirectToFiling = (filing: FilingType) => {
+    router.push(`/project/${filing.projectId}/${filing.id}`);
+  };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpen[]
@@ -34,7 +37,7 @@ export default function MyProjectData({
   const [filings, setFilings] = useState<FilingType[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const [userId, setUserId] = useState<string>();
+  const [userId, setUserId] = useState<string>('');
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -86,14 +89,15 @@ export default function MyProjectData({
   // TODO: Fix the dependency array (it is now an infinite loop)
 
   return (
-    <div className={compact ? 'w-full' : 'w-[65%]'}>
+    <div className="w-full">
       <div className="mb-5">
         {!compact && (
           <SearchBar
-            Filings={filings}
+            filings={filings}
             projects={projects}
             placeholder="ค้นหาโครงการหรือเอกสาร"
             projectFunc={redirectToProject}
+            filingFunc={redirectToFiling}
           />
         )}
       </div>
@@ -110,9 +114,7 @@ export default function MyProjectData({
               <AllProjectPanel
                 projects={projects}
                 userId={userId}
-                setProjectsToParentFunc={(newProjects: Project[]) => {
-                  setProjects(newProjects);
-                }}
+                setProjects={setProjects}
               />
             </>
           )}

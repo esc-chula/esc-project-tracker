@@ -7,7 +7,7 @@ import {
   typeFilingItems,
 } from '@/src/constant/filterFiling';
 import SelectType from '../filter/selectType';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import findAllFiling from '@/src/service/filing/findAllFiling';
 import { departmentProjectItems } from '@/src/constant/filterProject';
@@ -24,16 +24,17 @@ export default function FilingMenu({
 }) {
   const { toast } = useToast();
 
-  const [departmentFiling, setDepartmentFiling] = React.useState<string>('ALL');
-  const [statusFiling, setStatusFiling] = React.useState<string>('ALL');
-  const [typeFiling, setTypeFiling] = React.useState<string>('ALL');
-  const [filings, setFilings] = React.useState<FilingType[]>([]);
-  const [prepareUpdatedDocuments, setPrepareUpdatedDocuments] = React.useState<
+  const [departmentFiling, setDepartmentFiling] = useState<string>('ALL');
+  const [statusFiling, setStatusFiling] = useState<string>('ALL');
+  const [typeFiling, setTypeFiling] = useState<string>('ALL');
+  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [prepareUpdatedDocuments, setPrepareUpdatedDocuments] = useState<
     Map<string, CreateDocumentDTO>
   >(new Map());
 
   async function fetchData() {
     try {
+      // TODO: receive filings from selectTab and filter here
       if (
         departmentFiling === 'ALL' &&
         statusFiling === 'ALL' &&
@@ -83,7 +84,7 @@ export default function FilingMenu({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchData();
   }, [departmentFiling, statusFiling, typeFiling, searchedFilingId]);
 
@@ -100,7 +101,7 @@ export default function FilingMenu({
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const createDocuments = async () => {
       if (!isUpdateMode && prepareUpdatedDocuments.size > 0) {
         let filingIdsNoUpdated: string[] = [];
@@ -139,7 +140,7 @@ export default function FilingMenu({
 
   return (
     <div className="w-full">
-      <div className="w-1/3 lg:w-1/4 grid grid-cols-3 gap-6 mb-5">
+      <div className="flex gap-6 mb-5">
         <SelectType
           title="ฝ่าย"
           items={departmentProjectItems}

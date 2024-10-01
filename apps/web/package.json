@@ -13,7 +13,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
-    "@mui/joy": "5.0.0-beta.36",
+    "@mui/joy": "5.0.0-beta.48",
     "@mui/material": "^5.16.7",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -36,7 +36,7 @@
     "embla-carousel-react": "^8.3.0",
     "embla-carousel-wheel-gestures": "8.0.0-rc05",
     "lucide-react": "^0.378.0",
-    "next": "^14.2.11",
+    "next": "^14.2.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
@@ -47,16 +47,16 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^14.2.11",
+    "@next/eslint-plugin-next": "^14.2.13",
     "@repo/eslint-config": "workspace:*",
     "@repo/tailwind-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.16.5",
-    "@types/react": "^18.3.6",
+    "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.11",
+    "tailwindcss": "^3.4.12",
     "typescript": "^5.6.2"
   }
 }

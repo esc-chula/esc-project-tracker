@@ -3,7 +3,7 @@ import ProjectMenuHeader from './projectMenuHeader';
 import NoData from '../all-projects/noData';
 import ProjectMenuItem from './projectMenuItem';
 import SelectType from '../filter/selectType';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import {
   departmentProjectItems,
   statusProjectItems,
@@ -23,24 +23,20 @@ export default function ProjectMenu({
   isAdmin: boolean;
 }) {
   const { toast } = useToast();
-  const [departmentProject, setDepartmentProject] =
-    React.useState<string>('ALL'); // department that projects belong to
-  const [statusProject, setStatusProject] = React.useState<string>('ALL'); // status of project
-  const [typeProject, setTypeProject] = React.useState<string>('ALL'); // join or not
-  const [projects, setProjects] = React.useState<Project[]>([]);
+  const [departmentProject, setDepartmentProject] = useState<string>('ALL'); // department that projects belong to
+  const [statusProject, setStatusProject] = useState<string>('ALL'); // status of project
+  const [typeProject, setTypeProject] = useState<string>('ALL'); // join or not
+  const [projects, setProjects] = useState<Project[]>([]);
 
   async function filterJoin(eachProject: Project): Promise<boolean> {
     const userId = await getUserId();
-    const result = await hasUserProj(
-      userId,
-      eachProject.id,
-    );
+    const result = await hasUserProj(userId, eachProject.id);
     return result;
   }
   async function fetchData() {
     try {
       let fetchedProject: Project[];
-
+      // TODO: receive projects from selectTab and filter here
       if (departmentProject === 'ALL' && statusProject === 'ALL') {
         // case search
         if (searchedProjectId) {
@@ -50,10 +46,7 @@ export default function ProjectMenu({
             : (fetchedProject = []);
         } else {
           // case ปกติ
-          const fetchedProjectWithLastOpen = await findAllProject();
-          fetchedProject = fetchedProjectWithLastOpen.map(
-            (project) => project.project,
-          );
+          fetchedProject = await findAllProject();
         }
       } else {
         // case search
@@ -84,10 +77,11 @@ export default function ProjectMenu({
       if (typeProject === 'ALL') {
         setProjects(fetchedProject);
       } else {
+        // TODO: use Promise.all correctly
         const filteredProjects = await Promise.all(
           fetchedProject.map(async (project) => {
             const isJoined = await filterJoin(project);
-            return (typeProject === 'JOIN') === isJoined ? project : null;
+            return (typeProject === 'JOINED') === isJoined ? project : null;
           }),
         );
         setProjects(
@@ -106,13 +100,13 @@ export default function ProjectMenu({
       }
     }
   }
-  React.useEffect(() => {
+  useEffect(() => {
     fetchData();
   }, [departmentProject, statusProject, typeProject, searchedProjectId]);
 
   return (
     <div className="w-full">
-      <div className="w-1/3 lg:w-1/4 grid grid-cols-3 gap-6 mb-5">
+      <div className="flex gap-6 mb-5">
         <SelectType
           title="ฝ่าย"
           items={departmentProjectItems}
@@ -146,7 +140,7 @@ export default function ProjectMenu({
               {projects.map((project, index) => (
                 <ProjectMenuItem
                   project={project}
-                  key={index}
+                  key={project.id}
                   index={index + 1}
                   isAdmin={isAdmin}
                 />

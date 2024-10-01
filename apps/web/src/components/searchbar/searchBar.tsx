@@ -11,21 +11,20 @@ import { InputAdornment } from '@mui/material';
 import { autocompleteStyles } from '@/src/styles/autocompleteStype';
 import { Project } from '@/src/interface/project';
 import { FilingType } from '@/src/interface/filing';
-import Link from 'next/link';
 
 export default function SearchBar({
   placeholder,
   projects,
-  Filings,
+  filings,
   projectFunc,
-  FilingFunc,
+  filingFunc,
   clearFunc,
 }: {
   placeholder: string;
   projects: Project[];
-  Filings: FilingType[];
-  projectFunc?: (project: Project | FilingType) => void;
-  FilingFunc?: (Filing: Project | FilingType) => void;
+  filings: FilingType[];
+  projectFunc?: (project: Project) => void;
+  filingFunc?: (filing: FilingType) => void;
   clearFunc?: () => void;
 }) {
   const [value, setValue] = useState<Project | FilingType | null>(null);
@@ -40,12 +39,10 @@ export default function SearchBar({
       setValue(option);
       if (projectFunc && 'reserveDate' in option) {
         projectFunc(option);
+      } else if (filingFunc && 'FilingCode' in option) {
+        filingFunc(option);
       } else {
-        if (FilingFunc) {
-          FilingFunc(option);
-        } else {
-          console.log('No function to call');
-        }
+        console.log('No function to call');
       }
     } else {
       if (clearFunc) {
@@ -58,7 +55,7 @@ export default function SearchBar({
     <div className="min-w-[40vw] max-w-full">
       <Autocomplete
         value={value}
-        options={[...Filings, ...projects]}
+        options={[...filings, ...projects]}
         noOptionsText="ไม่พบข้อมูล"
         onChange={(event, newValue) => {
           handleSelect(newValue);
@@ -66,25 +63,31 @@ export default function SearchBar({
         getOptionLabel={(option) =>
           typeof option === 'string'
             ? option
-            : `${option.projectCode || '1111-1111'}     ${option.name}`
+            : `${'FilingCode' in option ? option.projectCode + '-' + option.FilingCode : option.projectCode}     ${option.name}`
         }
         renderOption={(props, option) => (
           <li {...props}>
-            <Link
-              href={'reserveDate' in option ? `/project/${option.id}` : `#`}
-            >
-              <div className="px-2 w-full flex text-sm font-sukhumvit space-x-6">
-                {'reserveDate' in option ? (
-                  <FaFolder size={20} color="#747474" />
-                ) : (
-                  <IoDocumentText size={20} color="#747474" />
-                )}
-                <span className="w-20">
-                  {option.projectCode || '1111-1111'}
-                </span>
-                <span>{option.name}</span>
-              </div>
-            </Link>
+            {/* <Link
+              href={
+                'reserveDate' in option
+                  ? `/project/${option.id}`
+                  : `/project/${option.projectId}/${option.id}`
+              }
+            > */}
+            <div className="px-2 w-full flex text-sm font-sukhumvit space-x-6">
+              {'reserveDate' in option ? (
+                <FaFolder size={20} color="#747474" />
+              ) : (
+                <IoDocumentText size={20} color="#747474" />
+              )}
+              <span className="w-20">
+                {'FilingCode' in option
+                  ? option.projectCode + '-' + option.FilingCode
+                  : option.projectCode}
+              </span>
+              <span>{option.name}</span>
+            </div>
+            {/* </Link> */}
           </li>
         )}
         renderInput={(params) => (

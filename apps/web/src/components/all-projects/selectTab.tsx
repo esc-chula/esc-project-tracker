@@ -70,7 +70,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
         ]);
 
         setFilings(fetchedFiling);
-        setProjects(fetchedProject.map((project) => project.project));
+        setProjects(fetchedProject);
       } catch (error) {
         if (error instanceof Error) {
           toast({
@@ -109,7 +109,7 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
           <SearchPanel
             filings={filings}
             placeHolder="ค้นหาเอกสารทั้งหมด"
-            FilingFunc={(filing: FilingType | Project) => {
+            filingFunc={(filing: FilingType | Project) => {
               setSearchedFilingID(filing.id);
             }}
             clearFunc={() => {

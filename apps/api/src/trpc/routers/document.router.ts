@@ -6,6 +6,7 @@ import { optional, z } from 'zod';
 import { DocumentService } from '../../document_/document.service';
 import { DocumentActivity, DocumentStatus } from '../../constant/enum';
 import { find } from 'rxjs';
+import { TRPCError } from '@trpc/server';
 
 @Injectable()
 export class DocumentRouter {
@@ -92,9 +93,19 @@ export class DocumentRouter {
         return this.documentService.updateDocument(docId, obj);
       }),
     // Delete Document -> Document
-    deleteDocument: this.trpcService.trpc.procedure
+    deleteDocument: this.trpcService.protectedProcedure
       .input(z.object({ id: z.string() }))
-      .mutation(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.id,
+          'document',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return this.documentService.deleteDocument(input.id);
       }),
     reviewSubmission: this.trpcService.trpc.procedure

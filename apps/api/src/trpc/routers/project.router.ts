@@ -13,7 +13,7 @@ export class ProjectRouter {
 
   appRouter = this.trpcService.router({
     //Get All Project
-    findAllProject: this.trpcService.trpc.procedure.query(() => {
+    findAllProject: this.trpcService.protectedProcedure.query(() => {
       return this.projectService.findAllProjects();
     }),
 
