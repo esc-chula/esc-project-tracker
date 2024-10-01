@@ -29,11 +29,13 @@ export default function CreateDocumentAdmin({
   afterCreateDocument,
   filingId,
   projectId,
+  userId,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   afterCreateDocument: (createdDocument: DocumentType) => void;
   filingId: string;
   projectId: string;
+  userId: string;
 }) {
   const createdFormSchema = z.object({
     // Server side ไม่รู้จัก FileList ***
@@ -52,7 +54,6 @@ export default function CreateDocumentAdmin({
   const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    // TODO: change to actual userId
     try {
       const pdfFile = values.file[0];
       const folderName = `${projectId}/${filingId}`;
@@ -70,7 +71,7 @@ export default function CreateDocumentAdmin({
           pdfName: pdfName,
           docName: '',
           activity: values.activity as DocumentActivity,
-          userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+          userId,
           comment: values.comment,
         },
       });

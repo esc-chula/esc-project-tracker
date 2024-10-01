@@ -34,6 +34,7 @@ export default function FilingTimelineHeader({
   projectId,
   showCreateDocument,
   setShowCreateDocument,
+  userId,
   isAdmin = false,
 }: {
   name: string;
@@ -46,6 +47,7 @@ export default function FilingTimelineHeader({
   projectId: string;
   showCreateDocument: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
+  userId: string;
   isAdmin?: boolean;
 }) {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState<boolean>(false);
@@ -413,6 +415,7 @@ export default function FilingTimelineHeader({
               }}
               filingId={filingId}
               projectId={projectId}
+              userId={userId}
             />
           ) : isAdmin ? (
             <CreateDocumentAdmin
@@ -423,6 +426,7 @@ export default function FilingTimelineHeader({
               }}
               filingId={filingId}
               projectId={projectId}
+              userId={userId}
             />
           ) : (
             <CreateDocumentClient
@@ -436,6 +440,7 @@ export default function FilingTimelineHeader({
               status={status}
               filingId={filingId}
               projectId={projectId}
+              userId={userId}
             />
           )}
         </div>
