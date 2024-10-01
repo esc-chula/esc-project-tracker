@@ -29,6 +29,7 @@ import FilingReplyAfterSubmit from './filing-reply-after-submit';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
 import { DocumentType } from '@/src/interface/document';
 import FilingReplyAfterSubmitEditing from './filing-reply-after-submit-editing';
+import updateDocument from '@/src/service/document/updateDocument';
 
 export default function FilingReplyComment({
   isPending,
@@ -61,6 +62,8 @@ export default function FilingReplyComment({
     DocumentStatus.WAIT_FOR_SECRETARY,
   );
   const [isEditedDocument, setIsEditedDocument] = useState<boolean>(false);
+  const [isEditingAfterSubmit, setIsEditingAfterSubmit] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -107,8 +110,13 @@ export default function FilingReplyComment({
 
   const fileRef = form.register('file');
 
+  useEffect(() => {
+    if (isEditingAfterSubmit) {
+      form.setValue('comment', document?.comment);
+    }
+  }, [isEditingAfterSubmit]);
+
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    // TODO: change to actual userId
     var fileName = '';
     try {
       if (values.file[0]) {
@@ -133,23 +141,36 @@ export default function FilingReplyComment({
         fileName = pdfName;
       }
 
-      const newDocument = await createDocument({
-        document: {
-          name: newDocumentName,
-          filingId,
-          pdfName: fileName,
-          docName: '',
-          activity: DocumentActivity.REPLY,
-          status: DocumentStatus.DRAFT,
-          // TODO change to actual userId
-          userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-          detail: newDocumentDetail,
-          comment: values.comment,
-        },
-      });
-      setLatestReplyDocumentId(newDocument.id);
+      if (isEditingAfterSubmit) {
+        const updatedDocument = await updateDocument({
+          docId: document?.id || '',
+          obj: {
+            comment: values.comment,
+
+            // case ที่ไม่อัพไฟล์ใหม่
+            pdfName: values.file[0] ? fileName : document?.pdfName,
+          },
+        });
+        setDocument(updatedDocument);
+      } else {
+        const newDocument = await createDocument({
+          document: {
+            name: newDocumentName,
+            filingId,
+            pdfName: fileName,
+            docName: '',
+            activity: DocumentActivity.REPLY,
+            status: DocumentStatus.DRAFT,
+            userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+            detail: newDocumentDetail,
+            comment: values.comment,
+          },
+        });
+        setLatestReplyDocumentId(newDocument.id);
+        setDocument(newDocument);
+      }
+      setIsEditingAfterSubmit(false);
       setIsPendingSubmitted(true);
-      setDocument(newDocument);
 
       toast({
         title: 'บันทึกการตอบกลับของเอกสารสำเร็จ',
@@ -208,6 +229,7 @@ export default function FilingReplyComment({
               document={document}
               isPendingReviewed={isPendingReviewed}
               sentIsSubmitted={setIsPendingSubmitted}
+              sentIsEditingAfterSubmit={setIsEditingAfterSubmit}
             />
           )}
         </>
@@ -251,6 +273,8 @@ export default function FilingReplyComment({
                       <FileInputPanel
                         fileRef={fileRef}
                         fileList={field.value}
+                        fileName={document?.pdfName}
+                        fileType="pdf"
                       />
                       <FormMessage />
                     </FormItem>

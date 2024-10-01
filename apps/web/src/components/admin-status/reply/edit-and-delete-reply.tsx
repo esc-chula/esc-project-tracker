@@ -1,7 +1,5 @@
 'use client';
 
-// TODO ทำ toast โดยบอกรหัสของเอกสาร
-
 import { EllipsisVertical } from 'lucide-react';
 import {
   Dialog,
@@ -19,10 +17,12 @@ export default function EditAndDeleteReply({
   documentId,
   documentCode,
   sentIsSubmitted,
+  sentIsEditingAfterSubmit,
 }: {
   documentId: string;
   documentCode: string;
   sentIsSubmitted: (val: boolean) => void;
+  sentIsEditingAfterSubmit: (val: boolean) => void;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -46,6 +46,11 @@ export default function EditAndDeleteReply({
     }
   };
 
+  const handleEditButton = () => {
+    sentIsSubmitted(false);
+    sentIsEditingAfterSubmit(true);
+  };
+
   return (
     <Popover>
       <PopoverTrigger>
@@ -54,8 +59,14 @@ export default function EditAndDeleteReply({
       <PopoverContent
         side="left"
         align="start"
-        className="w-auto flex flex-col"
+        className="w-[100px] h-[100px] flex flex-col rounded-xl shadow-xl space-y-4"
       >
+        <div
+          className="flex gap-2 hover:cursor-pointer"
+          onClick={handleEditButton}
+        >
+          แก้ไข
+        </div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger className="flex gap-2">ลบ</DialogTrigger>
           <DialogContent className="max-w-sm">

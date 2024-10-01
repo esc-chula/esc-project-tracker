@@ -12,6 +12,7 @@ export default function FilingReplyAfterSubmit({
   isPendingReviewed,
   documentCode,
   sentIsSubmitted,
+  sentIsEditingAfterSubmit,
 }: {
   documentStatus: DocumentStatus;
   folderName?: string;
@@ -19,6 +20,7 @@ export default function FilingReplyAfterSubmit({
   isPendingReviewed: boolean;
   documentCode: string;
   sentIsSubmitted: (value: boolean) => void;
+  sentIsEditingAfterSubmit: (value: boolean) => void;
 }) {
   return (
     <div className="bg-lightgray rounded-xl font-sukhumvit w-full px-5 pt-5 pb-3 flex text-start flex-col space-y-3">
@@ -48,6 +50,7 @@ export default function FilingReplyAfterSubmit({
               documentCode={documentCode}
               documentId={document?.id || ''}
               sentIsSubmitted={sentIsSubmitted}
+              sentIsEditingAfterSubmit={sentIsEditingAfterSubmit}
             />
           )}
         </div>

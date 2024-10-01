@@ -6,9 +6,13 @@ import FileDisplay from '../display/fileDisplay';
 export default function FileInputPanel({
   fileRef,
   fileList,
+  fileName, // case โชว์ว่าเคยมีไฟล์ใน input
+  fileType, // case โชว์ว่าเคยมีไฟล์ใน input
 }: {
   fileRef: UseFormRegisterReturn<'file'>;
   fileList: FileList | undefined;
+  fileName?: string | null;
+  fileType?: string | null;
 }) {
   return (
     <FormControl className="flex-grow">
@@ -25,6 +29,8 @@ export default function FileInputPanel({
               </div>
             ))}
           </div>
+        ) : fileName && fileType ? (
+          <FileDisplay fileName={fileName} fileType={fileType} />
         ) : (
           <div className="h-full items-center flex">
             <ArrowUpFromLine className="h-10 w-10 text-gray-400 " />

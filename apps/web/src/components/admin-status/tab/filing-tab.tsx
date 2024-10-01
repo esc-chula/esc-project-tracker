@@ -136,26 +136,27 @@ export default function FilingTab({
     fetchFiling();
   }, [tabsValue, selectedType, selectedDepartment]);
 
-  // sort by date
+  // sort date ( createdAt pendind)
   useEffect(() => {
-    if (isSortDateDESC) {
-      setFilingWithDocument((prev) =>
-        prev.sort(
-          (a, b) =>
-            new Date(a.document.createdAt).getTime() -
-            new Date(b.document.createdAt).getTime(),
-        ),
-      );
-    } else {
-      setFilingWithDocument((prev) =>
-        prev.sort(
-          (a, b) =>
-            new Date(b.document.createdAt).getTime() -
-            new Date(a.document.createdAt).getTime(),
-        ),
-      );
+    const sortedFilings = [...filingWithDocument].sort((a, b) =>
+      isSortDateDESC
+        ? new Date(b.document.createdAt).getTime() -
+          new Date(a.document.createdAt).getTime()
+        : new Date(a.document.createdAt).getTime() -
+          new Date(b.document.createdAt).getTime(),
+    );
+
+    const isDifferent = filingWithDocument.some(
+      (filing, index) =>
+        filing.document.createdAt !== sortedFilings[index].document.createdAt,
+    );
+
+    if (isDifferent) {
+      setFilingWithDocument(sortedFilings);
     }
   }, [isSortDateDESC, filingWithDocument]);
+
+  const selectedSortValue = isSortDateDESC ? '0' : '1';
 
   // กรณีที่มีการ review แล้ว เอาออกจาก list
   useEffect(() => {
@@ -171,8 +172,6 @@ export default function FilingTab({
       setFilings(newFilings);
     }
   }, [reviewedFilingId]);
-
-  const selectedSortValue = isSortDateDESC ? '0' : '1';
 
   return (
     <div className="border-lightgray border-2 rounded-xl w-[30vw] h-[80vh] pt-3 flex flex-col">
