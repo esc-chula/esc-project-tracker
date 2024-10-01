@@ -3,14 +3,15 @@ import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
 import SearchPanel from '../../all-projects/searchPanel';
 import { FilingType } from '@/src/interface/filing';
 import { Project } from '@/src/interface/project';
-import RecentlyFiling from './recently-filing';
 import SelectType from '../../filter/selectType';
 import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import { FilingStatus } from '@/src/constant/enum';
-import FilingNotFound from './filing-tab-not-found';
 import FilingTabShow from './filing-tab-show';
+import { FilingsWithDocument } from '@/src/types/filing';
+import { toast } from '../../ui/use-toast';
+import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -52,19 +53,27 @@ export default function FilingTab({
   const [tabsValue, setTabsValue] = useState<number>(0);
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabsValue(newValue);
+    setIsSortDateDESC(true);
   };
-  const [TargetFilings, setTargetFilings] = useState<FilingType[]>([]);
-
   const [selectedType, setSelectedType] = useState<string>('ALL');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
   const [selectedFilingId, setSelectedFilingId] = useState<string>('');
   const [isFetched, setIsFetched] = useState<boolean>(false);
+  const [filingWithDocument, setFilingWithDocument] = useState<
+    FilingsWithDocument[]
+  >([]);
+  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [isSortDateDESC, setIsSortDateDESC] = useState<boolean>(true);
 
   useEffect(() => {
     sentSelectedFilingIdToParent(selectedFilingId);
   }, [selectedFilingId]);
 
+  // get filings and documents
   useEffect(() => {
+    setFilingWithDocument([]);
+    setFilings([]);
+
     const newSelectedStatus =
       tabsValue === 0
         ? FilingStatus.WAIT_FOR_SECRETARY
@@ -76,13 +85,49 @@ export default function FilingTab({
       setIsFetched(false);
       try {
         const filings = await findFilingsWithFilter(
-          newSelectedStatus || 'ALL',
+          newSelectedStatus,
           selectedType,
           selectedDepartment,
         );
-        setTargetFilings(filings || []);
+
+        const filingsArray: FilingType[] = [];
+        const filingsWithDocumentArray: FilingsWithDocument[] = [];
+
+        await Promise.all(
+          (filings || []).map(async (filing) => {
+            try {
+              const pendingDocuments =
+                await findLatestPendingDocumentByFilingId(filing.id);
+
+              if (pendingDocuments) {
+                filingsWithDocumentArray.push({
+                  filing,
+                  document: pendingDocuments,
+                });
+                filingsArray.push(filing);
+              }
+            } catch (err) {
+              if (err instanceof Error) {
+                toast({
+                  title: `ดึงข้อมูลเอกสารไม่สำเร็จ`,
+                  description: err.message,
+                  isError: true,
+                });
+              }
+            }
+          }),
+        );
+
+        setFilingWithDocument(filingsWithDocumentArray);
+        setFilings(filingsArray);
       } catch (err) {
-        console.log(err);
+        if (err instanceof Error) {
+          toast({
+            title: `ดึงข้อมูลเอกสารไม่สำเร็จ`,
+            description: err.message,
+            isError: true,
+          });
+        }
       } finally {
         setIsFetched(true);
       }
@@ -91,14 +136,43 @@ export default function FilingTab({
     fetchFiling();
   }, [tabsValue, selectedType, selectedDepartment]);
 
+  // sort by date
+  useEffect(() => {
+    if (isSortDateDESC) {
+      setFilingWithDocument((prev) =>
+        prev.sort(
+          (a, b) =>
+            new Date(a.document.createdAt).getTime() -
+            new Date(b.document.createdAt).getTime(),
+        ),
+      );
+    } else {
+      setFilingWithDocument((prev) =>
+        prev.sort(
+          (a, b) =>
+            new Date(b.document.createdAt).getTime() -
+            new Date(a.document.createdAt).getTime(),
+        ),
+      );
+    }
+  }, [isSortDateDESC, filingWithDocument]);
+
+  // กรณีที่มีการ review แล้ว เอาออกจาก list
   useEffect(() => {
     if (reviewedFilingId) {
-      const newFilings = TargetFilings.filter(
+      const newFilingsWithDocuments = filingWithDocument.filter(
+        (filingWithDoc) => filingWithDoc.filing.id !== reviewedFilingId,
+      );
+
+      const newFilings = filings.filter(
         (filing) => filing.id !== reviewedFilingId,
       );
-      setTargetFilings(newFilings);
+      setFilingWithDocument(newFilingsWithDocuments);
+      setFilings(newFilings);
     }
   }, [reviewedFilingId]);
+
+  const selectedSortValue = isSortDateDESC ? '0' : '1';
 
   return (
     <div className="border-lightgray border-2 rounded-xl w-[30vw] h-[80vh] pt-3 flex flex-col">
@@ -155,13 +229,26 @@ export default function FilingTab({
         </Box>
       </div>
       <div className="w-full mt-5 pl-5 flex flex-col space-y-5">
-        <div className="w-full flex flex-row">
+        <div className="w-full flex flex-row space-x-4 pr-5 items-center">
           <SearchPanel
-            filings={TargetFilings}
+            filings={filings}
             placeHolder="รหัสเอกสาร"
             filingFunc={(filing: FilingType | Project) => {}}
           />
-          <RecentlyFiling />
+          <SelectType
+            title="ล่าสุด"
+            items={[
+              { value: '0', label: 'ล่าสุด' },
+              {
+                value: '1',
+                label: 'เก่าสุด',
+              },
+            ]}
+            sendValue={(value: string) => {
+              setIsSortDateDESC(value === '0');
+            }}
+            selectedValue={selectedSortValue}
+          />
         </div>
         <div className="flex flex-row space-x-5 pr-5">
           <SelectType
@@ -177,39 +264,19 @@ export default function FilingTab({
         </div>
       </div>
       <div className="flex-grow overflow-y-scroll no-scrollbar">
-        <CustomTabPanel value={tabsValue} index={0}>
-          {isFetched && (
-            <FilingTabShow
-              tabValue={0}
-              filings={TargetFilings}
-              sentSelectedFilingIdToParent={(id: string) => {
-                setSelectedFilingId(id);
-              }}
-            />
-          )}
-        </CustomTabPanel>
-        <CustomTabPanel value={tabsValue} index={1}>
-          {isFetched && (
-            <FilingTabShow
-              tabValue={1}
-              filings={TargetFilings}
-              sentSelectedFilingIdToParent={(id: string) => {
-                setSelectedFilingId(id);
-              }}
-            />
-          )}
-        </CustomTabPanel>
-        <CustomTabPanel value={tabsValue} index={2}>
-          {isFetched && (
-            <FilingTabShow
-              tabValue={2}
-              filings={TargetFilings}
-              sentSelectedFilingIdToParent={(id: string) => {
-                setSelectedFilingId(id);
-              }}
-            />
-          )}
-        </CustomTabPanel>
+        {[0, 1, 2].map((i) => (
+          <CustomTabPanel value={tabsValue} index={i} key={i}>
+            {isFetched && (
+              <FilingTabShow
+                tabValue={i}
+                filingWithPendingDocuments={filingWithDocument}
+                sentSelectedFilingIdToParent={(id: string) => {
+                  setSelectedFilingId(id);
+                }}
+              />
+            )}
+          </CustomTabPanel>
+        ))}
       </div>
     </div>
   );

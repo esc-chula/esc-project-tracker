@@ -3,15 +3,16 @@ import { FilingType } from '@/src/interface/filing';
 import FilingTabShowDetail from './filing-tab-show-detail';
 import FilingTabNotFound from './filing-tab-not-found';
 import { useState, useEffect } from 'react';
+import { FilingsWithDocument } from '@/src/types/filing';
 
 export default function FilingTabShow({
   tabValue,
-  filings,
+  filingWithPendingDocuments,
   sentSelectedFilingIdToParent,
 }: {
   tabValue: number;
-  filings: FilingType[];
   isContinue?: boolean;
+  filingWithPendingDocuments: FilingsWithDocument[];
   sentSelectedFilingIdToParent?: (id: string) => void;
 }) {
   const [selectedFilingId, setSelectedFilingId] = useState<string>('');
@@ -22,17 +23,17 @@ export default function FilingTabShow({
     }
   }, [selectedFilingId]);
 
-  if (filings.length === 0) {
+  if (filingWithPendingDocuments.length === 0) {
     return <FilingTabNotFound value={tabValue} />;
   }
   return (
     <div className="w-full h-full flex flex-col font-sukhumvit pt-2">
-      {filings.map((filing, index) => (
+      {filingWithPendingDocuments.map((filingWithDocument, index) => (
         <FilingTabShowDetail
           key={index}
-          filing={filing}
+          filingWithPendingDocument={filingWithDocument}
           sentSelectedFilingIdToParent={setSelectedFilingId}
-          isActive={selectedFilingId === filing.id}
+          isActive={selectedFilingId === filingWithDocument.filing.id}
           setActiveFiling={setSelectedFilingId}
         />
       ))}
