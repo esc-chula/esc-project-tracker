@@ -18,11 +18,10 @@ import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
 import { DocumentActivity } from '@/src/constant/enum';
-import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
-import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
 import { DocumentType } from '@/src/interface/document';
-import { zodDocumentAdminFile } from '@/src/constant/schema';
+import { createdDocumentAdminSchema } from '@/src/constant/schema';
+import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';
 
 export default function CreateDocumentAdmin({
   setShowCreateDocument,
@@ -37,53 +36,33 @@ export default function CreateDocumentAdmin({
   projectId: string;
   userId: string;
 }) {
-  const createdFormSchema = z.object({
-    // Server side ไม่รู้จัก FileList ***
-    file: zodDocumentAdminFile,
-    activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
-    comment: z.string().optional(),
+  const form = useForm<z.infer<typeof createdDocumentAdminSchema>>({
+    resolver: zodResolver(createdDocumentAdminSchema),
+    defaultValues: {},
   });
-
-  const form = useForm<z.infer<typeof createdFormSchema>>({
-    resolver: zodResolver(createdFormSchema),
-    defaultValues: {
-      activity: DocumentActivity.REPLY,
-    },
-  });
-
   const fileRef = form.register('file');
+  const activityWatch = form.watch('activity');
 
-  async function onSubmit(values: z.infer<typeof createdFormSchema>) {
+  async function onSubmit(values: z.infer<typeof createdDocumentAdminSchema>) {
     try {
-      const pdfFile = values.file[0];
-      const folderName = `${projectId}/${filingId}`;
+      if (values.activity === DocumentActivity.REPLY)
+        values.detail = 'ตอบกลับเอกสาร';
+      const newDocument = await submitCreatedFormSchema(
+        { ...values, detail: values.detail ?? 'ตอบกลับเอกสาร' },
+        projectId,
+        filingId,
+        userId,
+      );
 
-      const pdfName = pdfFile
-        ? await uploadFileToS3({ file: pdfFile, folderName })
-        : '';
-
-      if (pdfFile && pdfName === '') throw new Error('Upload file failed');
-
-      const newDocument = await createDocument({
-        document: {
-          name: 'ตอบกลับเอกสาร',
-          filingId,
-          pdfName: pdfName,
-          docName: '',
-          activity: values.activity as DocumentActivity,
-          userId,
-          comment: values.comment,
-        },
-      });
       afterCreateDocument(newDocument);
       toast({
-        title: 'สร้างเอกสารตอบกลับสำเร็จ',
-        description: `สร้างเอกสารตอบกลับสำเร็จ`,
+        title: 'สร้างเอกสารสำเร็จ',
+        description: `สร้างเอกสารสำเร็จ`,
       });
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: 'สร้างเอกสารตอบกลับไม่สำเร็จ',
+          title: 'สร้างเอกสารไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -108,17 +87,34 @@ export default function CreateDocumentAdmin({
                     <FormLabel className="font-bold text-lg">
                       กิจกรรม<span className="text-red">*</span>
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={DocumentActivity.REPLY}
-                      disabled
-                    >
+                    <Select onValueChange={field.onChange}>
                       <ActivityPanel isAdmin />
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              {activityWatch === DocumentActivity.EDIT ? (
+                <FormField
+                  control={form.control}
+                  name="detail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold text-lg block">
+                        {'รายละเอียดเอกสาร (ชื่อเรื่องที่ระบุในเอกสาร)'}
+                      </FormLabel>
+                      <FormControl>
+                        <input
+                          placeholder="ใส่หัวข้อเอกสาร"
+                          {...field}
+                          className="border-2 rounded-lg p-1 px-4 w-full flex items-center"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : null}
             </div>
             <div className="w-full flex-1">
               <FormField
@@ -136,25 +132,48 @@ export default function CreateDocumentAdmin({
               />
             </div>
           </div>
-          <FormField
-            control={form.control}
-            name="comment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg block">
-                  ความคิดเห็น
-                </FormLabel>
-                <FormControl>
-                  <textarea
-                    placeholder="เพิ่มความคิดเห็น"
-                    {...field}
-                    className="border-2 rounded-lg p-4 w-full h-[20vh] resize-none"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex w-full justify-between space-x-5">
+            {activityWatch === DocumentActivity.EDIT ? (
+              <FormField
+                control={form.control}
+                name="note"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="font-bold text-lg block">
+                      หมายเหตุ
+                    </FormLabel>
+                    <FormControl>
+                      <textarea
+                        placeholder="หมายเหตุ"
+                        {...field}
+                        className="border-2 rounded-lg p-4 w-full h-[20vh] resize-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
+            <FormField
+              control={form.control}
+              name="comment"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="font-bold text-lg block">
+                    ความคิดเห็น
+                  </FormLabel>
+                  <FormControl>
+                    <textarea
+                      placeholder="เพิ่มความคิดเห็น"
+                      {...field}
+                      className="border-2 rounded-lg p-4 w-full h-[20vh] resize-none"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <ButtonPanel
             isDisabled={form.formState.isSubmitting}
             setShowCreateDocument={setShowCreateDocument}
