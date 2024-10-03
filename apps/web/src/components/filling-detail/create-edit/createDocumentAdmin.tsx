@@ -102,6 +102,7 @@ export default function CreateDocumentAdmin({
                     <FormItem>
                       <FormLabel className="font-bold text-lg block">
                         {'รายละเอียดเอกสาร (ชื่อเรื่องที่ระบุในเอกสาร)'}
+                        <span className="text-red">*</span>
                       </FormLabel>
                       <FormControl>
                         <input
@@ -124,6 +125,9 @@ export default function CreateDocumentAdmin({
                   <FormItem className="h-full flex flex-col">
                     <FormLabel className="font-bold text-lg ">
                       อัปโหลดเอกสาร
+                      {activityWatch === DocumentActivity.EDIT ? (
+                        <span className="text-red">*</span>
+                      ) : null}
                     </FormLabel>
                     <FileInputPanel fileRef={fileRef} fileList={field.value} />
                     <FormMessage />
