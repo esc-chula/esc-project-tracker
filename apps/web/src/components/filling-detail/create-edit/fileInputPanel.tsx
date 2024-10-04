@@ -26,7 +26,7 @@ export default function FileInputPanel({
             ))}
           </div>
         ) : (
-          <div className="h-full items-center flex">
+          <div className="h-full items-center flex py-4">
             <ArrowUpFromLine className="h-10 w-10 text-gray-400 " />
           </div>
         )}

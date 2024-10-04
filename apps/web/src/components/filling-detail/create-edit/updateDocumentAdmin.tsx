@@ -17,33 +17,25 @@ import { Select } from '../../ui/select';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
-import { getFileType } from '@/src/lib/utils';
 import { DocumentType } from '@/src/interface/document';
 import { DocumentActivity } from '@/src/constant/enum';
 import { toast } from '../../ui/use-toast';
-import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
-import createDocument from '@/src/service/document/createDocument';
-import { zodDocumentFiles } from '@/src/constant/schema';
+import { createdFormSchema } from '@/src/constant/schema';
+import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';
 
 export default function UpdateDocumentAdmin({
   setShowCreateDocument,
   afterCreateDocument,
   filingId,
   projectId,
+  userId,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   afterCreateDocument: (createdDocument: DocumentType) => void;
   filingId: string;
   projectId: string;
+  userId: string;
 }) {
-  const createdFormSchema = z.object({
-    file: zodDocumentFiles,
-    activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
-    detail: z.string().min(1, { message: 'กรุณากรอกรายละเอียด' }),
-    note: z.string().optional(),
-    comment: z.string().optional(),
-  });
-
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
     defaultValues: {
@@ -55,40 +47,14 @@ export default function UpdateDocumentAdmin({
   const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    // TODO: change to actual userId
     try {
-      const swap = getFileType(values.file[0]) !== 'pdf';
-      const pdfFile = values.file[swap ? 1 : 0];
-      const docFile = values.file[swap ? 0 : 1];
-      const folderName = `${projectId}/${filingId}`;
+      const newDocument = await submitCreatedFormSchema(
+        values,
+        projectId,
+        filingId,
+        userId,
+      );
 
-      const [pdfName, docName] = await Promise.all([
-        uploadFileToS3({
-          file: pdfFile,
-          folderName,
-        }),
-        docFile &&
-          uploadFileToS3({
-            file: docFile,
-            folderName,
-          }),
-      ]);
-
-      if (!pdfName || (docFile && !docName))
-        throw new Error('Upload file failed');
-
-      const newDocument = await createDocument({
-        document: {
-          name: values.detail,
-          filingId,
-          pdfName: pdfName,
-          docName: docName ?? '',
-          activity: values.activity as DocumentActivity,
-          userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-          detail: values.note,
-          comment: values.comment,
-        },
-      });
       afterCreateDocument(newDocument);
       toast({
         title: 'แก้ไขเอกสารสำเร็จ',

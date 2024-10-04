@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { projectTypeMap } from './Map';
 import { getFileType } from '../lib/utils';
+import { DocumentActivity } from './enum';
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString());
 
@@ -56,12 +57,24 @@ export const newProjectFormSchema = z.object({
     }),
 });
 
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 10; // 10MB
+
 export const zodDocumentAdminFile = (
   typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
-).refine(
-  (file) => file?.length == 0 || getFileType(file[0]) === 'pdf',
-  'เลือกได้แค่ไฟล์ที่มีนามสกุล .pdf ไฟล์เดียว',
-);
+)
+  .refine((file) => file?.length <= 2, 'เลือกได้มากสุด 2 ไฟล์')
+  .refine(
+    (file) =>
+      file.length === 0 ||
+      getFileType(file[0]) === 'pdf' ||
+      getFileType(file[1]) === 'pdf',
+    'กรุณาเลือกไฟล์ที่มีนามสกุล .pdf อย่างน้อย 1 ไฟล์',
+  )
+  .refine(
+    (file: FileList) =>
+      Array.from(file).every((f) => f.size <= MAX_UPLOAD_SIZE),
+    'ไฟล์ใหญ่เกิน 10MB',
+  );
 
 export const zodDocumentFiles = (
   typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
@@ -71,4 +84,40 @@ export const zodDocumentFiles = (
   .refine(
     (file) => getFileType(file[0]) === 'pdf' || getFileType(file[1]) === 'pdf',
     'กรุณาเลือกไฟล์ที่มีนามสกุล .pdf อย่างน้อย 1 ไฟล์',
+  )
+  .refine(
+    (file: FileList) =>
+      Array.from(file).every((f) => f.size <= MAX_UPLOAD_SIZE),
+    'ไฟล์ใหญ่เกิน 10MB',
+  );
+
+export const createdFormSchema = z.object({
+  file: zodDocumentFiles,
+  activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
+  detail: z.string().min(1, { message: 'กรุณากรอกรายละเอียด' }),
+  note: z.string().optional(),
+  comment: z.string().optional(),
+});
+
+export const createdDocumentAdminSchema = z
+  .object({
+    file: zodDocumentAdminFile,
+    activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
+    detail: z.string().optional(),
+    note: z.string().optional(),
+    comment: z.string().optional(),
+  })
+  .refine(
+    (values) =>
+      values.activity === DocumentActivity.REPLY ||
+      (values.activity === DocumentActivity.EDIT &&
+        values.detail &&
+        values.detail.trim().length > 0),
+    { message: 'กรุณากรอกรายละเอียด', path: ['detail'] },
+  )
+  .refine(
+    (values) =>
+      values.activity === DocumentActivity.REPLY ||
+      (values.activity === DocumentActivity.EDIT && values.file.length > 0),
+    { message: 'กรุณาเลือกไฟล์', path: ['file'] },
   );
