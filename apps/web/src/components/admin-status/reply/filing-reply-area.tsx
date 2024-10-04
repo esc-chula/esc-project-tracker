@@ -92,27 +92,6 @@ export default function FilingReplyArea({
     }
   }, [selectedFilingId]);
 
-  useEffect(() => {
-    const fetchOwnerDetail = async () => {
-      try {
-        const data = await findUserByUserId(filingDetail?.userId || '');
-        setOwnerDetail(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          toast({
-            title: `ดึงข้อมูลของเจ้าของเอกสาร ${documentCode} ไม่สำเร็จ`,
-            description: err.message,
-            isError: true,
-          });
-        }
-      }
-    };
-    if (filingDetail?.userId) {
-      fetchOwnerDetail();
-    }
-    setIsFetched(true);
-  }, [filingDetail]);
-
   if (!isFetched) {
     return;
   }
