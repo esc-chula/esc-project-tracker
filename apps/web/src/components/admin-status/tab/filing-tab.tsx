@@ -68,11 +68,9 @@ export default function FilingTab({
 
   // get filings and documents
   useEffect(() => {
-    // Reset the state before fetching new data
     setFilingWithDocument([]);
     setFilings([]);
 
-    // Determine the selected status based on tabsValue
     const newSelectedStatus =
       tabsValue === 0
         ? FilingStatus.WAIT_FOR_SECRETARY
@@ -173,7 +171,7 @@ export default function FilingTab({
   }, [reviewedFilingId]);
 
   return (
-    <div className="border-lightgray border-2 rounded-xl w-[30vw] h-[80vh] pt-3 flex flex-col">
+    <div className="border-lightgray border-2 rounded-xl w-[25vw] h-[80vh] pt-3 flex flex-col">
       <div className="w-full flex justify-center border-b-lightgray border-b-2">
         <Box sx={{ borderColor: 'divider' }}>
           <Tabs

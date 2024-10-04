@@ -10,10 +10,10 @@ export default function NameDateStatus({
   activity: string;
 }) {
   return (
-    <div className="w-full flex flex-row justify-between">
-      <div className="flex flex-row items-center space-x-4">
+    <div className="w-full flex flex-row justify-between ">
+      <div className="flex flex-row items-center space-x-4 w-[50%]">
         {children}
-        <div className="w-[60%]">
+        <div className="w-[100%] ">
           <div className="border-black font-bold overflow-hidden whitespace-nowrap text-ellipsis text-xl">
             {title}
           </div>

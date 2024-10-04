@@ -18,7 +18,7 @@ export default function FilingReplyDetail({
   documentDetail: DocumentType | null;
 }) {
   return (
-    <div className="w-full bg-lightgray p-5 rounded-xl space-y-2">
+    <div className="w-full bg-lightgray p-5 rounded-xl space-y-2 ">
       <NameDateStatus
         title={owner}
         date={'ส่งเอกสารเมื่อ ' + convertDate(documentDetail?.createdAt || '')}
