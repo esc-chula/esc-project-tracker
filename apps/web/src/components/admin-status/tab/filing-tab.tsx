@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
+import { ReactNode, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import SearchPanel from '../../all-projects/searchPanel';
 import { FilingType } from '@/src/interface/filing';
 import { Project } from '@/src/interface/project';
@@ -44,10 +44,12 @@ function a11yProps(index: number) {
 }
 
 export default function FilingTab({
-  sentSelectedFilingIdToParent,
+  setSelectedFilingId,
+  selectedFilingId,
   reviewedFilingId,
 }: {
-  sentSelectedFilingIdToParent: (id: string) => void;
+  setSelectedFilingId: (id: string) => void;
+  selectedFilingId: string;
   reviewedFilingId: string;
 }) {
   const [tabsValue, setTabsValue] = useState<number>(0);
@@ -57,7 +59,6 @@ export default function FilingTab({
   };
   const [selectedType, setSelectedType] = useState<string>('ALL');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
-  const [selectedFilingId, setSelectedFilingId] = useState<string>('');
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [filingWithDocument, setFilingWithDocument] = useState<
     FilingsWithDocument[]
@@ -65,15 +66,13 @@ export default function FilingTab({
   const [filings, setFilings] = useState<FilingType[]>([]);
   const [isSortDateDESC, setIsSortDateDESC] = useState<boolean>(true);
 
-  useEffect(() => {
-    sentSelectedFilingIdToParent(selectedFilingId);
-  }, [selectedFilingId]);
-
   // get filings and documents
   useEffect(() => {
+    // Reset the state before fetching new data
     setFilingWithDocument([]);
     setFilings([]);
 
+    // Determine the selected status based on tabsValue
     const newSelectedStatus =
       tabsValue === 0
         ? FilingStatus.WAIT_FOR_SECRETARY
@@ -81,56 +80,53 @@ export default function FilingTab({
           ? FilingStatus.RETURNED
           : FilingStatus.APPROVED;
 
-    const fetchFiling = async () => {
+    const fetchFiling = () => {
       setIsFetched(false);
-      try {
-        const filings = await findFilingsWithFilter(
-          newSelectedStatus,
-          selectedType,
-          selectedDepartment,
-        );
 
-        const filingsArray: FilingType[] = [];
-        const filingsWithDocumentArray: FilingsWithDocument[] = [];
+      findFilingsWithFilter(newSelectedStatus, selectedType, selectedDepartment)
+        .then((filings) => {
+          const filingsArray: FilingType[] = [];
+          const filingsWithDocumentArray: FilingsWithDocument[] = [];
 
-        await Promise.all(
-          (filings || []).map(async (filing) => {
-            try {
-              const pendingDocuments =
-                await findLatestPendingDocumentByFilingId(filing.id);
-
-              if (pendingDocuments) {
-                filingsWithDocumentArray.push({
-                  filing,
-                  document: pendingDocuments,
-                });
-                filingsArray.push(filing);
-              }
-            } catch (err) {
-              if (err instanceof Error) {
-                toast({
-                  title: `ดึงข้อมูลเอกสารไม่สำเร็จ`,
-                  description: err.message,
-                  isError: true,
-                });
-              }
-            }
-          }),
-        );
-
-        setFilingWithDocument(filingsWithDocumentArray);
-        setFilings(filingsArray);
-      } catch (err) {
-        if (err instanceof Error) {
-          toast({
-            title: `ดึงข้อมูลเอกสารไม่สำเร็จ`,
-            description: err.message,
-            isError: true,
+          return Promise.all(
+            (filings || []).map((filing) =>
+              findLatestPendingDocumentByFilingId(filing.id)
+                .then((pendingDocuments) => {
+                  if (pendingDocuments) {
+                    filingsWithDocumentArray.push({
+                      filing,
+                      document: pendingDocuments,
+                    });
+                    filingsArray.push(filing);
+                  }
+                })
+                .catch((err) => {
+                  if (err instanceof Error) {
+                    toast({
+                      title: 'ดึงข้อมูลเอกสารไม่สำเร็จ',
+                      description: err.message,
+                      isError: true,
+                    });
+                  }
+                }),
+            ),
+          ).then(() => {
+            setFilingWithDocument(filingsWithDocumentArray);
+            setFilings(filingsArray);
           });
-        }
-      } finally {
-        setIsFetched(true);
-      }
+        })
+        .catch((err) => {
+          if (err instanceof Error) {
+            toast({
+              title: 'ดึงข้อมูลเอกสารไม่สำเร็จ',
+              description: err.message,
+              isError: true,
+            });
+          }
+        })
+        .finally(() => {
+          setIsFetched(true);
+        });
     };
 
     fetchFiling();
@@ -156,7 +152,10 @@ export default function FilingTab({
     }
   }, [isSortDateDESC, filingWithDocument]);
 
-  const selectedSortValue = isSortDateDESC ? '0' : '1';
+  const selectedSortValue = useMemo(
+    () => (isSortDateDESC ? '0' : '1'),
+    [isSortDateDESC],
+  );
 
   // กรณีที่มีการ review แล้ว เอาออกจาก list
   useEffect(() => {
@@ -269,9 +268,8 @@ export default function FilingTab({
               <FilingTabShow
                 tabValue={i}
                 filingWithPendingDocuments={filingWithDocument}
-                sentSelectedFilingIdToParent={(id: string) => {
-                  setSelectedFilingId(id);
-                }}
+                setSelectedFilingId={setSelectedFilingId}
+                selectedFilingId={selectedFilingId}
               />
             )}
           </CustomTabPanel>

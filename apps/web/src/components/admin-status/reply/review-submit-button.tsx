@@ -15,7 +15,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from '../../ui/select';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import reviewSubmission from '@/src/service/document/reviewSubmission';
 import { toast } from '../../ui/use-toast';
 import { DocumentStatus } from '@/src/constant/enum';
@@ -33,14 +33,13 @@ export default function ReviewSubmitButton({
 }) {
   const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsDisabled(!isSubmitted);
+  const isDisabled = useMemo(() => {
     if (isSubmitting) {
-      setIsDisabled(true);
+      return true;
     }
+    return !isSubmitted;
   }, [isSubmitted, isSubmitting]);
 
   const reviewDocument = async () => {

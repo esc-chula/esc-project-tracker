@@ -10,13 +10,15 @@ import { FilingsWithDocument } from '@/src/types/filing';
 
 export default function FilingTabShowDetail({
   filingWithPendingDocument,
-  sentSelectedFilingIdToParent,
+  selectedFilingId,
+  setSelectedFilingId,
   isActive,
   setActiveFiling,
 }: {
   filingWithPendingDocument: FilingsWithDocument;
-  sentSelectedFilingIdToParent?: (id: string) => void;
   isActive: boolean;
+  selectedFilingId: string;
+  setSelectedFilingId: (id: string) => void;
   setActiveFiling: (id: string) => void;
 }) {
   const [projectName, setProjectName] = useState<string | undefined>(undefined);
@@ -60,7 +62,7 @@ export default function FilingTabShowDetail({
         isActive ? 'bg-orange-50' : ''
       }`}
       onClick={() => {
-        sentSelectedFilingIdToParent?.(filing?.id || '');
+        setSelectedFilingId(filing?.id || '');
         setActiveFiling(filing?.id || '');
       }}
     >

@@ -1,5 +1,4 @@
 'use client';
-import { FilingType } from '@/src/interface/filing';
 import FilingTabShowDetail from './filing-tab-show-detail';
 import FilingTabNotFound from './filing-tab-not-found';
 import { useState, useEffect } from 'react';
@@ -8,21 +7,14 @@ import { FilingsWithDocument } from '@/src/types/filing';
 export default function FilingTabShow({
   tabValue,
   filingWithPendingDocuments,
-  sentSelectedFilingIdToParent,
+  selectedFilingId,
+  setSelectedFilingId,
 }: {
   tabValue: number;
-  isContinue?: boolean;
   filingWithPendingDocuments: FilingsWithDocument[];
-  sentSelectedFilingIdToParent?: (id: string) => void;
+  selectedFilingId: string;
+  setSelectedFilingId: (id: string) => void;
 }) {
-  const [selectedFilingId, setSelectedFilingId] = useState<string>('');
-
-  useEffect(() => {
-    if (selectedFilingId) {
-      sentSelectedFilingIdToParent?.(selectedFilingId);
-    }
-  }, [selectedFilingId]);
-
   if (filingWithPendingDocuments.length === 0) {
     return <FilingTabNotFound value={tabValue} />;
   }
@@ -32,7 +24,8 @@ export default function FilingTabShow({
         <FilingTabShowDetail
           key={index}
           filingWithPendingDocument={filingWithDocument}
-          sentSelectedFilingIdToParent={setSelectedFilingId}
+          setSelectedFilingId={setSelectedFilingId}
+          selectedFilingId={selectedFilingId}
           isActive={selectedFilingId === filingWithDocument.filing.id}
           setActiveFiling={setSelectedFilingId}
         />

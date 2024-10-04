@@ -30,6 +30,7 @@ import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatest
 import { DocumentType } from '@/src/interface/document';
 import FilingReplyAfterSubmitEditing from './filing-reply-after-submit-editing';
 import updateDocument from '@/src/service/document/updateDocument';
+import { getUserId } from '@/src/service/auth';
 
 export default function FilingReplyComment({
   isPending,
@@ -153,6 +154,7 @@ export default function FilingReplyComment({
         });
         setDocument(updatedDocument);
       } else {
+        //const userId = await getUserId();
         const newDocument = await createDocument({
           document: {
             name: newDocumentName,
@@ -228,8 +230,8 @@ export default function FilingReplyComment({
               folderName={`${projectId}/${filingId}`}
               document={document}
               isPendingReviewed={isPendingReviewed}
-              sentIsSubmitted={setIsPendingSubmitted}
-              sentIsEditingAfterSubmit={setIsEditingAfterSubmit}
+              setIsSubmitted={setIsPendingSubmitted}
+              setIsEditingAfterSubmit={setIsEditingAfterSubmit}
             />
           )}
         </>

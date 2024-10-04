@@ -10,7 +10,8 @@ export default function FilingsSection() {
   return (
     <div className="pl-15 overflow flex flex-row">
       <FilingTab
-        sentSelectedFilingIdToParent={(id: string) => setSelectedFilingId(id)}
+        setSelectedFilingId={setSelectedFilingId}
+        selectedFilingId={selectedFilingId}
         reviewedFilingId={reviewedFilingId}
       />
       <FilingReplyArea

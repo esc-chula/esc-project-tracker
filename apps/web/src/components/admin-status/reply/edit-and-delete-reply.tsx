@@ -16,13 +16,13 @@ import deleteDocument from '@/src/service/document/deleteDocument';
 export default function EditAndDeleteReply({
   documentId,
   documentCode,
-  sentIsSubmitted,
-  sentIsEditingAfterSubmit,
+  setIsSubmitted,
+  setIsEditingAfterSubmit,
 }: {
   documentId: string;
   documentCode: string;
-  sentIsSubmitted: (val: boolean) => void;
-  sentIsEditingAfterSubmit: (val: boolean) => void;
+  setIsSubmitted: (val: boolean) => void;
+  setIsEditingAfterSubmit: (val: boolean) => void;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -34,7 +34,7 @@ export default function EditAndDeleteReply({
         description: `การตอบกลับของเอกสาร ${documentCode} ถูกลบสำเร็จ`,
         isError: false,
       });
-      sentIsSubmitted(false);
+      setIsSubmitted(false);
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -47,8 +47,8 @@ export default function EditAndDeleteReply({
   };
 
   const handleEditButton = () => {
-    sentIsSubmitted(false);
-    sentIsEditingAfterSubmit(true);
+    setIsSubmitted(false);
+    setIsEditingAfterSubmit(true);
   };
 
   return (

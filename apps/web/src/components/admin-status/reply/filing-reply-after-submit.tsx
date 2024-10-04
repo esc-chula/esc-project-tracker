@@ -11,16 +11,16 @@ export default function FilingReplyAfterSubmit({
   document,
   isPendingReviewed,
   documentCode,
-  sentIsSubmitted,
-  sentIsEditingAfterSubmit,
+  setIsSubmitted,
+  setIsEditingAfterSubmit,
 }: {
   documentStatus: DocumentStatus;
   folderName?: string;
   document: DocumentType | null;
   isPendingReviewed: boolean;
   documentCode: string;
-  sentIsSubmitted: (value: boolean) => void;
-  sentIsEditingAfterSubmit: (value: boolean) => void;
+  setIsSubmitted: (value: boolean) => void;
+  setIsEditingAfterSubmit: (value: boolean) => void;
 }) {
   return (
     <div className="bg-lightgray rounded-xl font-sukhumvit w-full px-5 pt-5 pb-3 flex text-start flex-col space-y-3">
@@ -49,8 +49,8 @@ export default function FilingReplyAfterSubmit({
             <EditAndDeleteReply
               documentCode={documentCode}
               documentId={document?.id || ''}
-              sentIsSubmitted={sentIsSubmitted}
-              sentIsEditingAfterSubmit={sentIsEditingAfterSubmit}
+              setIsSubmitted={setIsSubmitted}
+              setIsEditingAfterSubmit={setIsEditingAfterSubmit}
             />
           )}
         </div>

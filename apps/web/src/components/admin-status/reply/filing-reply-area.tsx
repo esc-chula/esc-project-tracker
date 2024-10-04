@@ -40,6 +40,7 @@ export default function FilingReplyArea({
     setIsFetched(false);
     setIsPending(false);
     setIsShowComment(false);
+
     const fetchFilingDetail = async () => {
       try {
         const data = await getFilingByFilingId(selectedFilingId);
@@ -48,28 +49,35 @@ export default function FilingReplyArea({
         setIsPending(data?.status === FilingStatus.WAIT_FOR_SECRETARY);
         setProjectId(data?.projectId || '');
         setDocumentCode(data?.projectCode + '-' + data?.FilingCode);
+
+        // Fetch owner หลังจากเรียกข้อมูลเอกสาร
+        if (data?.userId) {
+          const ownerData = await findUserByUserId(data.userId);
+          setOwnerDetail(ownerData);
+        }
       } catch (err) {
         if (err instanceof Error) {
           toast({
-            title: `ดึงข้อมูลของเจ้าของเอกสาร ${documentCode} ไม่สำเร็จ`,
+            title: `ดึงข้อมูลเอกสาร ${documentCode} ไม่สำเร็จ`,
             description: err.message,
             isError: true,
           });
         }
+      } finally {
+        setIsFetched(true);
       }
     };
 
     // ใช้สำหรับแสดงข้อมูลเอกสารล่าสุดที่ไม่ใช่ reply
     const fetchLatestPendingDocumentDetail = async () => {
       try {
-        console.log('fetchLatestPendingDocumentDetail id:', selectedFilingId);
         const data =
           await findLatestPendingDocumentByFilingId(selectedFilingId);
         setLatestPendingDocumentDetail(data);
       } catch (error) {
         if (error instanceof Error) {
           toast({
-            title: `ดึงข้อมูลของเจ้าของเอกสาร ${documentCode} ไม่สำเร็จ`,
+            title: `ดึงข้อมูลเอกสาร ${documentCode} ไม่สำเร็จ`,
             description: error.message,
             isError: true,
           });
@@ -78,8 +86,8 @@ export default function FilingReplyArea({
     };
 
     if (selectedFilingId !== '') {
-      fetchFilingDetail();
       setTargetFilingId(selectedFilingId);
+      fetchFilingDetail();
       fetchLatestPendingDocumentDetail();
     }
   }, [selectedFilingId]);
