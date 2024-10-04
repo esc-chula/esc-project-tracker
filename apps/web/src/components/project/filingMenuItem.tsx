@@ -16,7 +16,6 @@ import {
 import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
-import { getUserId } from '@/src/service/auth';
 
 export default function FilingMenuItem({
   filing,
@@ -71,7 +70,6 @@ export default function FilingMenuItem({
   }, []);
 
   const updateFiling = async () => {
-    const userId = await getUserId();
     if (isDirty && filing.status === FilingStatus.APPROVED) {
       const newDocument: CreateDocumentDTO = {
         filingId: filing.id,
@@ -80,7 +78,7 @@ export default function FilingMenuItem({
         pdfName: document?.pdfName || '-',
         docName: document?.docName || '-',
         activity: DocumentActivity.EDIT,
-        userId: document?.userId || userId,
+        userId: document?.userId as string,
         status: DocumentStatus.APPROVED,
       };
       setPrepareUpdatedDocument(newDocument);

@@ -64,7 +64,7 @@ export default function MyProjectData({
         }
       }
     };
-    const fetchFiling = async () => {
+    const fetchFilings = async () => {
       if (userId) {
         try {
           const data = filingsData?.length
@@ -84,9 +84,8 @@ export default function MyProjectData({
     };
     fetchUserId();
     fetchProjects();
-    fetchFiling();
-  }, [projects, userId]);
-  // TODO: Fix the dependency array (it is now an infinite loop)
+    fetchFilings();
+  }, []);
 
   return (
     <div className="w-full">

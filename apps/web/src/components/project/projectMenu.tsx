@@ -27,9 +27,15 @@ export default function ProjectMenu({
   const [statusProject, setStatusProject] = useState<string>('ALL'); // status of project
   const [typeProject, setTypeProject] = useState<string>('ALL'); // join or not
   const [projects, setProjects] = useState<Project[]>([]);
+  const [userId, setUserId] = useState<string>('');
+
+  const fetchUserId = async () => {
+    const id = await getUserId();
+    setUserId(id);
+  }
+  fetchUserId();
 
   async function filterJoin(eachProject: Project): Promise<boolean> {
-    const userId = await getUserId();
     const result = await hasUserProj(userId, eachProject.id);
     return result;
   }

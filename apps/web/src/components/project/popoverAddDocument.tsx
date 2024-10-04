@@ -29,16 +29,10 @@ export default function PopoverAddDocument({
   const [userId, setUserId] = useState<string>('');
   const { toast } = useToast();
 
-  useEffect(() => {
-    const fetchUserId = async () => {
-      const userId = await getUserId();
-      setUserId(userId);
-    };
-    fetchUserId();
-  },[]);
-
   const submitCreate = async () => {
     try {
+      const userId = await getUserId();
+      setUserId(userId);
       if (filingName !== '') {
         const data = await createFiling(
           projectId,

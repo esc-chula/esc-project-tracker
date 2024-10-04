@@ -70,16 +70,12 @@ export default function ProjectForm({
   const [user, setUser] = useState<User | null>();
 
   useEffect(() => {
-    const fetchUserId = async () => {
+    const fetchUser = async () => {
       const userId = await getUserId();
       setUserId(userId);
-    };
-    const fetchUser = async () => {
       const user = await findUserByUserId(userId);
       setUser(user);
     };
-
-    fetchUserId();
     fetchUser();
   }, []);
 
@@ -208,7 +204,7 @@ export default function ProjectForm({
 
   async function onSubmitCreate(
     values: z.infer<typeof newProjectFormSchema>,
-  ): Promise<Project> {
+  ) {
     const getOwnerId = async () => {
       if (action === projectFormAction.USER_CREATE) {
         return user?.id;
@@ -222,15 +218,29 @@ export default function ProjectForm({
       }
     };
 
-    const newProject = await createProject(
-      values.projectName,
-      values.type as ProjectType,
-      // TODO: Result can be undefined
-      (await getOwnerId()) || '',
-      values.description,
-    );
+    const ownerId = await getOwnerId();
 
-    return newProject;
+    try {
+      if (ownerId) {
+        const newProject = await createProject(
+          values.projectName,
+          values.type as ProjectType,
+          ownerId,
+          values.description,
+        );
+    
+        return newProject;
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        toast({
+          title: 'ไม่สำเร็จ',
+          description: err.message,
+          isError: true,
+        });
+      }
+    }
+    
   }
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
@@ -248,7 +258,7 @@ export default function ProjectForm({
         projCreated = true;
         toast({
           title: 'เปิดโครงการสำเร็จ',
-          description: `เปิดโครงการ ${newProject.projectCode} ${newProject.name} เรียบร้อยแล้ว`,
+          description: `เปิดโครงการ ${newProject?.projectCode} ${newProject?.name} เรียบร้อยแล้ว`,
           duration: 2000,
         });
       } else if (action === projectFormAction.UPDATE) {

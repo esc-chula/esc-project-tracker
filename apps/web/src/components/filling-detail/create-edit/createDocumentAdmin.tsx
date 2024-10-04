@@ -23,7 +23,6 @@ import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
 import { DocumentType } from '@/src/interface/document';
 import { zodDocumentAdminFile } from '@/src/constant/schema';
-import { getUserId } from '@/src/service/auth';
 
 export default function CreateDocumentAdmin({
   setShowCreateDocument,
@@ -53,10 +52,10 @@ export default function CreateDocumentAdmin({
   const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
+    // TODO: change to actual userId
     try {
       const pdfFile = values.file[0];
       const folderName = `${projectId}/${filingId}`;
-      const userId = await getUserId();
 
       const pdfName = pdfFile
         ? await uploadFileToS3({ file: pdfFile, folderName })
@@ -71,7 +70,7 @@ export default function CreateDocumentAdmin({
           pdfName: pdfName,
           docName: '',
           activity: values.activity as DocumentActivity,
-          userId: userId,
+          userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
           comment: values.comment,
         },
       });
