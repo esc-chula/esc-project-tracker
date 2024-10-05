@@ -44,8 +44,9 @@ export default function MyProjectData({
     const fetchUserId = async () => {
       const userId = await getUserId();
       setUserId(userId);
+      return userId;
     };
-    const fetchProjects = async () => {
+    const fetchProjects = async (userId: string) => {
       if (userId) {
         try {
           const data = projectsWithLastOpenData?.length
@@ -65,7 +66,7 @@ export default function MyProjectData({
         }
       }
     };
-    const fetchFilings = async () => {
+    const fetchFilings = async (userId: string) => {
       if (userId) {
         try {
           const data = filingsData?.length
@@ -83,9 +84,9 @@ export default function MyProjectData({
         }
       }
     };
-    fetchUserId().then(() => {
-      fetchProjects();
-      fetchFilings();
+    fetchUserId().then((userId) => {
+      fetchProjects(userId);
+      fetchFilings(userId);
     });
   }, []);
 
