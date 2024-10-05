@@ -13,7 +13,6 @@ import SearchPanel from '@/src/components/all-projects/searchPanel';
 import { getUserId } from '@/src/service/auth';
 
 export default async function Page() {
-  //TODO : Change the userId to the actual userId
   const userId = await getUserId();
   console.log(userId);
   const [filingsDataWithProject, projectsWithLastOpenData] = await Promise.all([

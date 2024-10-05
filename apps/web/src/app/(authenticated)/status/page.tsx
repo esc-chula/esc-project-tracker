@@ -8,17 +8,18 @@ import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { FilingType } from '@/src/interface/filing';
 import { useToast } from '@/src/components/ui/use-toast';
 import { useEffect, useState } from 'react';
+import { getUserId } from '@/src/service/auth';
 
 export default function Page() {
-  // TODO: Change the userId to the actual userId
   const { toast } = useToast();
   const [statuses, setStatuses] = useState<FilingType[]>([]);
 
   useEffect(() => {
     const fetchFiling = async () => {
       try {
+        const userId = await getUserId();
         const data = await getFilingsByUserId(
-          'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+          userId,
         );
         setStatuses(data);
       } catch (err) {
