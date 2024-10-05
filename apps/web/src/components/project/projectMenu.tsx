@@ -29,11 +29,13 @@ export default function ProjectMenu({
   const [projects, setProjects] = useState<Project[]>([]);
   const [userId, setUserId] = useState<string>('');
 
-  const fetchUserId = async () => {
-    const id = await getUserId();
-    setUserId(id);
-  }
-  fetchUserId();
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const id = await getUserId();
+      setUserId(id);
+    };
+    fetchUserId();
+  }, []);
 
   async function filterJoin(eachProject: Project): Promise<boolean> {
     const result = await hasUserProj(userId, eachProject.id);

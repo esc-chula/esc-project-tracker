@@ -12,6 +12,7 @@ import SearchBar from '../searchbar/searchBar';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { useToast } from '../ui/use-toast';
 import { getUserId } from '@/src/service/auth';
+import React from 'react';
 
 export default function MyProjectData({
   compact = false,
@@ -82,9 +83,10 @@ export default function MyProjectData({
         }
       }
     };
-    fetchUserId();
-    fetchProjects();
-    fetchFilings();
+    fetchUserId().then(() => {
+      fetchProjects();
+      fetchFilings();
+    });
   }, []);
 
   return (

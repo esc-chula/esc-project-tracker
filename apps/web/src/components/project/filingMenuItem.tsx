@@ -69,7 +69,7 @@ export default function FilingMenuItem({
     getDocumentAndOwnerDetail();
   }, []);
 
-  const updateFiling = async () => {
+  const updateFiling = () => {
     if (isDirty && filing.status === FilingStatus.APPROVED) {
       const newDocument: CreateDocumentDTO = {
         filingId: filing.id,

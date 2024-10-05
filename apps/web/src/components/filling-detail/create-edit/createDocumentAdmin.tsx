@@ -23,6 +23,7 @@ import createDocument from '@/src/service/document/createDocument';
 import { toast } from '../../ui/use-toast';
 import { DocumentType } from '@/src/interface/document';
 import { zodDocumentAdminFile } from '@/src/constant/schema';
+import React from 'react';
 
 export default function CreateDocumentAdmin({
   setShowCreateDocument,
