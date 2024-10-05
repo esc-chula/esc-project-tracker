@@ -36,12 +36,21 @@ export class DocumentRouter {
         return this.documentService.findDocumentsByFilingId(input.filingId);
       }),
     findLatestDocumentByFilingId: this.trpcService.trpc.procedure
-      .input(z.object({ filingId: z.string() }))
+      .input(z.object({ filingId: z.string().uuid() }))
       .query(({ input }) => {
         return this.documentService.findLatestDocumentByFilingId(
           input.filingId,
         );
       }),
+      findLatestReplyByFilingId: this.trpcService.trpc.procedure.input(z.object({ filingId: z.string() })).query(({ input }) => {
+        return this.documentService.findLatestReplyDocumentByFilingId(input.filingId);
+      }
+      ),
+
+      findLatestPendingByFilingId: this.trpcService.trpc.procedure.input(z.object({ filingId: z.string() })).query(({ input }) => {
+        return this.documentService.findLatestPendingDocumentByFilingId(input.filingId);
+      }
+      ),
 
     // Create Document -> Document
     createDocument: this.trpcService.trpc.procedure

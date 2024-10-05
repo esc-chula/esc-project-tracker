@@ -22,9 +22,13 @@ export class AwsService {
   constructor() {}
 
   async uploadFileToS3(fileName: string, file: Buffer, folderName?: string) {
+    const MAX_UPLOAD_SIZE = 1024 * 1024 * 10; // 10MB
     const currentDate = new Date();
     const dateWithTimestamp = currentDate.toISOString();
     const fileType = '.' + fileName.split('.').pop();
+
+    if (file.byteLength > MAX_UPLOAD_SIZE) throw new Error('ไฟล์ใหญ่เกิน 10MB');
+
     // '{2024-09-05T16:19:34.142Z}-' has 27 characters
     const truncatedFileName = truncateTextByBytes(
       fileName.slice(0, -fileType.length),
