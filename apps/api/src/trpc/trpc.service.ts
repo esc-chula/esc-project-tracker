@@ -35,6 +35,7 @@ export class TrpcService {
       });
     } catch (err) {
       if (err instanceof Error) {
+        console.log('Middleware Error: ' + err.message);
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Middleware Error: ' + err.message,
@@ -54,6 +55,7 @@ export class TrpcService {
       return opts.next();
     } catch (err) {
       if (err instanceof Error) {
+        console.log('Middleware Error: ' + err.message);
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Middleware Error: ' + err.message,
