@@ -55,6 +55,14 @@ export class UserProjRouter {
         const project = await this.projectService.findByProjectID(
           input.projectId,
         );
+
+        if (!project) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Project not found',
+          });
+        }
+        
         if (project.ownerId === ctx.payload.sub) {
           throw new TRPCError({
             code: 'BAD_REQUEST',

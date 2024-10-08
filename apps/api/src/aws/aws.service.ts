@@ -12,8 +12,8 @@ export class AwsService {
   private readonly s3Client = new S3Client({
     region: process.env.REGION,
     credentials: {
-      accessKeyId: process.env.ACCESS,
-      secretAccessKey: process.env.SECRET_KEY,
+      accessKeyId: process.env.ACCESS || '',
+      secretAccessKey: process.env.SECRET_KEY || '',
     },
     endpoint: process.env.ENDPOINT,
     forcePathStyle: true,
@@ -84,7 +84,7 @@ export class AwsService {
       }); // URL valid for 1 hour
       return signedUrl;
     } catch (err) {
-      throw new Error(`Error generating URL for file: ${err.message}`);
+        throw new Error(`Error generating URL for file: ${err}`);
     }
   }
 }

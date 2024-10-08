@@ -34,8 +34,8 @@ export class TrpcService {
         },
       });
     } catch (err) {
-      console.log('Middleware Error: ' + err.message);
       if (err instanceof Error) {
+        console.log('Middleware Error: ' + err.message);
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Middleware Error: ' + err.message,
@@ -54,8 +54,8 @@ export class TrpcService {
         throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Admin Only' });
       return opts.next();
     } catch (err) {
-      console.log('Middleware Error: ' + err.message);
       if (err instanceof Error) {
+        console.log('Middleware Error: ' + err.message);
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Middleware Error: ' + err.message,
