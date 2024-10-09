@@ -5,6 +5,7 @@ import { optional, z } from 'zod';
 
 import { DocumentService } from '../../document_/document.service';
 import { DocumentActivity, DocumentStatus } from '../../constant/enum';
+import { TRPCError } from '@trpc/server';
 
 @Injectable()
 export class DocumentRouter {

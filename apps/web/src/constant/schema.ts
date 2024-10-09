@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { projectTypeMap } from './Map';
 import { getFileType } from '../lib/utils';
+import { projectTypeMap } from './Map';
 import { DocumentActivity } from './enum';
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString());
@@ -62,9 +62,9 @@ const MAX_UPLOAD_SIZE = 1024 * 1024 * 10; // 10MB
 export const zodDocumentAdminFile = (
   typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
 )
-  .refine((file) => file?.length <= 2, 'เลือกได้มากสุด 2 ไฟล์')
+  .refine((file: FileList) => file.length <= 2, 'เลือกได้มากสุด 2 ไฟล์')
   .refine(
-    (file) =>
+    (file: FileList) =>
       file.length === 0 ||
       getFileType(file[0]) === 'pdf' ||
       getFileType(file[1]) === 'pdf',
@@ -119,6 +119,8 @@ export const createdDocumentAdminSchema = z
   .refine(
     (values) =>
       values.activity === DocumentActivity.REPLY ||
-      (values.activity === DocumentActivity.EDIT && values.file.length > 0),
+      (values.activity === DocumentActivity.EDIT &&
+        values.file instanceof FileList &&
+        values.file.length > 0),
     { message: 'กรุณาเลือกไฟล์', path: ['file'] },
   );

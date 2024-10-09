@@ -71,17 +71,20 @@ export default function ProjectForm({
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userId = await getUserId();
-      setUserId(userId);
-      const user = await findUserByUserId(userId);
-      setUser(user);
+      const userIdData = await getUserId();
+      setUserId(userIdData);
+      const userData = await findUserByUserId(userIdData);
+      setUser(userData);
     };
     fetchUser();
   }, []);
 
   const initialMembers = useMemo(() => joinUsers || [], [joinUsers]);
   const ownerUser = useMemo(() => {
-    return joinUsers?.find((user) => user.id === project?.ownerId) || null;
+    return (
+      joinUsers?.find((joinedUser) => joinedUser.id === project?.ownerId) ||
+      null
+    );
   }, [joinUsers, project?.ownerId]);
   const canEdit = useMemo(() => {
     if (
@@ -115,12 +118,15 @@ export default function ProjectForm({
     const mapOldMembersToForm = () => {
       if (action === projectFormAction.INFO) {
         const initialMember = [ownerUser?.studentId || ''];
-        const otherMembers = initialMembers.reduce((result: string[], user) => {
-          if (user.id !== ownerUser?.id) {
-            result.push(user.studentId);
-          }
-          return result;
-        }, []);
+        const otherMembers = initialMembers.reduce(
+          (result: string[], member) => {
+            if (member.id !== ownerUser?.id) {
+              result.push(member.studentId);
+            }
+            return result;
+          },
+          [],
+        );
 
         initialMember.push(...otherMembers);
         setStudentIdsInitialMembers(initialMember);
@@ -203,9 +209,7 @@ export default function ProjectForm({
     return { membersToAdd, membersToLeave };
   }
 
-  async function onSubmitCreate(
-    values: z.infer<typeof newProjectFormSchema>,
-  ) {
+  async function onSubmitCreate(values: z.infer<typeof newProjectFormSchema>) {
     const getOwnerId = async () => {
       if (action === projectFormAction.USER_CREATE) {
         return user?.id;
@@ -229,7 +233,7 @@ export default function ProjectForm({
           ownerId,
           values.description,
         );
-    
+
         return newProject;
       }
     } catch (err) {
@@ -241,7 +245,6 @@ export default function ProjectForm({
         });
       }
     }
-    
   }
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
@@ -255,7 +258,7 @@ export default function ProjectForm({
         action === projectFormAction.ADMIN_CREATE
       ) {
         const newProject = await onSubmitCreate(values);
-        projectToJoin = newProject;
+        projectToJoin = newProject ? newProject : null;
         projCreated = true;
         toast({
           title: 'เปิดโครงการสำเร็จ',

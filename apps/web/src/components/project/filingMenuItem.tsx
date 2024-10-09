@@ -1,21 +1,21 @@
 'use client';
 
 import { BiSolidFilePdf } from 'react-icons/bi';
-import { DocumentType } from '@/src/interface/document';
-import { FilingType } from '@/src/interface/filing';
-import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';
-import { toast } from '../ui/use-toast';
-import { User } from '@/src/interface/user';
+import type { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
+import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
+import type { FilingType } from '@/src/interface/filing';
+import type { DocumentType } from '@/src/interface/document';
+import type { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/user/findUserByCondition';
 import {
   DocumentActivity,
   DocumentStatus,
   FilingStatus,
 } from '@/src/constant/enum';
-import { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
+import { toast } from '../ui/use-toast';
 
 export default function FilingMenuItem({
   filing,
@@ -52,7 +52,6 @@ export default function FilingMenuItem({
           description: error.message,
           isError: true,
         });
-        return;
       }
     }
   };
@@ -66,19 +65,23 @@ export default function FilingMenuItem({
   };
 
   useEffect(() => {
-    getDocumentAndOwnerDetail();
+    void getDocumentAndOwnerDetail();
   }, []);
 
   const updateFiling = () => {
-    if (isDirty && filing.status === FilingStatus.APPROVED) {
+    if (
+      isDirty &&
+      filing.status === FilingStatus.APPROVED &&
+      document?.userId
+    ) {
       const newDocument: CreateDocumentDTO = {
         filingId: filing.id,
         name: name || 'แก้ไขหมายเหตุ',
-        detail: detail,
-        pdfName: document?.pdfName || '-',
-        docName: document?.docName || '-',
+        detail,
+        pdfName: document.pdfName || '-',
+        docName: document.docName || '-',
         activity: DocumentActivity.EDIT,
-        userId: document?.userId as string,
+        userId: document.userId,
         status: DocumentStatus.APPROVED,
       };
       setPrepareUpdatedDocument(newDocument);
@@ -89,7 +92,7 @@ export default function FilingMenuItem({
   return (
     <tr className="border-b-2 border-gray-200">
       <td className="p-4 py-5 text-nowrap text-center min-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {filing.projectCode + '-' + filing.FilingCode}
+        {`${filing.projectCode}-${filing.FilingCode}`}
       </td>
       <td className="p-4 py-5 text-nowrap max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
         {filing.name}
