@@ -264,4 +264,36 @@ export class FilingService {
         throw new Error('Failed to update filing status');
       });
   }
+
+  async findLatestFilings() {
+    const approvedFilings = this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', { status: FilingStatus.APPROVED })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const returnedFilings = this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', { status: FilingStatus.RETURNED })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const pendingFilings = this.filingRepository
+      .createQueryBuilder('filing')
+      .where('filing.status = :status', {
+        status: FilingStatus.WAIT_FOR_SECRETARY,
+      })
+      .orderBy('filing.updatedAt', 'DESC')
+      .limit(3)
+      .getMany();
+
+    const filings = await Promise.all([
+      approvedFilings,
+      returnedFilings,
+      pendingFilings,
+    ]);
+    return filings.flat();
+  }
 }

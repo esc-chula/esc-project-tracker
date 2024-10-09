@@ -5,6 +5,8 @@ import { validate as isUUID } from 'uuid';
 import { Repository } from 'typeorm';
 import { UserFiling } from '../entities/userFiling.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserFilingDTO } from './user-filing.dto';
+import { Filing } from '../entities/filing.entity';
 
 @Injectable()
 export class UserFilingService {
@@ -18,23 +20,29 @@ export class UserFilingService {
   async findUserFilingOrderByLastOpen(
     userId: string,
     limit?: number,
-  ): Promise<UserFiling[]> {
+  ): Promise<UserFilingDTO[]> {
     if (!isUUID(userId)) {
       throw new BadRequestException('Id is not in UUID format');
     }
 
-    const userFilings = this.userFilingRepository
+    const userFilings = await this.userFilingRepository
       .createQueryBuilder('userFiling')
+      .innerJoinAndSelect('userFiling.filing', 'filing')
       .where('userFiling.userId = :userId', { userId })
       .orderBy('userFiling.lastOpen', 'DESC')
       .limit(limit || 20)
-      .getMany()
-      .catch((error) => {
-        console.error(error);
-        throw new BadRequestException('Error when getting user filing');
-      });
+      .getMany();
 
-    return userFilings;
+    const userFilingsDTOs = userFilings.map((userFiling) => {
+      const userFilingDTO = new UserFilingDTO();
+      userFilingDTO.userId = userFiling.filing.userId;
+      userFilingDTO.lastOpen = userFiling.lastOpen;
+      userFilingDTO.filing = userFiling.filing;
+
+      return userFilingDTO;
+    });
+
+    return userFilingsDTOs;
   }
 
   async userOpenFiling(userId: string, filingId: string) {

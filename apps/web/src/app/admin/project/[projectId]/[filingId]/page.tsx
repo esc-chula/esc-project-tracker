@@ -23,16 +23,21 @@ import userOpenFiling from '@/src/service/user-filing/userOpenFiling';
 
 export default function Page({
   params,
+  searchParams,
 }: {
   params: { projectId: string; filingId: string };
+  searchParams: { showCreateDocument: string };
 }) {
   const [filing, setFiling] = useState<FilingType | null>(null);
   const [documents, setDocuments] = useState<DocumentType[]>([]);
-  const [showCreateDocument, setShowCreateDocument] = useState<boolean>(false);
+  const [showCreateDocument, setShowCreateDocument] = useState<boolean>(
+    searchParams.showCreateDocument === 'true',
+  );
   const [usernameMap, setUsernameMap] = useState<Map<string, User>>(new Map());
   const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
     null,
   );
+  const [userId, setUserId] = useState<string>('');
   const setStatus = useMemo(
     () => (status: FilingStatus) => {
       setFiling((prev) => (prev ? { ...prev, status } : prev));
@@ -53,23 +58,23 @@ export default function Page({
         return;
       }
 
-      const [filingData, documentsData, latestDocumentData, userId] =
+      const [filingData, documentsData, latestDocumentData, userIdData] =
         await Promise.all([
           getFilingByFilingId(params.filingId),
           findDocumentsByFilingId(params.filingId),
           findLatestDocumentByFilingId(params.filingId),
           getUserId(),
         ]);
+      setUserId(userIdData);
       if (filingData) setFiling(filingData);
       if (latestDocumentData) setLatestDocument(latestDocumentData);
+      if (documentsData.length > 0) setDocuments(documentsData);
 
       const [updatedUsernameMap] = await Promise.all([
-        getUsersMap(documentsData, userId),
-        userOpenFiling(userId, params.filingId),
+        getUsersMap(documentsData, userIdData),
+        userOpenFiling(userIdData, params.filingId),
       ]);
       setUsernameMap(updatedUsernameMap);
-
-      if (documentsData.length > 0) setDocuments(documentsData);
     } catch (err) {
       if (err instanceof Error) {
         toast({
@@ -154,6 +159,7 @@ export default function Page({
             filingId={params.filingId}
             showCreateDocument={showCreateDocument}
             setShowCreateDocument={setShowCreateDocument}
+            userId={userId}
             isAdmin
           />
         )}

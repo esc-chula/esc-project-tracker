@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 import { useToast } from '@/src/components/ui/use-toast';
 import updateLastOpen from '@/src/service/user-proj/updateLastOpen';
+import { getUserId } from '@/src/service/auth';
 
 export default function Page({ params }: { params: { projectId: string } }) {
   const [project, setProject] = useState<Project | null>(null);
@@ -29,11 +30,11 @@ export default function Page({ params }: { params: { projectId: string } }) {
         }
       };
 
-      //TODO : Change the userId to the actual userId
       const updateLastOpenFetch = async () => {
         try {
+          const userId = await getUserId();
           await updateLastOpen(
-            'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+            userId,
             params.projectId,
           );
         } catch (err) {

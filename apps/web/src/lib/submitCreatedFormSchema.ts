@@ -20,10 +20,11 @@ export default async function submitCreatedFormSchema(
   const folderName = `${projectId}/${filingId}`;
 
   const [pdfName, docName] = await Promise.all([
-    uploadFileToS3({
-      file: pdfFile,
-      folderName,
-    }),
+    pdfFile &&
+      uploadFileToS3({
+        file: pdfFile,
+        folderName,
+      }),
     docFile &&
       uploadFileToS3({
         file: docFile,
@@ -31,14 +32,15 @@ export default async function submitCreatedFormSchema(
       }),
   ]);
 
-  if (!pdfName || (docFile && !docName)) throw new Error('Upload file failed');
+  if ((pdfFile && !pdfName) || (docFile && !docName))
+    throw new Error('Upload file failed');
 
   const [newDocument] = await Promise.all([
     createDocument({
       document: {
         name: values.detail,
         filingId,
-        pdfName: pdfName,
+        pdfName: pdfName ?? '',
         docName: docName ?? '',
         activity: values.activity as DocumentActivity,
         userId,

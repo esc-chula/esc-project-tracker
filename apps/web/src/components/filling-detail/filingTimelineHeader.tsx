@@ -29,6 +29,7 @@ export default function FilingTimelineHeader({
   projectId,
   showCreateDocument,
   setShowCreateDocument,
+  userId,
   isAdmin = false,
 }: {
   name: string;
@@ -40,7 +41,8 @@ export default function FilingTimelineHeader({
   filingId: string;
   projectId: string;
   showCreateDocument: boolean;
-  setShowCreateDocument: (_: boolean) => void;
+  setShowCreateDocument: (showCreateDocument: boolean) => void;
+  userId: string;
   isAdmin?: boolean;
 }) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -284,6 +286,7 @@ export default function FilingTimelineHeader({
               }}
               filingId={filingId}
               projectId={projectId}
+              userId={userId}
             />
           ) : isAdmin ? (
             <CreateDocumentAdmin
@@ -294,6 +297,7 @@ export default function FilingTimelineHeader({
               }}
               filingId={filingId}
               projectId={projectId}
+              userId={userId}
             />
           ) : (
             <CreateDocumentClient
@@ -307,6 +311,7 @@ export default function FilingTimelineHeader({
               status={status}
               filingId={filingId}
               projectId={projectId}
+              userId={userId}
             />
           )}
         </div>

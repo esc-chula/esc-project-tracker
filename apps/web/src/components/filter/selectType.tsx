@@ -1,23 +1,32 @@
-"use client";
+'use client';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/src/components/ui/select";
-import { useState } from "react";
+} from '@/src/components/ui/select';
+import { useEffect, useState } from 'react';
 
 export default function SelectType({
   title,
   items,
   sendValue,
+  selectedValue,
 }: {
   title: string;
   items: { value: string | number; label: string }[];
   sendValue: (value: string) => void;
+  selectedValue?: string;
 }) {
-  const [selected, setSelected] = useState<string>("");
+  const [selected, setSelected] = useState<string>('');
+
+  useEffect(() => {
+    if (selectedValue) {
+      setSelected(selectedValue);
+    }
+  }, [selectedValue]);
+
   return (
     <Select
       value={selected}

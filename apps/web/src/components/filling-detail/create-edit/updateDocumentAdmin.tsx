@@ -28,11 +28,13 @@ export default function UpdateDocumentAdmin({
   afterCreateDocument,
   filingId,
   projectId,
+  userId,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   afterCreateDocument: (createdDocument: DocumentType) => void;
   filingId: string;
   projectId: string;
+  userId: string;
 }) {
   const form = useForm<z.infer<typeof createdFormSchema>>({
     resolver: zodResolver(createdFormSchema),
@@ -45,13 +47,12 @@ export default function UpdateDocumentAdmin({
   const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    // TODO: change to actual userId
     try {
       const newDocument = await submitCreatedFormSchema(
         values,
         projectId,
         filingId,
-        'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+        userId,
       );
 
       afterCreateDocument(newDocument);

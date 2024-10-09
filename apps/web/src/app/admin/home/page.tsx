@@ -9,15 +9,17 @@ import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
 import { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
-import LastestPanel from '@/src/components/project/latestPanel';
+import LatestPanel from '@/src/components/project/latestPanel';
 import { useEffect, useState } from 'react';
 import { getUserId } from '@/src/service/auth';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
+import { UserFiling } from '@/src/interface/user-filing';
+import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
+import findLatestFilings from '@/src/service/filing/findLatestFilings';
+import { toast } from '@/src/components/ui/use-toast';
 
 export default function Page() {
-  //TODO : Change the userId to the actual userId
-
   const [isContinued, setIsContinued] = useState(true);
   const [isReturned, setIsReturned] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -28,20 +30,44 @@ export default function Page() {
   const [projectsWithLastOpenData, setProjectsWithLastOpenData] = useState<
     ProjectWithLastOpen[]
   >([]);
+
+  const [filingsRawData, setFilingsRawData] = useState<FilingType[]>([]);
+  const [latestFilings, setLatestFilings] = useState<FilingType[]>([]);
+
+  const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
+    [],
+  );
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userId = await getUserId();
-        const [filingsData, projectsData] = await Promise.all([
+        const [
+          filingsData,
+          projectsData,
+          filingsDataWithLastOpen,
+          latestFilings,
+        ] = await Promise.all([
           getFilingsByUserId(userId),
           getProjectsByUserId(userId),
+          findUserFilingOrderByLastOpen(userId),
+          findLatestFilings(),
         ]);
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);
+        setFilingsWithLastOpen(filingsDataWithLastOpen);
+        setFilingsRawData(latestFilings);
+        const filteredFilings = latestFilings.filter(
+          (filing) => filing.status === FilingStatus.WAIT_FOR_SECRETARY,
+        );
+        setLatestFilings(filteredFilings);
       } catch (err) {
-        console.error(err);
-        setFilingsDataWithProject([]);
-        setProjectsWithLastOpenData([]);
+        if (err instanceof Error) {
+          toast({
+            title: 'ไม่สำเร็จ',
+            description: err.message,
+            isError: true,
+          });
+        }
       }
     };
 
@@ -52,34 +78,30 @@ export default function Page() {
     setIsContinued(true);
     setIsReturned(false);
     setIsApproved(false);
-    const filteredFilings = filingsDataWithProject.filter(
-      (filing) =>
-        filing.status !== FilingStatus.RETURNED &&
-        filing.status !== FilingStatus.APPROVED,
+    const filteredFilings = filingsRawData.filter(
+      (filing) => filing.status === FilingStatus.WAIT_FOR_SECRETARY,
     );
-    setFilingsDataWithProject(filteredFilings);
+    setLatestFilings(filteredFilings);
   };
 
   const enableReturn = () => {
     setIsContinued(false);
     setIsReturned(true);
     setIsApproved(false);
-
-    const filteredFilings = filingsDataWithProject.filter(
+    const filteredFilings = filingsRawData.filter(
       (filing) => filing.status === FilingStatus.RETURNED,
     );
-    setFilingsDataWithProject(filteredFilings);
+    setLatestFilings(filteredFilings);
   };
 
   const enableApprove = () => {
     setIsContinued(false);
     setIsReturned(false);
     setIsApproved(true);
-
-    const filteredFilings = filingsDataWithProject.filter(
+    const filteredFilings = filingsRawData.filter(
       (filing) => filing.status === FilingStatus.APPROVED,
     );
-    setFilingsDataWithProject(filteredFilings);
+    setLatestFilings(filteredFilings);
   };
 
   const projectsData = projectsWithLastOpenData.map(
@@ -146,7 +168,7 @@ export default function Page() {
         <hr className="border-t-2 w-full" />
       </section>
       <section className="mt-5 shadow-lg rounded-xl">
-        <StatusTable data={filingsDataWithProject} compact />
+        <StatusTable data={latestFilings} compact />
       </section>
       <section className="w-full mt-12">
         <div className="flex items-center justify-between gap-3 h-10">
@@ -165,7 +187,7 @@ export default function Page() {
         </div>
       </section>
       <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <LastestPanel projectsWithLastOpen={projectsWithLastOpenData} compact />
+        <LatestPanel filingsWithLastOpen={filingsWithLastOpen} compact />
       </section>
     </main>
   );

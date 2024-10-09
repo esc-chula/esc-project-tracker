@@ -13,6 +13,7 @@ import findAllProject from '@/src/service/project/findAllProject';
 import findProjectsWithFilter from '@/src/service/project/findProjectsWithFilter';
 import hasUserProj from '@/src/service/user-proj/hasUserProj';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
+import { getUserId } from '@/src/service/auth';
 
 export default function ProjectMenu({
   searchedProjectId,
@@ -26,10 +27,19 @@ export default function ProjectMenu({
   const [statusProject, setStatusProject] = useState<string>('ALL'); // status of project
   const [typeProject, setTypeProject] = useState<string>('ALL'); // join or not
   const [projects, setProjects] = useState<Project[]>([]);
+  const [userId, setUserId] = useState<string>('');
 
-  async function filterJoin(eachProject: Project) {
-    //TODO: change to actual userId
-    return hasUserProj('d1c0d106-1a4a-4729-9033-1b2b2d52e98a', eachProject.id);
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const id = await getUserId();
+      setUserId(id);
+    };
+    fetchUserId();
+  }, []);
+
+  async function filterJoin(eachProject: Project): Promise<boolean> {
+    const result = await hasUserProj(userId, eachProject.id);
+    return result;
   }
   async function fetchData() {
     try {

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Document } from '../entities/document.entity';
-import { Not, Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { Project } from '../entities/project.entity';
 import { UserService } from '../user_/user.service';
 import { ProjectService } from '../project_/project_.service';
@@ -93,6 +93,45 @@ export class DocumentService {
 
     return data;
   }
+
+  async findLatestReplyDocumentByFilingId(
+    filingId: string,
+  ): Promise<Document | null> {
+    const data = await this.documentRepository.findOne({
+      where: [
+        {
+          filing: { id: filingId },
+          activity: DocumentActivity.REPLY,
+        },
+        {
+          filing: { id: filingId },
+          activity: DocumentActivity.EDIT,
+          status: In([DocumentStatus.RETURNED, DocumentStatus.APPROVED]),
+        },
+      ],
+      order: { createdAt: 'DESC' },
+    });
+  
+    return data;
+  }
+  
+
+  async findLatestPendingDocumentByFilingId(
+    filingId: string,
+  ): Promise<Document | null> {
+    const data = await this.documentRepository.findOne({
+      where: {
+        filing: { id: filingId },
+        activity: DocumentActivity.CREATE || DocumentActivity.EDIT,
+        status: DocumentStatus.WAIT_FOR_SECRETARY,
+      },
+      order: { createdAt: 'DESC' },
+    });
+
+    return data;
+  }
+
+
 
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
     const {
