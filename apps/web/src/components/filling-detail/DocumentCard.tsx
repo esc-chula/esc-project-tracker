@@ -14,7 +14,7 @@ export default function DocumentCard({
   document,
   index,
   user,
-  isAdmin,
+  isAdmin = false,
   status,
   folderName,
   documents,
@@ -25,7 +25,7 @@ export default function DocumentCard({
   document: DocumentType;
   index: number;
   user: User | undefined;
-  isAdmin: boolean;
+  isAdmin?: boolean;
   status: FilingStatus;
   folderName: string;
   documents: DocumentType[];
