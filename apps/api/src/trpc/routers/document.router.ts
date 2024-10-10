@@ -6,6 +6,7 @@ import { optional, z } from 'zod';
 import { DocumentService } from '../../document_/document.service';
 import { DocumentActivity, DocumentStatus } from '../../constant/enum';
 import { find } from 'rxjs';
+import { TRPCError } from '@trpc/server';
 
 @Injectable()
 export class DocumentRouter {
@@ -35,12 +36,21 @@ export class DocumentRouter {
         return this.documentService.findDocumentsByFilingId(input.filingId);
       }),
     findLatestDocumentByFilingId: this.trpcService.trpc.procedure
-      .input(z.object({ filingId: z.string() }))
+      .input(z.object({ filingId: z.string().uuid() }))
       .query(({ input }) => {
         return this.documentService.findLatestDocumentByFilingId(
           input.filingId,
         );
       }),
+      findLatestReplyByFilingId: this.trpcService.trpc.procedure.input(z.object({ filingId: z.string() })).query(({ input }) => {
+        return this.documentService.findLatestReplyDocumentByFilingId(input.filingId);
+      }
+      ),
+
+      findLatestPendingByFilingId: this.trpcService.trpc.procedure.input(z.object({ filingId: z.string() })).query(({ input }) => {
+        return this.documentService.findLatestPendingDocumentByFilingId(input.filingId);
+      }
+      ),
 
     // Create Document -> Document
     createDocument: this.trpcService.trpc.procedure
@@ -92,9 +102,19 @@ export class DocumentRouter {
         return this.documentService.updateDocument(docId, obj);
       }),
     // Delete Document -> Document
-    deleteDocument: this.trpcService.trpc.procedure
+    deleteDocument: this.trpcService.protectedProcedure
       .input(z.object({ id: z.string() }))
-      .mutation(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.id,
+          'document',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return this.documentService.deleteDocument(input.id);
       }),
     reviewSubmission: this.trpcService.trpc.procedure

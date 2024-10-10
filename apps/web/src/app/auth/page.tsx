@@ -14,7 +14,9 @@ export default function Auth({
   const router = useRouter();
 
   const token = searchParams.token;
-
+  {
+    /* apply callbackurl here */
+  }
   useEffect(() => {
     async function signIn() {
       await fetch('http://localhost:3000/api/signin', {

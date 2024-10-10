@@ -41,16 +41,8 @@ import { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/user/findUserByCondition';
 import updateProject from '@/src/service/project/updateProject';
 import leaveProjectByStudentId from '@/src/service/user-proj/leaveProjectByStudentId';
-
-const mockCurrentUser = {
-  id: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
-  name: 'นภันต์ โชติช่วงนภา',
-  username: 's',
-  studentId: '6432083021',
-  createdAt: 's',
-  password: 's',
-  updatedAt: 's',
-};
+import { getUserId } from '@/src/service/auth';
+import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 
 export default function ProjectForm({
   formAction,
@@ -73,14 +65,27 @@ export default function ProjectForm({
   const [membersCount, setMembersCount] = useState(1);
   const [isAfterCancelUpdate, setIsAfterCancelUpdate] = useState(false);
 
+  const [userId, setUserId] = useState<string>('');
+
+  const [user, setUser] = useState<User | null>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userId = await getUserId();
+      setUserId(userId);
+      const user = await findUserByUserId(userId);
+      setUser(user);
+    };
+    fetchUser();
+  }, []);
+
   const initialMembers = useMemo(() => joinUsers || [], [joinUsers]);
   const ownerUser = useMemo(() => {
     return joinUsers?.find((user) => user.id === project?.ownerId) || null;
   }, [joinUsers, project?.ownerId]);
   const canEdit = useMemo(() => {
     if (
-      (action === projectFormAction.INFO &&
-        mockCurrentUser.id === project?.ownerId) ||
+      (action === projectFormAction.INFO && user?.id === project?.ownerId) ||
       isAdmin
     ) {
       return true;
@@ -96,7 +101,7 @@ export default function ProjectForm({
       description: project?.detail || '',
       members:
         action === projectFormAction.USER_CREATE
-          ? [mockCurrentUser.studentId]
+          ? [user?.studentId]
           : action === projectFormAction.INFO
             ? [ownerUser?.studentId]
             : [],
@@ -199,11 +204,10 @@ export default function ProjectForm({
 
   async function onSubmitCreate(
     values: z.infer<typeof newProjectFormSchema>,
-  ): Promise<Project> {
+  ) {
     const getOwnerId = async () => {
       if (action === projectFormAction.USER_CREATE) {
-        // TODO use real current user
-        return mockCurrentUser.id;
+        return user?.id;
       } else {
         const ownerStudentId =
           values.members.find((member) => member !== undefined) || '';
@@ -214,14 +218,29 @@ export default function ProjectForm({
       }
     };
 
-    const newProject = await createProject(
-      values.projectName,
-      values.type as ProjectType,
-      await getOwnerId(),
-      values.description,
-    );
+    const ownerId = await getOwnerId();
 
-    return newProject;
+    try {
+      if (ownerId) {
+        const newProject = await createProject(
+          values.projectName,
+          values.type as ProjectType,
+          ownerId,
+          values.description,
+        );
+    
+        return newProject;
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        toast({
+          title: 'ไม่สำเร็จ',
+          description: err.message,
+          isError: true,
+        });
+      }
+    }
+    
   }
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
@@ -239,7 +258,7 @@ export default function ProjectForm({
         projCreated = true;
         toast({
           title: 'เปิดโครงการสำเร็จ',
-          description: `เปิดโครงการ ${newProject.projectCode} ${newProject.name} เรียบร้อยแล้ว`,
+          description: `เปิดโครงการ ${newProject?.projectCode} ${newProject?.name} เรียบร้อยแล้ว`,
           duration: 2000,
         });
       } else if (action === projectFormAction.UPDATE) {
@@ -429,14 +448,11 @@ export default function ProjectForm({
               <div className="space-y-3 font-bold text-sm">
                 ผู้ร่วมโครงการ
                 <ol className="list-decimal pl-5 py-2 space-y-3 font-extrabold w-[30vw] ">
-                  {/* TODO: change to current user's student ID */}
                   {action === projectFormAction.USER_CREATE ? (
                     <li>
                       <div className="flex text-sm text-black justify-between w-[85%]">
-                        <span>{mockCurrentUser.name}</span>
-                        <span>
-                          รหัสนิสิต&emsp;{form.getValues().members[0]}
-                        </span>
+                        <span>{user?.username}</span>
+                        <span>รหัสนิสิต&emsp;{user?.studentId}</span>
                       </div>
                     </li>
                   ) : action === projectFormAction.INFO ||

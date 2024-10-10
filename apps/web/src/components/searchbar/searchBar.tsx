@@ -52,7 +52,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="min-w-[40vw] max-w-full">
+    <div className="max-w-full">
       <Autocomplete
         value={value}
         options={[...filings, ...projects]}

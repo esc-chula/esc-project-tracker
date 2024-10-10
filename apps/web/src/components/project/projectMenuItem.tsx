@@ -8,6 +8,7 @@ import type { Project } from '@/src/interface/project';
 import { useToast } from '../ui/use-toast';
 import Link from 'next/link';
 import { ProjectStatusToThai } from '@/src/constant/translate';
+import { getUserId } from '@/src/service/auth';
 
 export default function ProjectMenuItem({
   project,
@@ -20,12 +21,13 @@ export default function ProjectMenuItem({
 }) {
   const { toast } = useToast();
 
+  const [userId, setUserId] = useState<string>('');
   // To do : check if user joined project by init another function to check
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const handleJoinProject = async () => {
     try {
       await joinProject(
-        'd1c0d106-1a4a-4729-9033-1b2b2d52e98a', // mock userid
+        userId,
         project.id,
       );
       setIsJoined(true);
@@ -50,7 +52,12 @@ export default function ProjectMenuItem({
     setIsJoined(result);
   };
   useEffect(() => {
-    checkUserJoinProject('d1c0d106-1a4a-4729-9033-1b2b2d52e98a', project.id);
+    const fetchUserId = async () => {
+      const userId = await getUserId();
+      setUserId(userId);
+    }
+    fetchUserId();
+    checkUserJoinProject(userId, project.id);
   }, []);
 
   const buttonStyle = (joined: boolean) => {
