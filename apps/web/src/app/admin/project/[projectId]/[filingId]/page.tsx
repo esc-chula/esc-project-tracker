@@ -91,7 +91,7 @@ export default function Page({
         filing?.status === FilingStatus.DOCUMENT_CREATED &&
           documents.length === 1 &&
           updateFilingName({
-            filingId: filing?.id,
+            filingId: filing.id,
             filingStatus: FilingStatus.DRAFT,
           }),
         deleteDocument(documentId),
@@ -148,15 +148,9 @@ export default function Page({
         {filing && (
           <FilingTimelineHeader
             name={
-              filing
-                ? filing.projectCode +
-                  '-' +
-                  filing.FilingCode +
-                  ' ' +
-                  filing.name
-                : '...'
+              filing.projectCode + '-' + filing.FilingCode + ' ' + filing.name
             }
-            status={filing?.status ?? FilingStatus.DRAFT}
+            status={filing.status}
             documents={documents}
             latestDocument={latestDocument}
             setStatus={setStatus}

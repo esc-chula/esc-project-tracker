@@ -1,39 +1,22 @@
-'use client';
 import { Radio } from 'lucide-react';
-import Header from '../../../components/header/header';
+import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import DocumentStatusStepper from '@/src/components/status/StatusStepper';
 import { StatusTable } from '@/src/components/status/StatusTable';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
-import { FilingType } from '@/src/interface/filing';
-import { useToast } from '@/src/components/ui/use-toast';
-import { useEffect, useState } from 'react';
 import { getUserId } from '@/src/service/auth';
+import { FilingType } from '@/src/interface/filing';
 
-export default function Page() {
-  const { toast } = useToast();
-  const [statuses, setStatuses] = useState<FilingType[]>([]);
-
-  useEffect(() => {
-    const fetchFiling = async () => {
-      try {
-        const userId = await getUserId();
-        const data = await getFilingsByUserId(
-          userId,
-        );
-        setStatuses(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          toast({
-            title: 'ไม่สำเร็จ',
-            description: err.message,
-            isError: true,
-          });
-        }
-      }
-    };
-    fetchFiling();
-  }, []);
+export default async function Page() {
+  let statuses: FilingType[] = [];
+  try {
+    const userId = await getUserId();
+    statuses = await getFilingsByUserId(userId);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error('Error fetching filings:', err.message);
+    }
+  }
 
   return (
     <>

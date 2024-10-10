@@ -80,7 +80,7 @@ export default function DisplayWithNote({
           </CollapsibleTrigger>
         </div>
       </div>
-      <Note note={document.detail ?? '-'} />
+      <Note note={document.detail} />
     </Collapsible>
   );
 }

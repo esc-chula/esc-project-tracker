@@ -55,12 +55,16 @@ export class UserProjRouter {
         const project = await this.projectService.findByProjectID(
           input.projectId,
         );
-        if (project.ownerId === ctx.payload.sub) {
+        if (!project)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Project Not Found',
+          });
+        else if (project.ownerId === ctx.payload.sub)
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'Owner cannot leave project',
           });
-        }
 
         return this.userProjService.deleteUserProject({
           obj: { userId: input.userId, projectId: input.projectId },

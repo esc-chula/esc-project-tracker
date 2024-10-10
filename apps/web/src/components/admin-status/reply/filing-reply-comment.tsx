@@ -1,6 +1,21 @@
 'use client';
 import { IoReturnUpBack } from 'react-icons/io5';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { zodDocumentAdminFile } from '@/src/constant/schema';
+import { getFileType } from '@/src/lib/utils';
+import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
+import createDocument from '@/src/service/document/createDocument';
+import type { FilingStatus } from '@/src/constant/enum';
+import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
+import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
+import type { DocumentType } from '@/src/interface/document';
+import updateDocument from '@/src/service/document/updateDocument';
+import { toast } from '../../ui/use-toast';
+import ButtonPanel from '../../filling-detail/create-edit/buttonPanel';
+import FileInputPanel from '../../filling-detail/create-edit/fileInputPanel';
 import {
   Form,
   FormControl,
@@ -9,28 +24,9 @@ import {
   FormLabel,
   FormMessage,
 } from '../../ui/form';
-import FileInputPanel from '../../filling-detail/create-edit/fileInputPanel';
-import ButtonPanel from '../../filling-detail/create-edit/buttonPanel';
-import { z } from 'zod';
-import { zodDocumentAdminFile } from '@/src/constant/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { getFileType } from '@/src/lib/utils';
-import uploadFileToS3 from '@/src/service/aws/uploadFileToS3';
-import createDocument from '@/src/service/document/createDocument';
-import { toast } from '../../ui/use-toast';
-import {
-  DocumentActivity,
-  DocumentStatus,
-  FilingStatus,
-} from '@/src/constant/enum';
-import ReviewSubmitButton from './review-submit-button';
-import FilingReplyAfterSubmit from './filing-reply-after-submit';
-import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
-import { DocumentType } from '@/src/interface/document';
 import FilingReplyAfterSubmitEditing from './filing-reply-after-submit-editing';
-import updateDocument from '@/src/service/document/updateDocument';
-import { getUserId } from '@/src/service/auth';
+import FilingReplyAfterSubmit from './filing-reply-after-submit';
+import ReviewSubmitButton from './review-submit-button';
 
 export default function FilingReplyComment({
   isPending,
@@ -118,12 +114,13 @@ export default function FilingReplyComment({
   }, [isEditingAfterSubmit]);
 
   async function onSubmit(values: z.infer<typeof createdFormSchema>) {
-    var fileName = '';
+    let fileName = '';
     try {
-      if (values.file[0]) {
-        const swap = getFileType(values.file[0]) !== 'pdf';
-        const pdfFile = values.file[swap ? 1 : 0];
-        const docFile = values.file[swap ? 0 : 1];
+      const files: FileList = values.file;
+      if (files[0]) {
+        const swap = getFileType(files[0]) !== 'pdf';
+        const pdfFile = files[swap ? 1 : 0];
+        const docFile = files[swap ? 0 : 1];
         const folderName = `${projectId}/${filingId}`;
 
         const [pdfName, docName] = await Promise.all([
@@ -149,7 +146,7 @@ export default function FilingReplyComment({
             comment: values.comment,
 
             // case ที่ไม่อัพไฟล์ใหม่
-            pdfName: values.file[0] ? fileName : document?.pdfName,
+            pdfName: files[0] ? fileName : document?.pdfName,
           },
         });
         setDocument(updatedDocument);
@@ -205,14 +202,14 @@ export default function FilingReplyComment({
           <IoReturnUpBack className="h-8 w-8 mr-2 inline-block" />
           {isEditedDocument ? 'การแก้ไข' : 'ตอบกลับ'}
         </div>
-        {isPending && !isPendingReviewed && (
+        {isPending && !isPendingReviewed ? (
           <ReviewSubmitButton
             isSubmitted={isPendingSubmitted}
             latestReplyDocumentId={latestReplyDocumentId}
             setIsPendingReviewed={setIsPendingReviewed}
             setDocumentStatus={setDocumentStatus}
           />
-        )}
+        ) : null}
       </div>
 
       {(isPending && isPendingSubmitted) || !isPending ? (
