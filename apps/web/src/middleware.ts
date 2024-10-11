@@ -4,29 +4,38 @@ import { trpc } from './app/trpc';
 import { parseJwt } from './service/auth';
 import { Payload } from './interface/auth';
 
-function roleCheck(req: NextRequest, payload: Payload): NextResponse {
+function redirect(req: NextRequest, payload: Payload): NextResponse {
+  const path = req.nextUrl.pathname;
+  if (path.startsWith('/admin/') && payload.role !== 'admin') {
+    const nonAdminPath = path.replace(/(?<!\/admin\/)\/admin\//gm, '/');
+    return NextResponse.redirect(new URL(nonAdminPath, req.url));
+  }
   return NextResponse.next();
 }
 
 export async function middleware(req: NextRequest) {
   const accessToken = req.cookies.get('accessToken')?.value;
-  const refreshToken = req.cookies.get('refreshToken')?.value;
   if (accessToken) {
     const verifyResult = await jwtVerify(
       accessToken,
       new TextEncoder().encode(process.env.JWT_SECRET),
-    ).catch((err) => {
+    ).catch(() => {
       return null;
     });
     const verifiedPayload = verifyResult?.payload as Payload | undefined;
-    console.log('verifiedPayload: ', verifiedPayload?.exp);
+    console.log(' verifiedPayload: ', verifiedPayload?.exp);
 
-    if (verifiedPayload) return roleCheck(req, verifiedPayload);
+    if (verifiedPayload) return redirect(req, verifiedPayload);
   }
-  if (!refreshToken) return NextResponse.redirect(new URL('/login', req.url));
-  const payload = await parseJwt(refreshToken);
-  console.log('refreshing payload: ', payload.exp);
 
+  const path = req.nextUrl.pathname;
+  const refreshToken = req.cookies.get('refreshToken')?.value;
+  if (!refreshToken)
+    return NextResponse.redirect(
+      new URL(`/login?callbackUrl=${path}`, req.url),
+    );
+
+  const payload = await parseJwt(refreshToken);
   const newTokens = await trpc.authRouter.refreshToken
     .query({
       userId: payload.sub,
@@ -38,9 +47,12 @@ export async function middleware(req: NextRequest) {
     });
   console.log('newTokens: ', newTokens?.accessToken.length);
 
-  if (!newTokens) return NextResponse.redirect(new URL('/login', req.url));
+  if (!newTokens)
+    return NextResponse.redirect(
+      new URL(`/login?callbackUrl=${path}`, req.url),
+    );
   const newPayload = await parseJwt(newTokens.accessToken);
-  const res = roleCheck(req, newPayload);
+  const res = redirect(req, newPayload);
   res.cookies.set('accessToken', newTokens.accessToken, {
     httpOnly: true,
     secure: true,
