@@ -1,0 +1,71 @@
+import { NextResponse, type NextRequest } from 'next/server';
+import { jwtVerify } from 'jose';
+import { trpc } from './app/trpc';
+import { parseJwt } from './service/auth';
+import { Payload } from './interface/auth';
+
+function roleCheck(req: NextRequest, payload: Payload): NextResponse {
+  return NextResponse.next();
+}
+
+export async function middleware(req: NextRequest) {
+  const accessToken = req.cookies.get('accessToken')?.value;
+  const refreshToken = req.cookies.get('refreshToken')?.value;
+  if (accessToken) {
+    const verifyResult = await jwtVerify(
+      accessToken,
+      new TextEncoder().encode(process.env.JWT_SECRET),
+    ).catch((err) => {
+      return null;
+    });
+    const verifiedPayload = verifyResult?.payload as Payload | undefined;
+    console.log('verifiedPayload: ', verifiedPayload?.exp);
+
+    if (verifiedPayload) return roleCheck(req, verifiedPayload);
+  }
+  if (!refreshToken) return NextResponse.redirect(new URL('/login', req.url));
+  const payload = await parseJwt(refreshToken);
+  console.log('refreshing payload: ', payload.exp);
+
+  const newTokens = await trpc.authRouter.refreshToken
+    .query({
+      userId: payload.sub,
+      refreshToken,
+    })
+    .catch(() => {
+      console.error('Error refreshing new token');
+      return null;
+    });
+  console.log('newTokens: ', newTokens?.accessToken.length);
+
+  if (!newTokens) return NextResponse.redirect(new URL('/login', req.url));
+  const newPayload = await parseJwt(newTokens.accessToken);
+  const res = roleCheck(req, newPayload);
+  res.cookies.set('accessToken', newTokens.accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+  });
+  res.cookies.set('refreshToken', newTokens.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+  });
+  return res;
+}
+
+export const config = {
+  matcher: [
+    '/home',
+    '/projects',
+    '/my-projects',
+    '/status',
+    '/project/:path*',
+    '/new-project',
+    '/admin/home',
+    '/admin/projects',
+    '/admin/status',
+    '/admin/project/:path*',
+    '/admin/new-project',
+  ],
+};

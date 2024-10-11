@@ -4,6 +4,7 @@ import { trpc } from '../../../app/trpc';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { User } from '@/src/interface/user';
+import { parseJwt } from '@/src/service/auth';
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const { accessToken, refreshToken, roles } = (await req.json()) as {
@@ -11,6 +12,14 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     refreshToken: string;
     roles: string[];
   };
+  const cookieStore = cookies();
+  // set ได้จิงป่าว
+  cookieStore.set('test', 'test', {
+    httpOnly: true,
+    secure: false,
+    // sameSite: 'strict',
+  });
+  console.log('set cookie');
 
   if (!accessToken || !refreshToken) {
     return NextResponse.json(
@@ -23,7 +32,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     );
   }
 
-  const jwtPayload = parseJwt(accessToken);
+  const jwtPayload = await parseJwt(accessToken);
 
   if (roles && roles.length > 0 && !roles.includes(jwtPayload.role)) {
     return NextResponse.json(
@@ -54,6 +63,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         console.error('Error refreshing new token');
         return null;
       });
+    console.log('newTokens', newTokens);
 
     if (!newTokens) {
       return NextResponse.json(
@@ -65,11 +75,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         },
       );
     }
+    console.log('after token 2');
 
     tokens = newTokens;
   } else {
     tokens = { accessToken, refreshToken };
   }
+  console.log('token 3');
 
   await trpc.authRouter.validateToken
     .query({ accessToken: tokens.accessToken })
@@ -83,6 +95,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         },
       );
     });
+  console.log('token 4');
 
   const user = await trpc.user.findUserByUserId
     .query({
@@ -99,32 +112,38 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       );
     });
 
-  const cookieStore = cookies();
-
+  // const cookieStore = cookies();
+  // set ได้จิงป่าว
   cookieStore.set('accessToken', tokens.accessToken, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     // sameSite: 'strict',
   });
 
   cookieStore.set('refreshToken', tokens.refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     // sameSite: 'strict',
   });
+  cookieStore.set('refreshToken22', tokens.refreshToken, {
+    httpOnly: true,
+    secure: false,
+    // sameSite: 'strict',
+  });
+  console.log('tokens', tokens);
 
   return NextResponse.json(user);
 };
 
-function parseJwt(token: string): Payload {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split('')
-      .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-      .join(''),
-  );
+// function parseJwt(token: string): Payload {
+//   const base64Url = token.split('.')[1];
+//   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//   const jsonPayload = decodeURIComponent(
+//     atob(base64)
+//       .split('')
+//       .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+//       .join(''),
+//   );
 
-  return JSON.parse(jsonPayload);
-}
+//   return JSON.parse(jsonPayload);
+// }

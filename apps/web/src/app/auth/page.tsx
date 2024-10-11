@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LoaderCircle } from 'lucide-react';
+import { signIn } from '@/src/service/auth';
 
-export default function Auth({
+export default function Page({
   searchParams,
 }: {
   searchParams: {
@@ -14,34 +15,15 @@ export default function Auth({
   const router = useRouter();
 
   const token = searchParams.token;
-  {
-    /* apply callbackurl here */
-  }
   useEffect(() => {
-    async function signIn() {
-      await fetch('http://localhost:3000/api/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          token,
-        }),
-      })
-        .then((res) => {
-          if (res.status !== 200) {
-            router.push('/login');
-          }
-          router.push('/home');
-        })
-        .catch((err) => {
-          console.error('Error signing in: ', err);
-          router.push('/login');
-        });
+    async function signInAndRedirect() {
+      const { accessToken, refreshToken } = await signIn(token);
+      /* apply callbackurl here */
+      if (accessToken && refreshToken) router.push('/home');
+      else router.push('/login');
     }
-
-    signIn();
-  }, [token, router]);
+    signInAndRedirect();
+  }, []);
 
   return (
     <div className="h-dvh w-full grid place-content-center">
