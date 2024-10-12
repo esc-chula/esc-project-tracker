@@ -1,0 +1,15 @@
+node_modules
+dist
+.turbo
+.git
+.gitignore
+docker-compose.yml
+
+
+# nextJs
+**/.next
+apps/web/.next
+
+
+
+

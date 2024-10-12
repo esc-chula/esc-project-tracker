@@ -10,14 +10,14 @@ RUN pnpm config set store-dir ~/.pnpm-store
 
 FROM base AS pruner
 WORKDIR /app
-COPY apps/api ./apps/api  
+COPY apps ./apps  
 COPY package.json ./package.json  
 COPY packages ./packages
 COPY pnpm-lock.yaml ./pnpm-lock.yaml  
 COPY pnpm-workspace.yaml ./pnpm-workspace.yaml  
 COPY turbo.json ./turbo.json
 # read more https://turbo.build/repo/docs/reference/prune
-RUN turbo prune --scope=api --docker
+RUN turbo prune --scope=web --docker
 
 
 # Build project
@@ -31,19 +31,22 @@ COPY --from=pruner /app/out/json/ .
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
 
-RUN turbo build --filter=api
+RUN turbo build --filter=web
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm prune --prod --no-optional
-RUN rm -rf ./**/*/src
 
-
-FROM alpine AS runner
+FROM base AS runner
 # not running as root (just for security)
-RUN addgroup --system --gid 1001 esc-api
-RUN adduser --system --uid 1001 esc-api
-USER esc-api
+RUN addgroup --system --gid 1001 esc-web
+RUN adduser --system --uid 1001 esc-web
+USER esc-web
 
 WORKDIR /app
-COPY --from=builder --chown=esc-api:nodejs /app .
+# optimize for Next.js
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=esc-web:esc-web /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=esc-web:esc-web /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=esc-web:esc-web /app/apps/web/public ./apps/web/public
 
-WORKDIR /app/apps/api
-CMD node dist/main
+EXPOSE 3000
+
+CMD node apps/web/server.js
