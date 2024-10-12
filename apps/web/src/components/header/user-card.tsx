@@ -20,7 +20,7 @@ export default function UserCard() {
 
   return (
     <div className="h-12 w-[300px] flex items-center ml-auto">
-      <div className="pr-4 border-r border-black mr-4 h-full flex items-center">
+      <div className="pr-4 border-r border-black mr-4 h-full flex items-center opacity-35">
         <Bell size={28} />
       </div>
       <div className="flex items-center gap-4">
