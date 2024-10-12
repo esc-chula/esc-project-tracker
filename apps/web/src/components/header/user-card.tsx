@@ -1,19 +1,26 @@
-import { Bell, ChevronDown } from 'lucide-react';
+'use client';
+import { Bell } from 'lucide-react';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
 
-import { getUsername, signOut } from '@/src/service/auth';
+import { getUsername } from '@/src/service/auth';
 import UserCardMenu from './user-card-menu';
+import { useEffect, useState } from 'react';
 
-export default async function UserCard() {
-  const username = await getUsername();
+export default function UserCard() {
+  const [username, setUsername] = useState('');
+  useEffect(() => {
+    getUsername().then((usernameData) => {
+      setUsername(usernameData);
+    });
+  });
 
   return (
     <div className="h-12 w-[300px] flex items-center ml-auto">
-      <div className="pr-4 border-r border-black mr-4 h-full flex items-center">
+      <div className="pr-4 border-r border-black mr-4 h-full flex items-center opacity-35">
         <Bell size={28} />
       </div>
       <div className="flex items-center gap-4">

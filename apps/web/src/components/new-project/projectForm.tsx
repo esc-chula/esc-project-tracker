@@ -65,16 +65,13 @@ export default function ProjectForm({
   const [membersCount, setMembersCount] = useState(1);
   const [isAfterCancelUpdate, setIsAfterCancelUpdate] = useState(false);
 
-  const [userId, setUserId] = useState<string>('');
-
   const [user, setUser] = useState<User | null>();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userIdData = await getUserId();
-      setUserId(userIdData);
-      const userData = await findUserByUserId(userIdData);
-      setUser(userData);
+      const userId = await getUserId();
+      const user = await findUserByUserId(userId);
+      setUser(user);
     };
     fetchUser();
   }, []);

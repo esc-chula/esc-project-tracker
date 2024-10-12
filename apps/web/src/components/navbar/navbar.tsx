@@ -91,6 +91,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           />
           {!isAdmin && (
             <NavbarItem
+              disabled
               icon={<FilePlus size={20} />}
               text="Gen Doc"
               expanded={expanded}
@@ -107,6 +108,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
 
           <ul className="flex-1 flex gap-1.5 flex-col">
             <NavbarItem
+              disabled
               icon={<Trash2 size={20} />}
               text="ถังขยะ"
               expanded={expanded}
@@ -114,6 +116,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
               href="/trash"
             />
             <NavbarItem
+              disabled
               icon={<MessageSquareWarning size={20} />}
               text="แจ้งปัญหา"
               expanded={expanded}
