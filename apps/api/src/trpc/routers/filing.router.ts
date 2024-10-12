@@ -94,16 +94,5 @@ export class FilingRouter {
           id: input.id,
         });
       }),
-
-    // Un-used yet
-    findFilingsForSearchBar: this.trpcService.protectedProcedure
-      .input(z.object({ input: z.string() }))
-      .query(({ input }) => {
-        return this.filingService.findFilingsForSearchBar(input.input);
-      }),
-
-    findLatestFilings: this.trpcService.trpc.procedure.query(() => {
-      return this.filingService.findLatestFilings();
-    }),
   });
 }
