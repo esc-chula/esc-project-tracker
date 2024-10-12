@@ -12,30 +12,24 @@ export class FilingRouter {
   ) {}
 
   appRouter = this.trpcService.router({
-    //Get Filing By ID
-    findFilingByFilingId: this.trpcService.trpc.procedure
-      .input(z.object({ filingId: z.string() }))
-      .query(({ input }) => {
-        return this.filingService.findByFilingID(input.filingId);
-      }),
     //Get All Filing
-    findAllFiling: this.trpcService.trpc.procedure.query(() => {
+    findAllFiling: this.trpcService.protectedProcedure.query(() => {
       return this.filingService.findAllFiling();
     }),
     // Get Filings By UserID -> Filing[]
-    findFilingsByUserId: this.trpcService.trpc.procedure
+    findFilingsByUserId: this.trpcService.protectedProcedure
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByUserID(input.userId);
       }),
     // Get Filings By ProjectID -> Filing[]
-    findFilingsByProjectId: this.trpcService.trpc.procedure
+    findFilingsByProjectId: this.trpcService.protectedProcedure
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByProjectID(input.projectId);
       }),
     // Create a new Filing
-    createFiling: this.trpcService.trpc.procedure
+    createFiling: this.trpcService.protectedProcedure
       .input(
         z.object({
           projectId: z.string(),
@@ -55,7 +49,7 @@ export class FilingRouter {
 
     //Update filing name
 
-    updateFilingName: this.trpcService.trpc.procedure
+    updateFilingName: this.trpcService.protectedProcedure
       .input(
         z.object({
           filingId: z.string(),
@@ -70,20 +64,20 @@ export class FilingRouter {
         });
       }),
     //Delete filing
-    deleteFiling: this.trpcService.trpc.procedure
+    deleteFiling: this.trpcService.protectedProcedure
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.deleteFiling(input.filingId);
       }),
     // Get Filing By FilingID -> Filing
-    getFilingByFilingId: this.trpcService.trpc.procedure
+    getFilingByFilingId: this.trpcService.protectedProcedure
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByFilingID(input.filingId);
       }),
 
     //findFilingWithFilter
-    findFilingsWithFilter: this.trpcService.trpc.procedure
+    findFilingsWithFilter: this.trpcService.protectedProcedure
       .input(
         z.object({
           status: z.string(),
@@ -101,7 +95,8 @@ export class FilingRouter {
         });
       }),
 
-    findFilingsForSearchBar: this.trpcService.trpc.procedure
+    // Un-used yet
+    findFilingsForSearchBar: this.trpcService.protectedProcedure
       .input(z.object({ input: z.string() }))
       .query(({ input }) => {
         return this.filingService.findFilingsForSearchBar(input.input);
