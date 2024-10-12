@@ -34,9 +34,6 @@ export async function getCookies(): Promise<{
   accessToken: string;
   refreshToken: string;
 }> {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-  const refreshToken = cookieStore.get('refreshToken')?.value;
   try {
     const cookieStore = cookies();
 

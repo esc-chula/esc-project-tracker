@@ -70,8 +70,8 @@ export default function ProjectForm({
   useEffect(() => {
     const fetchUser = async () => {
       const userId = await getUserId();
-      const user = await findUserByUserId(userId);
-      setUser(user);
+      const userData = await findUserByUserId(userId);
+      setUser(userData);
     };
     fetchUser();
   }, []);
