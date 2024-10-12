@@ -3,6 +3,7 @@ import { ProjectService } from '../../project_/project_.service';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
 import { ProjectStatus, ProjectType } from '../../constant/enum';
+import { TRPCError } from '@trpc/server';
 
 @Injectable()
 export class ProjectRouter {
@@ -58,14 +59,21 @@ export class ProjectRouter {
         });
       }),
 
-    // NOTE: Permission for Admin and Owner
     deleteProject: this.trpcService.protectedProcedure
       .input(z.object({ projectId: z.string().uuid() }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.projectId,
+          'project',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return await this.projectService.deleteProject(input.projectId);
       }),
-
-    // NOTE: Permission for Admin and Owner
     updateProject: this.trpcService.protectedProcedure
       .input(
         z.object({
@@ -79,7 +87,17 @@ export class ProjectRouter {
           }),
         }),
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.projectId,
+          'project',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         const { projectId, updatedProject } = input;
         return this.projectService.updateProject(projectId, updatedProject);
       }),

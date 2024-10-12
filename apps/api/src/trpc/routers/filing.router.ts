@@ -3,6 +3,7 @@ import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
 import { FilingStatus } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
+import { TRPCError } from '@trpc/server';
 
 @Injectable()
 export class FilingRouter {
@@ -38,7 +39,17 @@ export class FilingRouter {
           userId: z.string(),
         }),
       )
-      .query(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.projectId,
+          'project',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return this.filingService.createFiling(
           input.projectId,
           input.filingName,
@@ -57,7 +68,17 @@ export class FilingRouter {
           filingStatus: z.nativeEnum(FilingStatus).optional(),
         }),
       )
-      .query(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.filingId,
+          'filing',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return this.filingService.updateFiling(input.filingId, {
           name: input.filingName,
           status: input.filingStatus,
@@ -66,7 +87,17 @@ export class FilingRouter {
     //Delete filing
     deleteFiling: this.trpcService.protectedProcedure
       .input(z.object({ filingId: z.string() }))
-      .query(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.filingId,
+          'filing',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return this.filingService.deleteFiling(input.filingId);
       }),
     // Get Filing By FilingID -> Filing

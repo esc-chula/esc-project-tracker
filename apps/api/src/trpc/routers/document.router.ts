@@ -58,7 +58,17 @@ export class DocumentRouter {
           comment: optional(z.string()),
         }),
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.filingId,
+          'filing',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return await this.documentService.createDocument({
           filingId: input.filingId,
           name: input.name,
@@ -88,7 +98,17 @@ export class DocumentRouter {
           }),
         }),
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.docId,
+          'document',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         const { docId, obj } = input;
         return this.documentService.updateDocument(docId, obj);
       }),
