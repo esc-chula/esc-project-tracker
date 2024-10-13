@@ -3,39 +3,36 @@ import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
 import { FilingStatus } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
+import { TRPCError } from '@trpc/server';
+import { ProjectService } from '../../project_/project_.service';
 
 @Injectable()
 export class FilingRouter {
   constructor(
+    private readonly projectService: ProjectService,
     private readonly filingService: FilingService,
     private readonly trpcService: TrpcService,
   ) {}
 
   appRouter = this.trpcService.router({
-    //Get Filing By ID
-    findFilingByFilingId: this.trpcService.trpc.procedure
-      .input(z.object({ filingId: z.string() }))
-      .query(({ input }) => {
-        return this.filingService.findByFilingID(input.filingId);
-      }),
     //Get All Filing
-    findAllFiling: this.trpcService.trpc.procedure.query(() => {
+    findAllFiling: this.trpcService.protectedProcedure.query(() => {
       return this.filingService.findAllFiling();
     }),
     // Get Filings By UserID -> Filing[]
-    findFilingsByUserId: this.trpcService.trpc.procedure
+    findFilingsByUserId: this.trpcService.protectedProcedure
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByUserID(input.userId);
       }),
     // Get Filings By ProjectID -> Filing[]
-    findFilingsByProjectId: this.trpcService.trpc.procedure
+    findFilingsByProjectId: this.trpcService.protectedProcedure
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByProjectID(input.projectId);
       }),
     // Create a new Filing
-    createFiling: this.trpcService.trpc.procedure
+    createFiling: this.trpcService.protectedProcedure
       .input(
         z.object({
           projectId: z.string(),
@@ -44,7 +41,17 @@ export class FilingRouter {
           userId: z.string(),
         }),
       )
-      .query(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.projectId,
+          'project',
+        );
+        if (!isMember)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return this.filingService.createFiling(
           input.projectId,
           input.filingName,
@@ -55,7 +62,7 @@ export class FilingRouter {
 
     //Update filing name
 
-    updateFilingName: this.trpcService.trpc.procedure
+    updateFilingName: this.trpcService.protectedProcedure
       .input(
         z.object({
           filingId: z.string(),
@@ -63,27 +70,49 @@ export class FilingRouter {
           filingStatus: z.nativeEnum(FilingStatus).optional(),
         }),
       )
-      .query(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const { isMember } = await this.trpcService.isProjectMember(
+          ctx.payload.sub,
+          input.filingId,
+          'filing',
+        );
+        if (!isMember && ctx.payload.role !== 'admin')
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not a member of the project',
+          });
         return this.filingService.updateFiling(input.filingId, {
           name: input.filingName,
           status: input.filingStatus,
         });
       }),
     //Delete filing
-    deleteFiling: this.trpcService.trpc.procedure
+    deleteFiling: this.trpcService.protectedProcedure
       .input(z.object({ filingId: z.string() }))
-      .query(({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const filingRaw = await this.filingService.findByFilingID(
+          input.filingId,
+        );
+        const projectRaw = await this.projectService.findByProjectID(
+          filingRaw.projectId,
+        );
+        const isOwner = projectRaw.ownerId === ctx.payload.sub;
+        if (!isOwner)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not the owner of the project',
+          });
         return this.filingService.deleteFiling(input.filingId);
       }),
     // Get Filing By FilingID -> Filing
-    getFilingByFilingId: this.trpcService.trpc.procedure
+    getFilingByFilingId: this.trpcService.protectedProcedure
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByFilingID(input.filingId);
       }),
 
     //findFilingWithFilter
-    findFilingsWithFilter: this.trpcService.trpc.procedure
+    findFilingsWithFilter: this.trpcService.protectedProcedure
       .input(
         z.object({
           status: z.string(),
@@ -100,15 +129,5 @@ export class FilingRouter {
           id: input.id,
         });
       }),
-
-    findFilingsForSearchBar: this.trpcService.trpc.procedure
-      .input(z.object({ input: z.string() }))
-      .query(({ input }) => {
-        return this.filingService.findFilingsForSearchBar(input.input);
-      }),
-
-    findLatestFilings: this.trpcService.trpc.procedure.query(() => {
-      return this.filingService.findLatestFilings();
-    }),
   });
 }

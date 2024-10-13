@@ -11,7 +11,7 @@ export class AwsRouter {
   ) {}
 
   appRouter = this.trpcService.router({
-    uploadFileToS3: this.trpcService.trpc.procedure
+    uploadFileToS3: this.trpcService.protectedProcedure
       .input(
         z.object({
           file: z.instanceof(Buffer),
@@ -27,7 +27,7 @@ export class AwsRouter {
         );
       }),
 
-    getUrlToFile: this.trpcService.trpc.procedure
+    getUrlToFile: this.trpcService.protectedProcedure
       .input(
         z.object({ fileName: z.string(), folderName: optional(z.string()) }),
       )
