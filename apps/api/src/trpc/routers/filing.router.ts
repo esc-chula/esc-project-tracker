@@ -100,7 +100,7 @@ export class FilingRouter {
         if (!isOwner)
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'User is not a member of the project',
+            message: 'User is not the owner of the project',
           });
         return this.filingService.deleteFiling(input.filingId);
       }),
