@@ -49,7 +49,24 @@ export class ProjectRouter {
           owner: input.owner,
         });
       }),
-
+    //Create a new Outside Project
+    createOutsideProject: this.trpcService.trpc.procedure
+      .input(
+        z.object({
+          name: z.string(),
+          type: z.nativeEnum(ProjectType),
+          detail: z.string().optional(),
+          owner: z.string(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        return await this.projectService.createOutsideProject({
+          name: input.name,
+          type: input.type,
+          detail: input.detail,
+          owner: input.owner,
+        });
+      }),
     findProjectsWithFilter: this.trpcService.protectedProcedure
       .input(z.object({ status: z.string(), department: z.string() }))
       .query(({ input }) => {
@@ -62,15 +79,14 @@ export class ProjectRouter {
     deleteProject: this.trpcService.protectedProcedure
       .input(z.object({ projectId: z.string().uuid() }))
       .mutation(async ({ input, ctx }) => {
-        const { isMember } = await this.trpcService.isProjectMember(
-          ctx.payload.sub,
+        const project = await this.projectService.findByProjectID(
           input.projectId,
-          'project',
         );
-        if (!isMember)
+        const isOwner = project.ownerId === ctx.payload.sub;
+        if (!isOwner && ctx.payload.role !== 'admin')
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'User is not a member of the project',
+            message: 'User is not the owner of the project',
           });
         return await this.projectService.deleteProject(input.projectId);
       }),
@@ -88,16 +104,16 @@ export class ProjectRouter {
         }),
       )
       .mutation(async ({ input, ctx }) => {
-        const { isMember } = await this.trpcService.isProjectMember(
-          ctx.payload.sub,
+        const project = await this.projectService.findByProjectID(
           input.projectId,
-          'project',
         );
-        if (!isMember)
+        const isOwner = project.ownerId === ctx.payload.sub;
+        if (!isOwner && ctx.payload.role !== 'admin')
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'User is not a member of the project',
+            message: 'User is not the owner of the project',
           });
+
         const { projectId, updatedProject } = input;
         return this.projectService.updateProject(projectId, updatedProject);
       }),

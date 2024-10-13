@@ -64,7 +64,7 @@ export class DocumentRouter {
           input.filingId,
           'filing',
         );
-        if (!isMember)
+        if (!isMember && ctx.payload.role !== 'admin')
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'User is not a member of the project',
@@ -104,7 +104,7 @@ export class DocumentRouter {
           input.docId,
           'document',
         );
-        if (!isMember)
+        if (!isMember && ctx.payload.role !== 'admin')
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'User is not a member of the project',

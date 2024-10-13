@@ -4,10 +4,12 @@ import { z } from 'zod';
 import { FilingStatus } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
 import { TRPCError } from '@trpc/server';
+import { ProjectService } from '../../project_/project_.service';
 
 @Injectable()
 export class FilingRouter {
   constructor(
+    private readonly projectService: ProjectService,
     private readonly filingService: FilingService,
     private readonly trpcService: TrpcService,
   ) {}
@@ -74,7 +76,7 @@ export class FilingRouter {
           input.filingId,
           'filing',
         );
-        if (!isMember)
+        if (!isMember && ctx.payload.role !== 'admin')
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'User is not a member of the project',
@@ -88,12 +90,14 @@ export class FilingRouter {
     deleteFiling: this.trpcService.protectedProcedure
       .input(z.object({ filingId: z.string() }))
       .mutation(async ({ input, ctx }) => {
-        const { isMember } = await this.trpcService.isProjectMember(
-          ctx.payload.sub,
+        const filingRaw = await this.filingService.findByFilingID(
           input.filingId,
-          'filing',
         );
-        if (!isMember)
+        const projectRaw = await this.projectService.findByProjectID(
+          filingRaw.projectId,
+        );
+        const isOwner = projectRaw.ownerId === ctx.payload.sub;
+        if (!isOwner)
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'User is not a member of the project',
