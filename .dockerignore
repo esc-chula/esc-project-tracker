@@ -4,11 +4,8 @@ dist
 .git
 .gitignore
 docker-compose.yml
-
-
-# nextJs
 **/.next
-apps/web/.next
+**/.env
 
 
 

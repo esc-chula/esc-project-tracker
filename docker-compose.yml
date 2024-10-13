@@ -1,12 +1,17 @@
-version: '3'
-
 services:
   web:
     container_name: web
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_SERVER_URL: http://api:4000
+        INTANIA_AUTH_APP_ID: ${INTANIA_AUTH_APP_ID}
+        INTANIA_AUTH_SECRET: ${INTANIA_AUTH_SECRET}
+        INTANIA_AUTH_REDIRECT_URL: ${INTANIA_AUTH_REDIRECT_URL}
     restart: always
+    depends_on:
+      - api
     ports:
       - 3000:3000
     networks:
@@ -22,6 +27,8 @@ services:
       - 4000:4000
     networks:
       - esc_network
+    env_file:
+      - apps/api/.env
 
 networks:
   esc_network:

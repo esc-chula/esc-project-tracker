@@ -20,7 +20,6 @@ COPY turbo.json ./turbo.json
 RUN turbo prune --scope=api --docker
 
 
-# Build project
 FROM base AS builder
 WORKDIR /app
 
@@ -31,13 +30,13 @@ COPY --from=pruner /app/out/json/ .
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
 
-RUN turbo build --filter=api
+RUN turbo build --filter=api --env-mode=loose
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm prune --prod --no-optional
 RUN rm -rf ./**/*/src
 
 
 FROM alpine AS runner
-# not running as root (just for security)
+# run as non-root user
 RUN addgroup --system --gid 1001 esc-api
 RUN adduser --system --uid 1001 esc-api
 USER esc-api

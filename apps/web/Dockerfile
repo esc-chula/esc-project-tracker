@@ -10,6 +10,7 @@ RUN pnpm config set store-dir ~/.pnpm-store
 
 FROM base AS pruner
 WORKDIR /app
+# we also need trpc from apps/api
 COPY apps ./apps  
 COPY package.json ./package.json  
 COPY packages ./packages
@@ -20,9 +21,18 @@ COPY turbo.json ./turbo.json
 RUN turbo prune --scope=web --docker
 
 
-# Build project
 FROM base AS builder
 WORKDIR /app
+# nextJs need ENV on build time
+ARG NEXT_PUBLIC_API_SERVER_URL
+ARG INTANIA_AUTH_APP_ID
+ARG INTANIA_AUTH_SECRET
+ARG INTANIA_AUTH_REDIRECT_URL
+
+ENV NEXT_PUBLIC_API_SERVER_URL=$NEXT_PUBLIC_API_SERVER_URL \
+    INTANIA_AUTH_APP_ID=$INTANIA_AUTH_APP_ID \
+    INTANIA_AUTH_SECRET=$INTANIA_AUTH_SECRET \
+    INTANIA_AUTH_REDIRECT_URL=$INTANIA_AUTH_REDIRECT_URL
 
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
@@ -35,7 +45,7 @@ RUN turbo build --filter=web
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm prune --prod --no-optional
 
 FROM base AS runner
-# not running as root (just for security)
+# run as non-root user
 RUN addgroup --system --gid 1001 esc-web
 RUN adduser --system --uid 1001 esc-web
 USER esc-web
