@@ -17,6 +17,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.670.0",
     "@nestjs/axios": "^3.0.3",
     "@nestjs/common": "^10.4.2",
     "@nestjs/config": "^3.2.3",
