@@ -3,6 +3,7 @@ import { ProjectService } from '../../project_/project_.service';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
 import { ProjectStatus, ProjectType } from '../../constant/enum';
+import { TRPCError } from '@trpc/server';
 
 @Injectable()
 export class ProjectRouter {
@@ -18,20 +19,20 @@ export class ProjectRouter {
     }),
 
     // Get Projects By UserID -> Project[]
-    findProjectsByUserId: this.trpcService.trpc.procedure
+    findProjectsByUserId: this.trpcService.protectedProcedure
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.projectService.findByUserID(input.userId);
       }),
 
-    getProjectByProjectId: this.trpcService.trpc.procedure
+    getProjectByProjectId: this.trpcService.protectedProcedure
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.projectService.findByProjectID(input.projectId);
       }),
 
     //Create a new Project
-    createProject: this.trpcService.trpc.procedure
+    createProject: this.trpcService.protectedProcedure
       .input(
         z.object({
           name: z.string(),
@@ -48,7 +49,6 @@ export class ProjectRouter {
           owner: input.owner,
         });
       }),
-
     //Create a new Outside Project
     createOutsideProject: this.trpcService.trpc.procedure
       .input(
@@ -67,8 +67,7 @@ export class ProjectRouter {
           owner: input.owner,
         });
       }),
-
-    findProjectsWithFilter: this.trpcService.trpc.procedure
+    findProjectsWithFilter: this.trpcService.protectedProcedure
       .input(z.object({ status: z.string(), department: z.string() }))
       .query(({ input }) => {
         return this.projectService.findProjectsWithFilter({
@@ -77,27 +76,21 @@ export class ProjectRouter {
         });
       }),
 
-    findProjectsForSearchBar: this.trpcService.trpc.procedure
-      .input(z.object({ input: z.string() }))
-      .query(({ input }) => {
-        return this.projectService.findProjectsForSearchBar(input.input);
-      }),
-
-    //TODO
-    /*
-    ROLE ADMIN GUARD
-    */
-    deleteProject: this.trpcService.trpc.procedure
+    deleteProject: this.trpcService.protectedProcedure
       .input(z.object({ projectId: z.string().uuid() }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const project = await this.projectService.findByProjectID(
+          input.projectId,
+        );
+        const isOwner = project.ownerId === ctx.payload.sub;
+        if (!isOwner && ctx.payload.role !== 'admin')
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not the owner of the project',
+          });
         return await this.projectService.deleteProject(input.projectId);
       }),
-
-    //TODO
-    /*
-    ROLE ADMIN GUARD
-    */
-    updateProject: this.trpcService.trpc.procedure
+    updateProject: this.trpcService.protectedProcedure
       .input(
         z.object({
           projectId: z.string().uuid(),
@@ -110,7 +103,17 @@ export class ProjectRouter {
           }),
         }),
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
+        const project = await this.projectService.findByProjectID(
+          input.projectId,
+        );
+        const isOwner = project.ownerId === ctx.payload.sub;
+        if (!isOwner && ctx.payload.role !== 'admin')
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'User is not the owner of the project',
+          });
+
         const { projectId, updatedProject } = input;
         return this.projectService.updateProject(projectId, updatedProject);
       }),

@@ -11,7 +11,7 @@ export class UserRouter {
   ) {}
 
   appRouter = this.trpcService.router({
-    findUserByCondition: this.trpcService.trpc.procedure
+    findUserByCondition: this.trpcService.protectedProcedure
       .input(
         z.object({
           id: z.string().optional(),
@@ -27,7 +27,7 @@ export class UserRouter {
         });
       }),
 
-    findUserByUserId: this.trpcService.trpc.procedure
+    findUserByUserId: this.trpcService.protectedProcedure
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.userService.findByUserID(input.userId);

@@ -14,7 +14,7 @@ export class UserProjRouter {
   ) {}
 
   appRouter = this.trpcService.router({
-    updateUserProjLastOpen: this.trpcService.trpc.procedure
+    updateUserProjLastOpen: this.trpcService.protectedProcedure
       .input(
         z.object({
           userId: z.string(),
@@ -29,7 +29,7 @@ export class UserProjRouter {
       }),
 
     //Create User Project (User join Project)
-    createUserProject: this.trpcService.trpc.procedure
+    createUserProject: this.trpcService.protectedProcedure
       .input(
         z.object({
           userId: z.string(),
@@ -67,7 +67,7 @@ export class UserProjRouter {
         });
       }),
 
-    hasUserProj: this.trpcService.trpc.procedure
+    hasUserProj: this.trpcService.protectedProcedure
       .input(z.object({ userId: z.string(), projectId: z.string() }))
       .query(({ input }) => {
         return this.userProjService.hasUserProj({
@@ -77,7 +77,7 @@ export class UserProjRouter {
       }),
 
     //Join Project By StudentId
-    joinProjectByStudentId: this.trpcService.trpc.procedure
+    joinProjectByStudentId: this.trpcService.protectedProcedure
       .input(
         z.object({
           studentId: z
@@ -99,7 +99,7 @@ export class UserProjRouter {
       }),
 
     //Leave Project By StudentId
-    leaveProjectByStudentId: this.trpcService.trpc.procedure
+    leaveProjectByStudentId: this.trpcService.protectedProcedure
       .input(
         z.object({
           studentId: z
@@ -120,7 +120,7 @@ export class UserProjRouter {
         });
       }),
 
-    findJoinedUsersByProjectId: this.trpcService.trpc.procedure
+    findJoinedUsersByProjectId: this.trpcService.protectedProcedure
       .input(z.object({ projectId: z.string().uuid() }))
       .query(({ input }) => {
         return this.userProjService.findJoinedUsersByProjectId(input.projectId);
