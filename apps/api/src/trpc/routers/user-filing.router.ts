@@ -11,7 +11,8 @@ export class UserFilingRouter {
   ) {}
 
   appRouter = this.trpcService.router({
-    findUserFilingOrderByLastOpen: this.trpcService.trpc.procedure
+    // Now: Use in admin section only
+    findUserFilingOrderByLastOpen: this.trpcService.adminProcedure
       .input(
         z.object({
           userId: z.string().uuid(),
@@ -24,7 +25,7 @@ export class UserFilingRouter {
           input.limit,
         );
       }),
-    userOpenFiling: this.trpcService.trpc.procedure
+    userOpenFiling: this.trpcService.protectedProcedure
       .input(
         z.object({
           userId: z.string().uuid(),
