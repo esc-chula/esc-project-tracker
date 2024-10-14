@@ -6,7 +6,3 @@ dist
 docker-compose.yml
 **/.next
 **/.env
-
-
-
-
