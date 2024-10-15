@@ -44,5 +44,7 @@ USER esc-api
 WORKDIR /app
 COPY --from=builder --chown=esc-api:nodejs /app .
 
+EXPOSE 4000
+
 WORKDIR /app/apps/api
 CMD node dist/main

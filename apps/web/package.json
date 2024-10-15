@@ -34,6 +34,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "sharp": "^0.33.5",
     "embla-carousel-react": "^8.3.0",
     "embla-carousel-wheel-gestures": "8.0.0-rc05",
     "jose": "^5.9.3",
