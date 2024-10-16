@@ -1,4 +1,4 @@
-import UserCard from './usercard';
+import UserCard from './user-card';
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   return (

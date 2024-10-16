@@ -13,9 +13,10 @@ export default async function submitCreatedFormSchema(
   userId: string,
   status?: string,
 ) {
-  const swap = getFileType(values.file[0]) !== 'pdf';
-  const pdfFile = values.file[swap ? 1 : 0];
-  const docFile = values.file[swap ? 0 : 1];
+  const files = values.file as FileList;
+  const swap = getFileType(files[0]) !== 'pdf';
+  const pdfFile = files[swap ? 1 : 0];
+  const docFile = files[swap ? 0 : 1] as File | undefined;
   const folderName = `${projectId}/${filingId}`;
 
   const [pdfName, docName] = await Promise.all([

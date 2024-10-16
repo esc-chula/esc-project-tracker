@@ -171,7 +171,7 @@ export default function FilingMenu({
                   key={filing.id}
                   isUpdateMode={isUpdateMode}
                   setPrepareUpdatedDocument={(newDocument) => {
-                    addPrepareUpdatedDocument(newDocument as CreateDocumentDTO);
+                    addPrepareUpdatedDocument(newDocument);
                   }}
                 />
               ))}

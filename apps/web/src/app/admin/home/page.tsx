@@ -1,20 +1,20 @@
 'use client';
 import { ArrowRight, Home, Radio, FileSearch } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import { StatusTable } from '@/src/components/status/StatusTable';
 import { FilingStatus } from '@/src/constant/enum';
-import { FilingType } from '@/src/interface/filing';
-import Link from 'next/link';
+import type { FilingType } from '@/src/interface/filing';
 import { Button } from '@/src/components/ui/button';
-import { Project, ProjectWithLastOpen } from '@/src/interface/project';
+import type { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
 import LatestPanel from '@/src/components/project/latestPanel';
-import { useEffect, useState } from 'react';
 import { getUserId } from '@/src/service/auth';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
-import { UserFiling } from '@/src/interface/user-filing';
+import type { UserFiling } from '@/src/interface/user-filing';
 import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
 import findLatestFilings from '@/src/service/filing/findLatestFilings';
 import { toast } from '@/src/components/ui/use-toast';
@@ -45,7 +45,7 @@ export default function Page() {
           filingsData,
           projectsData,
           filingsDataWithLastOpen,
-          latestFilings,
+          latestFilingsData,
         ] = await Promise.all([
           getFilingsByUserId(userId),
           getProjectsByUserId(userId),
@@ -55,8 +55,8 @@ export default function Page() {
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);
         setFilingsWithLastOpen(filingsDataWithLastOpen);
-        setFilingsRawData(latestFilings);
-        const filteredFilings = latestFilings.filter(
+        setFilingsRawData(latestFilingsData);
+        const filteredFilings = latestFilingsData.filter(
           (filing) => filing.status === FilingStatus.WAIT_FOR_SECRETARY,
         );
         setLatestFilings(filteredFilings);
@@ -71,7 +71,7 @@ export default function Page() {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   const enableContinue = () => {
@@ -139,7 +139,7 @@ export default function Page() {
         <div className={`border-b-2 ${isContinued ? 'border-black' : ''}`}>
           <Button
             variant="ghost"
-            className={`${isContinued ? 'font-bold text-black' : ''}`}
+            className={isContinued ? 'font-bold text-black' : ''}
             onClick={enableContinue}
           >
             <span>ดำเนินการ</span>
@@ -157,7 +157,9 @@ export default function Page() {
         <div className={`border-b-2 ${isApproved ? 'border-green-400' : ''}`}>
           <Button
             variant="ghost"
-            className={`${isApproved ? 'font-bold text-green-400 hover:text-green-400' : ''}`}
+            className={
+              isApproved ? 'font-bold text-green-400 hover:text-green-400' : ''
+            }
             onClick={enableApprove}
           >
             <span>อนุมัติ</span>

@@ -13,29 +13,21 @@ import findAllProject from '@/src/service/project/findAllProject';
 import findProjectsWithFilter from '@/src/service/project/findProjectsWithFilter';
 import hasUserProj from '@/src/service/user-proj/hasUserProj';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
-import { getUserId } from '@/src/service/auth';
 
 export default function ProjectMenu({
   searchedProjectId,
   isAdmin,
+  userId,
 }: {
   searchedProjectId: string | null;
   isAdmin: boolean;
+  userId: string;
 }) {
   const { toast } = useToast();
   const [departmentProject, setDepartmentProject] = useState<string>('ALL'); // department that projects belong to
   const [statusProject, setStatusProject] = useState<string>('ALL'); // status of project
   const [typeProject, setTypeProject] = useState<string>('ALL'); // join or not
   const [projects, setProjects] = useState<Project[]>([]);
-  const [userId, setUserId] = useState<string>('');
-
-  useEffect(() => {
-    const fetchUserId = async () => {
-      const id = await getUserId();
-      setUserId(id);
-    };
-    fetchUserId();
-  }, []);
 
   async function filterJoin(eachProject: Project): Promise<boolean> {
     const result = await hasUserProj(userId, eachProject.id);
@@ -85,12 +77,12 @@ export default function ProjectMenu({
       if (typeProject === 'ALL') {
         setProjects(fetchedProject);
       } else {
-        // TODO: use Promise.all correctly
         const filteredProjects = await Promise.all(
-          fetchedProject.map(async (project) => {
-            const isJoined = await filterJoin(project);
-            return (typeProject === 'JOINED') === isJoined ? project : null;
-          }),
+          fetchedProject.map((project) =>
+            filterJoin(project).then((isJoined) =>
+              (typeProject === 'JOINED') === isJoined ? project : null,
+            ),
+          ),
         );
         setProjects(
           filteredProjects.filter(
@@ -151,6 +143,7 @@ export default function ProjectMenu({
                   key={project.id}
                   index={index + 1}
                   isAdmin={isAdmin}
+                  userId={userId}
                 />
               ))}
             </tbody>

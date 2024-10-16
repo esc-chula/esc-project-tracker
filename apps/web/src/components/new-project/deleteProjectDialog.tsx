@@ -36,11 +36,13 @@ export default function DeleteProjectDialog({
         router.push(redirectPath);
       })
       .catch((err) => {
-        toast({
-          title: 'ลบโครงการไม่สำเร็จ',
-          description: err.message,
-          isError: true,
-        });
+        if (err instanceof Error) {
+          toast({
+            title: 'ลบโครงการไม่สำเร็จ',
+            description: err.message,
+            isError: true,
+          });
+        }
       });
   };
 

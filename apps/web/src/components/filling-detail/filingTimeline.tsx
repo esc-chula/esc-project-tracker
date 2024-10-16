@@ -1,12 +1,8 @@
-import DisplayWithNote from './display/displayWithNote';
-import DisplayWithStatus from './display/displayWithStatus';
 import { Clock } from 'lucide-react';
-import DisplayWithNoteAndStatus from './display/displayWithNoteAndStatus';
-import { DocumentType } from '@/src/interface/document';
-import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
-import { DocumentActivity } from '../../../../api/src/constant/enum';
-import { User } from '@/src/interface/user';
-import Display from './display/display';
+import type { DocumentType } from '@/src/interface/document';
+import type { FilingStatus } from '@/src/constant/enum';
+import type { User } from '@/src/interface/user';
+import DocumentCard from './DocumentCard';
 
 export default function FilingTimeline({
   documents,
@@ -29,86 +25,6 @@ export default function FilingTimeline({
 }) {
   let previousDate = '';
 
-  // find rightmost index of first RETURNED documents group
-  let returnedDocumentIndex = documents.length;
-  for (let i = 0; i < documents.length; i++) {
-    if (documents[i].status === DocumentStatus.RETURNED)
-      returnedDocumentIndex = i;
-    else if (returnedDocumentIndex !== documents.length) break;
-  }
-
-  const DocumentCard = ({
-    document,
-    index,
-  }: {
-    document: DocumentType;
-    index: number;
-  }) => {
-    const user = usernameMap.get(document.userId ?? '');
-    const showEditButton =
-      !isAdmin &&
-      document.status === DocumentStatus.RETURNED &&
-      status === FilingStatus.RETURNED &&
-      documents.length > 0 &&
-      documents[0].status !== DocumentStatus.DRAFT &&
-      index <= returnedDocumentIndex;
-    const showReplyButton =
-      document.status === DocumentStatus.WAIT_FOR_SECRETARY &&
-      isAdmin &&
-      status === FilingStatus.WAIT_FOR_SECRETARY &&
-      documents.length > 0 &&
-      documents[0].status !== DocumentStatus.DRAFT &&
-      index < returnedDocumentIndex;
-    return isAdmin &&
-      document.status === DocumentStatus.DRAFT &&
-      document.activity === DocumentActivity.REPLY &&
-      !(
-        status === FilingStatus.DRAFT ||
-        status === FilingStatus.DOCUMENT_CREATED
-      ) ? (
-      <Display
-        document={document}
-        user={user}
-        handleDeleteDocument={handleDeleteDocument}
-        folderName={folderName}
-      />
-    ) : document.activity === DocumentActivity.REPLY ? (
-      <DisplayWithStatus
-        document={document}
-        user={user}
-        warning={showEditButton && !showCreateDocument}
-        showEditButton={showEditButton}
-        setShowCreateDocument={setShowCreateDocument}
-        folderName={folderName}
-      />
-    ) : document.status === DocumentStatus.DRAFT &&
-      (status === FilingStatus.DRAFT ||
-        status === FilingStatus.DOCUMENT_CREATED ||
-        (status === FilingStatus.RETURNED && index < returnedDocumentIndex)) ? (
-      <DisplayWithNote
-        document={document}
-        user={user}
-        handleDeleteDocument={handleDeleteDocument}
-        folderName={folderName}
-      />
-    ) : (
-      <DisplayWithNoteAndStatus
-        document={document}
-        user={user}
-        showReplyButton={showReplyButton}
-        setShowCreateDocument={setShowCreateDocument}
-        handleDeleteDocument={
-          isAdmin &&
-          status === FilingStatus.APPROVED &&
-          document.status === DocumentStatus.DRAFT
-            ? handleDeleteDocument
-            : undefined
-        }
-        folderName={folderName}
-      />
-    );
-  };
-
   const AllDocumentCards = () =>
     documents.map((document, index) => {
       const currentDate = new Date(document.createdAt).toLocaleDateString(
@@ -126,7 +42,7 @@ export default function FilingTimeline({
           <>
             <div
               className="flex w-full pl-10 items-center text-3xl font-semibold"
-              key={index}
+              key={`card-${document.id}`}
             >
               <Clock className="w-8 h-8 bg-gray-100 p-1.5 rounded-full mr-5" />
               {currentDate ===
@@ -138,15 +54,37 @@ export default function FilingTimeline({
                 ? 'วันนี้'
                 : currentDate}
             </div>
-            <div key={index} className="w-full relative">
-              <DocumentCard document={document} index={index} />
+            <div key={document.id} className="w-full relative">
+              <DocumentCard
+                document={document}
+                index={index}
+                user={usernameMap.get(document.userId ?? '')}
+                isAdmin={isAdmin}
+                status={status}
+                folderName={folderName}
+                documents={documents}
+                handleDeleteDocument={handleDeleteDocument}
+                setShowCreateDocument={setShowCreateDocument}
+                showCreateDocument={showCreateDocument}
+              />
             </div>
           </>
         );
       }
       return (
-        <div key={index} className="w-full relative">
-          <DocumentCard document={document} index={index} />
+        <div key={document.id} className="w-full relative">
+          <DocumentCard
+            document={document}
+            index={index}
+            user={usernameMap.get(document.userId ?? '')}
+            isAdmin={isAdmin}
+            status={status}
+            folderName={folderName}
+            documents={documents}
+            handleDeleteDocument={handleDeleteDocument}
+            setShowCreateDocument={setShowCreateDocument}
+            showCreateDocument={showCreateDocument}
+          />
         </div>
       );
     });

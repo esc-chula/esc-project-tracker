@@ -1,18 +1,18 @@
+/* eslint-disable @typescript-eslint/no-shadow -- Necessary for compatibility with the existing codebase*/
 'use client';
 
-import LastestPanel from './latestPanel';
-import AllProjectPanel from './allProjectPanel';
-import NoProject from './noProject';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
-import { Project, ProjectWithLastOpen } from '@/src/interface/project';
-import { FilingType } from '@/src/interface/filing';
+import React, { useEffect, useState } from 'react';
+import type { Project, ProjectWithLastOpen } from '@/src/interface/project';
+import type { FilingType } from '@/src/interface/filing';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
-import SearchBar from '../searchbar/searchBar';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
-import { useToast } from '../ui/use-toast';
 import { getUserId } from '@/src/service/auth';
-import React from 'react';
+import SearchBar from '../searchbar/searchBar';
+import { useToast } from '../ui/use-toast';
+import NoProject from './noProject';
+import AllProjectPanel from './allProjectPanel';
+import LastestPanel from './latestPanel';
 
 export default function MyProjectData({
   compact = false,
@@ -42,9 +42,9 @@ export default function MyProjectData({
 
   useEffect(() => {
     const fetchUserId = async () => {
-      const userId = await getUserId();
-      setUserId(userId);
-      return userId;
+      const userIdData = await getUserId();
+      setUserId(userIdData);
+      return userIdData;
     };
     const fetchProjects = async (userId: string) => {
       if (userId) {
@@ -84,9 +84,9 @@ export default function MyProjectData({
         }
       }
     };
-    fetchUserId().then((userId) => {
-      fetchProjects(userId);
-      fetchFilings(userId);
+    void fetchUserId().then((userId) => {
+      void fetchProjects(userId);
+      void fetchFilings(userId);
     });
   }, []);
 
@@ -103,7 +103,7 @@ export default function MyProjectData({
           />
         )}
       </div>
-      {isFetched && (
+      {isFetched ? (
         <>
           {projects.length === 0 ? (
             <NoProject />
@@ -121,7 +121,7 @@ export default function MyProjectData({
             </>
           )}
         </>
-      )}
+      ) : null}
     </div>
   );
 }

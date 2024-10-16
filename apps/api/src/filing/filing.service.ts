@@ -10,12 +10,10 @@ import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
-import { DocumentActivity, FilingStatus } from '../constant/enum';
+import { FilingStatus } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
-import { Project } from '../entities/project.entity';
 import { FilingFieldTranslate } from '../constant/translate';
 import { DocumentService } from '../document_/document.service';
-import { CreateDocumentDTO } from '../document_/document.dto';
 
 @Injectable()
 export class FilingService {

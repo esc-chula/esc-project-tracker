@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { LoaderCircle } from 'lucide-react';
 import { signIn } from '@/src/service/auth';
 
-export default function Auth({
+export default function Page({
   searchParams,
 }: {
   searchParams: {
@@ -15,18 +15,15 @@ export default function Auth({
   const router = useRouter();
 
   const token = searchParams.token;
-  {
-    /* apply callbackurl here */
-  }
   useEffect(() => {
-    signIn(token)
-      .then(() => {
-        router.push('/home');
-      })
-      .catch(() => {
-        router.push('/');
-      });
-  }, [token, router]);
+    async function signInAndRedirect() {
+      const { accessToken, refreshToken } = await signIn(token);
+      /* apply callbackurl here */
+      if (accessToken && refreshToken) router.push('/home');
+      else router.push('/login');
+    }
+    signInAndRedirect();
+  }, []);
 
   return (
     <div className="h-dvh w-full grid place-content-center">
