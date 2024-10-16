@@ -100,15 +100,30 @@ export class AuthService {
 
   async refreshToken(userId: string, refreshToken: string) {
     const user = await this.userService.findByUserID(userId);
-    if (!user || !user.refreshToken)
-      throw new ForbiddenException('Access Denied');
+    if (!user) {
+      throw new ForbiddenException('User not found');
+    }
+
+    if (!user.refreshToken) {
+      throw new ForbiddenException('User does not have refresh token');
+    }
+
+    console.log('Comparing refresh token');
+    console.log('user.refreshToken', user.refreshToken);
+    console.log('refreshToken', refreshToken);
+
     const refreshTokenMatches = await argon2.verify(
       user.refreshToken,
       refreshToken,
     );
-    if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+    if (!refreshTokenMatches) {
+      throw new ForbiddenException('Invalid refresh token');
+    }
+
     const tokens = await this.getTokens(user.id, user.username, user.role);
+
     await this.updateRefreshToken(user.id, tokens.refreshToken);
+
     return tokens;
   }
 
@@ -133,7 +148,7 @@ export class AuthService {
         },
         {
           secret: this.configService.get<string>('JWT_SECRET'),
-          expiresIn: '30m',
+          expiresIn: '1m',
         },
       ),
       this.jwtService.signAsync(

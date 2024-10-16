@@ -44,7 +44,13 @@ function a11yProps(index: number) {
   };
 }
 
-export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
+export default function SelectTab({
+  isAdmin,
+  userId,
+}: {
+  isAdmin: boolean;
+  userId: string;
+}) {
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filings, setFilings] = useState<FilingType[]>([]);
@@ -164,7 +170,11 @@ export default function SelectTab({ isAdmin }: { isAdmin: boolean }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ProjectMenu searchedProjectId={searchedProjectID} isAdmin={isAdmin} />
+        <ProjectMenu
+          searchedProjectId={searchedProjectID}
+          isAdmin={isAdmin}
+          userId={userId}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <FilingMenu
