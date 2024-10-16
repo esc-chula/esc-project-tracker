@@ -23,13 +23,15 @@ export async function middleware(req: NextRequest) {
       return null;
     });
     const verifiedPayload = verifyResult?.payload as Payload | undefined;
-    console.log(' verifiedPayload: ', verifiedPayload?.exp);
+    console.log(' verifiedPayload: ', verifiedPayload);
 
     if (verifiedPayload) return redirect(req, verifiedPayload);
   }
 
   const path = req.nextUrl.pathname;
   const refreshToken = req.cookies.get('refreshToken')?.value;
+  console.log('refreshToken: ', refreshToken);
+
   if (!refreshToken)
     return NextResponse.redirect(
       new URL(`/login?callbackUrl=${path}`, req.url),
@@ -45,7 +47,7 @@ export async function middleware(req: NextRequest) {
       console.error('Error refreshing new token');
       return null;
     });
-  console.log('newTokens: ', newTokens?.accessToken.length);
+  console.log('newTokens: ', newTokens);
 
   if (!newTokens)
     return NextResponse.redirect(
