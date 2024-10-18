@@ -400,7 +400,7 @@ export default function ProjectForm({
                           <SelectGroup>
                             {projectTypeMap.map((item, index) => (
                               <SelectItem key={index} value={item.value}>
-                                {item.value + ' - ' + item.label}
+                                {item.label}
                               </SelectItem>
                             ))}
                           </SelectGroup>
