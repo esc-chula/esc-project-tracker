@@ -85,8 +85,9 @@ export class AuthService {
     return tokens;
   }
 
-  async signOut(userId: string) {
-    await this.userService.update(userId, { refreshToken: null });
+  async signOut(accessToken: string) {
+    const payload = await this.validateJWT(accessToken);
+    await this.userService.update(payload.sub, { refreshToken: null });
   }
 
   async me(userId: string) {

@@ -46,6 +46,7 @@ export default function UserCardMenu({ username }: UserCardMenuProps) {
                   title: 'Sign out failed',
                   description: 'Please try again',
                   variant: 'destructive',
+                  isError: true,
                 });
               });
           }}

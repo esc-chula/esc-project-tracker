@@ -71,10 +71,8 @@ export async function signOut(): Promise<void> {
     throw new Error(authErrors.notAuthenticated);
   }
 
-  const jwtPayload = await parseJwt(accessTokenCookie);
-
   await trpc.authRouter.signOut
-    .query({ userId: jwtPayload.sub })
+    .query({ accessToken: accessTokenCookie })
     .catch((err) => {
       console.error(err);
       throw new Error(authErrors.signOutError);

@@ -42,11 +42,11 @@ export class AuthRouter {
     signOut: this.trpcService.trpc.procedure
       .input(
         z.object({
-          userId: z.string(),
+          accessToken: z.string(),
         }),
       )
       .query(({ input }) => {
-        return this.authService.signOut(input.userId);
+        return this.authService.signOut(input.accessToken);
       }),
   });
 }
