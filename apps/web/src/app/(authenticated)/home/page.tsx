@@ -1,3 +1,4 @@
+'use client';
 import { ArrowRight, Folders, Home, Radio } from 'lucide-react';
 import Header from '../../../components/header/header';
 import Title from '@/src/components/header/title';
@@ -10,28 +11,43 @@ import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import { ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
-import { getUserId } from '@/src/service/auth';
+import { getJwtPayload } from '@/src/service/auth';
+import { useEffect, useMemo, useState } from 'react';
 
-export default async function Page() {
-  const userId = await getUserId();
-  console.log(userId);
-  const [filingsDataWithProject, projectsWithLastOpenData] = await Promise.all([
-    getFilingsByUserId(userId).catch((err) => {
-      console.error(err);
-      return [] as FilingType[];
-    }),
-    getProjectsByUserId(userId).catch((err) => {
-      console.error(err);
-      return [] as ProjectWithLastOpen[];
-    }),
-  ]);
+export default function Page() {
+  const [filingsDataWithProject, setFilingsDataWithProject] = useState<
+    FilingType[]
+  >([]);
+  const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
+    ProjectWithLastOpen[]
+  >([]);
+  const [username, setUsername] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      const payload = await getJwtPayload();
+      const [filingsDataWithProjectData, projectsWithLastOpenData] =
+        await Promise.all([
+          getFilingsByUserId(payload.sub).catch((err) => {
+            return [] as FilingType[];
+          }),
+          getProjectsByUserId(payload.sub).catch((err) => {
+            return [] as ProjectWithLastOpen[];
+          }),
+        ]);
+      setFilingsDataWithProject(filingsDataWithProjectData);
+      setProjectsWithLastOpen(projectsWithLastOpenData);
+      setUsername(payload.username);
+    };
+    fetchData();
+  }, []);
 
-  const projectsData = projectsWithLastOpenData.map(
-    (project) => project.project,
+  const projectsData = useMemo(
+    () => projectsWithLastOpen.map((project) => project.project),
+    [projectsWithLastOpen],
   );
   return (
     <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
-      <Header>
+      <Header username={username}>
         <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>
       <section className="mt-8">
@@ -80,7 +96,7 @@ export default async function Page() {
         <MyProjectData
           compact
           filingsData={filingsDataWithProject}
-          projectsWithLastOpenData={projectsWithLastOpenData}
+          projectsWithLastOpenData={projectsWithLastOpen}
         />
       </section>
     </main>

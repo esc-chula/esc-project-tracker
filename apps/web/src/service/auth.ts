@@ -3,32 +3,7 @@
 import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
 import type { Payload, Tokens } from '../interface/auth';
-import { User } from '../interface/user';
 import { authErrors } from '../errors/auth';
-
-export async function setCookies(
-  accessToken: string,
-  refreshToken: string,
-): Promise<void> {
-  try {
-    const cookieStore = cookies();
-
-    cookieStore.set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-
-    cookieStore.set('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-  } catch (err) {
-    console.error(err);
-    throw new Error(authErrors.setCookiesError);
-  }
-}
 
 export async function getCookies(): Promise<{
   accessToken: string;
@@ -105,100 +80,9 @@ export async function signOut(): Promise<void> {
       throw new Error(authErrors.signOutError);
     });
 
-  await setCookies('', '').catch((err) => {
-    console.error(err);
-    throw new Error(authErrors.setCookiesError);
-  });
-}
-
-export async function authenticate({
-  roles = [],
-}: {
-  roles?: string[];
-}): Promise<User> {
-  const { accessToken: accessTokenCookie, refreshToken: refreshTokenCookie } =
-    await getCookies().catch((err) => {
-      console.error(err);
-      throw new Error(authErrors.getCookiesError);
-    });
-
-  if (!accessTokenCookie || !refreshTokenCookie) {
-    throw new Error(authErrors.notAuthenticated);
-  }
-
-  console.log('Validating existed token...', accessTokenCookie);
-
-  let invalidToken = false;
-  const userJwt = await validateToken(accessTokenCookie).catch(() => {
-    invalidToken = true;
-  });
-
-  console.log(invalidToken, userJwt);
-
-  let user: User;
-  if (invalidToken || !userJwt) {
-    console.log('Refreshing token...', refreshTokenCookie);
-
-    const jwtPayload = await parseJwt(accessTokenCookie);
-    const newTokens = await trpc.authRouter.refreshToken
-      .query({
-        userId: jwtPayload.sub,
-        refreshToken: refreshTokenCookie,
-      })
-      .catch((err) => {
-        console.error(err);
-        throw new Error(authErrors.refreshTokenError);
-      });
-
-    await setCookies(newTokens.accessToken, newTokens.refreshToken).catch(
-      (err) => {
-        console.error(err);
-        throw new Error(authErrors.setCookiesError);
-      },
-    );
-
-    console.log('Validating new token...', newTokens.accessToken);
-
-    const newJwtPayload = await validateToken(newTokens.accessToken).catch(
-      (err) => {
-        console.error(err);
-        throw new Error(authErrors.tokenInvalid);
-      },
-    );
-    const foundedUser = await trpc.user.findUserByUserId
-      .query({
-        userId: newJwtPayload.sub,
-      })
-      .catch((err) => {
-        console.error(err);
-        throw new Error(authErrors.userNotFound);
-      });
-    if (!foundedUser) {
-      throw new Error(authErrors.userNotFound);
-    }
-
-    user = foundedUser;
-  } else {
-    const foundedUser = await trpc.user.findUserByUserId
-      .query({
-        userId: userJwt.sub,
-      })
-      .catch((err) => {
-        console.error(err);
-        throw new Error(authErrors.userNotFound);
-      });
-    if (!foundedUser) {
-      throw new Error(authErrors.userNotFound);
-    }
-
-    user = foundedUser;
-  }
-
-  if (roles && roles.length > 0 && !roles.includes(user.role)) {
-    throw new Error(authErrors.forbidden);
-  }
-
-  return user;
+  const cookieStore = cookies();
+  cookieStore.delete('accessToken');
+  cookieStore.delete('refreshToken');
 }
 
 export async function getUsername(): Promise<string> {
@@ -221,6 +105,17 @@ export async function getUserId(): Promise<string> {
 
   const jwtPayload = await parseJwt(accessTokenCookie);
   return jwtPayload.sub;
+}
+
+export async function getJwtPayload(): Promise<Payload> {
+  const { accessToken: accessTokenCookie } = await getCookies();
+
+  if (!accessTokenCookie) {
+    throw new Error(authErrors.notAuthenticated);
+  }
+
+  const jwtPayload = await parseJwt(accessTokenCookie);
+  return jwtPayload;
 }
 
 export async function parseJwt(token: string): Promise<Payload> {
