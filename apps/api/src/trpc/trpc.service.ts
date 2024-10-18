@@ -21,8 +21,11 @@ export class TrpcService {
   protectedProcedure = this.trpc.procedure.use(async (opts) => {
     try {
       const { ctx } = opts;
-      if (!ctx.accessToken || !ctx.refreshToken)
-        throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Token Missing' });
+      if (!ctx.accessToken)
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Access Token Missing',
+        });
 
       const payload: JwtPayload = await this.authService.validateJWT(
         ctx.accessToken,

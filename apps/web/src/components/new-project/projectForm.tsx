@@ -65,14 +65,11 @@ export default function ProjectForm({
   const [membersCount, setMembersCount] = useState(1);
   const [isAfterCancelUpdate, setIsAfterCancelUpdate] = useState(false);
 
-  const [userId, setUserId] = useState<string>('');
-
   const [user, setUser] = useState<User | null>();
 
   useEffect(() => {
     const fetchUser = async () => {
       const userId = await getUserId();
-      setUserId(userId);
       const user = await findUserByUserId(userId);
       setUser(user);
     };
@@ -403,7 +400,7 @@ export default function ProjectForm({
                           <SelectGroup>
                             {projectTypeMap.map((item, index) => (
                               <SelectItem key={index} value={item.value}>
-                                {item.value + ' - ' + item.label}
+                                {item.label}
                               </SelectItem>
                             ))}
                           </SelectGroup>

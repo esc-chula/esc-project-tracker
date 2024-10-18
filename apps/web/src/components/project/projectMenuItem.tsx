@@ -14,22 +14,19 @@ export default function ProjectMenuItem({
   project,
   index,
   isAdmin,
+  userId,
 }: {
   project: Project;
   index: number;
   isAdmin: boolean;
+  userId: string;
 }) {
   const { toast } = useToast();
 
-  const [userId, setUserId] = useState<string>('');
-  // To do : check if user joined project by init another function to check
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const handleJoinProject = async () => {
     try {
-      await joinProject(
-        userId,
-        project.id,
-      );
+      await joinProject(userId, project.id);
       setIsJoined(true);
       toast({
         title: 'เข้าร่วมสำเร็จ',
@@ -52,11 +49,6 @@ export default function ProjectMenuItem({
     setIsJoined(result);
   };
   useEffect(() => {
-    const fetchUserId = async () => {
-      const userId = await getUserId();
-      setUserId(userId);
-    }
-    fetchUserId();
     checkUserJoinProject(userId, project.id);
   }, []);
 
