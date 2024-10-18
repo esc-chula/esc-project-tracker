@@ -108,9 +108,9 @@ export class AuthService {
       throw new ForbiddenException('User does not have refresh token');
     }
 
-    console.log('Comparing refresh token');
-    console.log('user.refreshToken', user.refreshToken);
-    console.log('refreshToken', refreshToken);
+    // console.log('Comparing refresh token');
+    // console.log('user.refreshToken', user.refreshToken);
+    // console.log('refreshToken', refreshToken);
 
     const refreshTokenMatches = await argon2.verify(
       user.refreshToken,

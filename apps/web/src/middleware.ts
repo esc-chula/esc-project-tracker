@@ -23,10 +23,12 @@ export async function middleware(req: NextRequest) {
       return null;
     });
     const verifiedPayload = verifyResult?.payload as Payload | undefined;
-    console.log(
-      'accessToken expires: ',
-      verifiedPayload?.exp ? new Date(verifiedPayload.exp * 1000) : null,
-    );
+    // console.log(
+    //   'accessToken expires: ',
+    //   verifiedPayload?.exp
+    //     ? new Date((verifiedPayload.exp + 7 * 60 * 60) * 1000)
+    //     : null,
+    // );
 
     if (verifiedPayload) return redirect(req, verifiedPayload);
   }
