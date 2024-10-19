@@ -129,5 +129,9 @@ export class FilingRouter {
           id: input.id,
         });
       }),
+
+    findLatestFilings: this.trpcService.adminProcedure.query(() => {
+      return this.filingService.findLatestFilings();
+    }),
   });
 }

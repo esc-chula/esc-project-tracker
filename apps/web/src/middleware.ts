@@ -19,9 +19,7 @@ export async function middleware(req: NextRequest) {
     const verifyResult = await jwtVerify(
       accessToken,
       new TextEncoder().encode(process.env.JWT_SECRET),
-    ).catch(() => {
-      return null;
-    });
+    ).catch(() => null);
     const verifiedPayload = verifyResult?.payload as Payload | undefined;
     // console.log(
     //   'accessToken expires: ',
@@ -47,10 +45,7 @@ export async function middleware(req: NextRequest) {
       userId: payload.sub,
       refreshToken,
     })
-    .catch(() => {
-      console.error('Error refreshing new token');
-      return null;
-    });
+    .catch(() => null);
 
   if (!newTokens)
     return NextResponse.redirect(
