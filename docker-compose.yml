@@ -29,7 +29,7 @@ services:
     networks:
       - esc_network
     env_file:
-      - apps/api/.env
+      - .env
 
 networks:
   esc_network:
