@@ -2,7 +2,6 @@ import { Radio } from 'lucide-react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import FilingsSection from '@/src/components/admin-status/filings-section';
-import React from 'react';
 
 export default function Page() {
   return (

@@ -1,3 +1,5 @@
+import { getCookies } from '../auth';
+
 interface UploadResponse {
   statusCode: number;
   uploadedFileName: string;
@@ -14,11 +16,15 @@ export default async function uploadFileToS3(obj: {
     formData.append('file', obj.file);
     if (obj.folderName) formData.append('folderName', obj.folderName);
     formData.append('fileName', obj.file.name);
+    const cookies = await getCookies();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_SERVER_URL}/aws/upload`,
       {
         method: 'POST',
         body: formData,
+        headers: {
+          Authorization: `Bearer ${cookies.accessToken}`,
+        },
       },
     );
     const responseJSON: UploadResponse = await response.json();

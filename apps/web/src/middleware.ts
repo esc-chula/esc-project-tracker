@@ -19,17 +19,21 @@ export async function middleware(req: NextRequest) {
     const verifyResult = await jwtVerify(
       accessToken,
       new TextEncoder().encode(process.env.JWT_SECRET),
-    ).catch(() => {
-      return null;
-    });
+    ).catch(() => null);
     const verifiedPayload = verifyResult?.payload as Payload | undefined;
-    console.log(' verifiedPayload: ', verifiedPayload?.exp);
+    // console.log(
+    //   'accessToken expires: ',
+    //   verifiedPayload?.exp
+    //     ? new Date((verifiedPayload.exp + 7 * 60 * 60) * 1000)
+    //     : null,
+    // );
 
     if (verifiedPayload) return redirect(req, verifiedPayload);
   }
 
   const path = req.nextUrl.pathname;
   const refreshToken = req.cookies.get('refreshToken')?.value;
+
   if (!refreshToken)
     return NextResponse.redirect(
       new URL(`/login?callbackUrl=${path}`, req.url),
@@ -41,11 +45,7 @@ export async function middleware(req: NextRequest) {
       userId: payload.sub,
       refreshToken,
     })
-    .catch(() => {
-      console.error('Error refreshing new token');
-      return null;
-    });
-  console.log('newTokens: ', newTokens?.accessToken.length);
+    .catch(() => null);
 
   if (!newTokens)
     return NextResponse.redirect(

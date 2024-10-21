@@ -10,13 +10,14 @@ import { getUsername } from '@/src/service/auth';
 import UserCardMenu from './user-card-menu';
 import { useEffect, useState } from 'react';
 
-export default function UserCard() {
-  const [username, setUsername] = useState('');
+export default function UserCard({ usernameData }: { usernameData?: string }) {
+  const [username, setUsername] = useState(usernameData || '');
   useEffect(() => {
-    getUsername().then((usernameData) => {
-      setUsername(usernameData);
+    if (usernameData) return;
+    getUsername().then((fetchedUsername) => {
+      setUsername(fetchedUsername);
     });
-  });
+  }, []);
 
   return (
     <div className="h-12 w-[300px] flex items-center ml-auto">

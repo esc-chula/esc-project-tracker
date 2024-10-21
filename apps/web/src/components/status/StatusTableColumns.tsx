@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import type { FilingStatus } from '@/src/constant/enum';
 import type { FilingType } from '@/src/interface/filing';
+import { convertDate } from '@/src/lib/utils';
 
 export const columns: ColumnDef<FilingType>[] = [
   {
@@ -13,12 +14,8 @@ export const columns: ColumnDef<FilingType>[] = [
       return <DataTableColumnHeader column={column} title="วันที่ดำเนินการ" />;
     },
     cell: ({ row }) => (
-      <div className="capitalize w-36">
-        {new Date(row.getValue('updatedAt')).toLocaleTimeString('th-TH', {
-          year: '2-digit',
-          month: 'short',
-          day: '2-digit',
-        })}
+      <div className="capitalize w-[152px]">
+        {convertDate(row.getValue('updatedAt'))}
       </div>
     ),
   },
