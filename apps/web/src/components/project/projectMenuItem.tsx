@@ -2,34 +2,31 @@
 import { useEffect, useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { BsInfoCircleFill } from 'react-icons/bs';
+import Link from 'next/link';
 import hasUserProj from '@/src/service/user-proj/hasUserProj';
 import joinProject from '@/src/service/user-proj/joinProject';
 import type { Project } from '@/src/interface/project';
-import { useToast } from '../ui/use-toast';
-import Link from 'next/link';
 import { ProjectStatusToThai } from '@/src/constant/translate';
 import { getUserId } from '@/src/service/auth';
+import { useToast } from '../ui/use-toast';
 
 export default function ProjectMenuItem({
   project,
   index,
   isAdmin,
+  userId,
 }: {
   project: Project;
   index: number;
   isAdmin: boolean;
+  userId: string;
 }) {
   const { toast } = useToast();
 
-  const [userId, setUserId] = useState<string>('');
-  // To do : check if user joined project by init another function to check
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const handleJoinProject = async () => {
     try {
-      await joinProject(
-        userId,
-        project.id,
-      );
+      await joinProject(userId, project.id);
       setIsJoined(true);
       toast({
         title: 'เข้าร่วมสำเร็จ',
@@ -47,16 +44,14 @@ export default function ProjectMenuItem({
     }
   };
 
-  const checkUserJoinProject = async (userId: string, projectId: string) => {
-    const result = await hasUserProj(userId, projectId);
+  const checkUserJoinProject = async (
+    inputUserId: string,
+    projectId: string,
+  ) => {
+    const result = await hasUserProj(inputUserId, projectId);
     setIsJoined(result);
   };
   useEffect(() => {
-    const fetchUserId = async () => {
-      const userId = await getUserId();
-      setUserId(userId);
-    }
-    fetchUserId();
     checkUserJoinProject(userId, project.id);
   }, []);
 
