@@ -1,5 +1,10 @@
 import { getCookies } from '../auth';
 
+interface UploadResponse {
+  statusCode: number;
+  uploadedFileName: string;
+}
+
 export default async function uploadFileToS3(obj: {
   file: File | undefined;
   folderName?: string;
@@ -22,7 +27,7 @@ export default async function uploadFileToS3(obj: {
         },
       },
     );
-    const responseJSON = await response.json();
+    const responseJSON: UploadResponse = await response.json();
     if (responseJSON.statusCode !== 201) throw new Error('Upload file failed');
     return responseJSON.uploadedFileName;
   } catch (e) {

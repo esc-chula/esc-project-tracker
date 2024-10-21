@@ -94,9 +94,9 @@ export class FilingRouter {
           input.filingId,
         );
         const projectRaw = await this.projectService.findByProjectID(
-          filingRaw.projectId,
+          filingRaw?.projectId || '',
         );
-        const isOwner = projectRaw.ownerId === ctx.payload.sub;
+        const isOwner = (projectRaw?.ownerId || '') === ctx.payload.sub;
         if (!isOwner)
           throw new TRPCError({
             code: 'BAD_REQUEST',
@@ -109,6 +109,10 @@ export class FilingRouter {
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByFilingID(input.filingId);
+      }),
+
+      findLatestFilings: this.trpcService.trpc.procedure.query(() => {
+        return this.filingService.findLatestFilings();
       }),
 
     //findFilingWithFilter

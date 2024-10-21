@@ -31,7 +31,7 @@ export class DocumentService {
     private readonly filingService: FilingService,
   ) {}
 
-  async findByDocID(id: string): Promise<Document> {
+  async findByDocID(id: string): Promise<Document | null> {
     return await this.documentRepository.findOne({ where: { id } });
   }
 
@@ -111,10 +111,9 @@ export class DocumentService {
       ],
       order: { createdAt: 'DESC' },
     });
-  
+
     return data;
   }
-  
 
   async findLatestPendingDocumentByFilingId(
     filingId: string,
@@ -130,8 +129,6 @@ export class DocumentService {
 
     return data;
   }
-
-
 
   async createDocument(obj: CreateDocumentDTO): Promise<Document> {
     const {

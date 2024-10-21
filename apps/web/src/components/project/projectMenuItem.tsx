@@ -2,13 +2,13 @@
 import { useEffect, useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { BsInfoCircleFill } from 'react-icons/bs';
+import Link from 'next/link';
 import hasUserProj from '@/src/service/user-proj/hasUserProj';
 import joinProject from '@/src/service/user-proj/joinProject';
 import type { Project } from '@/src/interface/project';
-import { useToast } from '../ui/use-toast';
-import Link from 'next/link';
 import { ProjectStatusToThai } from '@/src/constant/translate';
 import { getUserId } from '@/src/service/auth';
+import { useToast } from '../ui/use-toast';
 
 export default function ProjectMenuItem({
   project,
@@ -44,8 +44,11 @@ export default function ProjectMenuItem({
     }
   };
 
-  const checkUserJoinProject = async (userId: string, projectId: string) => {
-    const result = await hasUserProj(userId, projectId);
+  const checkUserJoinProject = async (
+    inputUserId: string,
+    projectId: string,
+  ) => {
+    const result = await hasUserProj(inputUserId, projectId);
     setIsJoined(result);
   };
   useEffect(() => {

@@ -82,7 +82,7 @@ export class ProjectRouter {
         const project = await this.projectService.findByProjectID(
           input.projectId,
         );
-        const isOwner = project.ownerId === ctx.payload.sub;
+        const isOwner = (project?.ownerId || '') === ctx.payload.sub;
         if (!isOwner && ctx.payload.role !== 'admin')
           throw new TRPCError({
             code: 'BAD_REQUEST',
@@ -107,7 +107,7 @@ export class ProjectRouter {
         const project = await this.projectService.findByProjectID(
           input.projectId,
         );
-        const isOwner = project.ownerId === ctx.payload.sub;
+        const isOwner = (project?.ownerId || '') === ctx.payload.sub;
         if (!isOwner && ctx.payload.role !== 'admin')
           throw new TRPCError({
             code: 'BAD_REQUEST',

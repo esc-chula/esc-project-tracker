@@ -13,7 +13,7 @@ export default function AcceptPDPA() {
         <Checkbox
           id="terms"
           className="w-7 h-7 rounded-full"
-          onClick={() => setIsAccepted(!isAccepted)}
+          onClick={() => {setIsAccepted(!isAccepted)}}
         />
         <label htmlFor="terms" className="text-xl leading-none">
           ฉันยอมรับเงื่อนไขและยินยอมให้เปิดเผยข้อมูลส่วนบุคคล

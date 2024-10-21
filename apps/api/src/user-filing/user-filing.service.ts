@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { UserFiling } from '../entities/userFiling.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserFilingDTO } from './user-filing.dto';
-import { Filing } from '../entities/filing.entity';
 
 @Injectable()
 export class UserFilingService {

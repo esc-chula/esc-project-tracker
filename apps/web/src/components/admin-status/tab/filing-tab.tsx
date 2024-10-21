@@ -82,12 +82,12 @@ export default function FilingTab({
       setIsFetched(false);
 
       findFilingsWithFilter(newSelectedStatus, selectedType, selectedDepartment)
-        .then((filings) => {
+        .then((filingsData) => {
           const filingsArray: FilingType[] = [];
           const filingsWithDocumentArray: FilingsWithDocument[] = [];
 
           return Promise.all(
-            (filings || []).map((filing) =>
+            (filingsData || []).map((filing) =>
               findLatestPendingDocumentByFilingId(filing.id)
                 .then((pendingDocuments) => {
                   if (pendingDocuments) {
@@ -226,11 +226,7 @@ export default function FilingTab({
       </div>
       <div className="w-full mt-5 pl-5 flex flex-col space-y-5">
         <div className="w-full flex flex-row space-x-4 pr-5 items-center">
-          <SearchPanel
-            filings={filings}
-            placeHolder="รหัสเอกสาร"
-            filingFunc={(filing: FilingType | Project) => {}}
-          />
+          <SearchPanel filings={filings} placeHolder="รหัสเอกสาร" />
           <SelectType
             title="ล่าสุด"
             items={[

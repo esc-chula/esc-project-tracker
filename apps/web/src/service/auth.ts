@@ -127,7 +127,7 @@ export async function parseJwt(token: string): Promise<Payload> {
         .join(''),
     );
 
-    return JSON.parse(jsonPayload);
+    return JSON.parse(jsonPayload) as Payload;
   } catch (error) {
     console.error(error);
     throw new Error(authErrors.parsedJwtError);
