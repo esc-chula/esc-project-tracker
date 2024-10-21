@@ -9,7 +9,7 @@ on:
       - 'v*'
 
 env:
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}-api
 
 jobs:
   build:
