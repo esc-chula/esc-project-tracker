@@ -52,12 +52,8 @@ jobs:
           echo "tags = $RESULT"
           echo "tags=$RESULT" >> "$GITHUB_OUTPUT"
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.tags.outputs.tags }}
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
-          dockerfile: ./apps/api/Dockerfile
+      - name: Build Docker image
+        run: docker build . -t ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.tags }} -f ./apps/api/Dockerfile
+
+      - name: Push Docker image to GitHub Container Registry
+        run: docker push ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.tags }}
