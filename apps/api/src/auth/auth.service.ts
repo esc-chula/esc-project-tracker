@@ -85,8 +85,9 @@ export class AuthService {
     return tokens;
   }
 
-  async signOut(userId: string) {
-    await this.userService.update(userId, { refreshToken: undefined });
+  async signOut(accessToken: string) {
+    const payload = await this.validateJWT(accessToken);
+    await this.userService.update(payload.sub, { refreshToken: null });
   }
 
   async me(userId: string) {
@@ -108,9 +109,9 @@ export class AuthService {
       throw new ForbiddenException('User does not have refresh token');
     }
 
-    console.log('Comparing refresh token');
-    console.log('user.refreshToken', user.refreshToken);
-    console.log('refreshToken', refreshToken);
+    // console.log('Comparing refresh token');
+    // console.log('user.refreshToken', user.refreshToken);
+    // console.log('refreshToken', refreshToken);
 
     const refreshTokenMatches = await argon2.verify(
       user.refreshToken,
@@ -148,7 +149,7 @@ export class AuthService {
         },
         {
           secret: this.configService.get<string>('JWT_SECRET'),
-          expiresIn: '1m',
+          expiresIn: '15m',
         },
       ),
       this.jwtService.signAsync(
@@ -168,5 +169,23 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  parseJwt(token: string): JwtPayload {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join(''),
+      );
+
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error(error);
+      throw new Error('parseJwt Error');
+    }
   }
 }

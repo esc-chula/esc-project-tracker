@@ -27,7 +27,7 @@ export class AuthController {
   @UseGuards(AccessTokenGuard)
   @Post('signout')
   signOut(@Req() req: UserRequest) {
-    return this.authService.signOut(req.user['sub']);
+    return this.authService.signOut(req.cookies['accessToken']);
   }
 
   @UseGuards(AccessTokenGuard)

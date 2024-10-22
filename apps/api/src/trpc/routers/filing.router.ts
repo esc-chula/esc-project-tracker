@@ -111,10 +111,6 @@ export class FilingRouter {
         return this.filingService.findByFilingID(input.filingId);
       }),
 
-      findLatestFilings: this.trpcService.trpc.procedure.query(() => {
-        return this.filingService.findLatestFilings();
-      }),
-
     //findFilingWithFilter
     findFilingsWithFilter: this.trpcService.protectedProcedure
       .input(
@@ -133,5 +129,9 @@ export class FilingRouter {
           id: input.id,
         });
       }),
+
+    findLatestFilings: this.trpcService.adminProcedure.query(() => {
+      return this.filingService.findLatestFilings();
+    }),
   });
 }
