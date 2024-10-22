@@ -87,7 +87,7 @@ export class AuthService {
 
   async signOut(accessToken: string) {
     const payload = await this.validateJWT(accessToken);
-    await this.userService.update(payload.sub, { refreshToken: null });
+    await this.userService.update(payload.sub, { refreshToken: undefined });
   }
 
   async me(userId: string) {
