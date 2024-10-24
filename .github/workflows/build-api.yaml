@@ -1,4 +1,4 @@
-name: Build Web Image
+name: Build API Image
 
 on:
   workflow_dispatch:
