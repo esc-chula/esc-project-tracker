@@ -28,11 +28,7 @@ export default function Page() {
           asChild
         >
           {/* insert callbackurl here */}
-          <Link
-            href={`https://account.intania.org/?appId=${process.env.INTANIA_AUTH_APP_ID}&callbackUrl=${process.env.INTANIA_AUTH_REDIRECT_URL}`}
-          >
-            เริ่มต้น
-          </Link>
+          <Link href="/login">เริ่มต้น</Link>
         </Button>
       </main>
     </>
