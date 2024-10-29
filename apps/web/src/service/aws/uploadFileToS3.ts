@@ -1,3 +1,4 @@
+import { env } from '@/src/env';
 import { getCookies } from '../auth';
 
 interface UploadResponse {
@@ -18,7 +19,7 @@ export default async function uploadFileToS3(obj: {
     formData.append('fileName', obj.file.name);
     const cookies = await getCookies();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_SERVER_URL}/aws/upload`,
+      `${env.NEXT_PUBLIC_API_SERVER_URL}/aws/upload`,
       {
         method: 'POST',
         body: formData,
