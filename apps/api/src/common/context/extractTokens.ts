@@ -6,6 +6,7 @@ export async function createContext({
 }: trpcExpress.CreateExpressContextOptions) {
   const accessToken: string | undefined = req.cookies['accessToken'];
   const refreshToken: string | undefined = req.cookies['refreshToken'];
+  console.log('req.cookies', req.cookies);
 
   return { accessToken, refreshToken, res };
 }

@@ -18,24 +18,30 @@ export class AuthService {
 
   async validateUser(token: string): Promise<IntaniaAuthResponse> {
     try {
-      const validatedUser = this.httpService.axiosRef
-        .post(
-          'https://account.intania.org/api/v1/auth/app/validate',
-          { token },
-          {
-            headers: {
-              Authorization: `Bearer ${this.configService.get<string>(
-                'INTANIA_AUTH_SECRET',
-              )}`,
-            },
-          },
-        )
-        .then((response) => {
-          return response.data.data as IntaniaAuthResponse;
-        });
+      console.log(
+        'Nestjs, Validating user with token:',
+        token,
+        'secret: ',
+        this.configService.get<string>('INTANIA_AUTH_SECRET'),
+      );
 
-      return validatedUser;
+      const validatedResponse = await this.httpService.axiosRef.post(
+        'https://account.intania.org/api/v1/auth/app/validate',
+        { token },
+        {
+          headers: {
+            Authorization: `Bearer ${this.configService.get<string>(
+              'INTANIA_AUTH_SECRET',
+            )}`,
+          },
+        },
+      );
+      console.log('validatedResponse:', validatedResponse);
+
+      return validatedResponse.data.data as IntaniaAuthResponse;
     } catch (error) {
+      console.log('Error validating user:', error);
+
       throw new Error("Request failed when validating user's token");
     }
   }
@@ -55,6 +61,8 @@ export class AuthService {
   async signIn(
     token: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
+    console.log('Nestjs, Signing in with token:', token);
+
     const validatedUser = await this.validateUser(token).catch((error) => {
       throw new ForbiddenException(error.message);
     });

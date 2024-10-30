@@ -17,7 +17,7 @@ export class AuthRouter {
           token: z.string(),
         }),
       )
-      .query(({ input }) => {
+      .mutation(({ input }) => {
         return this.authService.signIn(input.token);
       }),
     validateToken: this.trpcService.trpc.procedure

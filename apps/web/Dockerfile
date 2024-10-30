@@ -46,7 +46,7 @@ COPY --from=pruner /app/out/json/ .
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
 
-RUN turbo build --filter=web
+RUN turbo build --filter=web --env-mode loose
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm prune --prod --no-optional
 
 FROM base AS runner
