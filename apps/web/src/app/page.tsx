@@ -31,6 +31,8 @@ export default function Page() {
         </div>
         <p>
           debug: {env.NEXT_PUBLIC_API_SERVER_URL}{' '}
+          {process.env.NEXT_PUBLIC_API_SERVER_URL}{' '}
+          {process.env.INTANIA_AUTH_REDIRECT_URL}{' '}
           {env.INTANIA_AUTH_REDIRECT_URL}
         </p>
         <Button
