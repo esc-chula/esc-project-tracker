@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "envMode": "loose",
   "globalEnv": [
     "API_SERVER_URL",
     "JWT_SECRET",
@@ -14,6 +15,12 @@
   "globalDependencies": ["**/.env.*local"],
   "tasks": {
     "build": {
+      "env": [
+        "NEXT_PUBLIC_*",
+        "INTANIA_AUTH_APP_ID",
+        "INTANIA_AUTH_REDIRECT_URL",
+        "JWT_SECRET"
+      ],
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
