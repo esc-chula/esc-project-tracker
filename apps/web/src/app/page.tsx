@@ -30,7 +30,7 @@ export default function Page() {
           </h2>
         </div>
         <p>
-          debug: {env.NEXT_PUBLIC_API_SERVER_URL}{' '}
+          debugs: {env.NEXT_PUBLIC_API_SERVER_URL}{' '}
           {process.env.NEXT_PUBLIC_API_SERVER_URL}{' '}
           {process.env.INTANIA_AUTH_REDIRECT_URL}{' '}
           {env.INTANIA_AUTH_REDIRECT_URL}
