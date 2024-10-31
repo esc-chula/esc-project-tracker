@@ -65,7 +65,7 @@ jobs:
         run: |
           tags="${{ steps.tags.outputs.tags }}"
           for tag in $(echo $tags | tr ',' '\n'); do
-            docker build . -t ghcr.io/$tag -f ./apps/web/Dockerfile
+            docker build . -t ghcr.io/$tag -f ./apps/web/Dockerfile \
             --build-arg NEXT_PUBLIC_API_SERVER_URL=${{ secrets.NEXT_PUBLIC_API_SERVER_URL }}
           done
 
