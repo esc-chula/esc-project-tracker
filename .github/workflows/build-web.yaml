@@ -56,6 +56,11 @@ jobs:
           echo "tags = $RESULT"
           echo "tags=$RESULT" >> "$GITHUB_OUTPUT"
 
+      - name: Create env File
+        run: |
+          touch .env
+          echo NEXT_PUBLIC_API_SERVER_URL=${{ secrets.NEXT_PUBLIC_API_SERVER_URL }} >> .env
+
       - name: Build Docker image with multiple tags
         run: |
           tags="${{ steps.tags.outputs.tags }}"
