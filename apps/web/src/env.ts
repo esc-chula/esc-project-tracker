@@ -22,5 +22,5 @@ export const env = createEnv({
   experimental__runtimeEnv: {
     NEXT_PUBLIC_API_SERVER_URL: process.env.NEXT_PUBLIC_API_SERVER_URL,
   },
-  skipValidation: true,
+  skipValidation: false,
 });
