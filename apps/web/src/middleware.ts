@@ -3,7 +3,7 @@ import { jwtVerify } from 'jose';
 import { trpc } from './app/trpc';
 import { parseJwt } from './service/auth';
 import { Payload } from './interface/auth';
-import { env } from './env';
+import { env } from 'next-runtime-env';
 
 function redirect(req: NextRequest, payload: Payload): NextResponse {
   const path = req.nextUrl.pathname;
@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
   if (accessToken) {
     const verifyResult = await jwtVerify(
       accessToken,
-      new TextEncoder().encode(env.JWT_SECRET),
+      new TextEncoder().encode(env('JWT_SECRET')),
     ).catch(() => null);
     const verifiedPayload = verifyResult?.payload as Payload | undefined;
     // console.log(

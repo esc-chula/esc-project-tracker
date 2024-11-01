@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
 import type { Payload, Tokens } from '../interface/auth';
 import { authErrors } from '../errors/auth';
-import { env } from '../env';
+import { env } from 'next-runtime-env';
 
 export async function getCookies(): Promise<Tokens> {
   try {
@@ -32,7 +32,7 @@ export async function signIn(token: string): Promise<Tokens> {
     'Nextjs server-side, Signing in with token:',
     JSON.stringify({ token }),
     'destination:',
-    env.NEXT_PUBLIC_API_SERVER_URL,
+    env('NEXT_PUBLIC_API_SERVER_URL'),
     'auth/signin',
   );
 
@@ -41,7 +41,7 @@ export async function signIn(token: string): Promise<Tokens> {
   //   throw new Error(authErrors.signInError);
   // });
   const response = await fetch(
-    `${env.NEXT_PUBLIC_API_SERVER_URL}/auth/signin`,
+    `${env('NEXT_PUBLIC_API_SERVER_URL')}/auth/signin`,
     {
       method: 'POST',
       headers: {

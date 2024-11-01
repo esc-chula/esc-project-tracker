@@ -2,15 +2,9 @@ import OnboardingPageHeader from '@/src/components/header/OnboardingPageHeader';
 import { Button } from '@/src/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { env } from '../env';
+import { env } from 'next-runtime-env';
 
 export default function Page() {
-  console.log(
-    'test',
-    env.NEXT_PUBLIC_API_SERVER_URL,
-    env.INTANIA_AUTH_REDIRECT_URL,
-  );
-
   return (
     <>
       <main className="flex flex-col items-center">
@@ -30,10 +24,9 @@ export default function Page() {
           </h2>
         </div>
         <p>
-          debugs: {env.NEXT_PUBLIC_API_SERVER_URL}{' '}
-          {process.env.NEXT_PUBLIC_API_SERVER_URL}{' '}
-          {process.env.INTANIA_AUTH_REDIRECT_URL}{' '}
-          {env.INTANIA_AUTH_REDIRECT_URL}
+          debugs: {env('NEXT_PUBLIC_API_SERVER_URL')}{' '}
+          {env('INTANIA_AUTH_REDIRECT_URL')} {env('INTANIA_AUTH_APP_ID')}{' '}
+          {env('JWT_SECRET')} {env('INTANIA_AUTH_SECRET')}
         </p>
         <Button
           className="rounded-[80px] bg-gradient-red text-2xl font-bold px-12 py-[10px] h-16"
