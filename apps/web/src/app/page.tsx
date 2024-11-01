@@ -23,11 +23,6 @@ export default function Page() {
             ครบจบทุกกระบวนการ มาเริ่มต้นเอกสารกัน !
           </h2>
         </div>
-        <p>
-          debugs: {env('NEXT_PUBLIC_API_SERVER_URL')}{' '}
-          {env('INTANIA_AUTH_REDIRECT_URL')} {env('INTANIA_AUTH_APP_ID')}{' '}
-          {env('JWT_SECRET')} {env('INTANIA_AUTH_SECRET')}
-        </p>
         <Button
           className="rounded-[80px] bg-gradient-red text-2xl font-bold px-12 py-[10px] h-16"
           asChild
