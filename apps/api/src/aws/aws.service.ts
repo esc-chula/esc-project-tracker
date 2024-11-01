@@ -43,7 +43,7 @@ export class AwsService {
     try {
       await this.s3Client.send(
         new PutObjectCommand({
-          Bucket: 'project-tracker',
+          Bucket: process.env.BUCKET_NAME,
           Key: storedFileName,
           Body: file,
         }),
@@ -57,7 +57,7 @@ export class AwsService {
 
   async getUrlToFile(fileName: string, folderName?: string): Promise<string> {
     const isPdf = fileName.slice(-4) == '.pdf';
-    const bucketName = 'project-tracker';
+    const bucketName = process.env.BUCKET_NAME;
     const pathToFile = folderName ? `${folderName}/${fileName}` : fileName;
     let command: GetObjectCommand;
     if (isPdf) {
