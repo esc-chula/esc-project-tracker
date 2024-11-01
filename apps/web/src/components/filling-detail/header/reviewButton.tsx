@@ -76,7 +76,9 @@ export default function ReviewButton({
               หากต้องการแก้ไขเอกสารโปรดตอบกลับใหม่อีกครั้ง
               <DialogClose
                 className=" disabled:bg-disabled bg-red text-white rounded-lg p-2 px-4 font-bold text-2xl mt-4"
-                onClick={() => reviewDocument}
+                onClick={() => {
+                  void reviewDocument();
+                }}
                 disabled={isSubmitting}
               >
                 ยืนยัน

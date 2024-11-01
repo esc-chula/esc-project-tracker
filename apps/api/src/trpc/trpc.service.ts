@@ -6,6 +6,7 @@ import { FilingService } from '../filing/filing.service';
 import { UserProjService } from '../user-proj/user-proj.service';
 import { DocumentService } from '../document_/document.service';
 import { CookieOptions } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TrpcService {
@@ -14,12 +15,13 @@ export class TrpcService {
     private readonly filingService: FilingService,
     private readonly userProjService: UserProjService,
     private readonly documentService: DocumentService,
+    private configService: ConfigService,
   ) {}
   readonly jwtCookieOptions: CookieOptions = {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    domain: '.intania.org',
+    domain: this.configService.get<string>('JWT_DOMAIN'),
   };
   trpc = initTRPC.context<Context>().create();
   router = this.trpc.router;

@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
 import type { Payload, Tokens } from '../interface/auth';
 import { authErrors } from '../errors/auth';
+import { env } from 'next-runtime-env';
 
 export async function getCookies(): Promise<Tokens> {
   try {
@@ -49,19 +50,20 @@ export async function signIn(
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    domain: '.intania.org',
+    domain: env('JWT_DOMAIN'),
   });
 
   cookieStore.set('refreshToken', data.refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    domain: '.intania.org',
+    domain: env('JWT_DOMAIN'),
   });
 
   return { ...data, payload };
 }
 
+// unused route
 export async function validateToken(accessToken: string): Promise<Payload> {
   return await trpc.authRouter.validateToken
     .query({ accessToken })

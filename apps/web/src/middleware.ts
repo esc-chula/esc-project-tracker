@@ -54,13 +54,13 @@ export async function middleware(req: NextRequest) {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    domain: '.intania.org',
+    domain: env('JWT_DOMAIN'),
   });
   res.cookies.set('refreshToken', newTokens.refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    domain: '.intania.org',
+    domain: env('JWT_DOMAIN'),
   });
   return res;
 }

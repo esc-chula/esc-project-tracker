@@ -28,7 +28,9 @@ export default function SubmissionButton({
           documents[0].status === DocumentStatus.DRAFT
         )
       }
-      onClick={() => submitDocument}
+      onClick={() => {
+        void submitDocument();
+      }}
       className="disabled:bg-lightgray mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold bg-red text-white"
     >
       <Send className="h-8 w-8 mr-2" />

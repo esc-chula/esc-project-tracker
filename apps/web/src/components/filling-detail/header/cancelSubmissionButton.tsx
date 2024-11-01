@@ -42,7 +42,9 @@ export default function CancelSubmissionButton({
           <div className="text-end">
             <DialogClose
               className=" disabled:bg-disabled bg-red text-white rounded-lg py-1 px-4 font-semibold"
-              onClick={() => cancelDocumentSubmission}
+              onClick={() => {
+                void cancelDocumentSubmission();
+              }}
               disabled={isSubmitting}
             >
               ยืนยัน
