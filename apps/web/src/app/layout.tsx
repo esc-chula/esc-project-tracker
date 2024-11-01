@@ -1,47 +1,48 @@
-import "../styles/globals.css";
-import { Inter } from "next/font/google";
-import localFont from "next/font/local";
+import '../styles/globals.css';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+import { PublicEnvScript } from 'next-runtime-env';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 const sukhumvitSet = localFont({
   src: [
     {
-      path: "../../public/fonts/SukhumvitSet-Bold.ttf",
-      weight: "700",
-      style: "normal",
+      path: '../../public/fonts/SukhumvitSet-Bold.ttf',
+      weight: '700',
+      style: 'normal',
     },
     {
-      path: "../../public/fonts/SukhumvitSet-SemiBold.ttf",
-      weight: "600",
-      style: "normal",
+      path: '../../public/fonts/SukhumvitSet-SemiBold.ttf',
+      weight: '600',
+      style: 'normal',
     },
     {
-      path: "../../public/fonts/SukhumvitSet-Medium.ttf",
-      weight: "500",
-      style: "normal",
+      path: '../../public/fonts/SukhumvitSet-Medium.ttf',
+      weight: '500',
+      style: 'normal',
     },
     {
-      path: "../../public/fonts/SukhumvitSet-Text.ttf",
-      weight: "400",
-      style: "normal",
+      path: '../../public/fonts/SukhumvitSet-Text.ttf',
+      weight: '400',
+      style: 'normal',
     },
     {
-      path: "../../public/fonts/SukhumvitSet-Light.ttf",
-      weight: "300",
-      style: "normal",
+      path: '../../public/fonts/SukhumvitSet-Light.ttf',
+      weight: '300',
+      style: 'normal',
     },
     {
-      path: "../../public/fonts/SukhumvitSet-Thin.ttf",
-      weight: "100",
-      style: "normal",
+      path: '../../public/fonts/SukhumvitSet-Thin.ttf',
+      weight: '100',
+      style: 'normal',
     },
   ],
-  variable: "--sukhumvit-set-font",
+  variable: '--sukhumvit-set-font',
 });
 
 export const metadata = {
-  title: "ESC Project Tracker",
-  description: "ESC Project Tracker",
+  title: 'ESC Project Tracker',
+  description: 'ESC Project Tracker',
 };
 
 export default function RootLayout({
@@ -53,8 +54,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" type="x-icon" href="/icons/esc.svg" />
+        <PublicEnvScript />
       </head>
-      <body className={inter.className + " " + sukhumvitSet.className}>
+      <body className={inter.className + ' ' + sukhumvitSet.className}>
         {children}
       </body>
     </html>
