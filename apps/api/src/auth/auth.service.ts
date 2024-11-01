@@ -18,13 +18,6 @@ export class AuthService {
 
   async validateUser(token: string): Promise<IntaniaAuthResponse> {
     try {
-      console.log(
-        'Nestjs, Validating user with token:',
-        token,
-        'secret: ',
-        this.configService.get<string>('INTANIA_AUTH_SECRET'),
-      );
-
       const validatedResponse = await this.httpService.axiosRef.post(
         'https://account.intania.org/api/v1/auth/app/validate',
         { token },
@@ -36,7 +29,6 @@ export class AuthService {
           },
         },
       );
-      console.log('validatedResponse:', validatedResponse);
 
       return validatedResponse.data.data as IntaniaAuthResponse;
     } catch (error) {

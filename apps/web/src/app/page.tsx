@@ -22,7 +22,6 @@ export default function Page() {
             ดำเนินการเรื่องเอกสารของคณะฯ ไม่ยุ่งยาก สะดวก รวดเร็ว
             ครบจบทุกกระบวนการ มาเริ่มต้นเอกสารกัน !
           </h2>
-          debugs: {env('INTANIA_AUTH_APP_ID')} {process.env.INTANIA_AUTH_APP_ID}
         </div>
         <Button
           className="rounded-[80px] bg-gradient-red text-2xl font-bold px-12 py-[10px] h-16"
