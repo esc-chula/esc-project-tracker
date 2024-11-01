@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
 import type { Payload, Tokens } from '../interface/auth';
 import { authErrors } from '../errors/auth';
+import { env } from 'next-runtime-env';
 
 export async function getCookies(): Promise<Tokens> {
   try {
@@ -34,7 +35,8 @@ export async function signIn(
     JSON.stringify({ token }),
     'destination:',
     process.env.NEXT_PUBLIC_API_SERVER_URL,
-    'auth/signin',
+    'destination (env):',
+    env('NEXT_PUBLIC_API_SERVER_URL'),
   );
 
   const data = await trpc.authRouter.signin.mutate({ token }).catch((err) => {
