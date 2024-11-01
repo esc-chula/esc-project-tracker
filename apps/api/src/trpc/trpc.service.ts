@@ -18,7 +18,7 @@ export class TrpcService {
   readonly jwtCookieOptions: CookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: 'none',
+    sameSite: 'strict',
     domain: '.intania.org',
   };
   trpc = initTRPC.context<Context>().create();

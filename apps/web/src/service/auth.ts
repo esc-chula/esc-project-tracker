@@ -48,14 +48,14 @@ export async function signIn(
   cookieStore.set('accessToken', data.accessToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'none',
+    sameSite: 'strict',
     domain: '.intania.org',
   });
 
   cookieStore.set('refreshToken', data.refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'none',
+    sameSite: 'strict',
     domain: '.intania.org',
   });
 
