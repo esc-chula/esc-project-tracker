@@ -53,8 +53,6 @@ export class AuthService {
   async signIn(
     token: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
-    console.log('Nestjs, Signing in with token:', token);
-
     const validatedUser = await this.validateUser(token).catch((error) => {
       throw new ForbiddenException(error.message);
     });

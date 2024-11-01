@@ -4,7 +4,6 @@ import { cookies } from 'next/headers';
 import { trpc } from '../app/trpc';
 import type { Payload, Tokens } from '../interface/auth';
 import { authErrors } from '../errors/auth';
-import { env } from 'next-runtime-env';
 
 export async function getCookies(): Promise<Tokens> {
   try {
@@ -49,13 +48,15 @@ export async function signIn(
   cookieStore.set('accessToken', data.accessToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
+    sameSite: 'none',
+    domain: '.intania.org',
   });
 
   cookieStore.set('refreshToken', data.refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
+    sameSite: 'none',
+    domain: '.intania.org',
   });
 
   return { ...data, payload };
@@ -71,8 +72,7 @@ export async function validateToken(accessToken: string): Promise<Payload> {
 }
 
 export async function signOut(): Promise<void> {
-  const { accessToken: accessTokenCookie } = await getCookies().catch((err) => {
-    console.error(err);
+  const { accessToken: accessTokenCookie } = await getCookies().catch(() => {
     throw new Error(authErrors.getCookiesError);
   });
 

@@ -53,12 +53,14 @@ export async function middleware(req: NextRequest) {
   res.cookies.set('accessToken', newTokens.accessToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
+    sameSite: 'none',
+    domain: '.intania.org',
   });
   res.cookies.set('refreshToken', newTokens.refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
+    sameSite: 'none',
+    domain: '.intania.org',
   });
   return res;
 }

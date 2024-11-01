@@ -18,7 +18,8 @@ export class TrpcService {
   readonly jwtCookieOptions: CookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
+    sameSite: 'none',
+    domain: '.intania.org',
   };
   trpc = initTRPC.context<Context>().create();
   router = this.trpc.router;
