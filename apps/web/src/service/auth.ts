@@ -27,7 +27,9 @@ export async function getCookies(): Promise<Tokens> {
   }
 }
 
-export async function signIn(token: string): Promise<Tokens> {
+export async function signIn(
+  token: string,
+): Promise<Tokens & { payload: Payload }> {
   console.log(
     'Nextjs server-side, Signing in with token:',
     JSON.stringify({ token }),
@@ -36,22 +38,23 @@ export async function signIn(token: string): Promise<Tokens> {
     'auth/signin',
   );
 
-  // const data = await trpc.authRouter.signin.mutate({ token }).catch((err) => {
-  //   console.error('Nextjs server-side, signIn err:', err);
-  //   throw new Error(authErrors.signInError);
-  // });
-  const response = await fetch(
-    `${env.NEXT_PUBLIC_API_SERVER_URL}/auth/signin`,
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token }),
-    },
-  );
-  const data: Tokens = await response.json();
+  const data = await trpc.authRouter.signin.mutate({ token }).catch((err) => {
+    console.error('Nextjs server-side, signIn err:', err);
+    throw new Error(authErrors.signInError);
+  });
+  // const response = await fetch(
+  //   `${env.NEXT_PUBLIC_API_SERVER_URL}/auth/signin`,
+  //   {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ token }),
+  //   },
+  // );
+  // const data: Tokens = await response.json();
+  const payload = await parseJwt(data.accessToken);
 
   const cookieStore = cookies();
 
@@ -67,7 +70,7 @@ export async function signIn(token: string): Promise<Tokens> {
     sameSite: 'strict',
   });
 
-  return data;
+  return { ...data, payload };
 }
 
 export async function validateToken(accessToken: string): Promise<Payload> {

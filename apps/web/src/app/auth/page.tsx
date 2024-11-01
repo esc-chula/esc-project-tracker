@@ -17,10 +17,12 @@ export default function Page({
   const token = searchParams.token;
   useEffect(() => {
     async function signInAndRedirect() {
-      const { accessToken, refreshToken } = await signIn(token);
+      const { accessToken, refreshToken, payload } = await signIn(token);
       /* apply callbackurl here */
-      if (accessToken && refreshToken) router.push('/home');
-      else router.push('/login');
+      if (accessToken && refreshToken) {
+        if (payload.role === 'admin') router.push('/admin/home');
+        else router.push('/home');
+      } else router.push('/');
     }
     signInAndRedirect();
   }, []);

@@ -1,12 +1,10 @@
 'use client';
-import { ProjectWithLastOpen } from '@/src/interface/project';
-import LatestItem from './latestItem';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { useEffect, useState } from 'react';
-import { UserFiling } from '@/src/interface/user-filing';
-import { set } from 'zod';
-import { FilingType } from '@/src/interface/filing';
+import type { ProjectWithLastOpen } from '@/src/interface/project';
+import type { UserFiling } from '@/src/interface/user-filing';
+import LatestItem from './latestItem';
 
 export default function LatestPanel({
   filingsWithLastOpen,
@@ -58,14 +56,14 @@ export default function LatestPanel({
   }, [projectsWithLastOpen, filingsWithLastOpen]);
 
   return (
-    <div className={`flex flex-col max-w-${compact ? '[100vw]' : '[60vw]'}`}>
+    <div className={`flex flex-col w-${compact ? '[100vw]' : '[60vw]'}`}>
       <div className="font-sukhumvit font-bold text-lg">ล่าสุด</div>
       <div
-        className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden"
+        className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden w-[78vw]"
         ref={carouselRef}
       >
-        {isFetched &&
-          (isProject ? (
+        {isFetched ? (
+          isProject ? (
             <div className="flex space-x-8">
               {sortedProjects.map((project) => (
                 <LatestItem
@@ -88,7 +86,8 @@ export default function LatestPanel({
                 />
               ))}
             </div>
-          ))}
+          )
+        ) : null}
       </div>
     </div>
   );
