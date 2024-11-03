@@ -1,9 +1,11 @@
 'use client';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { z } from 'zod';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+import { AiFillEdit } from 'react-icons/ai';
 import { newProjectFormSchema } from '@/src/constant/schema';
-import { set, z } from 'zod';
 import {
   Form,
   FormControl,
@@ -21,28 +23,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/components/ui/select';
-
-import { Textarea } from '../ui/textarea';
-import { useEffect, useMemo, useState } from 'react';
 import { projectTypeMap } from '@/src/constant/Map';
 import createProject from '@/src/service/project/createProject';
-import { ProjectType } from '@/src/constant/enum';
-import { useToast } from '../ui/use-toast';
-import { useRouter } from 'next/navigation';
-import joinProjectByStudentId from '@/src/service/user-proj/joinProjectByStudentId';
-import MembersInput from './membersInput';
-import { Project } from '@/src/interface/project';
-import { projectFormAction } from '@/src/constant/formAction';
-import FormLabelWithCondition from './formLabelWithCondition';
-import { AiFillEdit } from 'react-icons/ai';
-import SubmitButtonGroup from './submitButtonGroup';
-import DeleteProjectDialog from './deleteProjectDialog';
-import { User } from '@/src/interface/user';
-import { findUserByCondition } from '@/src/service/user/findUserByCondition';
-import updateProject from '@/src/service/project/updateProject';
-import leaveProjectByStudentId from '@/src/service/user-proj/leaveProjectByStudentId';
 import { getUserId } from '@/src/service/auth';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
+import leaveProjectByStudentId from '@/src/service/user-proj/leaveProjectByStudentId';
+import { findUserByCondition } from '@/src/service/user/findUserByCondition';
+import updateProject from '@/src/service/project/updateProject';
+import type { User } from '@/src/interface/user';
+import type { ProjectType } from '@/src/constant/enum';
+import joinProjectByStudentId from '@/src/service/user-proj/joinProjectByStudentId';
+import type { Project } from '@/src/interface/project';
+import { projectFormAction } from '@/src/constant/formAction';
+import { Textarea } from '../ui/textarea';
+import { toast } from '../ui/use-toast';
+import MembersInput from './membersInput';
+import FormLabelWithCondition from './formLabelWithCondition';
+import SubmitButtonGroup from './submitButtonGroup';
+import DeleteProjectDialog from './deleteProjectDialog';
 
 export default function ProjectForm({
   formAction,
@@ -55,7 +53,6 @@ export default function ProjectForm({
   joinUsers?: User[];
   isAdmin: boolean;
 }) {
-  const { toast } = useToast();
   const router = useRouter();
 
   const [action, setAction] = useState<projectFormAction>(formAction);
@@ -72,26 +69,28 @@ export default function ProjectForm({
       const userId = await getUserId();
       const userData = await findUserByUserId(userId);
       setUser(userData);
+      if (
+        action === projectFormAction.USER_CREATE ||
+        action === projectFormAction.ADMIN_CREATE
+      )
+        form.setValue(`members.0`, userData?.studentId);
     };
     fetchUser();
   }, []);
 
   const initialMembers = useMemo(() => joinUsers || [], [joinUsers]);
-  const ownerUser = useMemo(() => {
-    return (
+  const ownerUser = useMemo(
+    () =>
       joinUsers?.find((joinedUser) => joinedUser.id === project?.ownerId) ||
-      null
-    );
-  }, [joinUsers, project?.ownerId]);
-  const canEdit = useMemo(() => {
-    if (
+      null,
+    [joinUsers, project?.ownerId],
+  );
+  const canEdit = useMemo(
+    () =>
       (action === projectFormAction.INFO && user?.id === project?.ownerId) ||
-      isAdmin
-    ) {
-      return true;
-    }
-    return false;
-  }, [action, isAdmin, project?.ownerId]);
+      isAdmin,
+    [action, isAdmin, project?.ownerId],
+  );
 
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
     resolver: zodResolver(newProjectFormSchema),
@@ -142,9 +141,8 @@ export default function ProjectForm({
           setIsAfterCancelUpdate(!isAfterCancelUpdate);
           setAction(projectFormAction.INFO);
           break;
-
         default:
-          return;
+          break;
       }
     };
 
@@ -208,40 +206,27 @@ export default function ProjectForm({
 
   async function onSubmitCreate(values: z.infer<typeof newProjectFormSchema>) {
     const getOwnerId = async () => {
-      if (action === projectFormAction.USER_CREATE) {
-        return user?.id;
-      } else {
-        const ownerStudentId =
-          values.members.find((member) => member !== undefined) || '';
-        const foundUser = await findUserByCondition({
-          studentId: ownerStudentId,
-        });
-        return foundUser?.id ?? '';
-      }
+      if (action === projectFormAction.USER_CREATE) return user?.id;
+
+      const ownerStudentId =
+        values.members.find((member) => member !== undefined) || '';
+      const foundUser = await findUserByCondition({
+        studentId: ownerStudentId,
+      });
+      return foundUser?.id ?? '';
     };
 
     const ownerId = await getOwnerId();
+    if (!ownerId) throw new Error('ไม่พบเจ้าของโครงการ');
 
-    try {
-      if (ownerId) {
-        const newProject = await createProject(
-          values.projectName,
-          values.type as ProjectType,
-          ownerId,
-          values.description,
-        );
+    const newProject = await createProject(
+      values.projectName,
+      values.type as ProjectType,
+      ownerId,
+      values.description,
+    );
 
-        return newProject;
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        toast({
-          title: 'ไม่สำเร็จ',
-          description: err.message,
-          isError: true,
-        });
-      }
-    }
+    return newProject;
   }
 
   async function onSubmit(values: z.infer<typeof newProjectFormSchema>) {
@@ -324,192 +309,182 @@ export default function ProjectForm({
             isError: true,
           });
         } else {
-          if (
-            action === projectFormAction.ADMIN_CREATE ||
-            action === projectFormAction.USER_CREATE
-          ) {
-            toast({
-              title: 'เปิดโครงการไม่สำเร็จ',
-              description: err.message,
-              isError: true,
-            });
-          } else {
-            toast({
-              title: 'อัพเดทโครงการไม่สำเร็จ',
-              description: err.message,
-              isError: true,
-            });
-          }
+          toast({
+            title: `${
+              action === projectFormAction.ADMIN_CREATE ||
+              action === projectFormAction.USER_CREATE
+                ? 'เปิด'
+                : 'อัพเดท'
+            }โครงการไม่สำเร็จ`,
+            description: err.message,
+            isError: true,
+          });
         }
       }
     }
-
-    return;
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col max-w-3xl text-sm"
-        >
-          <div className="space-y-6 bg-lightgray px-6 py-5 rounded-lg ">
-            <div className="flex flex-row justify-between">
-              <div className="space-y-6 w-[50%]">
-                <FormField
-                  control={form.control}
-                  name="projectName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabelWithCondition
-                        label="ชื่อโครงการ"
-                        action={action}
-                      />
-                      <FormControl>
-                        <Input
-                          placeholder="ใส่ชื่อโครงการ"
-                          {...field}
-                          disabled={action === projectFormAction.INFO}
-                          className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-black text-sm border-black"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabelWithCondition
-                        label="ประเภทโครงการ"
-                        action={action}
-                      />
-                      <Select
-                        onValueChange={field.onChange}
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col max-w-3xl text-sm"
+      >
+        <div className="space-y-6 bg-lightgray px-6 py-5 rounded-lg ">
+          <div className="flex flex-row justify-between">
+            <div className="space-y-6 w-[50%]">
+              <FormField
+                control={form.control}
+                name="projectName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabelWithCondition
+                      label="ชื่อโครงการ"
+                      action={action}
+                    />
+                    <FormControl>
+                      <Input
+                        placeholder="ใส่ชื่อโครงการ"
                         {...field}
                         disabled={action === projectFormAction.INFO}
-                      >
-                        <FormControl>
-                          <SelectTrigger
-                            className="text-sm border-black"
-                            disabled={action === projectFormAction.INFO}
-                          >
-                            <SelectValue placeholder="ฝ่ายวิชาการ, ฝ่ายกิจกรรมภายในคณะ, ฝ่ายเทคโนโลยี" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent {...field}>
-                          <SelectGroup>
-                            {projectTypeMap.map((item, index) => (
-                              <SelectItem key={index} value={item.value}>
-                                {item.label}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              {action === projectFormAction.INFO ||
-              action === projectFormAction.UPDATE ? (
-                <div className="font-sukhumvit font-bold">
-                  <div className="text-center">รหัสโครงการ</div>
-                  <div className="text-center text-4xl">
-                    {project?.projectCode || 'ไม่มีรหัสโครงการ'}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">
-                    รายละเอียด (optional)
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="รายละเอียดเพิ่มเติม"
-                      disabled={action === projectFormAction.INFO}
-                      {...field}
-                      className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-black text-sm border-black"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-row justify-between">
-              <div className="space-y-3 font-bold text-sm">
-                ผู้ร่วมโครงการ
-                <ol className="list-decimal pl-5 py-2 space-y-3 font-extrabold w-[30vw] ">
-                  {action === projectFormAction.USER_CREATE ? (
-                    <li>
-                      <div className="flex text-sm text-black justify-between w-[85%]">
-                        <span>{user?.username}</span>
-                        <span>รหัสนิสิต&emsp;{user?.studentId}</span>
-                      </div>
-                    </li>
-                  ) : action === projectFormAction.INFO ||
-                    action === projectFormAction.UPDATE ? (
-                    <li>
-                      <div className="flex text-sm text-black justify-between w-[85%]">
-                        <span>{ownerUser?.username}</span>
-                        <span>รหัสนิสิต&emsp;{ownerUser?.studentId}</span>
-                      </div>
-                    </li>
-                  ) : null}
-                  {[...Array(membersCount)].map((_, index) =>
-                    index === membersCount - 1 ||
-                    form.getValues().members[index + 1] ? (
-                      <MembersInput
-                        control={form.control}
-                        handleChange={handleChange}
-                        key={index}
-                        index={index + 1}
-                        handleDelete={
-                          index === membersCount - 1 ? undefined : handleDelete
-                        }
-                        memberBeforeUpdated={initialMembers}
-                        member={String(form.getValues().members[index + 1])}
-                        formAction={action}
+                        className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-black text-sm border-black"
                       />
-                    ) : undefined,
-                  )}
-                </ol>
-              </div>
-              {action === projectFormAction.INFO && canEdit ? (
-                <div className="text-end flex items-end space-x-4">
-                  <div
-                    className="p-2 rounded-full bg-white flex items-center justify-center hover:cursor-pointer hover:scale-105 duration-75"
-                    onClick={() => {
-                      setAction(projectFormAction.UPDATE);
-                    }}
-                  >
-                    <AiFillEdit size={20} className="text-red" />
-                  </div>
-                  <DeleteProjectDialog projectId={project?.id || ''} />
-                </div>
-              ) : null}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabelWithCondition
+                      label="ประเภทโครงการ"
+                      action={action}
+                    />
+                    <Select
+                      onValueChange={field.onChange}
+                      {...field}
+                      disabled={action === projectFormAction.INFO}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          className="text-sm border-black"
+                          disabled={action === projectFormAction.INFO}
+                        >
+                          <SelectValue placeholder="ฝ่ายวิชาการ, ฝ่ายกิจกรรมภายในคณะ, ฝ่ายเทคโนโลยี" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent {...field}>
+                        <SelectGroup>
+                          {projectTypeMap.map((item, index) => (
+                            <SelectItem key={index} value={item.value}>
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
+            {action === projectFormAction.INFO ||
+            action === projectFormAction.UPDATE ? (
+              <div className="font-sukhumvit font-bold">
+                <div className="text-center">รหัสโครงการ</div>
+                <div className="text-center text-4xl">
+                  {project?.projectCode || 'ไม่มีรหัสโครงการ'}
+                </div>
+              </div>
+            ) : null}
           </div>
-          <SubmitButtonGroup
-            formAction={action}
-            form={form}
-            changeFormActionToParent={(
-              actionChangeFromChild: projectFormAction,
-            ) => {
-              setAction(actionChangeFromChild);
-            }}
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold">
+                  รายละเอียด (optional)
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="รายละเอียดเพิ่มเติม"
+                    disabled={action === projectFormAction.INFO}
+                    {...field}
+                    className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-black text-sm border-black"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </form>
-      </Form>
-    </>
+          <div className="flex flex-row justify-between">
+            <div className="space-y-3 font-bold text-sm">
+              ผู้ร่วมโครงการ
+              <ol className="list-decimal pl-5 py-2 space-y-3 font-extrabold w-full ">
+                {action === projectFormAction.USER_CREATE ? (
+                  <li>
+                    <div className="flex text-sm text-black justify-between w-[85%]">
+                      <span>{user?.username}</span>
+                      <span>รหัสนิสิต&emsp;{user?.studentId}</span>
+                    </div>
+                  </li>
+                ) : action === projectFormAction.INFO ||
+                  action === projectFormAction.UPDATE ? (
+                  <li>
+                    <div className="flex text-sm text-black justify-between w-[85%]">
+                      <span>{ownerUser?.username}</span>
+                      <span>รหัสนิสิต&emsp;{ownerUser?.studentId}</span>
+                    </div>
+                  </li>
+                ) : null}
+                {[...Array(membersCount)].map((_, index) =>
+                  index === membersCount - 1 ||
+                  form.getValues().members[index + 1] ? (
+                    <MembersInput
+                      control={form.control}
+                      handleChange={handleChange}
+                      key={index}
+                      index={index + 1}
+                      handleDelete={
+                        index === membersCount - 1 ? undefined : handleDelete
+                      }
+                      memberBeforeUpdated={initialMembers}
+                      member={String(form.getValues().members[index + 1])}
+                      formAction={action}
+                    />
+                  ) : undefined,
+                )}
+              </ol>
+            </div>
+            {action === projectFormAction.INFO && canEdit ? (
+              <div className="text-end flex items-end space-x-4">
+                <div
+                  className="p-2 rounded-full bg-white flex items-center justify-center hover:cursor-pointer hover:scale-105 duration-75"
+                  onClick={() => {
+                    setAction(projectFormAction.UPDATE);
+                  }}
+                >
+                  <AiFillEdit size={20} className="text-red" />
+                </div>
+                <DeleteProjectDialog projectId={project?.id || ''} />
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <SubmitButtonGroup
+          formAction={action}
+          form={form}
+          changeFormActionToParent={(
+            actionChangeFromChild: projectFormAction,
+          ) => {
+            setAction(actionChangeFromChild);
+          }}
+        />
+      </form>
+    </Form>
   );
 }

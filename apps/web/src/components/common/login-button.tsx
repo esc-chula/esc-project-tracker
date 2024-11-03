@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+// unused
 export default function LoginButton(): JSX.Element {
   return (
     <Link href="/login">

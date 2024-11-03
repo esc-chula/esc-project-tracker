@@ -38,7 +38,7 @@ export default function UserCardMenu({ username }: UserCardMenuProps) {
           onClick={async () => {
             await signOut()
               .then(() => {
-                router.push('/login');
+                router.push('/');
               })
               .catch((err) => {
                 console.error(err);

@@ -7,11 +7,10 @@ export async function createContext({
   const accessToken: string | undefined = req.cookies['accessToken'];
   const refreshToken: string | undefined = req.cookies['refreshToken'];
   console.log(
-    'access:',
+    'ac:',
     accessToken ? '✅' : '❌',
-    ' refresh:',
+    ' re:',
     refreshToken ? '✅' : '❌',
-    ' URL:',
     req.url,
   );
 

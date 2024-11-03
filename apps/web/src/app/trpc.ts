@@ -13,7 +13,6 @@ export const trpc = createTRPCProxyClient<AppRouter>({
     httpBatchLink({
       url: `${env('NEXT_PUBLIC_API_SERVER_URL')}trpc`,
       fetch(url, options) {
-        console.log('fetching', url);
         return fetch(url, {
           ...options,
           credentials: 'include',

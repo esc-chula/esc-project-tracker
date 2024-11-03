@@ -11,7 +11,7 @@ export default async function submitCreatedFormSchema(
   projectId: string,
   filingId: string,
   userId: string,
-  status?: string,
+  status?: FilingStatus,
 ) {
   const files = values.file as FileList;
   const swap = getFileType(files[0]) !== 'pdf';
