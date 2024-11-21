@@ -1,5 +1,5 @@
 'use client';
-import AllDocumentCard from './allFilingCard';
+import AllFilingCard from './allFilingCard';
 import SelectType from '../filter/selectType';
 import { useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { FilingType } from '@/src/interface/filing';
@@ -8,7 +8,7 @@ import {
   typeFilingItems,
 } from '@/src/constant/filterFiling';
 
-export default function AllDocumentPanel({
+export default function AllFilingPanel({
   filings,
   setFilings,
 }: {
@@ -58,7 +58,7 @@ export default function AllDocumentPanel({
       </div>
       <div className="grid lg:grid-cols-3 md:grid-col-2 gid-row-2 gap-x-4 gap-y-4 pr-8">
         {filteredFilings.map((filing) => (
-          <AllDocumentCard
+          <AllFilingCard
             key={filing.id}
             filingId={filing.id}
             projectCode={filing.projectCode}

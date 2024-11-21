@@ -1,10 +1,10 @@
 'use client';
 import { HiLightBulb } from 'react-icons/hi';
 import { FilePlus } from 'lucide-react';
-import PopoverAddDocument from './popoverAddFiling';
+import PopoverAddFiling from './popoverAddFiling';
 import { FilingType } from '@/src/interface/filing';
 
-export default function NoDocument({
+export default function NoFiling({
   projectId,
   setNewFilingToParent,
 }: {
@@ -20,7 +20,7 @@ export default function NoDocument({
         ยังไม่มีเอกสาร <br></br>เริ่มสร้างกันเลย !
       </div>
       <div>
-        <PopoverAddDocument
+        <PopoverAddFiling
           addFilingToParent={(filing: FilingType) => {
             setNewFilingToParent(filing);
           }}
@@ -30,7 +30,7 @@ export default function NoDocument({
             <FilePlus className="inline-block mr-3" />
             เพิ่มเอกสาร
           </button>
-        </PopoverAddDocument>
+        </PopoverAddFiling>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ import { IoIosAlert } from 'react-icons/io';
 import deleteFiling from '@/src/service/filing/deleteFiling';
 import { useToast } from '../ui/use-toast';
 
-export default function PopoverDeleteDocument({
+export default function PopoverDeleteFiling({
   filingId,
   setDeletedParentFunc,
 }: {

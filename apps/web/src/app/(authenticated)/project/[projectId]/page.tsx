@@ -1,7 +1,7 @@
 'use client';
 import Header from '@/src/components/header/header';
 import Subtitle from '@/src/components/header/subtitle';
-import MyDocumentData from '@/src/components/project/myFilingData';
+import MyFilingData from '@/src/components/project/myFilingData';
 import { Project } from '@/src/interface/project';
 import { useEffect, useState } from 'react';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
@@ -59,7 +59,7 @@ export default function Page({ params }: { params: { projectId: string } }) {
             />
           </Header>
 
-          <MyDocumentData projectId={params.projectId} />
+          <MyFilingData projectId={params.projectId} />
         </main>
       )}
     </>

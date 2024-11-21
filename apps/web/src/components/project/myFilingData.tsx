@@ -1,9 +1,9 @@
 'use client';
 import SearchBar from '../searchbar/searchBar';
 import { FileText } from 'lucide-react';
-import NoDocument from './noFiling';
-import AllDocumentPanel from './allFilingPanel';
-import PopoverAddDocument from './popoverAddFiling';
+import NoFiling from './noFiling';
+import AllFilingPanel from './allFilingPanel';
+import PopoverAddFiling from './popoverAddFiling';
 import { useEffect, useState } from 'react';
 import { FilingType } from '@/src/interface/filing';
 import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
@@ -11,7 +11,7 @@ import { useToast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { Project } from '@/src/interface/project';
 
-export default function MyDocumentData({ projectId }: { projectId: string }) {
+export default function MyFilingData({ projectId }: { projectId: string }) {
   const [filings, setFilings] = useState<FilingType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const { toast } = useToast();
@@ -67,7 +67,7 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
         </div>
 
         <div className="">
-          <PopoverAddDocument
+          <PopoverAddFiling
             projectId={projectId}
             addFilingToParent={(filing: FilingType) => {
               setFilings((prevFilings) => [...prevFilings, filing]);
@@ -78,14 +78,14 @@ export default function MyDocumentData({ projectId }: { projectId: string }) {
       {isFetched && (
         <>
           {filings.length === 0 ? (
-            <NoDocument
+            <NoFiling
               projectId={projectId}
               setNewFilingToParent={(filing: FilingType) => {
                 setFilings((prevFilings) => [...prevFilings, filing]);
               }}
             />
           ) : (
-            <AllDocumentPanel filings={filings} setFilings={setFilings} />
+            <AllFilingPanel filings={filings} setFilings={setFilings} />
           )}
         </>
       )}

@@ -11,7 +11,7 @@ import {
 } from '../ui/dialog';
 import { useToast } from '../ui/use-toast';
 
-export default function PopoverEditDocument({
+export default function PopoverEditFiling({
   filingId,
   oldFilingName,
   setNewNameParentFunc,

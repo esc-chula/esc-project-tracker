@@ -1,14 +1,14 @@
 'use client';
 import { EllipsisVertical } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.tsx';
-import PopoverEditDocument from './popoverEditFiling.tsx';
-import PopoverDeleteDocument from './popoverDeleteFiling.tsx';
+import PopoverEditFiling from './popoverEditFiling.tsx';
+import PopoverDeleteFiling from './popoverDeleteFiling.tsx';
 import type { FilingStatus } from '@/src/constant/enum.ts';
 import { buttonColors, TextMyProject } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function AllDocumentCard({
+export default function AllFilingCard({
   filingId,
   projectCode,
   FilingCode,
@@ -65,14 +65,14 @@ export default function AllDocumentCard({
             align="start"
             className="w-auto flex flex-col"
           >
-            <PopoverEditDocument
+            <PopoverEditFiling
               oldFilingName={filingName}
               filingId={filingId}
               setNewNameParentFunc={(newName) => {
                 setFName(newName);
               }}
             />
-            <PopoverDeleteDocument
+            <PopoverDeleteFiling
               filingId={filingId}
               setDeletedParentFunc={(deleted: boolean) => {
                 setIsDeleted(deleted);

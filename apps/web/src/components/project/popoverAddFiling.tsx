@@ -14,7 +14,7 @@ import { FilingType } from '@/src/interface/filing';
 import { useToast } from '../ui/use-toast';
 import { getUserId } from '@/src/service/auth';
 
-export default function PopoverAddDocument({
+export default function PopoverAddFiling({
   children,
   projectId,
   addFilingToParent,
