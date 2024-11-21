@@ -1,8 +1,8 @@
 'use client';
 import { EllipsisVertical } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.tsx';
-import PopoverEditDocument from './popoverEditDocument.tsx';
-import PopoverDeleteDocument from './popoverDeleteDocument.tsx';
+import PopoverEditDocument from './popoverEditFiling.tsx';
+import PopoverDeleteDocument from './popoverDeleteFiling.tsx';
 import type { FilingStatus } from '@/src/constant/enum.ts';
 import { buttonColors, TextMyProject } from '@/src/styles/enumMap';
 import { useEffect, useState } from 'react';

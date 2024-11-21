@@ -1,7 +1,7 @@
 'use client';
 import Header from '@/src/components/header/header';
 import Subtitle from '@/src/components/header/subtitle';
-import MyDocumentData from '@/src/components/project/myDocumentData';
+import MyDocumentData from '@/src/components/project/myFilingData';
 import { Project } from '@/src/interface/project';
 import { useEffect, useState } from 'react';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
@@ -33,10 +33,7 @@ export default function Page({ params }: { params: { projectId: string } }) {
       const updateLastOpenFetch = async () => {
         try {
           const userId = await getUserId();
-          await updateLastOpen(
-            userId,
-            params.projectId,
-          );
+          await updateLastOpen(userId, params.projectId);
         } catch (err) {
           if (err instanceof Error) {
             toast({

@@ -1,5 +1,5 @@
 'use client';
-import AllDocumentCard from './allDocumentCard';
+import AllDocumentCard from './allFilingCard';
 import SelectType from '../filter/selectType';
 import { useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { FilingType } from '@/src/interface/filing';

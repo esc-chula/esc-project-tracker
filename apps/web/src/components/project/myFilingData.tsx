@@ -1,9 +1,9 @@
 'use client';
 import SearchBar from '../searchbar/searchBar';
 import { FileText } from 'lucide-react';
-import NoDocument from './noDocument';
-import AllDocumentPanel from './allDocumentPanel';
-import PopoverAddDocument from './popoverAddDocument';
+import NoDocument from './noFiling';
+import AllDocumentPanel from './allFilingPanel';
+import PopoverAddDocument from './popoverAddFiling';
 import { useEffect, useState } from 'react';
 import { FilingType } from '@/src/interface/filing';
 import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
