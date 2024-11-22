@@ -1,7 +1,7 @@
-import OnboardingPageHeader from "@/src/components/header/OnboardingPageHeader"
-import { Button } from "@/src/components/ui/button"
-import Image from "next/image"
-import Link from "next/link"
+import OnboardingPageHeader from '@/src/components/header/onboardingPageHeader';
+import { Button } from '@/src/components/ui/button';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Page() {
   return (
@@ -19,10 +19,11 @@ export default function Page() {
         <h2 className="text-xl mb-8">เริ่มต้นใช้งานระบบเอกสารกันเลย!</h2>
         <Button
           className="rounded-[80px] bg-gradient-red text-2xl font-bold px-12 py-[10px] h-16"
-          asChild>
+          asChild
+        >
           <Link href="/home">เริ่มต้น</Link>
         </Button>
       </main>
     </>
-  )
+  );
 }

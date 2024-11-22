@@ -1,5 +1,5 @@
 import { ProjectStatus } from './enum';
-import { projectTypeMap } from './Map';
+import { projectTypeMap } from './map';
 
 export const statusProjectItems = [
   {

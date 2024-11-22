@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import { HiDocumentAdd } from 'react-icons/hi';
-import { filingTypeMap } from '@/src/constant/Map';
+import { filingTypeMap } from '@/src/constant/map';
 import { useEffect, useState } from 'react';
 import createFiling from '@/src/service/filing/createFiling';
 import { FilingType } from '@/src/interface/filing';

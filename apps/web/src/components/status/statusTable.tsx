@@ -21,8 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/src/components/ui/table';
-import { columns } from './StatusTableColumns';
-import StatusTableToolBar from './StatusTableToolBar';
+import { columns } from './statusTableColumns';
+import StatusTableToolBar from './statusTableToolBar';
 import { FilingType } from '@/src/interface/filing';
 
 export function StatusTable({

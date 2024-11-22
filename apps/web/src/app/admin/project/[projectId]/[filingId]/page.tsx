@@ -1,7 +1,7 @@
 'use client';
 
 import Header from '@/src/components/header/header';
-import DocumentStatusStepper from '@/src/components/status/StatusStepper';
+import DocumentStatusStepper from '@/src/components/status/statusStepper';
 import { FilingStatus } from '@/src/constant/enum';
 import { FilingType } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';

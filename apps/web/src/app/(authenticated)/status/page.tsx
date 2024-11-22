@@ -2,7 +2,7 @@ import { Radio } from 'lucide-react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import { getUserId } from '@/src/service/auth';
-import StatusPage from '@/src/components/status/StatusPage';
+import StatusPage from '@/src/components/status/statusPage';
 
 export default async function Page() {
   const userId = await getUserId();

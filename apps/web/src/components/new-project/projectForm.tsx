@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/components/ui/select';
-import { projectTypeMap } from '@/src/constant/Map';
+import { projectTypeMap } from '@/src/constant/map';
 import createProject from '@/src/service/project/createProject';
 import { getUserId } from '@/src/service/auth';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';

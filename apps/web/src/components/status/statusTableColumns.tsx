@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { DataTableColumnHeader } from './DataTableColumnHeader';
+import { DataTableColumnHeader } from './dataTableColumnHeader';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import Link from 'next/link';
 import { Button } from '../ui/button';

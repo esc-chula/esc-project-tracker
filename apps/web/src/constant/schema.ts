@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { getFileType } from '../lib/utils';
-import { projectTypeMap } from './Map';
+import { projectTypeMap } from './map';
 import { DocumentActivity } from './enum';
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString());

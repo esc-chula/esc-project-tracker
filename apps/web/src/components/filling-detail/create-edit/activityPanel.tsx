@@ -1,7 +1,7 @@
 import {
   DocumentActivityMapForAdmin,
   DocumentActivityMapForUser,
-} from '@/src/constant/Map';
+} from '@/src/constant/map';
 import { FormControl } from '../../ui/form';
 import {
   SelectContent,

@@ -3,7 +3,7 @@ import { ArrowRight, Folders, Home, Radio } from 'lucide-react';
 import Header from '../../../components/header/header';
 import Title from '@/src/components/header/title';
 import MyProjectData from '@/src/components/project/myProjectData';
-import { StatusTable } from '@/src/components/status/StatusTable';
+import { StatusTable } from '@/src/components/status/statusTable';
 import { FilingType } from '@/src/interface/filing';
 import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';

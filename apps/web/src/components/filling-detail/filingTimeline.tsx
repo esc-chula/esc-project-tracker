@@ -2,7 +2,7 @@ import { Clock } from 'lucide-react';
 import type { DocumentType } from '@/src/interface/document';
 import type { FilingStatus } from '@/src/constant/enum';
 import type { User } from '@/src/interface/user';
-import DocumentCard from './DocumentCard';
+import DocumentCard from './documentCard';
 
 export default function FilingTimeline({
   documents,

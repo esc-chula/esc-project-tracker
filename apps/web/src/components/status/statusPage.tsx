@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import type { FilingType } from '@/src/interface/filing';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
-import DocumentStatusStepper from './StatusStepper';
-import { StatusTable } from './StatusTable';
+import DocumentStatusStepper from './statusStepper';
+import { StatusTable } from './statusTable';
 
 export default function StatusPage({ userId }: { userId: string }) {
   const [statuses, setStatuses] = useState<FilingType[]>([]);

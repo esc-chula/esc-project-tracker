@@ -1,4 +1,4 @@
-import OnboardingPageHeader from '@/src/components/header/OnboardingPageHeader';
+import OnboardingPageHeader from '@/src/components/header/onboardingPageHeader';
 import { Button } from '@/src/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';

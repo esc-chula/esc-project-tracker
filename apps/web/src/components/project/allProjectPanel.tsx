@@ -3,7 +3,7 @@ import AllProjectCard from './allProjectCard';
 import { Project } from '@/src/interface/project';
 import { filterProjectStatus } from '@/src/styles/enumMap';
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { projectTypeMap } from '@/src/constant/Map';
+import { projectTypeMap } from '@/src/constant/map';
 import SelectType from '../filter/selectType';
 
 export default function AllProjectPanel({

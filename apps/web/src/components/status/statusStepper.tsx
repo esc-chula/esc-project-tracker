@@ -1,17 +1,23 @@
-"use client"
+'use client';
 
-import { Step1, Step2, Step3, Step4, Step5 } from "@/src/components/status/StatusSvg"
-import Stepper from "@mui/joy/Stepper"
-import Step, { stepClasses } from "@mui/joy/Step"
-import StepIndicator from "@mui/joy/StepIndicator"
-import { FilingStatus } from "../../constant/enum"
-import { FilingStatusToStepper } from "@/src/styles/enumMap"
+import {
+  Step1,
+  Step2,
+  Step3,
+  Step4,
+  Step5,
+} from '@/src/components/status/statusSvg';
+import Stepper from '@mui/joy/Stepper';
+import Step, { stepClasses } from '@mui/joy/Step';
+import StepIndicator from '@mui/joy/StepIndicator';
+import { FilingStatus } from '../../constant/enum';
+import { FilingStatusToStepper } from '@/src/styles/enumMap';
 
 const steps = [
-  { no: "1", children: <>ขอเลขรัน</> },
-  { no: "2", children: <>ทำเอกสาร</> },
+  { no: '1', children: <>ขอเลขรัน</> },
+  { no: '2', children: <>ทำเอกสาร</> },
   {
-    no: "3",
+    no: '3',
     children: (
       <>
         ส่งให้ฝ่ายเลขานุการ
@@ -21,7 +27,7 @@ const steps = [
     ),
   },
   {
-    no: "4",
+    no: '4',
     children: (
       <>
         หัวหน้านิสิต &
@@ -33,7 +39,7 @@ const steps = [
     ),
   },
   {
-    no: "5",
+    no: '5',
     children: (
       <>
         ส่งเอกสาร
@@ -42,14 +48,14 @@ const steps = [
       </>
     ),
   },
-]
+];
 
 export default function DocumentStatusStepper({
   status,
 }: {
-  status: FilingStatus | "DEFAULT" | "LOADING"
+  status: FilingStatus | 'DEFAULT' | 'LOADING';
 }) {
-  const stepStatuses = FilingStatusToStepper[status]
+  const stepStatuses = FilingStatusToStepper[status];
 
   return (
     <>
@@ -63,38 +69,43 @@ export default function DocumentStatusStepper({
       <Stepper
         orientation="horizontal"
         sx={{
-          width: "100%",
-          paddingX: "1.25rem",
-          "--StepIndicator-size": "2.5rem",
-          "--Step-gap": "1rem",
-          "--Step-connectorInset": "0px",
-          "--Step-connectorThickness": "3px",
-          fontFamily: "var(--sukhumvit-set-font)",
+          width: '100%',
+          paddingX: '1.25rem',
+          '--StepIndicator-size': '2.5rem',
+          '--Step-gap': '1rem',
+          '--Step-connectorInset': '0px',
+          '--Step-connectorThickness': '3px',
+          fontFamily: 'var(--sukhumvit-set-font)',
           [`& .${stepClasses.disabled} *`]: {
-            color: "neutral.softDisabledColor",
+            color: 'neutral.softDisabledColor',
           },
-        }}>
+        }}
+      >
         {stepStatuses.map((stepStatus, index) => {
           return (
             <Step
               key={index}
               orientation="vertical"
-              disabled={stepStatus[0] === "disabled"}
+              disabled={stepStatus[0] === 'disabled'}
               sx={{
-                "&::after": {
+                '&::after': {
                   background: `var(--${stepStatus[1]})`,
                 },
               }}
               indicator={
-                <StepIndicator variant="solid" sx={{ background: `var(--${stepStatus[0]})` }}>
+                <StepIndicator
+                  variant="solid"
+                  sx={{ background: `var(--${stepStatus[0]})` }}
+                >
                   <span className="text-2xl">{steps[index].no}</span>
                 </StepIndicator>
-              }>
+              }
+            >
               <h5 className="text-center">{steps[index].children}</h5>
             </Step>
-          )
+          );
         })}
       </Stepper>
     </>
-  )
+  );
 }

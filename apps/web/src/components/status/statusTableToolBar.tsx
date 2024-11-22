@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import { Table } from '@tanstack/react-table';
 import { FilingType } from '@/src/interface/filing';
 import { filterStatus } from '@/src/styles/enumMap';
-import { DataTableFacetedFilter } from './StatusTableFacetedFilter';
+import { DataTableFacetedFilter } from './statusTableFacetedFilter';
 
 export default function StatusTableToolBar({
   table,

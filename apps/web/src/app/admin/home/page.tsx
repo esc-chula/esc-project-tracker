@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
-import { StatusTable } from '@/src/components/status/StatusTable';
+import { StatusTable } from '@/src/components/status/statusTable';
 import { FilingStatus } from '@/src/constant/enum';
 import type { FilingType } from '@/src/interface/filing';
 import { Button } from '@/src/components/ui/button';
