@@ -8,7 +8,7 @@ import {
 } from '@/src/constant/filterFiling';
 import SelectType from '../filter/selectType';
 import { useEffect, useState } from 'react';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 import findAllFiling from '@/src/service/filing/findAllFiling';
 import { departmentProjectItems } from '@/src/constant/filterProject';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
@@ -22,8 +22,6 @@ export default function FilingMenu({
   searchedFilingId: string | null;
   isUpdateMode: boolean;
 }) {
-  const { toast } = useToast();
-
   const [departmentFiling, setDepartmentFiling] = useState<string>('ALL');
   const [statusFiling, setStatusFiling] = useState<string>('ALL');
   const [typeFiling, setTypeFiling] = useState<string>('ALL');

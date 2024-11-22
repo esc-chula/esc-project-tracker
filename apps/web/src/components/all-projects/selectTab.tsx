@@ -9,7 +9,7 @@ import { FilingType } from '@/src/interface/filing';
 import FilingMenu from '../project/filingMenu';
 import findAllProject from '@/src/service/project/findAllProject';
 import findAllFiling from '@/src/service/filing/findAllFiling';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 import { TbEdit } from 'react-icons/tb';
 import { BiSolidSave } from 'react-icons/bi';
 import AddNewProjectButton from './addNewProjectButton';
@@ -59,7 +59,6 @@ export default function SelectTab({
   );
   const [searchedFilingID, setSearchedFilingID] = useState<string | null>(null);
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
-  const { toast } = useToast();
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);

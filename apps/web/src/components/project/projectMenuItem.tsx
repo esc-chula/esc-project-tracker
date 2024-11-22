@@ -7,8 +7,7 @@ import hasUserProj from '@/src/service/user-proj/hasUserProj';
 import joinProject from '@/src/service/user-proj/joinProject';
 import type { Project } from '@/src/interface/project';
 import { ProjectStatusToThai } from '@/src/constant/translate';
-import { getUserId } from '@/src/service/auth';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 
 export default function ProjectMenuItem({
   project,
@@ -21,8 +20,6 @@ export default function ProjectMenuItem({
   isAdmin: boolean;
   userId: string;
 }) {
-  const { toast } = useToast();
-
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const handleJoinProject = async () => {
     try {

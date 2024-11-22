@@ -8,7 +8,7 @@ import {
   departmentProjectItems,
   statusProjectItems,
 } from '@/src/constant/filterProject';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 import findAllProject from '@/src/service/project/findAllProject';
 import findProjectsWithFilter from '@/src/service/project/findProjectsWithFilter';
 import hasUserProj from '@/src/service/user-proj/hasUserProj';
@@ -23,7 +23,6 @@ export default function ProjectMenu({
   isAdmin: boolean;
   userId: string;
 }) {
-  const { toast } = useToast();
   const [departmentProject, setDepartmentProject] = useState<string>('ALL'); // department that projects belong to
   const [statusProject, setStatusProject] = useState<string>('ALL'); // status of project
   const [typeProject, setTypeProject] = useState<string>('ALL'); // join or not

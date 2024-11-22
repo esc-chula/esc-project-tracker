@@ -11,7 +11,7 @@ import {
 } from '../ui/dialog';
 import { IoIosAlert } from 'react-icons/io';
 import deleteFiling from '@/src/service/filing/deleteFiling';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 
 export default function PopoverDeleteFiling({
   filingId,
@@ -20,8 +20,6 @@ export default function PopoverDeleteFiling({
   filingId: string;
   setDeletedParentFunc: (deleted: boolean) => void;
 }) {
-  const { toast } = useToast();
-
   const submitDelete = async () => {
     try {
       const data = await deleteFiling(filingId);

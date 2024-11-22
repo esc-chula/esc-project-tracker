@@ -7,14 +7,13 @@ import PopoverAddFiling from './popoverAddFiling';
 import { useEffect, useState } from 'react';
 import { FilingType } from '@/src/interface/filing';
 import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { Project } from '@/src/interface/project';
 
 export default function MyFilingData({ projectId }: { projectId: string }) {
   const [filings, setFilings] = useState<FilingType[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   const redirectToProject = (project: Project | FilingType) => {

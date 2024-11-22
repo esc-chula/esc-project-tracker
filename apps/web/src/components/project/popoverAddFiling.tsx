@@ -8,10 +8,10 @@ import {
 } from '../ui/dialog';
 import { HiDocumentAdd } from 'react-icons/hi';
 import { filingTypeMap } from '@/src/constant/map';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import createFiling from '@/src/service/filing/createFiling';
 import { FilingType } from '@/src/interface/filing';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 import { getUserId } from '@/src/service/auth';
 
 export default function PopoverAddFiling({
@@ -26,7 +26,6 @@ export default function PopoverAddFiling({
   const [filingType, setFilingType] = useState<number>(0);
   const [filingName, setFilingName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
-  const { toast } = useToast();
 
   const submitCreate = async () => {
     try {

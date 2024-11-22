@@ -5,13 +5,12 @@ import MyFilingData from '@/src/components/project/myFilingData';
 import { Project } from '@/src/interface/project';
 import { useEffect, useState } from 'react';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
-import { useToast } from '@/src/components/ui/use-toast';
+import { toast } from '@/src/components/ui/use-toast';
 import updateLastOpen from '@/src/service/user-proj/updateLastOpen';
 import { getUserId } from '@/src/service/auth';
 
 export default function Page({ params }: { params: { projectId: string } }) {
   const [project, setProject] = useState<Project | null>(null);
-  const { toast } = useToast();
 
   useEffect(() => {
     if (params.projectId) {

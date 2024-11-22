@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 
 export default function PopoverEditFiling({
   filingId,
@@ -22,7 +22,6 @@ export default function PopoverEditFiling({
 }) {
   const [name, setName] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { toast } = useToast();
 
   const submitUpdate = async () => {
     if (name === '') {

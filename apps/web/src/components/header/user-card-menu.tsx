@@ -10,7 +10,7 @@ import {
 } from '@/src/components/ui/dropdown-menu';
 import { signOut } from '@/src/service/auth';
 import { ChevronDown } from 'lucide-react';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
 
 interface UserCardMenuProps {
@@ -18,7 +18,6 @@ interface UserCardMenuProps {
 }
 
 export default function UserCardMenu({ username }: UserCardMenuProps) {
-  const { toast } = useToast();
   const router = useRouter();
 
   return (

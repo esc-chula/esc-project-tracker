@@ -10,14 +10,13 @@ import {
 } from '../ui/dialog';
 import deleteProject from '@/src/service/project/deleteProject';
 import { useRouter, usePathname } from 'next/navigation';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 
 export default function DeleteProjectDialog({
   projectId,
 }: {
   projectId: string;
 }) {
-  const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
 

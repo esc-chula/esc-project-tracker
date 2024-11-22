@@ -9,7 +9,7 @@ import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { getUserId } from '@/src/service/auth';
 import SearchBar from '../searchbar/searchBar';
-import { useToast } from '../ui/use-toast';
+import { toast } from '../ui/use-toast';
 import NoProject from './noProject';
 import AllProjectPanel from './allProjectPanel';
 import LastestPanel from './latestPanel';
@@ -23,7 +23,6 @@ export default function MyProjectData({
   filingsData?: FilingType[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
 }) {
-  const { toast } = useToast();
   const router = useRouter();
   const redirectToProject = (project: Project | FilingType) => {
     router.push(`/project/${project.id}`);
