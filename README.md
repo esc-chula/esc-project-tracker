@@ -36,8 +36,22 @@ git clone https://github.com/esc-chula/esc-project-tracker.git
 pnpm install
 ```
 
-3. Run the app
+3. Run the app at /api for backend, /web for frontend, or root for both at the same time
 
 ```bash
-pnpm start
+turbo dev
+```
+
+## Test
+
+1. Run this command at /api for backend, /web for frontend, or root for both at the same time
+
+```bash
+turbo build
+```
+
+2. If built successfully, re-install dependencies in both /api and /web folder
+
+```bash
+pnpm install
 ```
