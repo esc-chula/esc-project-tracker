@@ -36,7 +36,10 @@ git clone https://github.com/esc-chula/esc-project-tracker.git
 pnpm install
 ```
 
-3. Run the app at /api for backend, /web for frontend, or root for both at the same time
+3. Create .env and paste the env in /api and /web folder
+
+4. Run the app at /api for backend, /web for frontend, or root for both at the same time
+_make sure that you are not connected to ChulaWiFi_
 
 ```bash
 turbo dev
