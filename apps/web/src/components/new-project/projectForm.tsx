@@ -155,6 +155,7 @@ export default function ProjectForm({
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>, index: number) {
     remove(index);
     append(undefined);
+    void form.trigger('members');
   }
 
   async function onSubmitUpdate(
