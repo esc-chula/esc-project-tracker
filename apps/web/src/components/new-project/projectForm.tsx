@@ -1,5 +1,5 @@
 'use client';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { z } from 'zod';
 import { useRouter } from 'next/navigation';
@@ -59,7 +59,6 @@ export default function ProjectForm({
   const [studentIdsInitialMembers, setStudentIdsInitialMembers] = useState<
     string[]
   >([]);
-  const [membersCount, setMembersCount] = useState(1);
   const [isAfterCancelUpdate, setIsAfterCancelUpdate] = useState(false);
 
   const [user, setUser] = useState<User | null>();
@@ -73,9 +72,9 @@ export default function ProjectForm({
         action === projectFormAction.USER_CREATE ||
         action === projectFormAction.ADMIN_CREATE
       )
-        form.setValue(`members.0`, userData?.studentId);
+        replace([userData?.studentId, undefined]);
     };
-    fetchUser();
+    void fetchUser();
   }, []);
 
   const initialMembers = useMemo(() => joinUsers || [], [joinUsers]);
@@ -89,7 +88,7 @@ export default function ProjectForm({
     () =>
       (action === projectFormAction.INFO && user?.id === project?.ownerId) ||
       isAdmin,
-    [action, isAdmin, project?.ownerId],
+    [action, isAdmin, project?.ownerId, user?.id],
   );
 
   const form = useForm<z.infer<typeof newProjectFormSchema>>({
@@ -98,16 +97,14 @@ export default function ProjectForm({
       projectName: project?.name,
       type: project?.type,
       description: project?.detail || '',
-      members:
-        action === projectFormAction.USER_CREATE
-          ? [user?.studentId]
-          : action === projectFormAction.INFO
-            ? [ownerUser?.studentId]
-            : [],
-      //TODO : USER CREATE USE OWN STUDENT NUMBER
-      //TODO : INTEGRATE WITH GET JOIN USER FROM PROJECT
+      members: action === projectFormAction.INFO ? [ownerUser?.studentId] : [],
     },
     mode: 'onChange',
+  });
+
+  const { fields, remove, replace, append } = useFieldArray({
+    name: 'members' as never,
+    control: form.control,
   });
 
   useEffect(() => {
@@ -126,8 +123,7 @@ export default function ProjectForm({
 
         initialMember.push(...otherMembers);
         setStudentIdsInitialMembers(initialMember);
-        form.setValue('members', initialMember, { shouldDirty: false });
-        setMembersCount(initialMember.length);
+        replace(initialMember);
       }
     };
     form.reset();
@@ -151,16 +147,14 @@ export default function ProjectForm({
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const index = parseInt(e.target.name.split('.')[1]);
-    form.setValue(`members.${index}`, e.target.value, { shouldDirty: true });
-    form.trigger(`members`);
-    if (e.target.value) {
-      setMembersCount(Math.max(membersCount, index + 1));
-    }
+    void form.trigger('members');
+
+    if (e.target.value && index + 1 === fields.length) append(undefined);
   }
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>, index: number) {
-    e.preventDefault();
-    form.resetField(`members.${index}`);
+    remove(index);
+    append(undefined);
   }
 
   async function onSubmitUpdate(
@@ -240,11 +234,11 @@ export default function ProjectForm({
         action === projectFormAction.ADMIN_CREATE
       ) {
         const newProject = await onSubmitCreate(values);
-        projectToJoin = newProject ? newProject : null;
+        projectToJoin = newProject;
         projCreated = true;
         toast({
           title: 'เปิดโครงการสำเร็จ',
-          description: `เปิดโครงการ ${newProject?.projectCode} ${newProject?.name} เรียบร้อยแล้ว`,
+          description: `เปิดโครงการ ${newProject.projectCode} ${newProject.name} เรียบร้อยแล้ว`,
           duration: 2000,
         });
       } else if (action === projectFormAction.UPDATE) {
@@ -254,7 +248,7 @@ export default function ProjectForm({
         projectToJoin = project ? project : null;
       }
 
-      let addStudentIdsNotFound: string[] = [];
+      const addStudentIdsNotFound: string[] = [];
 
       const addUserProjPromises = userToAdd.map((studentId) =>
         studentId
@@ -378,8 +372,8 @@ export default function ProjectForm({
                       </FormControl>
                       <SelectContent {...field}>
                         <SelectGroup>
-                          {projectTypeMap.map((item, index) => (
-                            <SelectItem key={index} value={item.value}>
+                          {projectTypeMap.map((item, _) => (
+                            <SelectItem key={item.value} value={item.value}>
                               {item.label}
                             </SelectItem>
                           ))}
@@ -425,9 +419,10 @@ export default function ProjectForm({
             <div className="space-y-3 font-bold text-sm">
               ผู้ร่วมโครงการ
               <ol className="list-decimal pl-5 py-2 space-y-3 font-extrabold w-full ">
-                {action === projectFormAction.USER_CREATE ? (
+                {action === projectFormAction.USER_CREATE ||
+                action === projectFormAction.ADMIN_CREATE ? (
                   <li>
-                    <div className="flex text-sm text-black justify-between w-[85%]">
+                    <div className="flex text-sm text-black gap-8">
                       <span>{user?.username}</span>
                       <span>รหัสนิสิต&emsp;{user?.studentId}</span>
                     </div>
@@ -435,25 +430,24 @@ export default function ProjectForm({
                 ) : action === projectFormAction.INFO ||
                   action === projectFormAction.UPDATE ? (
                   <li>
-                    <div className="flex text-sm text-black justify-between w-[85%]">
+                    <div className="flex text-sm text-black gap-8">
                       <span>{ownerUser?.username}</span>
                       <span>รหัสนิสิต&emsp;{ownerUser?.studentId}</span>
                     </div>
                   </li>
                 ) : null}
-                {[...Array(membersCount)].map((_, index) =>
-                  index === membersCount - 1 ||
-                  form.getValues().members[index + 1] ? (
+                {fields.map((field, index) =>
+                  index > 0 ? (
                     <MembersInput
                       control={form.control}
                       handleChange={handleChange}
-                      key={index}
-                      index={index + 1}
+                      key={field.id}
+                      index={index}
                       handleDelete={
-                        index === membersCount - 1 ? undefined : handleDelete
+                        index + 1 === fields.length ? undefined : handleDelete
                       }
                       memberBeforeUpdated={initialMembers}
-                      member={String(form.getValues().members[index + 1])}
+                      member={String(form.getValues().members[index])}
                       formAction={action}
                     />
                   ) : undefined,

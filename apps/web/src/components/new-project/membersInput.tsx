@@ -1,4 +1,9 @@
 'use client';
+import type { ChangeEventHandler } from 'react';
+import { useEffect, useState } from 'react';
+import type { Control } from 'react-hook-form';
+import { CircleMinus } from 'lucide-react';
+import type { z } from 'zod';
 import {
   FormControl,
   FormField,
@@ -6,14 +11,10 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
-import { ChangeEventHandler, useEffect, useState } from 'react';
-import { Control } from 'react-hook-form';
-import { Button } from '../ui/button';
-import { CircleMinus } from 'lucide-react';
-import { newProjectFormSchema } from '@/src/constant/schema';
-import { z } from 'zod';
-import { User } from '@/src/interface/user';
+import type { newProjectFormSchema } from '@/src/constant/schema';
+import type { User } from '@/src/interface/user';
 import { projectFormAction } from '@/src/constant/formAction';
+import { Button } from '../ui/button';
 
 export default function MembersInput({
   control,
@@ -23,6 +24,7 @@ export default function MembersInput({
   memberBeforeUpdated,
   member,
   formAction,
+  key,
 }: {
   control: Control<z.infer<typeof newProjectFormSchema>>;
   handleChange: ChangeEventHandler<HTMLInputElement>;
@@ -34,6 +36,7 @@ export default function MembersInput({
   memberBeforeUpdated: User[];
   member: string;
   formAction: projectFormAction;
+  key: string;
 }) {
   const [oldMember, setOldMember] = useState<User | undefined>(undefined);
   useEffect(() => {
@@ -47,45 +50,48 @@ export default function MembersInput({
   return (
     <>
       {formAction === projectFormAction.INFO && !oldMember ? null : (
-        <li>
+        <li key={key}>
           <div className="flex gap-3 items-center">
             <FormField
               control={control}
-              name={('members.' + index) as `members.${number}`}
+              name={`members.${index}`}
               render={({ field }) => (
                 <FormItem
                   className={`flex gap-3 text-nowrap space-y-0 items-center ${formAction === projectFormAction.INFO && oldMember ? 'w-[85%]' : ''}`}
                 >
                   {formAction === projectFormAction.INFO && oldMember ? (
-                    <div className="flex text-sm text-black w-full justify-between">
+                    <div className="flex text-sm text-black w-full gap-8">
                       <span>{oldMember.username}</span>
                       <span>รหัสนิสิต&emsp;{oldMember.studentId}</span>
                     </div>
                   ) : (
                     <>
-                      <div> รหัสนิสิต</div>
+                      <div>รหัสนิสิต</div>
                       <FormControl>
                         <Input
                           {...field}
                           className="h-8 text-sm border-black"
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleChange(e);
+                          }}
                         />
                       </FormControl>
                     </>
                   )}
                   <>
-                    {handleDelete && formAction !== projectFormAction.INFO && (
+                    {handleDelete && formAction !== projectFormAction.INFO ? (
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="px-2"
+                        className="px-2 h-8"
                         onClick={(e) => {
                           handleDelete(e, index);
                         }}
                       >
                         <CircleMinus className="h-5 w-5 stroke-darkpink" />
                       </Button>
-                    )}
+                    ) : null}
                   </>
                   <FormMessage />
                 </FormItem>
