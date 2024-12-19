@@ -1,10 +1,10 @@
 'use client';
-import useEmblaCarousel from 'embla-carousel-react';
-import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { useEffect, useState } from 'react';
+import { ScrollContainer } from 'react-indiana-drag-scroll';
 import type { ProjectWithLastOpen } from '@/src/interface/project';
 import type { UserFiling } from '@/src/interface/user-filing';
 import LatestItem from './latestItem';
+import 'react-indiana-drag-scroll/dist/style.css';
 
 export default function LatestPanel({
   filingsWithLastOpen,
@@ -15,10 +15,6 @@ export default function LatestPanel({
   projectsWithLastOpen?: ProjectWithLastOpen[];
   compact?: boolean;
 }) {
-  const [carouselRef] = useEmblaCarousel({ loop: false, dragFree: true }, [
-    WheelGesturesPlugin(),
-  ]);
-
   const [isProject, setIsProject] = useState<boolean>(false);
   const [sortedProjects, setSortedProjects] = useState<ProjectWithLastOpen[]>(
     [],
@@ -27,12 +23,24 @@ export default function LatestPanel({
   const [sortedFilings, setSortedFilings] = useState<UserFiling[]>([]);
 
   const [isFetched, setIsFetched] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
+  useEffect(() => {
+    const listenStorageChange = () => {
+      if (localStorage.getItem('navbarExpanded') === null) setExpanded(true);
+      else setExpanded(localStorage.getItem('navbarExpanded') === 'true');
+    };
+    window.addEventListener('storage', listenStorageChange);
+    setExpanded(localStorage.getItem('navbarExpanded') === 'true');
+    return () => {
+      window.removeEventListener('storage', listenStorageChange);
+    };
+  }, []);
 
   useEffect(() => {
     if (projectsWithLastOpen) {
       setIsProject(true);
       const newSortedProjects = projectsWithLastOpen
-        .filter((project) => project.lastOpen !== null)
+        .filter((project) => project.lastOpen)
         .sort(
           (a, b) =>
             new Date(b.lastOpen).getTime() - new Date(a.lastOpen).getTime(),
@@ -44,7 +52,7 @@ export default function LatestPanel({
     if (filingsWithLastOpen) {
       setIsProject(false);
       const newSortedFilings = filingsWithLastOpen
-        .filter((filing) => filing.lastOpen !== null)
+        .filter((filing) => filing.lastOpen)
         .sort(
           (a, b) =>
             new Date(b.lastOpen).getTime() - new Date(a.lastOpen).getTime(),
@@ -56,11 +64,10 @@ export default function LatestPanel({
   }, [projectsWithLastOpen, filingsWithLastOpen]);
 
   return (
-    <div className={`flex flex-col w-${compact ? '[100vw]' : '[60vw]'}`}>
-      <div className="font-sukhumvit font-bold text-lg">ล่าสุด</div>
-      <div
-        className="bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden w-[78vw]"
-        ref={carouselRef}
+    <div className={`flex flex-col w-${compact ? 'full' : '[60vw]'}`}>
+      <div className="font-bold text-lg w-max">ล่าสุด</div>
+      <ScrollContainer
+        className={`bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden max-w-[calc(100vw-${expanded ? 390 : 236}px)]`}
       >
         {isFetched ? (
           isProject ? (
@@ -88,7 +95,7 @@ export default function LatestPanel({
             </div>
           )
         ) : null}
-      </div>
+      </ScrollContainer>
     </div>
   );
 }

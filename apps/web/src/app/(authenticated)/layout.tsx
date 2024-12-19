@@ -10,7 +10,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex">
+    <div className="flex overflow-x-clip">
       <Navbar />
       {children}
       <Toaster />
