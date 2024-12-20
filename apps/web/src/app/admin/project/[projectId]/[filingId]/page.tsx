@@ -1,18 +1,18 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/statusStepper';
 import { FilingStatus } from '@/src/constant/enum';
-import { FilingType } from '@/src/interface/filing';
+import type { FilingType } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
-import { useEffect, useMemo, useState } from 'react';
 import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
-import { DocumentType } from '@/src/interface/document';
-import { User } from '@/src/interface/user';
+import type { DocumentType } from '@/src/interface/document';
+import type { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import deleteDocument from '@/src/service/document/deleteDocument';
 import updateFilingName from '@/src/service/filing/updateFiling';
@@ -119,23 +119,21 @@ export default function Page({
     }
   };
   useEffect(() => {
-    fetchData();
+    void fetchData();
   }, []);
   return (
     <main className="w-full pt-[68px]">
       <div className="pl-15 pr-5">
         <Header>
           <Subtitle
+            origin="/admin/projects"
             project={filing ? filing.projectCode : '...'}
             filing={
               filing
-                ? filing.projectCode +
-                  '-' +
-                  filing.FilingCode +
-                  ' ' +
-                  filing.name
+                ? `${filing.projectCode}-${filing.FilingCode} ${filing.name}`
                 : '...'
             }
+            isAdmin
             projectId={params.projectId}
           />
         </Header>
@@ -145,11 +143,9 @@ export default function Page({
         <DocumentStatusStepper status={filing?.status ?? 'LOADING'} />
       </section>
       <section className="px-15 mb-7">
-        {filing && (
+        {filing ? (
           <FilingTimelineHeader
-            name={
-              filing.projectCode + '-' + filing.FilingCode + ' ' + filing.name
-            }
+            name={`${filing.projectCode}-${filing.FilingCode} ${filing.name}`}
             status={filing.status}
             documents={documents}
             latestDocument={latestDocument}
@@ -162,7 +158,7 @@ export default function Page({
             userId={userId}
             isAdmin
           />
-        )}
+        ) : null}
       </section>
 
       <section className="px-15 relative">
