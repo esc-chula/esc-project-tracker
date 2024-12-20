@@ -416,14 +416,14 @@ export default function ProjectForm({
               </FormItem>
             )}
           />
-          <div className="flex flex-row justify-between">
-            <div className="space-y-3 font-bold text-sm">
+          <div className="flex flex-row justify-between gap-3">
+            <div className="flex flex-col space-y-3 font-bold text-sm">
               ผู้ร่วมโครงการ
-              <ol className="list-decimal pl-5 py-2 space-y-3 font-extrabold w-full ">
+              <ol className="list-decimal pl-5 py-2 space-y-3 font-extrabold">
                 {action === projectFormAction.USER_CREATE ||
                 action === projectFormAction.ADMIN_CREATE ? (
                   <li>
-                    <div className="flex text-sm text-black gap-8">
+                    <div className="flex text-sm text-black gap-6">
                       <span>{user?.username}</span>
                       <span>รหัสนิสิต&emsp;{user?.studentId}</span>
                     </div>
@@ -431,7 +431,7 @@ export default function ProjectForm({
                 ) : action === projectFormAction.INFO ||
                   action === projectFormAction.UPDATE ? (
                   <li>
-                    <div className="flex text-sm text-black gap-8">
+                    <div className="flex text-sm text-black gap-6 w-full justify-between">
                       <span>{ownerUser?.username}</span>
                       <span>รหัสนิสิต&emsp;{ownerUser?.studentId}</span>
                     </div>
