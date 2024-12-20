@@ -108,26 +108,18 @@ export default function ProjectForm({
   });
 
   useEffect(() => {
-    const mapOldMembersToForm = () => {
-      if (action === projectFormAction.INFO) {
-        const initialMember = [ownerUser?.studentId || ''];
-        const otherMembers = initialMembers.reduce(
-          (result: string[], member) => {
-            if (member.id !== ownerUser?.id) {
-              result.push(member.studentId);
-            }
-            return result;
-          },
-          [],
-        );
+    if (action !== projectFormAction.INFO) return;
 
-        initialMember.push(...otherMembers);
-        setStudentIdsInitialMembers(initialMember);
-        replace(initialMember);
-      }
-    };
     form.reset();
-    mapOldMembersToForm();
+    const initialMember = [ownerUser?.studentId || ''];
+    const otherMembers = initialMembers.reduce((result: string[], member) => {
+      if (member.id !== ownerUser?.id) result.push(member.studentId);
+      return result;
+    }, []);
+    initialMember.push(...otherMembers);
+    setStudentIdsInitialMembers(initialMember);
+    replace(initialMember);
+    void form.trigger('members');
   }, [isAfterCancelUpdate]);
 
   useEffect(() => {
@@ -461,6 +453,7 @@ export default function ProjectForm({
                   className="p-2 rounded-full bg-white flex items-center justify-center hover:cursor-pointer hover:scale-105 duration-75"
                   onClick={() => {
                     setAction(projectFormAction.UPDATE);
+                    append(undefined);
                   }}
                 >
                   <AiFillEdit size={20} className="text-red" />
