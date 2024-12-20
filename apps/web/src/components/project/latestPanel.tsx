@@ -29,10 +29,10 @@ export default function LatestPanel({
       if (localStorage.getItem('navbarExpanded') === null) setExpanded(true);
       else setExpanded(localStorage.getItem('navbarExpanded') === 'true');
     };
-    window.addEventListener('storage', listenStorageChange);
+    window.addEventListener('expandNavbar', listenStorageChange);
     setExpanded(localStorage.getItem('navbarExpanded') === 'true');
     return () => {
-      window.removeEventListener('storage', listenStorageChange);
+      window.removeEventListener('expandNavbar', listenStorageChange);
     };
   }, []);
 
@@ -65,9 +65,9 @@ export default function LatestPanel({
 
   return (
     <div className={`flex flex-col w-${compact ? 'full' : '[60vw]'}`}>
-      <div className="font-bold text-lg w-max">ล่าสุด</div>
+      <div className="font-bold text-lg">ล่าสุด</div>
       <ScrollContainer
-        className={`bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden max-w-[calc(100vw-${expanded ? 390 : 236}px)]`}
+        className={`bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden ${expanded ? 'w-[calc(100vw-390px)]' : 'w-[calc(100vw-236px)]'}`}
       >
         {isFetched ? (
           isProject ? (

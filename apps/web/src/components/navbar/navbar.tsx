@@ -32,8 +32,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
         onClick={() => {
           localStorage.setItem('navbarExpanded', String(!expanded));
           setExpanded((curr) => !curr);
-          window.dispatchEvent(new Event('storage'));
-          console.log('clicked');
+          window.dispatchEvent(new Event('expandNavbar'));
         }}
         type="button"
         className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14 text-intania"
