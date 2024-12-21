@@ -15,7 +15,7 @@ export default function StatusTableToolBar({
     <div className="flex items-center gap-4 py-4">
       <SearchPanel
         placeHolder="ค้นหาเอกสาร"
-        filings={table.getFilteredRowModel().rows.map(row => row.original)}
+        filings={table.options.data}
         filingFunc={(filing: FilingType) => {
           const fullCodeSearch =  `${filing.projectCode}-${filing.FilingCode}`;
           const nameSearch = filing.name;
