@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { Table } from '@tanstack/react-table';
 import { FilingType } from '@/src/interface/filing';
-import { Project } from '@/src/interface/project';
 import { filterStatus } from '@/src/styles/enumMap';
 import { DataTableFacetedFilter } from './statusTableFacetedFilter';
 import SearchPanel from '../all-projects/searchPanel';
