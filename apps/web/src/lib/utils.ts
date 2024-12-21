@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import moment from 'moment-timezone';
+import { env } from 'next-runtime-env';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -26,7 +27,12 @@ export function getFileType(file: File | undefined): string | undefined {
 
 export function convertDate(dateString: string) {
   const date = new Date(dateString);
-  return new Date(date.getTime() + 7 * 60 * 60 * 1000).toLocaleString('th-TH', {
+  return new Date(
+    date.getTime() +
+      (env('NEXT_PUBLIC_API_SERVER_URL')?.includes('localhost')
+        ? 7 * 60 * 60 * 1000
+        : 0),
+  ).toLocaleString('th-TH', {
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
 }

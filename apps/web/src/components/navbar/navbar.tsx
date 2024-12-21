@@ -13,8 +13,8 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import NavbarItem from './navbar-item';
 import { usePathname } from 'next/navigation';
+import NavbarItem from './navbar-item';
 
 export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   const [expanded, setExpanded] = useState(false);
@@ -27,13 +27,15 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   });
   const pathname = usePathname();
   return (
-    <aside className={`h-screen bg-intania flex-none sticky top-0`}>
+    <aside className="h-screen bg-intania flex-none sticky top-0">
       <button
         onClick={() => {
           localStorage.setItem('navbarExpanded', String(!expanded));
           setExpanded((curr) => !curr);
+          window.dispatchEvent(new Event('expandNavbar'));
         }}
-        className={`p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14 text-intania`}
+        type="button"
+        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 absolute -right-4 top-14 text-intania"
       >
         {expanded ? <ChevronFirst /> : <ChevronLast />}
       </button>
@@ -52,7 +54,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
             className={`text-white text-sm text-center font-semibold overflow-hidden text-nowrap ${expanded ? 'w-full' : 'w-0'}`}
           >
             Document System
-            {isAdmin && <p>(Admin)</p>}
+            {isAdmin ? <p>(Admin)</p> : null}
           </span>
           <hr className="w-full bg-white my-5" />
         </div>
