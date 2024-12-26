@@ -5,6 +5,16 @@ import { filterProjectStatus } from '@/src/styles/enumMap';
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { projectTypeMap } from '@/src/constant/map';
 import SelectType from '../filter/selectType';
+import {
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from '@tanstack/react-table';
+import { columns } from './allProjectColumn';
 
 export default function AllProjectPanel({
   projects,
@@ -40,6 +50,21 @@ export default function AllProjectPanel({
       );
     }
   }, [projectState, projectType, projects]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const table = useReactTable({
+    data: usedProjects,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+    },
+  });
 
   return (
     <div className="space-y-5 pt-5 pb-10 ">
@@ -61,12 +86,12 @@ export default function AllProjectPanel({
         />
       </div>
       <div className="grid lg:grid-cols-4 md:grid-col-2 grid-row-2 gap-x-8 gap-y-10 ">
-        {usedProjects.map((project) => (
+        {table.getRowModel().rows.map((project) => (
           <AllProjectCard
             key={project.id}
-            projectId={project.id}
-            projectCode={project.projectCode}
-            projectName={project.name}
+            projectId={project.getValue('id')}
+            projectCode={project.getValue('projectCode')}
+            projectName={project.getValue('name')}
             userId={userId}
             leaveThisProjectFunc={(id: string) => {
               setProjects((prevProjects: Project[]) =>
