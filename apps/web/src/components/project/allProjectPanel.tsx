@@ -1,19 +1,17 @@
-import AllProjectCard from './allProjectCard';
-
-import { Project } from '@/src/interface/project';
-import { filterProjectStatus } from '@/src/styles/enumMap';
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { projectTypeMap } from '@/src/constant/map';
-import SelectType from '../filter/selectType';
+import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import {
-  ColumnFiltersState,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+import type { Dispatch, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
+import type { Project } from '@/src/interface/project';
+import { filterProjectStatus } from '@/src/styles/enumMap';
+import { projectTypeMap } from '@/src/constant/map';
+import SelectType from '../filter/selectType';
+import AllProjectCard from './allProjectCard';
 import { columns } from './allProjectColumn';
 
 export default function AllProjectPanel({
@@ -27,7 +25,7 @@ export default function AllProjectPanel({
 }) {
   const [usedProjects, setUsedProjects] = useState<Project[]>(projects);
   const [projectState, setProjectState] = useState<string>('all');
-  const [projectType, setProject] = useState<string>('all');
+  const [projectType, setProjectType] = useState<string>('all');
 
   useEffect(() => {
     if (projectState === 'all' && projectType === 'all') {
@@ -65,6 +63,7 @@ export default function AllProjectPanel({
       columnFilters,
     },
   });
+  const joinedProjects = new Set(['2ac28761-83ee-41f7-80a9-c0a8560f048f']);
 
   return (
     <div className="space-y-5 pt-5 pb-10 ">
@@ -81,7 +80,7 @@ export default function AllProjectPanel({
           title="ประเภท"
           items={projectTypeMap}
           sendValue={(value) => {
-            setProject(value);
+            setProjectType(value);
           }}
         />
       </div>
@@ -92,6 +91,7 @@ export default function AllProjectPanel({
             projectId={project.getValue('id')}
             projectCode={project.getValue('projectCode')}
             projectName={project.getValue('name')}
+            projectType={project.getValue('type')}
             userId={userId}
             leaveThisProjectFunc={(id: string) => {
               setProjects((prevProjects: Project[]) =>
