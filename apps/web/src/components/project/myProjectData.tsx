@@ -16,10 +16,12 @@ import LastestPanel from './latestPanel';
 
 export default function MyProjectData({
   compact = false,
+  lastOpen = false,
   filingsData,
   projectsWithLastOpenData,
 }: {
   compact?: boolean;
+  lastOpen?: boolean;
   filingsData?: FilingType[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
 }) {
@@ -91,31 +93,36 @@ export default function MyProjectData({
 
   return (
     <div className="w-full">
-      <div className="mb-5">
-        {!compact && (
-          <SearchBar
-            filings={filings}
-            projects={projects}
-            placeholder="ค้นหาโครงการหรือเอกสาร"
-            projectFunc={redirectToProject}
-            filingFunc={redirectToFiling}
-          />
+      {
+        !compact && (
+          <div className="mb-5">
+            <SearchBar
+              filings={filings}
+              projects={projects}
+              placeholder="ค้นหาโครงการหรือเอกสาร"
+              projectFunc={redirectToProject}
+              filingFunc={redirectToFiling}
+            />
+          </div>
         )}
-      </div>
       {isFetched ? (
         <>
           {projects.length === 0 ? (
             <NoProject />
           ) : (
             <>
-              <LastestPanel
-                projectsWithLastOpen={projectsWithLastOpen}
-                compact={compact}
-              />
+              {
+                !lastOpen && (
+                  <LastestPanel
+                    projectsWithLastOpen={projectsWithLastOpen}
+                    compact={compact}
+                  />
+              )}
               <AllProjectPanel
                 projects={projects}
                 userId={userId}
                 setProjects={setProjects}
+                title={lastOpen}
               />
             </>
           )}

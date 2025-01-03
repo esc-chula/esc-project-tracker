@@ -2,18 +2,30 @@
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Box } from '@mui/material';
-import SearchPanel from './searchPanel';
-import { Project } from '@/src/interface/project';
-import ProjectMenu from '../project/projectMenu';
-import { FilingType } from '@/src/interface/filing';
-import FilingMenu from '../project/filingMenu';
+import { useRouter } from 'next/navigation';
+import { TbEdit } from 'react-icons/tb';
+import { 
+  type ReactNode, 
+  type SyntheticEvent, 
+  useEffect, 
+  useState 
+} from 'react';
+import { BiSolidSave } from 'react-icons/bi';
+import { 
+  type Project, 
+  type ProjectWithLastOpen } 
+from '@/src/interface/project';
+import { type FilingType } from '@/src/interface/filing';
 import findAllProject from '@/src/service/project/findAllProject';
 import findAllFiling from '@/src/service/filing/findAllFiling';
+import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
+import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
+import ProjectMenu from '../project/projectMenu';
+import FilingMenu from '../project/filingMenu';
 import { toast } from '../ui/use-toast';
-import { TbEdit } from 'react-icons/tb';
-import { BiSolidSave } from 'react-icons/bi';
+import MyProjectData from '../project/myProjectData';
 import AddNewProjectButton from './addNewProjectButton';
-import { ReactNode, SyntheticEvent, useEffect, useState } from 'react';
+import SearchPanel from './searchPanel';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -51,6 +63,11 @@ export default function SelectTab({
   isAdmin: boolean;
   userId: string;
 }) {
+  const router = useRouter();
+  const redirectToProject = (project: Project | FilingType) => {
+    router.push(`/project/${project.id}`);
+  };
+
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filings, setFilings] = useState<FilingType[]>([]);
@@ -59,6 +76,10 @@ export default function SelectTab({
   );
   const [searchedFilingID, setSearchedFilingID] = useState<string | null>(null);
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
+  
+  const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<ProjectWithLastOpen[]>([]);
+  const [myProjects, setMyProjects] = useState<Project[]>([]);
+  const [myFilings, setMyFilings] = useState<FilingType[]>([]);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -87,12 +108,48 @@ export default function SelectTab({
       }
     }
 
+    async function fetchByUserId(){
+      try {
+        const [projectsWithLastOpenByUserId, myFiling] = await Promise.all([
+          getProjectsByUserId(userId),
+          getFilingsByUserId(userId),
+        ]);
+        setProjectsWithLastOpen(projectsWithLastOpenByUserId);
+        setMyProjects(projectsWithLastOpenByUserId.map((project) => project.project));
+        setMyFilings(myFiling);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: 'ไม่สำเร็จ',
+            description: error.message,
+            isError: true,
+          });
+        }
+      }
+    }
+
     fetchData();
-  }, []);
+    fetchByUserId();
+  }, [userId]);
 
   return (
     <Box sx={{ width: '100%' }}>
       <CustomTabPanel value={value} index={0}>
+        <div className="flex flex-row space-x-4 w-full items-center">
+            <SearchPanel
+              projects={myProjects}
+              placeHolder="ค้นหาโครงการของฉัน"
+              projectFunc={redirectToProject}
+              clearFunc={() => {
+                setSearchedProjectID(null);
+              }}
+            />
+            <div className="items-center flex text-center">
+              <AddNewProjectButton />
+            </div>
+        </div>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
         <div className="flex flex-row space-x-4 w-full items-center">
           <SearchPanel
             projects={projects}
@@ -109,7 +166,7 @@ export default function SelectTab({
           </div>
         </div>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={value} index={2}>
         <div className="flex flex-row space-x-4 w-full items-center">
           <SearchPanel
             filings={filings}
@@ -164,18 +221,27 @@ export default function SelectTab({
             },
           }}
         >
-          <Tab label="โครงการ" {...a11yProps(0)} className="font-sukhumvit" />
-          <Tab label="เอกสาร" {...a11yProps(1)} className="font-sukhumvit" />
+          <Tab label="โครงการของฉัน" {...a11yProps(0)} className="font-sukhumvit" />
+          <Tab label="โครงการทั้งหมด" {...a11yProps(1)} className="font-sukhumvit" />
+          <Tab label="เอกสาร" {...a11yProps(2)} className="font-sukhumvit" />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
+        <MyProjectData 
+          compact
+          lastOpen
+          filingsData={myFilings}
+          projectsWithLastOpenData={projectsWithLastOpen}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
         <ProjectMenu
           searchedProjectId={searchedProjectID}
           isAdmin={isAdmin}
           userId={userId}
         />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={value} index={2}>
         <FilingMenu
           searchedFilingId={searchedFilingID}
           isUpdateMode={isUpdateMode}

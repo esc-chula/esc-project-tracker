@@ -11,14 +11,17 @@ export default function AllProjectCard({
   projectName,
   userId,
   leaveThisProjectFunc,
+  projectType,
 }: {
   projectId: string;
   projectCode: string;
   projectName: string;
   userId: string;
   leaveThisProjectFunc: (id: string) => void;
+  projectType: number;
 }) {
   const router = useRouter();
+  console.log(projectId, projectName, projectType);
 
   return (
     <div
