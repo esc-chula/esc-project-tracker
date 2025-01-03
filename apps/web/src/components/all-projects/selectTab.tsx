@@ -67,9 +67,6 @@ export default function SelectTab({
   const redirectToProject = (project: Project | FilingType) => {
     router.push(`/project/${project.id}`);
   };
-  const redirectToFiling = (filing: FilingType) => {
-    router.push(`/project/${filing.projectId}/${filing.id}`);
-  };
 
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -139,6 +136,18 @@ export default function SelectTab({
     <Box sx={{ width: '100%' }}>
       <CustomTabPanel value={value} index={0}>
         <div className="flex flex-row space-x-4 w-full items-center">
+            <SearchPanel
+              projects={myProjects}
+              placeHolder="ค้นหาโครงการของฉัน"
+              projectFunc={redirectToProject}
+              clearFunc={() => {
+                setSearchedProjectID(null);
+              }}
+            />
+        </div>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <div className="flex flex-row space-x-4 w-full items-center">
           <SearchPanel
             projects={projects}
             placeHolder="ค้นหาโครงการทั้งหมด"
@@ -154,7 +163,7 @@ export default function SelectTab({
           </div>
         </div>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={value} index={2}>
         <div className="flex flex-row space-x-4 w-full items-center">
           <SearchPanel
             filings={filings}
@@ -190,20 +199,6 @@ export default function SelectTab({
           </div>
         </div>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <div className="flex flex-row space-x-4 w-full items-center">
-            <SearchPanel
-              projects={myProjects}
-              filings={myFilings}
-              placeHolder="ค้นหาโครงการหรือเอกสาร"
-              projectFunc={redirectToProject}
-              filingFunc={redirectToFiling}
-              clearFunc={() => {
-                setSearchedProjectID(null);
-              }}
-            />
-        </div>
-      </CustomTabPanel>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           value={value}
@@ -223,29 +218,30 @@ export default function SelectTab({
             },
           }}
         >
-          <Tab label="โครงการ" {...a11yProps(0)} className="font-sukhumvit" />
-          <Tab label="เอกสาร" {...a11yProps(1)} className="font-sukhumvit" />
-          <Tab label="โครงการของฉัน" {...a11yProps(2)} className="font-sukhumvit" />
+          <Tab label="โครงการของฉัน" {...a11yProps(0)} className="font-sukhumvit" />
+          <Tab label="โครงการทั้งหมด" {...a11yProps(1)} className="font-sukhumvit" />
+          <Tab label="เอกสาร" {...a11yProps(2)} className="font-sukhumvit" />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
+        <MyProjectData 
+          compact
+          lastOpen
+          filingsData={myFilings}
+          projectsWithLastOpenData={projectsWithLastOpen}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
         <ProjectMenu
           searchedProjectId={searchedProjectID}
           isAdmin={isAdmin}
           userId={userId}
         />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={value} index={2}>
         <FilingMenu
           searchedFilingId={searchedFilingID}
           isUpdateMode={isUpdateMode}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <MyProjectData 
-          compact
-          filingsData={myFilings}
-          projectsWithLastOpenData={projectsWithLastOpen}
         />
       </CustomTabPanel>
     </Box>

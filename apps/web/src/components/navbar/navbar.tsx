@@ -75,15 +75,6 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
             href={isAdmin ? '/admin/projects' : '/projects'}
             expanded={expanded}
           />
-          {!isAdmin && (
-            <NavbarItem
-              icon={<Folders size={20} />}
-              text="โครงการของฉัน"
-              expanded={expanded}
-              active={pathname.startsWith('/my-projects')}
-              href="/my-projects"
-            />
-          )}
           <NavbarItem
             icon={<Radio size={20} />}
             text="ติดตามสถานะ"
