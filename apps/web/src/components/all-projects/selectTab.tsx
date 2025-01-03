@@ -144,6 +144,9 @@ export default function SelectTab({
                 setSearchedProjectID(null);
               }}
             />
+            <div className="items-center flex text-center">
+              <AddNewProjectButton />
+            </div>
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
