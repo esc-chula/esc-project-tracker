@@ -110,13 +110,13 @@ export default function SelectTab({
 
     async function fetchByUserId(){
       try {
-        const [projectsWithLastOpenByUserId, myFiling] = await Promise.all([
+        const [ projectsWithLastOpenByUserIdData, myFilingsData] = await Promise.all([
           getProjectsByUserId(userId),
           getFilingsByUserId(userId),
         ]);
-        setProjectsWithLastOpen(projectsWithLastOpenByUserId);
-        setMyProjects(projectsWithLastOpenByUserId.map((project) => project.project));
-        setMyFilings(myFiling);
+        setProjectsWithLastOpen(projectsWithLastOpenByUserIdData);
+        setMyProjects(projectsWithLastOpenByUserIdData.map((project) => project.project));
+        setMyFilings(myFilingsData);
       } catch (error) {
         if (error instanceof Error) {
           toast({
@@ -229,7 +229,6 @@ export default function SelectTab({
       <CustomTabPanel value={value} index={0}>
         <MyProjectData 
           compact
-          lastOpen
           filingsData={myFilings}
           projectsWithLastOpenData={projectsWithLastOpen}
         />

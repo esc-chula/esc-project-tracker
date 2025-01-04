@@ -19,12 +19,12 @@ export default function AllProjectPanel({
   projects,
   userId,
   setProjects,
-  title=false,
+  showTitle=false,
 }: {
   projects: Project[];
   userId: string;
   setProjects: Dispatch<SetStateAction<Project[]>>;
-  title?: boolean;
+  showTitle?: boolean;
 }) {
   const [usedProjects, setUsedProjects] = useState<Project[]>(projects);
   const [projectState, setProjectState] = useState<string>('all');
@@ -69,11 +69,12 @@ export default function AllProjectPanel({
   const joinedProjects = new Set(['2ac28761-83ee-41f7-80a9-c0a8560f048f']);
 
   return (
-    <div className={cn(`space-y-5 pb-10`, !title ? 'pt-5' : 'pt-0')}>
+    <div className={cn(`space-y-5 pb-10`, showTitle ? 'pt-5' : 'pt-0')}>
       {
-        !title && (
+        showTitle ?
           <div className="font-sukhumvit font-bold text-lg">ทั้งหมด</div>
-        )}
+        : null
+      }
       <div className="flex flex-row space-x-5">
         <SelectType
           title="สถานะ"

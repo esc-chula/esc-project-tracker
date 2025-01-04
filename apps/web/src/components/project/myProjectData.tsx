@@ -16,14 +16,14 @@ import LastestPanel from './latestPanel';
 
 export default function MyProjectData({
   compact = false,
-  lastOpen = false,
   filingsData,
   projectsWithLastOpenData,
+  showLastOpen = false,
 }: {
   compact?: boolean;
-  lastOpen?: boolean;
   filingsData?: FilingType[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
+  showLastOpen?: boolean;
 }) {
   const router = useRouter();
   const redirectToProject = (project: Project | FilingType) => {
@@ -112,17 +112,18 @@ export default function MyProjectData({
           ) : (
             <>
               {
-                !lastOpen && (
+                showLastOpen ?
                   <LastestPanel
                     projectsWithLastOpen={projectsWithLastOpen}
                     compact={compact}
                   />
-              )}
+                : null
+                }
               <AllProjectPanel
                 projects={projects}
                 userId={userId}
                 setProjects={setProjects}
-                title={lastOpen}
+                showTitle={showLastOpen}
               />
             </>
           )}
