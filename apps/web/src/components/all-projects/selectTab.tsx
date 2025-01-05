@@ -63,11 +63,6 @@ export default function SelectTab({
   isAdmin: boolean;
   userId: string;
 }) {
-  const router = useRouter();
-  const redirectToProject = (project: Project | FilingType) => {
-    router.push(`/project/${project.id}`);
-  };
-
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filings, setFilings] = useState<FilingType[]>([]);
@@ -139,7 +134,9 @@ export default function SelectTab({
             <SearchPanel
               projects={myProjects}
               placeHolder="ค้นหาโครงการของฉัน"
-              projectFunc={redirectToProject}
+              projectFunc={(project: Project) => {
+                setSearchedProjectID(project.id);
+              }}
               clearFunc={() => {
                 setSearchedProjectID(null);
               }}
@@ -231,6 +228,7 @@ export default function SelectTab({
           compact
           filingsData={myFilings}
           projectsWithLastOpenData={projectsWithLastOpen}
+          searchedProjectId={searchedProjectID}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>

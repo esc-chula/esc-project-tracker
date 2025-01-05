@@ -2,7 +2,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import type { FilingType } from '@/src/interface/filing';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
@@ -13,16 +13,19 @@ import { toast } from '../ui/use-toast';
 import NoProject from './noProject';
 import AllProjectPanel from './allProjectPanel';
 import LastestPanel from './latestPanel';
+import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 
 export default function MyProjectData({
   compact = false,
   filingsData,
   projectsWithLastOpenData,
+  searchedProjectId,
   showLastOpen = false,
 }: {
   compact?: boolean;
   filingsData?: FilingType[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
+  searchedProjectId: string | null;
   showLastOpen?: boolean;
 }) {
   const router = useRouter();
@@ -91,6 +94,30 @@ export default function MyProjectData({
     });
   }, []);
 
+  useEffect(() => {
+    const fetchProjectById = async () => {
+      if (searchedProjectId) {
+        try {
+          const project = await getProjectByProjectId(searchedProjectId);
+          setProjects(project ? [project] : []);
+        } catch (err) {
+          if (err instanceof Error) {
+            toast({
+              title: 'ไม่สำเร็จ',
+              description: err.message,
+              isError: true,
+            });
+          }
+        }
+      } else {
+        setProjects(projectsWithLastOpen.map((p) => p.project));
+      }
+    };
+    void fetchProjectById();
+  }, [searchedProjectId, projectsWithLastOpen]);
+
+  const memoizedProjects = useMemo(() => projects, [projects]);
+
   return (
     <div className="w-full">
       {
@@ -120,7 +147,7 @@ export default function MyProjectData({
                 : null
                 }
               <AllProjectPanel
-                projects={projects}
+                projects={memoizedProjects}
                 userId={userId}
                 setProjects={setProjects}
                 showTitle={showLastOpen}
