@@ -1,23 +1,34 @@
-import AllProjectCard from './allProjectCard';
-
-import { Project } from '@/src/interface/project';
+import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import type { Dispatch, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
+import type { Project } from '@/src/interface/project';
 import { filterProjectStatus } from '@/src/styles/enumMap';
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { projectTypeMap } from '@/src/constant/map';
 import SelectType from '../filter/selectType';
+import AllProjectCard from './allProjectCard';
+import { columns } from './allProjectColumn';
+import { cn } from '@/src/lib/utils';
 
 export default function AllProjectPanel({
   projects,
   userId,
   setProjects,
+  showTitle=false,
 }: {
   projects: Project[];
   userId: string;
   setProjects: Dispatch<SetStateAction<Project[]>>;
+  showTitle?: boolean;
 }) {
   const [usedProjects, setUsedProjects] = useState<Project[]>(projects);
   const [projectState, setProjectState] = useState<string>('all');
-  const [projectType, setProject] = useState<string>('all');
+  const [projectType, setProjectType] = useState<string>('all');
 
   useEffect(() => {
     if (projectState === 'all' && projectType === 'all') {
@@ -40,10 +51,30 @@ export default function AllProjectPanel({
       );
     }
   }, [projectState, projectType, projects]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const table = useReactTable({
+    data: usedProjects,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+    },
+  });
+  const joinedProjects = new Set(['2ac28761-83ee-41f7-80a9-c0a8560f048f']);
 
   return (
-    <div className="space-y-5 pt-5 pb-10 ">
-      <div className="font-sukhumvit font-bold text-lg">ทั้งหมด</div>
+    <div className={cn(`space-y-5 pb-10`, showTitle ? 'pt-5' : 'pt-0')}>
+      {
+        showTitle ?
+          <div className="font-sukhumvit font-bold text-lg">ทั้งหมด</div>
+        : null
+      }
       <div className="flex flex-row space-x-5">
         <SelectType
           title="สถานะ"
@@ -56,17 +87,18 @@ export default function AllProjectPanel({
           title="ประเภท"
           items={projectTypeMap}
           sendValue={(value) => {
-            setProject(value);
+            setProjectType(value);
           }}
         />
       </div>
       <div className="grid lg:grid-cols-4 md:grid-col-2 grid-row-2 gap-x-8 gap-y-10 ">
-        {usedProjects.map((project) => (
+        {table.getRowModel().rows.map((project) => (
           <AllProjectCard
             key={project.id}
-            projectId={project.id}
-            projectCode={project.projectCode}
-            projectName={project.name}
+            projectId={project.getValue('id')}
+            projectCode={project.getValue('projectCode')}
+            projectName={project.getValue('name')}
+            projectType={project.getValue('type')}
             userId={userId}
             leaveThisProjectFunc={(id: string) => {
               setProjects((prevProjects: Project[]) =>

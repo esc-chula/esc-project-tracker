@@ -2,7 +2,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import type { FilingType } from '@/src/interface/filing';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
@@ -13,15 +13,20 @@ import { toast } from '../ui/use-toast';
 import NoProject from './noProject';
 import AllProjectPanel from './allProjectPanel';
 import LastestPanel from './latestPanel';
+import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 
 export default function MyProjectData({
   compact = false,
   filingsData,
   projectsWithLastOpenData,
+  searchedProjectId,
+  showLastOpen = false,
 }: {
   compact?: boolean;
   filingsData?: FilingType[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
+  searchedProjectId: string | null;
+  showLastOpen?: boolean;
 }) {
   const router = useRouter();
   const redirectToProject = (project: Project | FilingType) => {
@@ -89,33 +94,47 @@ export default function MyProjectData({
     });
   }, []);
 
+  useEffect(() => {
+    if (searchedProjectId) {
+      setProjects(projectsWithLastOpen.filter((p) => p.project.id === searchedProjectId).map((p) => p.project));
+    } else {
+      setProjects(projectsWithLastOpen.map((p) => p.project));
+    }
+  }, [searchedProjectId, projectsWithLastOpen]);
+
   return (
     <div className="w-full">
-      <div className="mb-5">
-        {!compact && (
-          <SearchBar
-            filings={filings}
-            projects={projects}
-            placeholder="ค้นหาโครงการหรือเอกสาร"
-            projectFunc={redirectToProject}
-            filingFunc={redirectToFiling}
-          />
+      {
+        !compact && (
+          <div className="mb-5">
+            <SearchBar
+              filings={filings}
+              projects={projects}
+              placeholder="ค้นหาโครงการหรือเอกสาร"
+              projectFunc={redirectToProject}
+              filingFunc={redirectToFiling}
+            />
+          </div>
         )}
-      </div>
       {isFetched ? (
         <>
           {projects.length === 0 ? (
             <NoProject />
           ) : (
             <>
-              <LastestPanel
-                projectsWithLastOpen={projectsWithLastOpen}
-                compact={compact}
-              />
+              {
+                showLastOpen ?
+                  <LastestPanel
+                    projectsWithLastOpen={projectsWithLastOpen}
+                    compact={compact}
+                  />
+                : null
+                }
               <AllProjectPanel
                 projects={projects}
                 userId={userId}
                 setProjects={setProjects}
+                showTitle={showLastOpen}
               />
             </>
           )}
