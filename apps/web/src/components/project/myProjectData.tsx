@@ -95,24 +95,11 @@ export default function MyProjectData({
   }, []);
 
   useEffect(() => {
-    const fetchProjectById = async () => {
-      if (searchedProjectId) {
-        try {
-          setProjects(projectsWithLastOpen.filter((p) => p.project.id === searchedProjectId).map((p) => p.project));
-        } catch (err) {
-          if (err instanceof Error) {
-            toast({
-              title: 'ไม่สำเร็จ',
-              description: err.message,
-              isError: true,
-            });
-          }
-        }
-      } else {
-        setProjects(projectsWithLastOpen.map((p) => p.project));
-      }
-    };
-    void fetchProjectById();
+    if (searchedProjectId) {
+      setProjects(projectsWithLastOpen.filter((p) => p.project.id === searchedProjectId).map((p) => p.project));
+    } else {
+      setProjects(projectsWithLastOpen.map((p) => p.project));
+    }
   }, [searchedProjectId, projectsWithLastOpen]);
 
   return (
