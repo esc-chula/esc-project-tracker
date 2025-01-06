@@ -98,8 +98,7 @@ export default function MyProjectData({
     const fetchProjectById = async () => {
       if (searchedProjectId) {
         try {
-          const project = await getProjectByProjectId(searchedProjectId);
-          setProjects(project ? [project] : []);
+          setProjects(projectsWithLastOpen.filter((p) => p.project.id === searchedProjectId).map((p) => p.project));
         } catch (err) {
           if (err instanceof Error) {
             toast({
@@ -115,8 +114,6 @@ export default function MyProjectData({
     };
     void fetchProjectById();
   }, [searchedProjectId, projectsWithLastOpen]);
-
-  const memoizedProjects = useMemo(() => projects, [projects]);
 
   return (
     <div className="w-full">
@@ -147,7 +144,7 @@ export default function MyProjectData({
                 : null
                 }
               <AllProjectPanel
-                projects={memoizedProjects}
+                projects={projects}
                 userId={userId}
                 setProjects={setProjects}
                 showTitle={showLastOpen}
