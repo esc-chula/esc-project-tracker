@@ -19,13 +19,13 @@ export default function MyProjectData({
   compact = false,
   filingsData,
   projectsWithLastOpenData,
-  searchedProjectId,
+  searchedProjectId = null,
   showLastOpen = false,
 }: {
   compact?: boolean;
   filingsData?: FilingType[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
-  searchedProjectId: string | null;
+  searchedProjectId?: string | null;
   showLastOpen?: boolean;
 }) {
   const router = useRouter();

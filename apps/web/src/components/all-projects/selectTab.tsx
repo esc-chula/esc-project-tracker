@@ -66,9 +66,7 @@ export default function SelectTab({
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filings, setFilings] = useState<FilingType[]>([]);
-  const [searchedProjectID, setSearchedProjectID] = useState<string | null>(
-    null,
-  );
+  const [searchedProjectID, setSearchedProjectID] = useState<string | null>(null);
   const [searchedFilingID, setSearchedFilingID] = useState<string | null>(null);
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   
@@ -228,7 +226,7 @@ export default function SelectTab({
           compact
           filingsData={myFilings}
           projectsWithLastOpenData={projectsWithLastOpen}
-          searchedProjectId={searchedProjectID}
+          searchedProjectId={searchedProjectID || null}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
