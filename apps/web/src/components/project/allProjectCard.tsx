@@ -12,6 +12,7 @@ export default function AllProjectCard({
   userId,
   leaveThisProjectFunc,
   projectType,
+  isJoined,
 }: {
   projectId: string;
   projectCode: string;
@@ -19,9 +20,9 @@ export default function AllProjectCard({
   userId: string;
   leaveThisProjectFunc: (id: string) => void;
   projectType: number;
+  isJoined: boolean;
 }) {
   const router = useRouter();
-  console.log(projectId, projectName, projectType);
 
   return (
     <div
