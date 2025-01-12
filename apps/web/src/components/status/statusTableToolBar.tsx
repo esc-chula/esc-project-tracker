@@ -3,6 +3,7 @@ import { FilingType } from '@/src/interface/filing';
 import { filterStatus } from '@/src/styles/enumMap';
 import { DataTableFacetedFilter } from './statusTableFacetedFilter';
 import SearchPanel from '../all-projects/searchPanel';
+import { statusFilingItems } from '@/src/constant/filterFiling';
 
 export default function StatusTableToolBar({
   table,
@@ -15,11 +16,11 @@ export default function StatusTableToolBar({
         placeHolder="ค้นหาเอกสาร"
         filings={table.options.data}
         filingFunc={(filing: FilingType) => {
-          const fullCodeSearch =  `${filing.projectCode}-${filing.FilingCode}`;
+          const fullCodeSearch = `${filing.projectCode}-${filing.FilingCode}`;
           const nameSearch = filing.name;
           table.setColumnFilters([
             { id: 'รหัสเอกสาร', value: fullCodeSearch || '' },
-            { id: 'name', value: nameSearch || ''}
+            { id: 'name', value: nameSearch || '' },
           ]);
         }}
         clearFunc={() => {
@@ -29,7 +30,7 @@ export default function StatusTableToolBar({
       <DataTableFacetedFilter
         column={table.getColumn('status')}
         title="สถานะ"
-        options={filterStatus.filter((status) => status.value !== 'all')}
+        options={statusFilingItems.filter((status) => status.value !== 'ALL')}
       />
     </div>
   );
