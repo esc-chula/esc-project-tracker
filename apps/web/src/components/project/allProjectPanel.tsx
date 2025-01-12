@@ -15,7 +15,7 @@ import type { Project } from '@/src/interface/project';
 import { filterProjectStatus } from '@/src/styles/enumMap';
 import { projectTypeMap } from '@/src/constant/map';
 import { cn } from '@/src/lib/utils';
-import SelectType from '../filter/selectType';
+import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
 import AllProjectCard from './allProjectCard';
 
 export default function AllProjectPanel({
@@ -33,14 +33,24 @@ export default function AllProjectPanel({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const columns: ColumnDef<Project>[] = [
     { accessorKey: 'name' },
-    { accessorKey: 'type' },
+    {
+      accessorKey: 'type',
+      filterFn: (row, id, value: string[]) => {
+        return value.includes(row.getValue(id));
+      },
+    },
     { accessorKey: 'id' },
     { accessorKey: 'projectCode' },
     {
       accessorKey: 'isJoined',
       accessorFn: (row) => joinedProjects.has(row.id),
     },
-    { accessorKey: 'status' },
+    {
+      accessorKey: 'status',
+      filterFn: (row, id, value: string[]) => {
+        return value.includes(row.getValue(id));
+      },
+    },
   ];
   const table = useReactTable({
     data: projects,
@@ -67,19 +77,15 @@ export default function AllProjectPanel({
         <div className="font-sukhumvit font-bold text-lg">ทั้งหมด</div>
       ) : null}
       <div className="flex flex-row space-x-5">
-        <SelectType
+        <DataTableFacetedFilter
           title="สถานะ"
-          items={filterProjectStatus}
-          sendValue={(value) => {
-            table.getColumn('status')?.setFilterValue(value);
-          }}
+          options={filterProjectStatus}
+          column={table.getColumn('status')}
         />
-        <SelectType
+        <DataTableFacetedFilter
           title="ประเภท"
-          items={projectTypeMap}
-          sendValue={(value) => {
-            table.getColumn('type')?.setFilterValue(value);
-          }}
+          options={projectTypeMap}
+          column={table.getColumn('type')}
         />
       </div>
       <div className="grid lg:grid-cols-4 md:grid-col-2 grid-row-2 gap-x-8 gap-y-10 ">

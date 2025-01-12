@@ -48,7 +48,7 @@ export function DataTableFacetedFilter<TData, TValue>({
       </PopoverTrigger>
       <PopoverContent className="max-w-[400px] p-0 w-auto" align="start">
         <Command className="rounded-lg">
-          <CommandList>
+          <CommandList className="max-h-[465px]">
             <CommandEmpty>ไม่พบรายชื่อสถานะ</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
