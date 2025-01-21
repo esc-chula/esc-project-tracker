@@ -129,5 +129,11 @@ export class UserProjRouter {
       .query(({ input }) => {
         return this.userProjService.findJoinedUsersByProjectId(input.projectId);
       }),
+
+    findJoinedProjectsByUserId: this.trpcService.protectedProcedure
+      .input(z.object({ userId: z.string().uuid() }))
+      .query(({ input }) => {
+        return this.userProjService.findJoinedProjectsByUserId(input.userId);
+      }),
   });
 }

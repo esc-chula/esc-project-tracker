@@ -184,4 +184,13 @@ export class UserProjService {
     });
     return result;
   }
+
+  async findJoinedProjectsByUserId(userId: string): Promise<string[]> {
+    const userProjects = await this.userProjRepository.find({
+      where: { userId: userId },
+      select: ['projectId'],
+      order: { lastOpen: 'DESC' }
+    });
+    return userProjects.map(userProject => userProject.projectId);
+  }
 }

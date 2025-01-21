@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Get, Param } from '@nestjs/common';
 import { UserProjService } from './user-proj.service';
 import { CreateUserProjDTO, DeleteUserProjDTO } from './user-project.dto';
 
@@ -25,5 +25,10 @@ export class UserProjController {
     return this.userProjService.deleteUserProject({
       obj,
     });
+  }
+
+  @Get('findJoinedProject/:userId')
+  findJoinedProjectsByUserId(@Param('userId') userId: string) {
+    return this.userProjService.findJoinedProjectsByUserId(userId);
   }
 }
