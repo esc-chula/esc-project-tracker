@@ -1,4 +1,4 @@
-import { ProjectStatus } from './enum';
+import { filterProjectStatus } from '../styles/enumMap';
 import { projectTypeMap } from './map';
 
 export const statusProjectItems = [
@@ -6,18 +6,7 @@ export const statusProjectItems = [
     label: 'สถานะ',
     value: 'ALL',
   },
-  {
-    label: 'กำลังดำเนินกิจกรรม',
-    value: ProjectStatus.CONTINUE,
-  },
-  {
-    label: 'ปิดโครงการเรียบร้อย',
-    value: ProjectStatus.CLOSED,
-  },
-  {
-    label: 'รอปิดโครงการ',
-    value: ProjectStatus.WAIT_FOR_CLOSE,
-  },
+  ...filterProjectStatus,
 ];
 
 export const departmentProjectItems = [

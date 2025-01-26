@@ -1,9 +1,8 @@
-import { map } from "zod";
-import { ProjectStatus } from "./enum";
+import { ProjectStatus } from './enum';
 
 export const ProjectStatusToThai = new Map([
-    [ProjectStatus.CLOSED, "ปิดโครงการเรียบร้อย"],
-    [ProjectStatus.CONTINUE, "กำลังดำเนินกิจกรรม"],
-    [ProjectStatus.WAIT_FOR_CLOSE, "รอปิดโครงการ"],
+  [ProjectStatus.CLOSED, 'ปิดโครงการเรียบร้อย'],
+  [ProjectStatus.CONTINUE, 'กำลังดำเนินกิจกรรม'],
+  [ProjectStatus.WAIT_FOR_CLOSE, 'รอปิดโครงการ'],
+  [ProjectStatus.WAIT_FOR_APPROVE, 'รออนุมัติ'],
 ]);
-

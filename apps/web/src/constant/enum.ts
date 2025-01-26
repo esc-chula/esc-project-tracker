@@ -7,10 +7,13 @@ export enum FilingStatus {
   DOCUMENT_CREATED = 'DOCUMENT_CREATED',
 }
 
+export enum FilingSubType {}
+
 export enum ProjectStatus {
   CONTINUE = 'CONTINUE',
   WAIT_FOR_CLOSE = 'WAIT_FOR_CLOSE',
   CLOSED = 'CLOSED',
+  WAIT_FOR_APPROVE = 'WAIT_FOR_APPROVE',
 }
 
 export enum ProjectType {

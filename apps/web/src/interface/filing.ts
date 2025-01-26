@@ -1,5 +1,5 @@
-import type { FilingStatus } from '../constant/enum';
-import { Project } from './project';
+import type { FilingStatus, FilingSubType } from '../constant/enum';
+import type { Project } from './project';
 
 export interface FilingType {
   id: string;
@@ -10,6 +10,7 @@ export interface FilingType {
   filingCode: string;
   status: FilingStatus;
   type: number;
+  subType: FilingSubType;
   projectCode: string;
   createdAt: string;
   updatedAt: string;

@@ -1,4 +1,4 @@
-import { FilingStatus } from "@/src/constant/enum.ts"
+import { FilingStatus, ProjectStatus } from "@/src/constant/enum.ts"
 
 export const buttonColors = {
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: "bg-accepted text-white",
@@ -116,18 +116,22 @@ export const filterStatus = [
   },
 ]
 
-// PROJECt
+// Project
 export const filterProjectStatus = [
   {
-    label: "กำลังดำเนินการ",
-    value: "CONTINUE",
+    label: "กำลังดำเนินกิจกรรม",
+    value: ProjectStatus.CONTINUE,
   },
   {
     label: "รอปิดโครงการ",
-    value: "WAIT_FOR_CLOSE",
+    value: ProjectStatus.WAIT_FOR_CLOSE,
   },
   {
-    label: "ปิดโครงการ",
-    value: "CLOSED",
+    label: "ปิดโครงการเรียบร้อย",
+    value: ProjectStatus.CLOSED,
+  },
+  {
+    label: "รออนุมัติ",
+    value: ProjectStatus.WAIT_FOR_APPROVE,
   },
 ]

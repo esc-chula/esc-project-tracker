@@ -48,6 +48,7 @@ export class ProjectService {
       const projectWithLastOpenDTO = new ProjectWithLastOpenDTO();
       projectWithLastOpenDTO.project = projects.entities[index];
       projectWithLastOpenDTO.lastOpen = rawProject.userProj_lastOpen;
+      projectWithLastOpenDTO.pinnedAt = rawProject.userProj_pinnedAt;
       return projectWithLastOpenDTO;
     });
 

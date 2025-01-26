@@ -6,4 +6,5 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   refreshToken?: string;
+  tel?: string;
 }
