@@ -23,4 +23,7 @@ export class UserProj {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   lastOpen: Date;
+
+  @Column({ type: 'timestamp', nullable: true, default: null })
+  pinnedAt: Date;
 }

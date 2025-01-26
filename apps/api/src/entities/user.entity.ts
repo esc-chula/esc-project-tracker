@@ -28,6 +28,9 @@ export class User {
   @Column({ nullable: true, default: null })
   refreshToken: string;
 
+  @Column({ nullable: true, default: null })
+  tel: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
