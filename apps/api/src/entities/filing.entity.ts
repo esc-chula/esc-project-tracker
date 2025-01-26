@@ -37,7 +37,7 @@ export class Filing {
   status: FilingStatus;
 
   @Column()
-  FilingCode: string;
+  filingCode: string;
 
   @Column()
   type: number;

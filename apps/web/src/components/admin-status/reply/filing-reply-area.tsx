@@ -48,7 +48,7 @@ export default function FilingReplyArea({
         setFilingStatus(data?.status || FilingStatus.WAIT_FOR_SECRETARY);
         setIsPending(data?.status === FilingStatus.WAIT_FOR_SECRETARY);
         setProjectId(data?.projectId || '');
-        setDocumentCode(data?.projectCode + '-' + data?.FilingCode);
+        setDocumentCode(data?.projectCode + '-' + data?.filingCode);
 
         // Fetch owner หลังจากเรียกข้อมูลเอกสาร
         if (data?.userId) {

@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 export default function AllFilingCard({
   filingId,
   projectCode,
-  FilingCode,
+  filingCode,
   filingName,
   filingStatus,
   projectId,
@@ -20,7 +20,7 @@ export default function AllFilingCard({
 }: {
   filingId: string;
   projectCode: string;
-  FilingCode: string;
+  filingCode: string;
   filingName: string;
   filingStatus: FilingStatus;
   projectId: string;
@@ -84,7 +84,7 @@ export default function AllFilingCard({
       <div className="text-2xl font-bold text-center">ตัวอย่างเอกสาร</div>
       <div className="bg-[#E3E3E3] p-3 space-y-2 rounded-b-lg ">
         <div className="text-2xl font-bold text-start">
-          {projectCode} - {FilingCode}
+          {projectCode} - {filingCode}
           <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
             {fName || '-- ไม่มีชื่อ --'}
           </div>

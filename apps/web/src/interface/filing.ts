@@ -7,7 +7,7 @@ export interface FilingType {
   project?: Project;
   userId: string;
   name: string;
-  FilingCode: string;
+  filingCode: string;
   status: FilingStatus;
   type: number;
   projectCode: string;

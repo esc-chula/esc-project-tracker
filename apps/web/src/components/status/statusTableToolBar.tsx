@@ -16,7 +16,7 @@ export default function StatusTableToolBar({
         placeHolder="ค้นหาเอกสาร"
         filings={table.options.data}
         filingFunc={(filing: FilingType) => {
-          const fullCodeSearch = `${filing.projectCode}-${filing.FilingCode}`;
+          const fullCodeSearch = `${filing.projectCode}-${filing.filingCode}`;
           const nameSearch = filing.name;
           table.setColumnFilters([
             { id: 'รหัสเอกสาร', value: fullCodeSearch || '' },

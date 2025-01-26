@@ -21,7 +21,7 @@ export const columns: ColumnDef<FilingType>[] = [
   },
   {
     accessorKey: 'รหัสเอกสาร',
-    accessorFn: (row) => row.projectCode + '-' + row.FilingCode,
+    accessorFn: (row) => row.projectCode + '-' + row.filingCode,
     header: ({ column }) => {
       return (
         <DataTableColumnHeader

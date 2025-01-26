@@ -39,7 +39,7 @@ export default function SearchBar({
       setValue(option);
       if (projectFunc && 'reserveDate' in option) {
         projectFunc(option);
-      } else if (filingFunc && 'FilingCode' in option) {
+      } else if (filingFunc && 'filingCode' in option) {
         filingFunc(option);
       } else {
         console.log('No function to call');
@@ -63,7 +63,7 @@ export default function SearchBar({
         getOptionLabel={(option) =>
           typeof option === 'string'
             ? option
-            : `${'FilingCode' in option ? option.projectCode + '-' + option.FilingCode : option.projectCode}     ${option.name}`
+            : `${'filingCode' in option ? option.projectCode + '-' + option.filingCode : option.projectCode}     ${option.name}`
         }
         renderOption={(props, option) => (
           <li {...props}>
@@ -81,8 +81,8 @@ export default function SearchBar({
                 <IoDocumentText size={20} color="#747474" />
               )}
               <span className="w-20">
-                {'FilingCode' in option
-                  ? option.projectCode + '-' + option.FilingCode
+                {'filingCode' in option
+                  ? option.projectCode + '-' + option.filingCode
                   : option.projectCode}
               </span>
               <span>{option.name}</span>

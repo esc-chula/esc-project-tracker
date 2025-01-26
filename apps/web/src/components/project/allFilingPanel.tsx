@@ -62,7 +62,7 @@ export default function AllFilingPanel({
             key={filing.id}
             filingId={filing.id}
             projectCode={filing.projectCode}
-            FilingCode={filing.FilingCode}
+            filingCode={filing.filingCode}
             filingName={filing.name}
             filingStatus={filing.status}
             projectId={filing.projectId}

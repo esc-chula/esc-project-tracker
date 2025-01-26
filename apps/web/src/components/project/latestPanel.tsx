@@ -87,7 +87,7 @@ export default function LatestPanel({
                 <LatestItem
                   key={filing.filing.id}
                   projectId={filing.filing.projectId}
-                  projectCode={filing.filing.FilingCode}
+                  projectCode={filing.filing.filingCode}
                   projectName={filing.filing.name}
                   filingId={filing.filing.id}
                 />

@@ -41,7 +41,7 @@ export default function PopoverAddFiling({
         addFilingToParent(data);
         toast({
           title: 'สร้างสำเร็จ',
-          description: `เอกสาร ${data.projectCode} - ${data.FilingCode} ถูกสร้างเรียบร้อยแล้ว`,
+          description: `เอกสาร ${data.projectCode} - ${data.filingCode} ถูกสร้างเรียบร้อยแล้ว`,
         });
         setOpen(false);
       }

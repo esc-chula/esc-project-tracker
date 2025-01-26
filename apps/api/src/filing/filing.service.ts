@@ -104,7 +104,7 @@ export class FilingService {
     newFiling.project = foundProject;
     newFiling.name = filingName;
     newFiling.status = FilingStatus.DRAFT;
-    newFiling.FilingCode = `${filingType}${formattedNumberOfFilingType}`;
+    newFiling.filingCode = `${filingType}${formattedNumberOfFilingType}`;
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
     newFiling.userId = userId;
@@ -241,7 +241,7 @@ export class FilingService {
     try {
       const query = this.filingRepository.createQueryBuilder('filing');
       query.where('filing.name ILIKE :input', { input: `%${input}%` });
-      query.orWhere('filing.FilingCode ILIKE :input', { input: `%${input}%` });
+      query.orWhere('filing.filingCode ILIKE :input', { input: `%${input}%` });
       return await query.getMany();
     } catch (error) {
       console.log(error);

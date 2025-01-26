@@ -26,7 +26,7 @@ export default function PopoverDeleteFiling({
       if (data) {
         toast({
           title: 'ลบสำเร็จ',
-          description: `เอกสารหมายเลข ${data.projectCode} - ${data.FilingCode} ถูกลบเรียบร้อยแล้ว`,
+          description: `เอกสารหมายเลข ${data.projectCode} - ${data.filingCode} ถูกลบเรียบร้อยแล้ว`,
         });
         setDeletedParentFunc(true);
       }

@@ -77,7 +77,7 @@ export default function FilingTabShowDetail({
 
       <div className="flex flex-row space-x-2 items-center">
         <div className="flex-shrink-0">
-          {filing?.projectCode || '....'}-{filing?.FilingCode || '....'}
+          {filing?.projectCode || '....'}-{filing?.filingCode || '....'}
         </div>
         <div className="truncate overflow-hidden whitespace-nowrap w-[50%] pr-5">
           {filing?.name || '...'}

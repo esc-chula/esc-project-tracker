@@ -130,7 +130,7 @@ export default function Page({
             project={filing ? filing.projectCode : '...'}
             filing={
               filing
-                ? `${filing.projectCode}-${filing.FilingCode} ${filing.name}`
+                ? `${filing.projectCode}-${filing.filingCode} ${filing.name}`
                 : '...'
             }
             isAdmin
@@ -145,7 +145,7 @@ export default function Page({
       <section className="px-15 mb-7">
         {filing ? (
           <FilingTimelineHeader
-            name={`${filing.projectCode}-${filing.FilingCode} ${filing.name}`}
+            name={`${filing.projectCode}-${filing.filingCode} ${filing.name}`}
             status={filing.status}
             documents={documents}
             latestDocument={latestDocument}

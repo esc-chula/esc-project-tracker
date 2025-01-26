@@ -48,7 +48,7 @@ export default function FilingMenuItem({
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: `ดึงข้อมูลเอกสาร  ${filing.projectCode}-${filing.FilingCode} ไม่สำเร็จ`,
+          title: `ดึงข้อมูลเอกสาร  ${filing.projectCode}-${filing.filingCode} ไม่สำเร็จ`,
           description: error.message,
           isError: true,
         });
@@ -92,7 +92,7 @@ export default function FilingMenuItem({
   return (
     <tr className="border-b-2 border-gray-200">
       <td className="p-4 py-5 text-nowrap text-center min-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {`${filing.projectCode}-${filing.FilingCode}`}
+        {`${filing.projectCode}-${filing.filingCode}`}
       </td>
       <td className="p-4 py-5 text-nowrap max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
         {filing.name}

@@ -131,7 +131,7 @@ export default function Page({
               filing
                 ? filing.projectCode +
                   '-' +
-                  filing.FilingCode +
+                  filing.filingCode +
                   ' ' +
                   filing.name
                 : '...'
@@ -148,7 +148,7 @@ export default function Page({
         {filing && (
           <FilingTimelineHeader
             name={
-              filing.projectCode + '-' + filing.FilingCode + ' ' + filing.name
+              filing.projectCode + '-' + filing.filingCode + ' ' + filing.name
             }
             status={filing.status}
             documents={documents}
