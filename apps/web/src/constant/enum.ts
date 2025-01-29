@@ -7,7 +7,19 @@ export enum FilingStatus {
   DOCUMENT_CREATED = 'DOCUMENT_CREATED',
 }
 
-export enum FilingSubType {}
+export enum FilingSubType {
+  // 1xxx - เอกสารขอใช้งานกายภาพ
+  PHYSICAL_REQUEST_PLACE = "ขอใช้สถานที่และอุปกรณ์",
+  PHYSICAL_REQUEST_EQUIPMENT = "ขอใช้อุปกรณ์",
+  PHYSICAL_REQUEST_PARKING = "ขอใช้ลานจอดรถ",
+  PHYSICAL_REQUEST_TRAFFIC_CHANGE = "ขอเปลี่ยนเส้นทางจราจร",
+
+  // 5xxx - เอกสารในโครงการ
+  IN_PROJECT_INTERNAL_LETTER = "จดหมายทั่วไปในคณะ",
+  IN_PROJECT_EXTERNAL_LETTER = "จดหมายทั่วไปนอกคณะ", 
+  IN_PROJECT_SPEAKER_INVITE_LETTER = "จดหมายเชิญวิทยากร",
+  IN_PROJECT_SPEAKER_THANKS_LETTER = "จดหมายขอบคุณวิทยากร",
+}
 
 export enum ProjectStatus {
   CONTINUE = 'CONTINUE',
