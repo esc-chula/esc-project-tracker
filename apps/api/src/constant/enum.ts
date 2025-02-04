@@ -10,16 +10,16 @@ export enum FilingStatus {
 
 export enum FilingSubType {
   // 1xxx - เอกสารขอใช้งานกายภาพ
-  PHYSICAL_REQUEST_PLACE = "ขอใช้สถานที่และอุปกรณ์",
-  PHYSICAL_REQUEST_EQUIPMENT = "ขอใช้อุปกรณ์",
-  PHYSICAL_REQUEST_PARKING = "ขอใช้ลานจอดรถ",
-  PHYSICAL_REQUEST_TRAFFIC_CHANGE = "ขอเปลี่ยนเส้นทางจราจร",
+  LOCATION_REQUEST = 'LOCATION_REQUEST', // ขอใช้สถานที่และอุปกรณ์
+  EQUIPMENT_REQUEST = 'EQUIPMENT_REQUEST', // ขอใช้อุปกรณ์
+  PARKING_REQUEST = 'PARKING_REQUEST', // ขอใช้ลานจอดรถ
+  TRAFFIC_REROUTE_REQUEST = 'TRAFFIC_REROUTE_REQUEST', // ขอเปลี่ยนเส้นทางจราจร
 
   // 5xxx - เอกสารในโครงการ
-  IN_PROJECT_INTERNAL_LETTER = "จดหมายทั่วไปในคณะ",
-  IN_PROJECT_EXTERNAL_LETTER = "จดหมายทั่วไปนอกคณะ", 
-  IN_PROJECT_SPEAKER_INVITE_LETTER = "จดหมายเชิญวิทยากร",
-  IN_PROJECT_SPEAKER_THANKS_LETTER = "จดหมายขอบคุณวิทยากร",
+  GENERAL_INTERNAL_LETTER = 'GENERAL_INTERNAL_LETTER', // จดหมายทั่วไปในคณะ
+  GENERAL_EXTERNAL_LETTER = 'GENERAL_EXTERNAL_LETTER', // จดหมายทั่วไปนอกคณะ
+  SPEAKER_INVITATION_LETTER = 'SPEAKER_INVITATION_LETTER', // จดหมายเชิญวิทยากร
+  SPEAKER_GRATITUDE_LETTER = 'SPEAKER_GRATITUDE_LETTER', // จดหมายขอบคุณวิทยากร
 }
 
 //Document
