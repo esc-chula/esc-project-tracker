@@ -1,5 +1,6 @@
 import { FilingStatus } from './enum';
 
+// DOCUMENT_CREATED is no longer used
 export const statusFilingItems = [
   {
     label: 'ทุกสถานะ',
@@ -8,10 +9,6 @@ export const statusFilingItems = [
   {
     label: 'ฉบับร่าง',
     value: FilingStatus.DRAFT,
-  },
-  {
-    label: 'สร้างฉบับร่างแล้ว',
-    value: FilingStatus.DOCUMENT_CREATED,
   },
   {
     label: 'ส่งให้เลขาตรวจสอบ',
@@ -26,7 +23,7 @@ export const statusFilingItems = [
     value: FilingStatus.WAIT_FOR_STUDENT_AFFAIR,
   },
   {
-    label: 'เรียบร้อย',
+    label: 'เอกสารอนุมัติแล้ว',
     value: FilingStatus.APPROVED,
   },
 ];

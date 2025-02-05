@@ -100,7 +100,7 @@ export const columns: ColumnDef<FilingType>[] = [
 
       return (
         <div
-          className={`w-full inline-block text-center py-2 px-4 text-sm font-medium ${textColors[status]}`}
+          className={`w-full inline-block text-center text-sm font-medium ${textColors[status]}`}
         >
           {TextMyProject[status]}
         </div>
@@ -134,5 +134,20 @@ export const columns: ColumnDef<FilingType>[] = [
         </Button>
       </Link>
     ),
+  },
+  {
+    accessorKey: 'type',
+    filterFn: (row, id, value: string[]) =>
+      value.includes(String(row.getValue(id))),
+  },
+  {
+    accessorKey: 'projectType',
+    accessorFn: (row) => row.project?.type,
+    filterFn: (row, id, value: string[]) => value.includes(row.getValue(id)),
+  },
+  {
+    accessorKey: 'subType',
+    filterFn: (row, id, value: string[]) =>
+      value.includes(String(row.getValue(id))),
   },
 ];

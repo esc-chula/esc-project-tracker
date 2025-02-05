@@ -24,10 +24,14 @@ import {
   TableRow,
 } from '@/src/components/ui/table';
 import type { FilingType } from '@/src/interface/filing';
-import { statusFilingItems } from '@/src/constant/filterFiling';
+import {
+  statusFilingItems,
+  typeFilingItems,
+} from '@/src/constant/filterFiling';
 import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
 import { columns } from './statusTableColumns';
 import StatusTableToolBar from './statusTableToolBar';
+import { projectTypeMap } from '@/src/constant/map';
 
 export function StatusTable({
   data,
@@ -40,6 +44,8 @@ export function StatusTable({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     updatedAt: !compact,
+    type: false,
+    projectType: false,
   });
 
   const table = useReactTable({
@@ -68,6 +74,16 @@ export function StatusTable({
     <>
       {!compact && <StatusTableToolBar table={table} />}
       <div className="flex flex-row space-x-5 mb-4">
+        <DataTableFacetedFilter
+          column={table.getColumn('projectType')}
+          title="ฝ่าย"
+          options={projectTypeMap}
+        />
+        <DataTableFacetedFilter
+          column={table.getColumn('type')}
+          title="ประเภทเอกสาร"
+          options={typeFilingItems.filter((type) => type.value !== 'ALL')}
+        />
         <DataTableFacetedFilter
           column={table.getColumn('status')}
           title="สถานะเอกสาร"

@@ -47,55 +47,55 @@ export const filingTypeMap = [
 
 export const projectTypeMap = [
   {
-    label: "10 - โครงการฝ่ายกิจการภายใน",
+    label: "10xx - โครงการฝ่ายกิจการภายใน",
     value: ProjectType.INTERNAL_AFFAIR,
   },
   {
-    label: "11 - โครงการฝ่ายศิลปะและวัฒนธรรม",
+    label: "11xx - โครงการฝ่ายศิลปะและวัฒนธรรม",
     value: ProjectType.ARTS_CULTURE_AFFAIR,
   },
   {
-    label: "12 - โครงการฝ่ายกีฬา",
+    label: "12xx - โครงการฝ่ายกีฬา",
     value: ProjectType.SPORTS_AFFAIR,
   },
   {
-    label: "13 - โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์",
+    label: "13xx - โครงการฝ่ายพัฒนาสังคมและบำเพ็ญประโยชน์",
     value: ProjectType.SOCIAL_SERVICE_AFFAIR,
   },
   {
-    label: "14 - โครงการสวัสดิการนิสิตและสิ่งแวดล้อม",
+    label: "14xx - โครงการสวัสดิการนิสิตและสิ่งแวดล้อม",
     value: ProjectType.STUDENTS_WELFARE_ENV_AFFAIR,
   },
   {
-    label: "20 - โครงการฝ่ายกิจการภายนอก",
+    label: "20xx - โครงการฝ่ายกิจการภายนอก",
     value: ProjectType.EXTERNAL_AFFAIR,
   },
   {
-    label: "30 - โครงการฝ่ายนิสิตสัมพันธ์",
+    label: "30xx - โครงการฝ่ายนิสิตสัมพันธ์",
     value: ProjectType.NISITSUMPAN_AFFAIR,
   },
   {
-    label: "40 - โครงการฝ่ายเทคโนโลยี",
+    label: "40xx - โครงการฝ่ายเทคโนโลยี",
     value: ProjectType.TECH_AFFAIR,
   },
   {
-    label: "50 - โครงการฝ่ายพัฒนาองค์กร",
+    label: "50xx - โครงการฝ่ายพัฒนาองค์กร",
     value: ProjectType.ORGANIZATION_AFFAIR,
   },
   {
-    label: "60 - โครงการฝ่ายประชาสัมพันธ์และการตลาด",
+    label: "60xx - โครงการฝ่ายประชาสัมพันธ์และการตลาด",
     value: ProjectType.PR_MARGETING_AFFAIR,
   },
   {
-    label: "70 - โครงการฝ่ายวิชาการ",
+    label: "70xx - โครงการฝ่ายวิชาการ",
     value: ProjectType.ACADEMICS_AFFAIR,
   },
   {
-    label: "80 - โครงการอื่นๆของกวศ.",
+    label: "80xx - โครงการอื่นๆของกวศ.",
     value: ProjectType.OTHER_ESC,
   },
   {
-    label: "90 - โครงการฝ่ายสำนักงานและพัสดุ",
+    label: "90xx - โครงการฝ่ายสำนักงานและพัสดุ",
     value: ProjectType.OFFICE_SUPPLY_AFFAIR,
   },
 ];

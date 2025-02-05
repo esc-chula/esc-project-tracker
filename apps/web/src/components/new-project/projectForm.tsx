@@ -417,7 +417,6 @@ export default function ProjectForm({
                   <li>
                     <div className="flex text-sm text-black gap-6">
                       <span>{user?.username}</span>
-                      <span>รหัสนิสิต&emsp;{user?.studentId}</span>
                     </div>
                   </li>
                 ) : action === projectFormAction.INFO ||
@@ -425,7 +424,6 @@ export default function ProjectForm({
                   <li>
                     <div className="flex text-sm text-black gap-6 w-full justify-between">
                       <span>{ownerUser?.username}</span>
-                      <span>รหัสนิสิต&emsp;{ownerUser?.studentId}</span>
                     </div>
                   </li>
                 ) : null}
