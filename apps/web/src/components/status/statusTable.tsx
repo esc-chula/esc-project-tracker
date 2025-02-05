@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
-import {
+import { useState } from 'react';
+import type {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
+} from '@tanstack/react-table';
+import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -21,9 +23,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/src/components/ui/table';
+import type { FilingType } from '@/src/interface/filing';
+import { statusFilingItems } from '@/src/constant/filterFiling';
+import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
 import { columns } from './statusTableColumns';
 import StatusTableToolBar from './statusTableToolBar';
-import { FilingType } from '@/src/interface/filing';
 
 export function StatusTable({
   data,
@@ -32,14 +36,11 @@ export function StatusTable({
   data: FilingType[];
   compact?: boolean;
 }) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({
-      updatedAt: !compact,
-    });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    updatedAt: !compact,
+  });
 
   const table = useReactTable({
     data,
@@ -66,8 +67,15 @@ export function StatusTable({
   return (
     <>
       {!compact && <StatusTableToolBar table={table} />}
+      <div className="flex flex-row space-x-5 mb-4">
+        <DataTableFacetedFilter
+          column={table.getColumn('status')}
+          title="สถานะเอกสาร"
+          options={statusFilingItems.filter((status) => status.value !== 'ALL')}
+        />
+      </div>
       <Table className="rounded-xl overflow-hidden text-base">
-        <TableHeader className="bg-lightpink">
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {

@@ -1,11 +1,13 @@
 import type { FilingStatus, FilingSubType } from '../constant/enum';
 import type { Project } from './project';
+import type { User } from './user';
 
 export interface FilingType {
   id: string;
   projectId: string;
   project?: Project;
   userId: string;
+  user?: User;
   name: string;
   filingCode: string;
   status: FilingStatus;

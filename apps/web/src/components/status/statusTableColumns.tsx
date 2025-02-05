@@ -1,27 +1,22 @@
-import { ColumnDef } from '@tanstack/react-table';
-import { DataTableColumnHeader } from './dataTableColumnHeader';
-import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
+import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
-import { Button } from '../ui/button';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import type { FilingStatus } from '@/src/constant/enum';
 import type { FilingType } from '@/src/interface/filing';
-import { convertDate } from '@/src/lib/utils';
+import { TextMyProject, textColors } from '@/src/styles/enumMap';
+import { Button } from '../ui/button';
+import { DataTableColumnHeader } from './dataTableColumnHeader';
+
+require('dayjs/locale/th');
+
+dayjs.extend(relativeTime);
+dayjs.locale('th');
 
 export const columns: ColumnDef<FilingType>[] = [
   {
-    accessorKey: 'updatedAt',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="วันที่ดำเนินการ" />;
-    },
-    cell: ({ row }) => (
-      <div className="capitalize w-[152px]">
-        {convertDate(row.getValue('updatedAt'))}
-      </div>
-    ),
-  },
-  {
     accessorKey: 'รหัสเอกสาร',
-    accessorFn: (row) => row.projectCode + '-' + row.filingCode,
+    accessorFn: (row) => `${row.projectCode}-${row.filingCode}`,
     header: ({ column }) => {
       return (
         <DataTableColumnHeader
@@ -36,12 +31,54 @@ export const columns: ColumnDef<FilingType>[] = [
     ),
   },
   {
+    accessorKey: 'ชื่อโครงการ',
+    accessorFn: (row) => row.project?.name,
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="ชื่อโครงการ" />;
+    },
+    cell: ({ row }) => <div className="">{row.getValue('ชื่อโครงการ')}</div>,
+  },
+  {
     accessorKey: 'name',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="ชื่อเอกสาร" />;
     },
     cell: ({ row }) => (
-      <div className="w-60 line-clamp-1">{row.getValue('name')}</div>
+      <div className="line-clamp-1">{row.getValue('name')}</div>
+    ),
+  },
+  {
+    accessorKey: 'ownerName',
+    accessorFn: (row) => row.user?.username,
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          className="justify-center"
+          column={column}
+          title="นิสิตผู้รับผิดชอบ"
+        />
+      );
+    },
+    cell: ({ row }) => (
+      <div className="line-clamp-1 text-center">
+        {row.getValue('ownerName')}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'ownerTel',
+    accessorFn: (row) => row.user?.tel,
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          className="justify-center"
+          column={column}
+          title="เบอร์โทรศัพท์"
+        />
+      );
+    },
+    cell: ({ row }) => (
+      <div className="line-clamp-1 text-center">{row.getValue('ownerTel')}</div>
     ),
   },
   {
@@ -50,14 +87,20 @@ export const columns: ColumnDef<FilingType>[] = [
       return value.includes(row.getValue(id));
     },
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="สถานะ" />;
+      return (
+        <DataTableColumnHeader
+          className="justify-center"
+          column={column}
+          title="สถานะ"
+        />
+      );
     },
     cell: ({ row }) => {
       const status = row.getValue('status') as FilingStatus;
 
       return (
         <div
-          className={`w-36 inline-block rounded-lg text-center py-2 px-4 text-xs font-bold min-w-[60%] ${buttonColors[status]}`}
+          className={`w-full inline-block text-center py-2 px-4 text-sm font-medium ${textColors[status]}`}
         >
           {TextMyProject[status]}
         </div>
@@ -65,8 +108,24 @@ export const columns: ColumnDef<FilingType>[] = [
     },
   },
   {
+    accessorKey: 'updatedAt',
+    accessorFn: (row) => dayjs(row.updatedAt).fromNow(),
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          className="justify-center"
+          column={column}
+          title="อัปเดตล่าสุด"
+        />
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize text-center">{row.getValue('updatedAt')}</div>
+    ),
+  },
+  {
     accessorKey: 'detailsPath',
-    accessorFn: (row) => '/project/' + row.projectId + '/' + row.id,
+    accessorFn: (row) => `/project/${row.projectId}/${row.id}`,
     header: () => null,
     cell: ({ row }) => (
       <Link href={row.getValue('detailsPath')}>

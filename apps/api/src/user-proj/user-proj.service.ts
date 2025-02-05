@@ -189,8 +189,8 @@ export class UserProjService {
     const userProjects = await this.userProjRepository.find({
       where: { userId: userId },
       select: ['projectId'],
-      order: { lastOpen: 'DESC' }
+      order: { lastOpen: 'DESC' },
     });
-    return userProjects.map(userProject => userProject.projectId);
+    return userProjects.map((userProject) => userProject.projectId);
   }
 }

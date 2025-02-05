@@ -7,6 +7,7 @@ import { ProjectModule } from '../project_/project_.module';
 import { UserModule } from '../user_/user.module';
 import { CountFilingModule } from '../count-filing/count-filing.module';
 import { DocumentModule } from '../document_/document.module';
+import { UserProjModule } from '../user-proj/user-proj.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DocumentModule } from '../document_/document.module';
     UserModule,
     CountFilingModule,
     ProjectModule,
+    UserProjModule,
     forwardRef(() => DocumentModule),
   ],
   providers: [FilingService],

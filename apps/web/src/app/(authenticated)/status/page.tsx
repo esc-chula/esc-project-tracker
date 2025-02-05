@@ -1,4 +1,4 @@
-import { Radio } from 'lucide-react';
+import { FileSearch } from 'lucide-react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import { getUserId } from '@/src/service/auth';
@@ -11,7 +11,7 @@ export default async function Page() {
     <main className="w-full pt-[68px]">
       <div className="pl-15 pr-5">
         <Header>
-          <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
+          <Title icon={<FileSearch size={40} />}>เอกสาร</Title>
         </Header>
       </div>
       <StatusPage userId={userId} />

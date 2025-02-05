@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  forwardRef,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Filing } from '../entities/filing.entity';
 import { Repository } from 'typeorm';
@@ -13,7 +8,7 @@ import { UserService } from '../user_/user.service';
 import { FilingStatus } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
 import { FilingFieldTranslate } from '../constant/translate';
-import { DocumentService } from '../document_/document.service';
+import { UserProjService } from '../user-proj/user-proj.service';
 
 @Injectable()
 export class FilingService {
@@ -23,8 +18,7 @@ export class FilingService {
     private readonly projectService: ProjectService,
     private readonly userService: UserService,
     private readonly countFilingService: CountFilingService,
-    @Inject(forwardRef(() => DocumentService))
-    private readonly documentService: DocumentService,
+    private readonly userProjService: UserProjService,
   ) {}
 
   findByFilingID(id: string) {
@@ -39,8 +33,11 @@ export class FilingService {
 
     const filings = await this.filingRepository
       .createQueryBuilder('filing')
+      .innerJoinAndSelect('filing.project', 'project')
+      .innerJoinAndSelect('filing.user', 'user')
       .where('filing.projectId = :id', { id })
       .getMany();
+
     return filings;
   }
 
@@ -48,34 +45,18 @@ export class FilingService {
     if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
     const foundUser = await this.userService.findByUserID(id);
     if (!foundUser) throw new BadRequestException('User Not Found!');
-
-    const projects = await this.projectService.findByUserID(id);
-    if (projects.length === 0) {
+    const projectIds =
+      await this.userProjService.findJoinedProjectsByUserId(id);
+    if (projectIds.length === 0) {
       return [];
     }
 
-    const filingPromises = projects.map((projectWithLastOpen) =>
-      this.findByProjectID(projectWithLastOpen.project.id),
+    const filingPromises = projectIds.map((projectIds) =>
+      this.findByProjectID(projectIds),
     );
     const filingsArrays = await Promise.all(filingPromises);
 
-    const filingsArraysWithProject = [];
-    for (let i = 0; i < filingsArrays.length; i++) {
-      const project = projects[i].project;
-      const filingsWithProject = [];
-      for (let j = 0; j < filingsArrays[i].length; j++) {
-        const filingWithProject = {
-          ...filingsArrays[i][j],
-          project: project,
-        };
-        filingsWithProject.push(filingWithProject);
-      }
-      filingsArraysWithProject.push(filingsWithProject);
-    }
-
-    const filingsWithProject = filingsArraysWithProject.flat();
-
-    return filingsWithProject;
+    return filingsArrays.flat();
   }
 
   async createFiling(
