@@ -1,12 +1,11 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import Link from 'next/link';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { FilingStatus } from '@/src/constant/enum';
 import type { FilingType } from '@/src/interface/filing';
 import { TextMyProject, textColors } from '@/src/styles/enumMap';
-import { Button } from '../ui/button';
 import { DataTableColumnHeader } from './dataTableColumnHeader';
+import PDFButton from './pdfButton';
 
 require('dayjs/locale/th');
 
@@ -125,15 +124,9 @@ export const columns: ColumnDef<FilingType>[] = [
   },
   {
     accessorKey: 'detailsPath',
-    accessorFn: (row) => `/project/${row.projectId}/${row.id}`,
+    accessorFn: (row) => `${row.projectId}/${row.id}`,
     header: () => null,
-    cell: ({ row }) => (
-      <Link href={row.getValue('detailsPath')}>
-        <Button variant="link" className="underline px-0">
-          ดูรายละเอียด
-        </Button>
-      </Link>
-    ),
+    cell: ({ row }) => <PDFButton row={row} />,
   },
   {
     accessorKey: 'type',

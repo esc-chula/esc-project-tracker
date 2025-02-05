@@ -1,9 +1,6 @@
-import { Table } from '@tanstack/react-table';
-import { FilingType } from '@/src/interface/filing';
-import { filterStatus } from '@/src/styles/enumMap';
-import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
+import type { Table } from '@tanstack/react-table';
+import type { FilingType } from '@/src/interface/filing';
 import SearchPanel from '../all-projects/searchPanel';
-import { statusFilingItems } from '@/src/constant/filterFiling';
 
 export default function StatusTableToolBar({
   table,
@@ -27,11 +24,12 @@ export default function StatusTableToolBar({
           table.resetColumnFilters();
         }}
       />
-      <DataTableFacetedFilter
-        column={table.getColumn('status')}
-        title="สถานะ"
-        options={statusFilingItems.filter((status) => status.value !== 'ALL')}
-      />
+      {/* <PopoverAddFiling
+        projectId=""
+        addFilingToParent={(filing) => {
+          console.log(filing);
+        }}
+      /> */}
     </div>
   );
 }

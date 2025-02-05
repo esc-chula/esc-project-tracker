@@ -28,10 +28,10 @@ import {
   statusFilingItems,
   typeFilingItems,
 } from '@/src/constant/filterFiling';
+import { projectTypeMap } from '@/src/constant/map';
 import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
 import { columns } from './statusTableColumns';
 import StatusTableToolBar from './statusTableToolBar';
-import { projectTypeMap } from '@/src/constant/map';
 
 export function StatusTable({
   data,
@@ -46,6 +46,7 @@ export function StatusTable({
     updatedAt: !compact,
     type: false,
     projectType: false,
+    subType: false,
   });
 
   const table = useReactTable({
@@ -114,7 +115,7 @@ export function StatusTable({
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-3 py-1">
+                  <TableCell key={cell.id} className="py-0 px-1 h-12">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
