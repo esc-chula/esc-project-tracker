@@ -15,6 +15,8 @@ dayjs.locale('th');
 export const columns: ColumnDef<FilingType>[] = [
   {
     accessorKey: 'รหัสเอกสาร',
+    size: 0,
+    enableResizing: false,
     accessorFn: (row) => `${row.projectCode}-${row.filingCode}`,
     header: ({ column }) => {
       return (
@@ -35,7 +37,11 @@ export const columns: ColumnDef<FilingType>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="ชื่อโครงการ" />;
     },
-    cell: ({ row }) => <div className="">{row.getValue('ชื่อโครงการ')}</div>,
+    cell: ({ row }) => (
+      <div className="line-clamp-1 w-[200px]">
+        {row.getValue('ชื่อโครงการ')}
+      </div>
+    ),
   },
   {
     accessorKey: 'name',
@@ -43,7 +49,7 @@ export const columns: ColumnDef<FilingType>[] = [
       return <DataTableColumnHeader column={column} title="ชื่อเอกสาร" />;
     },
     cell: ({ row }) => (
-      <div className="line-clamp-1">{row.getValue('name')}</div>
+      <div className="line-clamp-1 w-[200px]">{row.getValue('name')}</div>
     ),
   },
   {
@@ -66,6 +72,8 @@ export const columns: ColumnDef<FilingType>[] = [
   },
   {
     accessorKey: 'ownerTel',
+    size: 0,
+    enableResizing: false,
     accessorFn: (row) => row.user?.tel,
     header: ({ column }) => {
       return (
@@ -82,6 +90,8 @@ export const columns: ColumnDef<FilingType>[] = [
   },
   {
     accessorKey: 'status',
+    size: 120,
+    enableResizing: false,
     filterFn: (row, id, value: string[]) => {
       return value.includes(row.getValue(id));
     },
@@ -124,6 +134,8 @@ export const columns: ColumnDef<FilingType>[] = [
   },
   {
     accessorKey: 'detailsPath',
+    size: 0,
+    enableResizing: false,
     accessorFn: (row) => `${row.projectId}/${row.id}`,
     header: () => null,
     cell: ({ row }) => <PDFButton row={row} />,

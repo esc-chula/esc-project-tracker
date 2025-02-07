@@ -27,6 +27,7 @@ import {
 import FilingReplyAfterSubmitEditing from './filing-reply-after-submit-editing';
 import FilingReplyAfterSubmit from './filing-reply-after-submit';
 import ReviewSubmitButton from './review-submit-button';
+import { getUserId } from '@/src/service/auth';
 
 export default function FilingReplyComment({
   isPending,
@@ -151,7 +152,7 @@ export default function FilingReplyComment({
         });
         setDocument(updatedDocument);
       } else {
-        //const userId = await getUserId();
+        const userId = await getUserId();
         const newDocument = await createDocument({
           document: {
             name: newDocumentName,
@@ -160,7 +161,7 @@ export default function FilingReplyComment({
             docName: '',
             activity: DocumentActivity.REPLY,
             status: DocumentStatus.DRAFT,
-            userId: 'd1c0d106-1a4a-4729-9033-1b2b2d52e98a',
+            userId,
             detail: newDocumentDetail,
             comment: values.comment,
           },

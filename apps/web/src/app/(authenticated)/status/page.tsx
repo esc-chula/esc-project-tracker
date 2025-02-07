@@ -8,12 +8,10 @@ export default async function Page() {
   const userId = await getUserId();
 
   return (
-    <main className="w-full pt-[68px]">
-      <div className="pl-15 pr-5">
-        <Header>
-          <Title icon={<FileSearch size={40} />}>เอกสาร</Title>
-        </Header>
-      </div>
+    <main className="w-full py-16 px-12.5">
+      <Header>
+        <Title icon={<FileSearch size={40} />}>เอกสาร</Title>
+      </Header>
       <StatusPage userId={userId} />
     </main>
   );

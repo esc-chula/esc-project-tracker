@@ -84,6 +84,7 @@ const config = {
 
       padding: {
         15: '3.75rem',
+        12.5: '3.125rem',
       },
       borderRadius: {
         lg: 'var(--radius)',

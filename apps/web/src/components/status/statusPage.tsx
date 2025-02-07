@@ -18,9 +18,5 @@ export default function StatusPage({ userId }: { userId: string }) {
       }
     }
   }, [userId]);
-  return (
-    <section className="w-full pl-15 pr-5">
-      <StatusTable data={statuses} />
-    </section>
-  );
+  return <StatusTable data={statuses} />;
 }

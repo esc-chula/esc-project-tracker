@@ -97,7 +97,11 @@ export function StatusTable({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="text-black px-3">
+                  <TableHead
+                    key={header.id}
+                    className="text-black px-2"
+                    style={{ width: `${header.getSize()}px` }}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -130,7 +134,7 @@ export function StatusTable({
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 pb-4 pt-2 px-4">
+      <div className="flex items-center justify-end space-x-2 pb-4 pt-2 pl-4">
         <div className="space-x-2">
           <Button
             variant="outline"
