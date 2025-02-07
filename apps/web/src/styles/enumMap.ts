@@ -136,6 +136,10 @@ export const filterProjectStatus = [
     value: ProjectStatus.WAIT_FOR_CLOSE,
   },
   {
+    label: 'กำลังปิดโครงการ',
+    value: ProjectStatus.CLOSING,
+  },
+  {
     label: 'ปิดโครงการเรียบร้อย',
     value: ProjectStatus.CLOSED,
   },

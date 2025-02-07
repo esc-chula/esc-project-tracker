@@ -5,6 +5,7 @@ export const ProjectStatusToThai = new Map([
   [ProjectStatus.CONTINUE, 'กำลังดำเนินกิจกรรม'],
   [ProjectStatus.WAIT_FOR_CLOSE, 'รอปิดโครงการ'],
   [ProjectStatus.WAIT_FOR_APPROVE, 'รออนุมัติ'],
+  [ProjectStatus.CLOSING, 'กำลังปิดโครงการ'],
 ]);
 
 export const TextFilingSubType = {

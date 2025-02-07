@@ -46,7 +46,6 @@ export class Filing {
     type: 'enum',
     enum: FilingSubType,
     nullable: true,
-    default: null,
   })
   subType: FilingSubType;
 
