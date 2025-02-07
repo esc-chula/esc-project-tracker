@@ -148,10 +148,10 @@ export class DocumentService {
     if (!foundFiling) throw new BadRequestException('Filing Not Found!');
     const newDocument = new Document();
     newDocument.filing = foundFiling;
-    newDocument.name = name;
-    newDocument.detail = detail ?? '';
-    newDocument.pdfName = pdfName;
-    newDocument.docName = docName;
+    if (name) newDocument.name = name;
+    if (detail) newDocument.detail = detail;
+    if (pdfName) newDocument.pdfName = pdfName;
+    if (docName) newDocument.docName = docName;
     newDocument.activity = activity;
     newDocument.user = foundUser;
     if (comment) newDocument.comment = comment;

@@ -1,6 +1,6 @@
-import getUrlToFile from '@/src/service/aws/getUrlToFile';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { FaFile } from 'react-icons/fa6';
+import getUrlToFile from '@/src/service/aws/getUrlToFile';
 
 export default function FileDisplay({
   fileName,
@@ -11,6 +11,7 @@ export default function FileDisplay({
   fileType: string;
   folderName?: string;
 }) {
+  if (!fileName) return null;
   const extractedFileName = fileName
     .replace(/\{\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\}-/, '')
     .split('.')
@@ -24,8 +25,9 @@ export default function FileDisplay({
     window.open(signedUrl, '_blank');
   };
   return (
-    <div
-      onClick={() => handleClick()}
+    <button
+      type="button"
+      onClick={() => void handleClick()}
       className="w-60 bg-white border-black p-2 rounded-lg border-2 flex space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer"
     >
       {fileType === 'pdf' ? (
@@ -41,6 +43,6 @@ export default function FileDisplay({
           .{fileType}
         </div>
       </div>
-    </div>
+    </button>
   );
 }

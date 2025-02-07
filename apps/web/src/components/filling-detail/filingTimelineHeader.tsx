@@ -322,7 +322,7 @@ export default function FilingTimelineHeader({
           onClick={() => {
             setShowCreateDocument(true);
           }}
-          className="bg-gray-100 text-gray-700 font-semibold text-2xl w-full py-16 mt-6"
+          className="bg-gray-100 text-gray-700 font-semibold text-2xl w-full py-32 mt-6"
         >
           <CirclePlus className="h-11 w-11 mr-6" />
           อัปโหลดเอกสาร

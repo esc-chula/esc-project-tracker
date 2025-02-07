@@ -86,6 +86,9 @@ const config = {
         15: '3.75rem',
         12.5: '3.125rem',
       },
+      borderWidth: {
+        1: '1px',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

@@ -20,11 +20,10 @@ export default async function submitCreatedFormSchema(
   const folderName = `${projectId}/${filingId}`;
 
   const [pdfName, docName] = await Promise.all([
-    pdfFile &&
-      uploadFileToS3({
-        file: pdfFile,
-        folderName,
-      }),
+    uploadFileToS3({
+      file: pdfFile,
+      folderName,
+    }),
     docFile &&
       uploadFileToS3({
         file: docFile,
@@ -38,13 +37,11 @@ export default async function submitCreatedFormSchema(
   const [newDocument] = await Promise.all([
     createDocument({
       document: {
-        name: values.detail,
         filingId,
-        pdfName: pdfName ?? '',
-        docName: docName ?? '',
+        pdfName,
+        docName,
         activity: values.activity as DocumentActivity,
         userId,
-        detail: values.note,
         comment: values.comment,
       },
     }),

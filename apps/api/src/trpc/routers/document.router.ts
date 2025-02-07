@@ -47,13 +47,13 @@ export class DocumentRouter {
     createDocument: this.trpcService.protectedProcedure
       .input(
         z.object({
-          filingId: z.string(),
-          name: z.string(),
+          filingId: z.string().uuid(),
+          name: optional(z.string()),
           detail: optional(z.string()),
-          pdfName: z.string(),
-          docName: z.string(),
+          pdfName: optional(z.string()),
+          docName: optional(z.string()),
           activity: z.nativeEnum(DocumentActivity),
-          userId: z.string(),
+          userId: z.string().uuid(),
           status: optional(z.nativeEnum(DocumentStatus)),
           comment: optional(z.string()),
         }),

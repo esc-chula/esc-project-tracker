@@ -108,7 +108,7 @@ export default function FilingMenu({
           prepareUpdatedDocuments.values(),
         ).map((newDocument) =>
           createDocument({ document: newDocument }).catch(() => {
-            filingIdsNoUpdated.push(newDocument.name);
+            filingIdsNoUpdated.push(newDocument.comment ?? '');
           }),
         );
 

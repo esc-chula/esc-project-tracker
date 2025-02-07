@@ -15,8 +15,8 @@ export default function FileInputPanel({
   fileType?: string | null;
 }) {
   return (
-    <FormControl className="flex-grow">
-      <div className="relative flex flex-col w-full items-center justify-center px-6 py-2 border-4 border-dashed border-gray-300 text-center cursor-pointer rounded-lg hover:bg-gray-100 bg-white">
+    <FormControl className="shrink-0 basis-[152px]">
+      <div className="  relative flex flex-col w-full items-center justify-center px-6 py-2 border-1 border-dashed border-black text-center cursor-pointer rounded-lg hover:bg-gray-100 bg-white">
         {/* If have file show file name*/}
         {fileList?.length ? (
           <div className="flex flex-col space-y-2 h-full justify-around">

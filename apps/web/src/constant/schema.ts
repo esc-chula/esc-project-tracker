@@ -95,7 +95,7 @@ export const zodDocumentFiles = (
 export const createdFormSchema = z.object({
   file: zodDocumentFiles,
   activity: z.nativeEnum(DocumentActivity, { message: 'กรุณากรอกกิจกรรม' }),
-  detail: z.string().min(1, { message: 'กรุณากรอกรายละเอียด' }),
+  detail: z.string().optional(),
   note: z.string().optional(),
   comment: z.string().optional(),
 });

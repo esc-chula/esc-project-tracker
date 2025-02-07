@@ -18,10 +18,10 @@ export class Document {
   @ManyToOne(() => Filing, { onDelete: 'CASCADE' })
   filing: Filing;
 
-  @Column({ nullable: true })
+  @Column()
   filingId: string;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
   @Column({ default: DocumentActivity.CREATE })
@@ -30,22 +30,22 @@ export class Document {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column({ nullable: true })
+  @Column()
   userId: string;
 
-  @Column({ nullable: true, default: DocumentStatus.DRAFT })
+  @Column({ default: DocumentStatus.DRAFT })
   status: DocumentStatus;
 
-  @Column({ nullable: true, default: '' })
+  @Column({ nullable: true })
   detail: string;
 
-  @Column({ nullable: true, default: '' })
+  @Column({ nullable: true })
   comment: string;
 
-  @Column()
+  @Column({ nullable: true })
   pdfName: string;
 
-  @Column()
+  @Column({ nullable: true })
   docName: string;
 
   @CreateDateColumn()
