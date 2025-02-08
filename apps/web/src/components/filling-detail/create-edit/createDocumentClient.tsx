@@ -53,17 +53,19 @@ export default function CreateDocumentClient({
         projectId,
         filingId,
         userId,
-        status,
+        status === FilingStatus.DRAFT || status === FilingStatus.RETURNED
+          ? FilingStatus.WAIT_FOR_SECRETARY
+          : undefined,
       );
 
       afterCreateDocument(newDocument);
       toast({
-        title: 'สร้างเอกสารสำเร็จ',
+        title: 'ส่งเอกสารสำเร็จ',
       });
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: 'สร้างเอกสารไม่สำเร็จ',
+          title: 'ส่งเอกสารไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -78,6 +80,44 @@ export default function CreateDocumentClient({
         className="space-y-5 bg-gray-100 rounded-lg font-sukhumvit w-full py-8 px-11 flex flex-col text-start"
       >
         <div className="flex flex-row space-x-11 w-full min-h-[216px]">
+          {/* <div className="flex flex-col space-y-8 flex-1">
+              <FormField
+                control={form.control}
+                name="activity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg">
+                      กิจกรรม<span className="text-red">*</span>
+                    </FormLabel>
+                    <Select onValueChange={field.onChange}>
+                      <ActivityPanel />
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="detail"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg block">
+                      {'รายละเอียดเอกสาร (ชื่อเรื่องที่ระบุในเอกสาร)'}
+                      <span className="text-red">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <input
+                        placeholder="ใส่หัวข้อเอกสาร"
+                        {...field}
+                        className="border-2 rounded-lg p-1 px-4 flex w-full items-center"
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div> */}
           <div className="w-full flex-1">
             <FormField
               control={form.control}

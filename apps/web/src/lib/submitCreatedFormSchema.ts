@@ -1,6 +1,7 @@
-import { z } from 'zod';
-import { DocumentActivity, FilingStatus } from '../constant/enum';
-import { createdFormSchema } from '../constant/schema';
+import type { z } from 'zod';
+import type { DocumentActivity, FilingStatus } from '../constant/enum';
+import { DocumentStatus } from '../constant/enum';
+import type { createdFormSchema } from '../constant/schema';
 import uploadFileToS3 from '../service/aws/uploadFileToS3';
 import createDocument from '../service/document/createDocument';
 import updateFilingName from '../service/filing/updateFiling';
@@ -11,7 +12,8 @@ export default async function submitCreatedFormSchema(
   projectId: string,
   filingId: string,
   userId: string,
-  status?: FilingStatus,
+  newFilingstatus?: FilingStatus,
+  newDocumentStatus?: DocumentStatus,
 ) {
   const files = values.file as FileList;
   const swap = getFileType(files[0]) !== 'pdf';
@@ -20,10 +22,11 @@ export default async function submitCreatedFormSchema(
   const folderName = `${projectId}/${filingId}`;
 
   const [pdfName, docName] = await Promise.all([
-    uploadFileToS3({
-      file: pdfFile,
-      folderName,
-    }),
+    pdfFile &&
+      uploadFileToS3({
+        file: pdfFile,
+        folderName,
+      }),
     docFile &&
       uploadFileToS3({
         file: docFile,
@@ -42,14 +45,14 @@ export default async function submitCreatedFormSchema(
         docName,
         activity: values.activity as DocumentActivity,
         userId,
+        status: newDocumentStatus ?? DocumentStatus.WAIT_FOR_SECRETARY,
         comment: values.comment,
       },
     }),
-    status &&
-      status === FilingStatus.DRAFT &&
+    newFilingstatus &&
       updateFilingName({
         filingId,
-        filingStatus: FilingStatus.DOCUMENT_CREATED,
+        filingStatus: newFilingstatus,
       }),
   ]);
 

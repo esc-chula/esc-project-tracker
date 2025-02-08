@@ -1,10 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument -- Necessary for compatibility with the existing codebase */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access -- Necessary for compatibility with the existing codebase */
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import type { z } from 'zod';
+import React from 'react';
+import {
+  DocumentActivity,
+  DocumentStatus,
+  FilingStatus,
+} from '@/src/constant/enum';
+import type { DocumentType } from '@/src/interface/document';
+import { createdDocumentAdminSchema } from '@/src/constant/schema';
+import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';
 import {
   Form,
   FormControl,
@@ -13,16 +20,9 @@ import {
   FormLabel,
   FormMessage,
 } from '../../ui/form';
-import { Select } from '../../ui/select';
+import { toast } from '../../ui/use-toast';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
-import ActivityPanel from './activityPanel';
-import { DocumentActivity } from '@/src/constant/enum';
-import { toast } from '../../ui/use-toast';
-import { DocumentType } from '@/src/interface/document';
-import { createdDocumentAdminSchema } from '@/src/constant/schema';
-import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';
-import React from 'react';
 
 export default function CreateDocumentAdmin({
   setShowCreateDocument,
@@ -39,31 +39,37 @@ export default function CreateDocumentAdmin({
 }) {
   const form = useForm<z.infer<typeof createdDocumentAdminSchema>>({
     resolver: zodResolver(createdDocumentAdminSchema),
-    defaultValues: {},
+    defaultValues: {
+      activity: DocumentActivity.REPLY,
+    },
   });
   const fileRef = form.register('file');
-  const activityWatch = form.watch('activity');
 
-  async function onSubmit(values: z.infer<typeof createdDocumentAdminSchema>) {
+  async function onSubmit(
+    values: z.infer<typeof createdDocumentAdminSchema>,
+    updatedStatus: DocumentStatus,
+  ) {
     try {
-      if (values.activity === DocumentActivity.REPLY)
-        values.detail = 'ตอบกลับเอกสาร';
       const newDocument = await submitCreatedFormSchema(
-        { ...values, detail: values.detail ?? 'ตอบกลับเอกสาร' },
+        values,
         projectId,
         filingId,
         userId,
+        updatedStatus === DocumentStatus.APPROVED
+          ? FilingStatus.APPROVED
+          : FilingStatus.RETURNED,
+        updatedStatus,
       );
 
       afterCreateDocument(newDocument);
       toast({
-        title: 'สร้างเอกสารสำเร็จ',
-        description: `สร้างเอกสารสำเร็จ`,
+        title: 'ตอบกลับเอกสารสำเร็จ',
+        description: `${updatedStatus === DocumentStatus.APPROVED ? 'อนุมัติ' : 'ตีกลับ'}เอกสารสำเร็จ`,
       });
     } catch (error) {
       if (error instanceof Error) {
         toast({
-          title: 'สร้างเอกสารไม่สำเร็จ',
+          title: 'ตอบกลับเอกสารไม่สำเร็จ',
           description: error.message,
           isError: true,
         });
@@ -72,14 +78,15 @@ export default function CreateDocumentAdmin({
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 bg-gray-100 rounded-lg font-sukhumvit w-full p-8 flex flex-col text-start"
-        >
-          <div className="flex flex-row space-x-5">
-            <div className="flex flex-col space-y-8 flex-1">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit((values) =>
+          onSubmit(values, DocumentStatus.APPROVED),
+        )}
+        className="space-y-5 bg-gray-100 rounded-lg font-sukhumvit w-full py-8 px-11 flex flex-col text-start"
+      >
+        <div className="flex flex-row space-x-11 w-full min-h-[216px]">
+          {/* <div className="flex flex-col space-y-8 flex-1">
               <FormField
                 control={form.control}
                 name="activity"
@@ -117,28 +124,24 @@ export default function CreateDocumentAdmin({
                   )}
                 />
               ) : null}
-            </div>
-            <div className="w-full flex-1">
-              <FormField
-                control={form.control}
-                name="file"
-                render={({ field }) => (
-                  <FormItem className="h-full flex flex-col">
-                    <FormLabel className="font-bold text-lg ">
-                      อัปโหลดเอกสาร
-                      {activityWatch === DocumentActivity.EDIT ? (
-                        <span className="text-red">*</span>
-                      ) : null}
-                    </FormLabel>
-                    <FileInputPanel fileRef={fileRef} fileList={field.value} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            </div> */}
+          <div className="w-full flex-1">
+            <FormField
+              control={form.control}
+              name="file"
+              render={({ field }) => (
+                <FormItem className="h-full flex flex-col">
+                  <FormLabel className="font-bold text-lg">
+                    อัปโหลดเอกสาร
+                  </FormLabel>
+                  <FileInputPanel fileRef={fileRef} fileList={field.value} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-          <div className="flex w-full justify-between space-x-5">
-            {activityWatch === DocumentActivity.EDIT ? (
+          <div className="w-full flex-1">
+            {/* {activityWatch === DocumentActivity.EDIT ? (
               <FormField
                 control={form.control}
                 name="note"
@@ -158,20 +161,20 @@ export default function CreateDocumentAdmin({
                   </FormItem>
                 )}
               />
-            ) : null}
+            ) : null} */}
             <FormField
               control={form.control}
               name="comment"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="font-bold text-lg block">
+                <FormItem className="h-full flex flex-col">
+                  <FormLabel className="font-bold text-lg">
                     ความคิดเห็น
                   </FormLabel>
                   <FormControl>
                     <textarea
                       placeholder="เพิ่มความคิดเห็น"
                       {...field}
-                      className="border-2 rounded-lg p-4 w-full h-[20vh] resize-none"
+                      className="border-1 border-black rounded-lg p-4 w-full resize-none basis-[152px]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -179,12 +182,16 @@ export default function CreateDocumentAdmin({
               )}
             />
           </div>
-          <ButtonPanel
-            isDisabled={form.formState.isSubmitting}
-            setShowCreateDocument={setShowCreateDocument}
-          />
-        </form>
-      </Form>
-    </>
+        </div>
+
+        <ButtonPanel
+          isDisabled={form.formState.isSubmitting}
+          setShowCreateDocument={setShowCreateDocument}
+          handleAlternateSubmit={form.handleSubmit((values) =>
+            onSubmit(values, DocumentStatus.RETURNED),
+          )}
+        />
+      </form>
+    </Form>
   );
 }

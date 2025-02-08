@@ -108,14 +108,14 @@ export const createdDocumentAdminSchema = z
     note: z.string().optional(),
     comment: z.string().optional(),
   })
-  .refine(
-    (values) =>
-      values.activity === DocumentActivity.REPLY ||
-      (values.activity === DocumentActivity.EDIT &&
-        values.detail &&
-        values.detail.trim().length > 0),
-    { message: 'กรุณากรอกรายละเอียด', path: ['detail'] },
-  )
+  // .refine(
+  //   (values) =>
+  //     values.activity === DocumentActivity.REPLY ||
+  //     (values.activity === DocumentActivity.EDIT &&
+  //       values.detail &&
+  //       values.detail.trim().length > 0),
+  //   { message: 'กรุณากรอกรายละเอียด', path: ['detail'] },
+  // )
   .refine(
     (values) =>
       values.activity === DocumentActivity.REPLY ||

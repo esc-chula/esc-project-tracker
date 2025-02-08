@@ -7,7 +7,7 @@ export default function FileDisplay({
   fileType,
   folderName,
 }: {
-  fileName: string;
+  fileName?: string;
   fileType: string;
   folderName?: string;
 }) {
@@ -35,11 +35,11 @@ export default function FileDisplay({
       ) : (
         <FaFile size={20} style={{ color: 'skyblue' }} />
       )}
-      <div className="text-xxs text-start">
-        <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-[10vw] ">
+      <div className="text-xxs text-start grow">
+        <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-full ">
           {extractedFileName}
         </div>
-        <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-[10vw]">
+        <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-full">
           .{fileType}
         </div>
       </div>

@@ -1,19 +1,14 @@
 'use client';
 
-import { ChevronDown, ChevronUp, CircleUserRound } from 'lucide-react';
-import NameDate from './nameDate';
-import StatusButton from './statusButton';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '../../ui/collapsible';
+import { CircleUserRound } from 'lucide-react';
 import { useState } from 'react';
-import FileDisplay from './fileDisplay';
-import { DocumentType } from '@/src/interface/document';
+import type { DocumentType } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
-import { User } from '@/src/interface/user';
+import type { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
+import FileDisplay from './fileDisplay';
+import StatusButton from './statusButton';
+import NameDate from './nameDate';
 import DraftDocumentPopover from './draftDocumentPopover';
 import TextareaForDisplay from './textareaForDisplay';
 
@@ -32,12 +27,11 @@ export default function DisplayWithNoteAndStatus({
   handleDeleteDocument?: (documentId: string) => Promise<void>;
   folderName: string;
 }) {
-  const [expanded, setExpanded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
-      <div className="flex flex-row px-8">
+    <div className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
+      <div className="flex flex-row pl-8 pr-6">
         <NameDate
           title={user?.username ?? 'Secretary ESC'}
           date={`ส่งเอกสารเมื่อ ${convertDate(document.createdAt)}`}
@@ -46,6 +40,21 @@ export default function DisplayWithNoteAndStatus({
           <CircleUserRound size={30} className="shrink-0" />
         </NameDate>
         <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
+          <div className="flex gap-6 items-center text-base">
+            <div className="shrink-0">ไฟล์แนบ</div>
+            <FileDisplay
+              fileName={document.pdfName}
+              fileType="pdf"
+              folderName={folderName}
+            />
+            {document.docName !== '' && document.docName !== '-' && (
+              <FileDisplay
+                fileName={document.docName}
+                fileType="doc"
+                folderName={folderName}
+              />
+            )}
+          </div>
           <div className="font-bold text-sm">ความคิดเห็น</div>
           <TextareaForDisplay value={document.comment} />
         </div>
@@ -55,7 +64,7 @@ export default function DisplayWithNoteAndStatus({
               isOpen={isOpen}
               setIsOpen={setIsOpen}
               handleDeleteButton={() => {
-                handleDeleteDocument(document.id);
+                void handleDeleteDocument(document.id);
               }}
             />
           ) : (
@@ -65,7 +74,7 @@ export default function DisplayWithNoteAndStatus({
               setShowCreateDocument={setShowCreateDocument}
             />
           )}
-          <CollapsibleTrigger
+          {/* <CollapsibleTrigger
             onClick={() => {
               setExpanded(!expanded);
             }}
@@ -74,7 +83,7 @@ export default function DisplayWithNoteAndStatus({
           </CollapsibleTrigger>
         </div>
       </div>
-      <CollapsibleContent>
+        <CollapsibleContent>
         <div className="border-t-2 px-8 py-4 font-bold text-sm flex flex-col space-y-4 ">
           <div>
             <span className="font-bold">รายละเอียดเอกสาร: </span>
@@ -100,11 +109,9 @@ export default function DisplayWithNoteAndStatus({
                     folderName={folderName}
                   />
                 )}
-              </div>
-            </div>
-          </div>
+              </div> */}
         </div>
-      </CollapsibleContent>
-    </Collapsible>
+      </div>
+    </div>
   );
 }
