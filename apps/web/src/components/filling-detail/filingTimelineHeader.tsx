@@ -9,6 +9,7 @@ import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import UpdateDocumentAdmin from './create-edit/updateDocumentAdmin';
 import AddDocumentButton from './header/addDocumentButton';
+import FilingTemplateButton from './header/filingTemplateButton';
 
 export default function FilingTimelineHeader({
   name,
@@ -206,6 +207,7 @@ export default function FilingTimelineHeader({
           <div className="font-semibold text-2xl line-clamp-1">{name}</div>
         </span>
         <span className="flex gap-5 items-center">
+          <FilingTemplateButton />
           {status === FilingStatus.APPROVED ? (
             isAdmin ? (
               <>
