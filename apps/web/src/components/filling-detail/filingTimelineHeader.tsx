@@ -1,9 +1,12 @@
 'use client';
 import { CirclePlus, FileText } from 'lucide-react';
 import type { Dispatch, SetStateAction } from 'react';
+import { useRouter } from 'next/navigation';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import type { DocumentType } from '@/src/interface/document';
 import { Button } from '../ui/button';
+import PopoverEditFiling from '../project/popoverEditFiling';
+import PopoverDeleteFiling from '../project/popoverDeleteFiling';
 import CreateDocumentClient from './create-edit/createDocumentClient';
 import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
@@ -13,10 +16,12 @@ import FilingTemplateButton from './header/filingTemplateButton';
 
 export default function FilingTimelineHeader({
   name,
+  code,
   status,
   documents,
   latestDocument,
   setStatus,
+  setName,
   setDocuments,
   filingId,
   projectId,
@@ -26,10 +31,12 @@ export default function FilingTimelineHeader({
   isAdmin = false,
 }: {
   name: string;
+  code: string;
   status: FilingStatus;
   documents: DocumentType[];
   latestDocument: DocumentType | null;
   setStatus: (_: FilingStatus) => void;
+  setName: (_: string) => void;
   setDocuments: Dispatch<SetStateAction<DocumentType[]>>;
   filingId: string;
   projectId: string;
@@ -198,13 +205,37 @@ export default function FilingTimelineHeader({
   //   }
   //   setIsSubmitting(false);
   // };
+  const router = useRouter();
 
   return (
     <>
       <div className="flex justify-between gap-3 items-center">
         <span className="flex items-center gap-2 w-0 grow">
           <FileText className="w-5 h-5 shrink-0" />
-          <div className="font-semibold text-2xl line-clamp-1">{name}</div>
+          <div className="font-semibold text-2xl line-clamp-1">
+            {code} {name}
+          </div>
+          <div className="flex text-gray-500">
+            <PopoverEditFiling
+              oldFilingName={name}
+              filingId={filingId}
+              setNewNameParentFunc={(newName) => {
+                setName(newName);
+              }}
+              iconOnly
+            />
+            <PopoverDeleteFiling
+              filingId={filingId}
+              setDeletedParentFunc={(_: boolean) => {
+                router.push(
+                  isAdmin
+                    ? `/admin/project/${projectId}`
+                    : `/project/${projectId}`,
+                );
+              }}
+              iconOnly
+            />
+          </div>
         </span>
         <span className="flex gap-5 items-center">
           <FilingTemplateButton />

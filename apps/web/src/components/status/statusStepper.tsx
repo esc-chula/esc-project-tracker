@@ -58,7 +58,7 @@ export default function DocumentStatusStepper({
   const stepStatuses = FilingStatusToStepper[status];
 
   return (
-    <>
+    <div className="w-full max-w-5xl">
       <div className="flex w-full justify-around px-5 items-center mb-5">
         <Step1 fill={stepStatuses[0][0]} className="w-[20%]" />
         <Step2 fill={stepStatuses[1][0]} className="w-[20%]" />
@@ -106,6 +106,6 @@ export default function DocumentStatusStepper({
           );
         })}
       </Stepper>
-    </>
+    </div>
   );
 }

@@ -1,18 +1,18 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/statusStepper';
 import { FilingStatus } from '@/src/constant/enum';
-import { FilingType } from '@/src/interface/filing';
+import type { FilingType } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
-import { useEffect, useMemo, useState } from 'react';
 import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
-import { DocumentType } from '@/src/interface/document';
-import { User } from '@/src/interface/user';
+import type { DocumentType } from '@/src/interface/document';
+import type { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import deleteDocument from '@/src/service/document/deleteDocument';
 import updateFilingName from '@/src/service/filing/updateFiling';
@@ -41,6 +41,12 @@ export default function Page({
   const setStatus = useMemo(
     () => (status: FilingStatus) => {
       setFiling((prev) => (prev ? { ...prev, status } : prev));
+    },
+    [],
+  );
+  const setName = useMemo(
+    () => (name: string) => {
+      setFiling((prev) => (prev ? { ...prev, name } : prev));
     },
     [],
   );
@@ -119,7 +125,7 @@ export default function Page({
     }
   };
   useEffect(() => {
-    fetchData();
+    void fetchData();
   }, []);
   return (
     <main className="w-full pt-[68px]">
@@ -129,11 +135,7 @@ export default function Page({
             project={filing ? filing.projectCode : '...'}
             filing={
               filing
-                ? filing.projectCode +
-                  '-' +
-                  filing.filingCode +
-                  ' ' +
-                  filing.name
+                ? `${filing.projectCode}-${filing.filingCode} ${filing.name}`
                 : '...'
             }
             projectId={params.projectId}
@@ -145,15 +147,15 @@ export default function Page({
         <DocumentStatusStepper status={filing?.status ?? 'LOADING'} />
       </section>
       <section className="px-15 mb-7">
-        {filing && (
+        {filing ? (
           <FilingTimelineHeader
-            name={
-              filing.projectCode + '-' + filing.filingCode + ' ' + filing.name
-            }
+            name={filing.name}
+            code={`${filing.projectCode}-${filing.filingCode}`}
             status={filing.status}
             documents={documents}
             latestDocument={latestDocument}
             setStatus={setStatus}
+            setName={setName}
             setDocuments={setDocuments}
             projectId={params.projectId}
             filingId={params.filingId}
@@ -161,7 +163,7 @@ export default function Page({
             setShowCreateDocument={setShowCreateDocument}
             userId={userId}
           />
-        )}
+        ) : null}
       </section>
 
       <section className="px-15 relative">

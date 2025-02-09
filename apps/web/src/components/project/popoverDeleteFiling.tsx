@@ -16,9 +16,11 @@ import { toast } from '../ui/use-toast';
 export default function PopoverDeleteFiling({
   filingId,
   setDeletedParentFunc,
+  iconOnly = false,
 }: {
   filingId: string;
   setDeletedParentFunc: (deleted: boolean) => void;
+  iconOnly?: boolean;
 }) {
   const submitDelete = async () => {
     try {
@@ -45,7 +47,7 @@ export default function PopoverDeleteFiling({
       <DialogTrigger asChild>
         <div className="flex flex-row p-2 space-x-3 hover:cursor-pointer">
           <Trash2 />
-          <div className="">ลบเอกสาร</div>
+          {iconOnly ? null : <div className="">ลบเอกสาร</div>}
         </div>
       </DialogTrigger>
 

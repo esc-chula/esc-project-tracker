@@ -50,7 +50,7 @@ export default function Subtitle({
               </BreadcrumbItem>
               <BreadcrumbSeparator className="text-black" />
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-semibold text-red leading-10 min-w-36 max-w-[17vw] line-clamp-1">
+                <BreadcrumbPage className="font-semibold text-red leading-10 min-w-36 line-clamp-1">
                   {filing}
                 </BreadcrumbPage>
               </BreadcrumbItem>

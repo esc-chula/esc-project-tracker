@@ -44,6 +44,12 @@ export default function Page({
     },
     [],
   );
+  const setName = useMemo(
+    () => (name: string) => {
+      setFiling((prev) => (prev ? { ...prev, name } : prev));
+    },
+    [],
+  );
 
   const fetchData = async () => {
     try {
@@ -145,11 +151,13 @@ export default function Page({
       <section className="px-15 mb-7">
         {filing ? (
           <FilingTimelineHeader
-            name={`${filing.projectCode}-${filing.filingCode} ${filing.name}`}
+            name={filing.name}
+            code={`${filing.projectCode}-${filing.filingCode}`}
             status={filing.status}
             documents={documents}
             latestDocument={latestDocument}
             setStatus={setStatus}
+            setName={setName}
             setDocuments={setDocuments}
             projectId={params.projectId}
             filingId={params.filingId}

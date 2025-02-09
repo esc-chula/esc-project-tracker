@@ -15,10 +15,12 @@ export default function PopoverEditFiling({
   filingId,
   oldFilingName,
   setNewNameParentFunc,
+  iconOnly = false,
 }: {
   filingId: string;
   oldFilingName: string;
   setNewNameParentFunc: (newName: string) => void;
+  iconOnly?: boolean;
 }) {
   const [name, setName] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -62,7 +64,7 @@ export default function PopoverEditFiling({
       <DialogTrigger asChild>
         <div className="flex flex-row p-2 space-x-3 hover:cursor-pointer">
           <SquarePen />
-          <div className="">แก้ไขชื่อเอกสาร</div>
+          {iconOnly ? null : <div className="">แก้ไขชื่อเอกสาร</div>}
         </div>
       </DialogTrigger>
       <DialogContent>
