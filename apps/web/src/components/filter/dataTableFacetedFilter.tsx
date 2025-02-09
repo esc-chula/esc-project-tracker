@@ -40,7 +40,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Button
           variant="secondary"
           size="sm"
-          className="h-10 border-dashed text-base rounded-2xl px-4 py-2"
+          className="h-8 border-dashed text-base rounded-2xl px-4 py-2"
         >
           {title}
           <ChevronDown className="ml-2 h-4 w-4" />

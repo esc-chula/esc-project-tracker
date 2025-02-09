@@ -91,7 +91,7 @@ export function StatusTable({
           options={statusFilingItems.filter((status) => status.value !== 'ALL')}
         />
       </div>
-      <Table className="rounded-xl overflow-hidden text-base">
+      <Table className="rounded-xl text-base w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

@@ -1,26 +1,25 @@
 'use client';
 import { Bell } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-
 import { getUsername } from '@/src/service/auth';
 import UserCardMenu from './user-card-menu';
-import { useEffect, useState } from 'react';
 
 export default function UserCard({ usernameData }: { usernameData?: string }) {
   const [username, setUsername] = useState(usernameData || '');
   useEffect(() => {
     if (usernameData) return;
-    getUsername().then((fetchedUsername) => {
+    void getUsername().then((fetchedUsername) => {
       setUsername(fetchedUsername);
     });
   }, []);
 
   return (
-    <div className="h-12 w-[300px] flex items-center ml-auto">
+    <div className="h-12 w-[300px] flex items-center justify-end">
       <div className="pr-4 border-r border-black mr-4 h-full flex items-center opacity-35">
         <Bell size={28} />
       </div>

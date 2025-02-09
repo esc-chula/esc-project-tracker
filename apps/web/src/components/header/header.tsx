@@ -8,11 +8,9 @@ export default function Header({
   username?: string;
 }) {
   return (
-    <>
-      <header className="min-h-[50px] flex justify-between gap-3.5 pr-5">
-        {children}
-        <UserCard usernameData={username} />
-      </header>
-    </>
+    <header className="min-h-[50px] flex justify-between gap-3.5">
+      {children}
+      <UserCard usernameData={username} />
+    </header>
   );
 }

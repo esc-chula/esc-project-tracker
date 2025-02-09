@@ -13,11 +13,11 @@ export default function ButtonPanel({
   return (
     <div className="flex flex-row justify-end text-black gap-2">
       <Button
-        variant="secondary"
+        variant="outline"
         onClick={() => {
           setShowCreateDocument ? setShowCreateDocument(false) : null;
         }}
-        className="disabled:bg-lightgray text-base px-4 py-2 h-9 font-medium hover:bg-slate-200 rounded-xl transition duration-300"
+        className="disabled:bg-lightgray text-base text-gray-500 bg-transparent px-4 py-2 h-9 font-medium hover:bg-slate-200 rounded-xl transition duration-300"
       >
         ยกเลิก
       </Button>

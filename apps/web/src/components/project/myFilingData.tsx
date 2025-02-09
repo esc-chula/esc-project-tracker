@@ -1,15 +1,16 @@
 'use client';
-import SearchBar from '../searchbar/searchBar';
 import { FileText } from 'lucide-react';
-import NoFiling from './noFiling';
-import AllFilingPanel from './allFilingPanel';
-import PopoverAddFiling from './popoverAddFiling';
 import { useEffect, useState } from 'react';
-import { FilingType } from '@/src/interface/filing';
-import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
-import { toast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { Project } from '@/src/interface/project';
+import type { FilingType } from '@/src/interface/filing';
+import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
+import type { Project } from '@/src/interface/project';
+import { toast } from '../ui/use-toast';
+import SearchBar from '../searchbar/searchBar';
+import { StatusTable } from '../status/statusTable';
+import PopoverAddFiling from './popoverAddFiling';
+import AllFilingPanel from './allFilingPanel';
+import NoFiling from './noFiling';
 
 export default function MyFilingData({ projectId }: { projectId: string }) {
   const [filings, setFilings] = useState<FilingType[]>([]);
@@ -41,16 +42,12 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
         }
       }
     };
-    fetchFilings();
+    void fetchFilings();
   }, [projectId]);
 
-  useEffect(() => {
-    console.log(filings);
-  }, [filings]);
-
   return (
-    <div className="space-y-4 w-full ">
-      <div className="flex flex-row justify-between items-center">
+    <div className="w-full">
+      {/* <div className="flex flex-row justify-between items-center">
         <div className="font-sukhumvit text-lg sm::text-base flex items-center font-bold ">
           <FileText style={{ marginRight: '10' }} />
           เอกสาร
@@ -73,8 +70,8 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
             }}
           />
         </div>
-      </div>
-      {isFetched && (
+      </div> */}
+      {isFetched ? (
         <>
           {filings.length === 0 ? (
             <NoFiling
@@ -84,10 +81,11 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
               }}
             />
           ) : (
-            <AllFilingPanel filings={filings} setFilings={setFilings} />
+            // <AllFilingPanel filings={filings} setFilings={setFilings} />
+            <StatusTable data={filings} />
           )}
         </>
-      )}
+      ) : null}
     </div>
   );
 }
