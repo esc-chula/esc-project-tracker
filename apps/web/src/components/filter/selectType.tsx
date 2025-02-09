@@ -1,4 +1,5 @@
 'use client';
+import { useEffect, useState } from 'react';
 import {
   Select,
   SelectContent,
@@ -6,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/components/ui/select';
-import { useEffect, useState } from 'react';
 
 export default function SelectType({
   title,
@@ -35,7 +35,7 @@ export default function SelectType({
         sendValue(value);
       }}
     >
-      <SelectTrigger className="rounded-full border-black h-8 w-auto space-x-2 text-sm focus:shadow-none text-ellipsis max-w-60">
+      <SelectTrigger className="h-8 text-base rounded-2xl px-4 py-2 gap-2 bg-secondary border-0 max-w-36">
         <SelectValue placeholder={title} />
       </SelectTrigger>
       <SelectContent>

@@ -8,7 +8,7 @@ export default function FilingsSection() {
   const [reviewedFilingId, setReviewedFilingId] = useState<string>('');
 
   return (
-    <div className="mt-6 overflow flex flex-row">
+    <div className="mt-6 overflow flex w-full h-full">
       <FilingTab
         setSelectedFilingId={setSelectedFilingId}
         selectedFilingId={selectedFilingId}

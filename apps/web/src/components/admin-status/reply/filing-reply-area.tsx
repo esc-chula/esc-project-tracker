@@ -2,17 +2,17 @@
 import { FaFolderOpen } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
-import { FilingType } from '@/src/interface/filing';
-import { DocumentType } from '@/src/interface/document';
-import FilingReplyHeader from './filing-reply-header';
-import FilingReplyDetail from './filing-reply-detail';
-import { User } from '@/src/interface/user';
+import type { FilingType } from '@/src/interface/filing';
+import type { DocumentType } from '@/src/interface/document';
+import type { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
-import FilingReplyComment from './filing-reply-comment';
-import FilingReplyButtons from './filing-reply-buttons';
 import { FilingStatus } from '@/src/constant/enum';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
 import { toast } from '../../ui/use-toast';
+import FilingReplyButtons from './filing-reply-buttons';
+import FilingReplyComment from './filing-reply-comment';
+import FilingReplyDetail from './filing-reply-detail';
+import FilingReplyHeader from './filing-reply-header';
 
 export default function FilingReplyArea({
   selectedFilingId,
@@ -48,7 +48,7 @@ export default function FilingReplyArea({
         setFilingStatus(data?.status || FilingStatus.WAIT_FOR_SECRETARY);
         setIsPending(data?.status === FilingStatus.WAIT_FOR_SECRETARY);
         setProjectId(data?.projectId || '');
-        setDocumentCode(data?.projectCode + '-' + data?.filingCode);
+        setDocumentCode(`${data?.projectCode}-${data?.filingCode}`);
 
         // Fetch owner หลังจากเรียกข้อมูลเอกสาร
         if (data?.userId) {
@@ -97,12 +97,14 @@ export default function FilingReplyArea({
   }
 
   return (
-    <div className="min-h-full w-[50vw] pl-15 overflow flex justify-center overflow-hidden">
+    <div className="basis-2/3 pl-6 overflow flex justify-center overflow-hidden">
       {selectedFilingId === '' ? (
         <div className="h-full items-center flex flex-col justify-center text-3xl text-gray-300 space-y-2">
           <FaFolderOpen size={100} />
           <div className="text-center">
-            เลือกเอกสารที่<br></br>ต้องการดำเนินการ
+            เลือกเอกสารที่
+            <br />
+            ต้องการดำเนินการ
           </div>
         </div>
       ) : (

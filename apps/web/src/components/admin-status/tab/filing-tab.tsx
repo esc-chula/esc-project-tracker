@@ -1,17 +1,29 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import { ReactNode, SyntheticEvent, useEffect, useMemo, useState } from 'react';
-import SearchPanel from '../../all-projects/searchPanel';
-import { FilingType } from '@/src/interface/filing';
-import { Project } from '@/src/interface/project';
-import SelectType from '../../filter/selectType';
+import type { ReactNode, SyntheticEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { FilingType } from '@/src/interface/filing';
 import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import { FilingStatus } from '@/src/constant/enum';
-import FilingTabShow from './filing-tab-show';
-import { FilingsWithDocument } from '@/src/types/filing';
-import { toast } from '../../ui/use-toast';
+import type { FilingsWithDocument } from '@/src/types/filing';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
+import { toast } from '../../ui/use-toast';
+import SelectType from '../../filter/selectType';
+import SearchPanel from '../../all-projects/searchPanel';
+import FilingTabShow from './filing-tab-show';
+import {
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from '@tanstack/react-table';
+import { filingTabColumns } from './filing-tab-columns';
+import { DataTableFacetedFilter } from '../../filter/dataTableFacetedFilter';
+import { projectTypeMap } from '@/src/constant/map';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -55,7 +67,6 @@ export default function FilingTab({
   const [tabsValue, setTabsValue] = useState<number>(0);
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabsValue(newValue);
-    setIsSortDateDESC(true);
   };
   const [selectedType, setSelectedType] = useState<string>('ALL');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
@@ -64,7 +75,24 @@ export default function FilingTab({
     FilingsWithDocument[]
   >([]);
   const [filings, setFilings] = useState<FilingType[]>([]);
-  const [isSortDateDESC, setIsSortDateDESC] = useState<boolean>(true);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'updatedAt', desc: true },
+  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const table = useReactTable({
+    data: filingWithDocument,
+    columns: filingTabColumns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+    },
+  });
 
   // get filings and documents
   useEffect(() => {
@@ -130,31 +158,6 @@ export default function FilingTab({
     fetchFiling();
   }, [tabsValue, selectedType, selectedDepartment]);
 
-  // sort date ( createdAt pendind)
-  useEffect(() => {
-    const sortedFilings = [...filingWithDocument].sort((a, b) =>
-      isSortDateDESC
-        ? new Date(b.document.createdAt).getTime() -
-          new Date(a.document.createdAt).getTime()
-        : new Date(a.document.createdAt).getTime() -
-          new Date(b.document.createdAt).getTime(),
-    );
-
-    const isDifferent = filingWithDocument.some(
-      (filing, index) =>
-        filing.document.createdAt !== sortedFilings[index].document.createdAt,
-    );
-
-    if (isDifferent) {
-      setFilingWithDocument(sortedFilings);
-    }
-  }, [isSortDateDESC, filingWithDocument]);
-
-  const selectedSortValue = useMemo(
-    () => (isSortDateDESC ? '0' : '1'),
-    [isSortDateDESC],
-  );
-
   // กรณีที่มีการ review แล้ว เอาออกจาก list
   useEffect(() => {
     if (reviewedFilingId) {
@@ -171,7 +174,7 @@ export default function FilingTab({
   }, [reviewedFilingId]);
 
   return (
-    <div className="border-lightgray border-2 rounded-xl w-[25vw] h-[80vh] pt-3 flex flex-col">
+    <div className="border-lightgray border-2 rounded-xl basis-1/3 pt-3 flex flex-col h-[80vh]">
       <div className="w-full flex justify-center border-b-lightgray border-b-2">
         <Box sx={{ borderColor: 'divider' }}>
           <Tabs
@@ -194,6 +197,7 @@ export default function FilingTab({
                 '&:hover': {
                   backgroundColor: 'transparent',
                 },
+                fontFamily: 'var(--sukhumvit-set-font)',
               },
             }}
           >
@@ -226,7 +230,25 @@ export default function FilingTab({
       </div>
       <div className="w-full mt-5 pl-5 flex flex-col space-y-5">
         <div className="w-full flex flex-row space-x-4 pr-5 items-center">
-          <SearchPanel filings={filings} placeHolder="รหัสเอกสาร" />
+          <SearchPanel
+            filings={filings}
+            placeHolder="ค้นหาเอกสาร"
+            filingFunc={(filing: FilingType) => {
+              setSelectedFilingId(filing.id);
+            }}
+          />
+        </div>
+        <div className="flex flex-row space-x-5 pr-5">
+          <DataTableFacetedFilter
+            column={table.getColumn('projectType')}
+            title="ฝ่าย"
+            options={projectTypeMap}
+          />
+          <DataTableFacetedFilter
+            column={table.getColumn('type')}
+            title="ประเภทเอกสาร"
+            options={typeFilingItems.filter((type) => type.value !== 'ALL')}
+          />
           <SelectType
             title="ล่าสุด"
             items={[
@@ -236,36 +258,26 @@ export default function FilingTab({
                 label: 'เก่าสุด',
               },
             ]}
-            sendValue={(value: string) => {
-              setIsSortDateDESC(value === '0');
+            sendValue={(_: string) => {
+              const column = table.getColumn('updatedAt');
+              if (!column) return;
+              column.toggleSorting(column.getIsSorted() === 'asc');
             }}
-            selectedValue={selectedSortValue}
-          />
-        </div>
-        <div className="flex flex-row space-x-5 pr-5">
-          <SelectType
-            title="ฝ่าย"
-            items={departmentProjectItems}
-            sendValue={setSelectedDepartment}
-          />
-          <SelectType
-            title="ประเภท"
-            items={typeFilingItems}
-            sendValue={setSelectedType}
+            selectedValue="0"
           />
         </div>
       </div>
       <div className="flex-grow overflow-y-scroll no-scrollbar">
         {[0, 1, 2].map((i) => (
           <CustomTabPanel value={tabsValue} index={i} key={i}>
-            {isFetched && (
+            {isFetched ? (
               <FilingTabShow
                 tabValue={i}
-                filingWithPendingDocuments={filingWithDocument}
+                rowModel={table.getRowModel()}
                 setSelectedFilingId={setSelectedFilingId}
                 selectedFilingId={selectedFilingId}
               />
-            )}
+            ) : null}
           </CustomTabPanel>
         ))}
       </div>

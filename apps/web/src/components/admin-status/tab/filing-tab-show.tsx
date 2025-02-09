@@ -1,33 +1,33 @@
 'use client';
+import type { RowModel } from '@tanstack/react-table';
+import type { FilingsWithDocument } from '@/src/types/filing';
 import FilingTabShowDetail from './filing-tab-show-detail';
 import FilingTabNotFound from './filing-tab-not-found';
-import { useState, useEffect } from 'react';
-import { FilingsWithDocument } from '@/src/types/filing';
 
 export default function FilingTabShow({
   tabValue,
-  filingWithPendingDocuments,
   selectedFilingId,
   setSelectedFilingId,
+  rowModel,
 }: {
   tabValue: number;
-  filingWithPendingDocuments: FilingsWithDocument[];
   selectedFilingId: string;
   setSelectedFilingId: (id: string) => void;
+  rowModel: RowModel<FilingsWithDocument>;
 }) {
-  if (filingWithPendingDocuments.length === 0) {
+  if (rowModel.rows.length === 0) {
     return <FilingTabNotFound value={tabValue} />;
   }
   return (
     <div className="w-full h-full flex flex-col font-sukhumvit pt-2">
-      {filingWithPendingDocuments.map((filingWithDocument, index) => (
+      {rowModel.rows.map((filingWithDocument) => (
         <FilingTabShowDetail
-          key={index}
-          filingWithPendingDocument={filingWithDocument}
+          key={filingWithDocument.id}
+          filingWithDocument={filingWithDocument.original}
           setSelectedFilingId={setSelectedFilingId}
-          selectedFilingId={selectedFilingId}
-          isActive={selectedFilingId === filingWithDocument.filing.id}
-          setActiveFiling={setSelectedFilingId}
+          updatedAt={filingWithDocument.getValue('updatedAt')}
+          isActive={selectedFilingId === filingWithDocument.original.filing.id}
+          projectName={filingWithDocument.getValue('projectName')}
         />
       ))}
     </div>

@@ -31,12 +31,12 @@ export default function FileDisplay({
       className="w-60 bg-white border-black p-2 rounded-lg border-2 flex space-x-2 items-center hover:scale-105 transition duration-300 hover:cursor-pointer"
     >
       {fileType === 'pdf' ? (
-        <BiSolidFilePdf size={20} className="text-red" />
+        <BiSolidFilePdf size={20} className="text-red shrink-0" />
       ) : (
-        <FaFile size={20} style={{ color: 'skyblue' }} />
+        <FaFile size={20} style={{ color: 'skyblue' }} className="shrink-0" />
       )}
       <div className="text-xxs text-start grow">
-        <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-full ">
+        <div className="font-semibold overflow-hidden text-ellipsis w-full text-wrap">
           {extractedFileName}
         </div>
         <div className="font-semibold overflow-hidden whitespace-nowrap text-ellipsis w-full">
