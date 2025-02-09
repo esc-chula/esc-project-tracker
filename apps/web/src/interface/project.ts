@@ -16,5 +16,5 @@ export interface Project {
 export interface ProjectWithLastOpen {
   project: Project;
   lastOpen: string;
-  pinnedAt: string;
+  pinnedAt?: string;
 }
