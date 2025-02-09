@@ -5,15 +5,11 @@ import FilingsSection from '@/src/components/admin-status/filings-section';
 
 export default function Page() {
   return (
-    <>
-      <main className="w-full pt-[68px] overflow-y-auto">
-        <div className="pl-15 pr-5 pb-5">
-          <Header>
-            <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
-          </Header>
-        </div>
-        <FilingsSection />
-      </main>
-    </>
+    <main className="py-10 px-6 overflow-y-auto">
+      <Header>
+        <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
+      </Header>
+      <FilingsSection />
+    </main>
   );
 }

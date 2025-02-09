@@ -46,7 +46,7 @@ export default function Page() {
     [projectsWithLastOpen],
   );
   return (
-    <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
+    <main className="py-10 px-6">
       <Header username={username}>
         <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>

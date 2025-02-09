@@ -50,7 +50,7 @@ export default function Page({ params }: { params: { projectId: string } }) {
   return (
     <>
       {project && (
-        <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh] ">
+        <main className="space-y-5 py-10 px-6">
           <Header>
             <Subtitle
               project={`${project.projectCode} ${project.name}`}

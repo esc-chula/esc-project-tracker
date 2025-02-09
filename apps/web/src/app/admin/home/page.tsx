@@ -108,7 +108,7 @@ export default function Page() {
     (project: { project: Project }) => project.project,
   );
   return (
-    <main className="w-full pl-15 pr-5 pt-[68px] h-min-[100vh]">
+    <main className="py-10 px-6">
       <Header>
         <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>

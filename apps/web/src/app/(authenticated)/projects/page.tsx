@@ -7,13 +7,11 @@ import { getUserId } from '@/src/service/auth';
 export default async function Page() {
   const userId = await getUserId();
   return (
-    <>
-      <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh]">
-        <Header>
-          <Title icon={<Folders size={40} />}>โครงการทั้งหมด</Title>
-        </Header>
-        <SelectTab isAdmin={false} userId={userId} />
-      </main>
-    </>
+    <main className="space-y-5 py-10 px-6">
+      <Header>
+        <Title icon={<Folders size={40} />}>โครงการ</Title>
+      </Header>
+      <SelectTab isAdmin={false} userId={userId} />
+    </main>
   );
 }

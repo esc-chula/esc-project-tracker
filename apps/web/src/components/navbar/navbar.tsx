@@ -5,7 +5,6 @@ import {
   ChevronFirst,
   Home,
   FileSearch,
-  Folders,
   Radio,
   FilePlus,
   Trash2,
@@ -27,7 +26,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   });
   const pathname = usePathname();
   return (
-    <aside className="h-screen bg-intania flex-none sticky top-0">
+    <div className="h-full bg-intania flex-none relative max-w-60 min-w-[86px] rounded-2xl">
       <button
         onClick={() => {
           localStorage.setItem('navbarExpanded', String(!expanded));
@@ -40,7 +39,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
         {expanded ? <ChevronFirst /> : <ChevronLast />}
       </button>
       <nav
-        className={`h-full flex flex-col max-w-60 justify-between overflow-x-hidden transition-all overflow-y-scroll no-scrollbar py-14 ${expanded ? 'px-10' : 'px-4'}`}
+        className={`h-full flex flex-col justify-between overflow-x-hidden transition-all no-scrollbar py-14 ${expanded ? 'px-10' : 'px-4'}`}
       >
         <div className="flex flex-col justify-between items-center gap-3.5 px-2">
           <Image
@@ -119,6 +118,6 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           </ul>
         </div>
       </nav>
-    </aside>
+    </div>
   );
 }

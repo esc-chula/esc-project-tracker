@@ -131,27 +131,25 @@ export default function FilingDetailPage({
     void fetchData();
   }, []);
   return (
-    <main className="w-full pt-[68px]">
-      <div className="pl-15 pr-5">
-        <Header>
-          <Subtitle
-            origin={isAdmin ? '/admin/projects' : undefined}
-            project={filing ? filing.projectCode : '...'}
-            filing={
-              filing
-                ? `${filing.projectCode}-${filing.filingCode} ${filing.name}`
-                : '...'
-            }
-            isAdmin={isAdmin}
-            projectId={params.projectId}
-          />
-        </Header>
-      </div>
+    <main className="py-10 px-6">
+      <Header>
+        <Subtitle
+          origin={isAdmin ? '/admin/projects' : undefined}
+          project={filing ? filing.projectCode : '...'}
+          filing={
+            filing
+              ? `${filing.projectCode}-${filing.filingCode} ${filing.name}`
+              : '...'
+          }
+          isAdmin={isAdmin}
+          projectId={params.projectId}
+        />
+      </Header>
       <section className="flex flex-col mb-7 items-center mt-10 w-full">
         <h3 className="mb-8 text-2xl font-bold">สถานะเอกสารปัจจุบัน</h3>
         <DocumentStatusStepper status={filing?.status ?? 'LOADING'} />
       </section>
-      <section className="px-15 mb-7">
+      <section className="mb-7">
         {filing ? (
           <FilingTimelineHeader
             name={filing.name}
@@ -172,7 +170,7 @@ export default function FilingDetailPage({
         ) : null}
       </section>
 
-      <section className="px-15 relative">
+      <section className="relative">
         <FilingTimeline
           documents={documents}
           status={filing?.status ?? FilingStatus.DRAFT}

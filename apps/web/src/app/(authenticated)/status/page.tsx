@@ -8,7 +8,7 @@ export default async function Page() {
   const userId = await getUserId();
 
   return (
-    <main className="w-full py-16 px-12.5">
+    <main className="py-10 px-6">
       <Header>
         <Title icon={<FileSearch size={40} />}>เอกสาร</Title>
       </Header>

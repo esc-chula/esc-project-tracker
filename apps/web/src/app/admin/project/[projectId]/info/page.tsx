@@ -47,7 +47,7 @@ export default function ProjectInfoPage() {
 
   return (
     <>
-      <main className="w-full pl-15 pr-5 pt-[68px] space-y-5 h-min-[100vh]">
+      <main className="py-10 px-6 space-y-5">
         <Header>
           <Title icon={<Folders size={40} />} href="/admin/projects">
             รายละเอียดโครงการ
