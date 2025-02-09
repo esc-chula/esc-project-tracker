@@ -39,8 +39,8 @@ export default function FilingMenuItem({
       const docs = await findLatestDocumentByFilingId(filing.id);
       if (docs) {
         setDocuments(docs);
-        setDetail(docs.detail);
-        setName(docs.name);
+        if (docs.detail) setDetail(docs.detail);
+        if (docs.name) setName(docs.name);
       }
       const owner = await findUserByCondition({ id: filing.userId });
       if (owner) setFilingOwner(owner);
