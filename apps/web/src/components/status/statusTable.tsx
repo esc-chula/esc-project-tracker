@@ -14,6 +14,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/src/components/ui/button';
 import {
   Table,
@@ -70,6 +71,13 @@ export function StatusTable({
       },
     },
   });
+  const router = useRouter();
+  const pathname = usePathname();
+  const redirectToFiling = (filing: FilingType) => {
+    if (pathname.startsWith('/admin'))
+      router.push(`/admin/project/${filing.projectId}/${filing.id}`);
+    else router.push(`/project/${filing.projectId}/${filing.id}`);
+  };
 
   return (
     <>
@@ -117,7 +125,20 @@ export function StatusTable({
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow
+                key={row.id}
+                onClick={() => {
+                  if (row.getIsSelected()) {
+                    redirectToFiling(row.original);
+                  } else {
+                    table.resetRowSelection();
+                    row.toggleSelected();
+                  }
+                }}
+                className={`${
+                  row.getIsSelected() ? 'bg-gray-200 hover:bg-gray-200' : ''
+                } cursor-pointer transition-colors duration-150`}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="py-0 px-1 h-12">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
