@@ -9,10 +9,11 @@ import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
-import { ProjectWithLastOpen } from '@/src/interface/project';
+import { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
 import { getJwtPayload } from '@/src/service/auth';
 import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const [filingsDataWithProject, setFilingsDataWithProject] = useState<
@@ -22,6 +23,7 @@ export default function Page() {
     ProjectWithLastOpen[]
   >([]);
   const [username, setUsername] = useState('');
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
       const payload = await getJwtPayload();
@@ -45,6 +47,12 @@ export default function Page() {
     () => projectsWithLastOpen.map((project) => project.project),
     [projectsWithLastOpen],
   );
+  const redirectToProject = (project: Project | FilingType) => {
+    router.push(`/project/${project.id}`);
+  };
+  const redirectToFiling = (filing: FilingType) => {
+    router.push(`/project/${filing.projectId}/${filing.id}`);
+  };
   return (
     <main className="py-10 px-6">
       <Header username={username}>
@@ -55,6 +63,8 @@ export default function Page() {
           filings={filingsDataWithProject}
           projects={projectsData}
           placeHolder="ค้นหาโครงการหรือเอกสาร"
+          projectFunc={redirectToProject}
+          filingFunc={redirectToFiling}
         />
       </section>
       <section className="w-full mt-7">

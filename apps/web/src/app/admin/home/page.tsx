@@ -2,6 +2,7 @@
 import { ArrowRight, Home, Radio, FileSearch } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import { StatusTable } from '@/src/components/status/statusTable';
@@ -107,6 +108,13 @@ export default function Page() {
   const projectsData = projectsWithLastOpenData.map(
     (project: { project: Project }) => project.project,
   );
+  const router = useRouter();
+  const redirectToProject = (project: Project | FilingType) => {
+    router.push(`/admin/project/${project.id}/info`);
+  };
+  const redirectToFiling = (filing: FilingType) => {
+    router.push(`/admin/project/${filing.projectId}/${filing.id}`);
+  };
   return (
     <main className="py-10 px-6">
       <Header>
@@ -117,6 +125,8 @@ export default function Page() {
           filings={filingsDataWithProject}
           projects={projectsData}
           placeHolder="ค้นหาโครงการหรือเอกสาร"
+          projectFunc={redirectToProject}
+          filingFunc={redirectToFiling}
         />
       </section>
       <section className="w-full mt-7">

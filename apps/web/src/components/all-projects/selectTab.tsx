@@ -4,17 +4,17 @@ import Tab from '@mui/material/Tab';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { TbEdit } from 'react-icons/tb';
-import { 
-  type ReactNode, 
-  type SyntheticEvent, 
-  useEffect, 
-  useState 
+import {
+  type ReactNode,
+  type SyntheticEvent,
+  useEffect,
+  useState,
 } from 'react';
 import { BiSolidSave } from 'react-icons/bi';
-import { 
-  type Project, 
-  type ProjectWithLastOpen } 
-from '@/src/interface/project';
+import {
+  type Project,
+  type ProjectWithLastOpen,
+} from '@/src/interface/project';
 import { type FilingType } from '@/src/interface/filing';
 import findAllProject from '@/src/service/project/findAllProject';
 import findAllFiling from '@/src/service/filing/findAllFiling';
@@ -66,13 +66,22 @@ export default function SelectTab({
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filings, setFilings] = useState<FilingType[]>([]);
-  const [searchedProjectID, setSearchedProjectID] = useState<string | null>(null);
+  const [searchedProjectID, setSearchedProjectID] = useState<string | null>(
+    null,
+  );
   const [searchedFilingID, setSearchedFilingID] = useState<string | null>(null);
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
-  
-  const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<ProjectWithLastOpen[]>([]);
+
+  const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
+    ProjectWithLastOpen[]
+  >([]);
   const [myProjects, setMyProjects] = useState<Project[]>([]);
   const [myFilings, setMyFilings] = useState<FilingType[]>([]);
+  const router = useRouter();
+  const redirectToProject = (project: Project | FilingType) => {
+    if (isAdmin) router.push(`/admin/project/${project.id}/info`);
+    else router.push(`/project/${project.id}`);
+  };
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -101,14 +110,17 @@ export default function SelectTab({
       }
     }
 
-    async function fetchByUserId(){
+    async function fetchByUserId() {
       try {
-        const [ projectsWithLastOpenByUserIdData, myFilingsData] = await Promise.all([
-          getProjectsByUserId(userId),
-          getFilingsByUserId(userId),
-        ]);
+        const [projectsWithLastOpenByUserIdData, myFilingsData] =
+          await Promise.all([
+            getProjectsByUserId(userId),
+            getFilingsByUserId(userId),
+          ]);
         setProjectsWithLastOpen(projectsWithLastOpenByUserIdData);
-        setMyProjects(projectsWithLastOpenByUserIdData.map((project) => project.project));
+        setMyProjects(
+          projectsWithLastOpenByUserIdData.map((project) => project.project),
+        );
         setMyFilings(myFilingsData);
       } catch (error) {
         if (error instanceof Error) {
@@ -121,27 +133,25 @@ export default function SelectTab({
       }
     }
 
-    fetchData();
-    fetchByUserId();
+    void fetchData();
+    void fetchByUserId();
   }, [userId]);
 
   return (
     <Box sx={{ width: '100%' }}>
       <CustomTabPanel value={value} index={0}>
         <div className="flex flex-row space-x-4 w-full items-center">
-            <SearchPanel
-              projects={myProjects}
-              placeHolder="ค้นหาโครงการของฉัน"
-              projectFunc={(project: Project) => {
-                setSearchedProjectID(project.id);
-              }}
-              clearFunc={() => {
-                setSearchedProjectID(null);
-              }}
-            />
-            <div className="items-center flex text-center">
-              <AddNewProjectButton />
-            </div>
+          <SearchPanel
+            projects={myProjects}
+            placeHolder="ค้นหาโครงการของฉัน"
+            projectFunc={redirectToProject}
+            clearFunc={() => {
+              setSearchedProjectID(null);
+            }}
+          />
+          <div className="items-center flex text-center">
+            <AddNewProjectButton />
+          </div>
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
@@ -150,7 +160,7 @@ export default function SelectTab({
             projects={projects}
             placeHolder="ค้นหาโครงการทั้งหมด"
             projectFunc={(project: Project | FilingType) => {
-              setSearchedProjectID(project.id);
+              redirectToProject(project);
             }}
             clearFunc={() => {
               setSearchedProjectID(null);
@@ -173,8 +183,8 @@ export default function SelectTab({
               setSearchedFilingID(null);
             }}
           />
-          {isAdmin &&
-            (isUpdateMode ? (
+          {isAdmin ? (
+            isUpdateMode ? (
               <BiSolidSave
                 size={25}
                 className="font-bold hover:cursor-pointer"
@@ -190,7 +200,8 @@ export default function SelectTab({
                   setIsUpdateMode(true);
                 }}
               />
-            ))}
+            )
+          ) : null}
 
           <div className="items-center flex text-center">
             <AddNewProjectButton />
@@ -216,13 +227,21 @@ export default function SelectTab({
             },
           }}
         >
-          <Tab label="โครงการของฉัน" {...a11yProps(0)} className="font-sukhumvit" />
-          <Tab label="โครงการทั้งหมด" {...a11yProps(1)} className="font-sukhumvit" />
+          <Tab
+            label="โครงการของฉัน"
+            {...a11yProps(0)}
+            className="font-sukhumvit"
+          />
+          <Tab
+            label="โครงการทั้งหมด"
+            {...a11yProps(1)}
+            className="font-sukhumvit"
+          />
           <Tab label="เอกสาร" {...a11yProps(2)} className="font-sukhumvit" />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <MyProjectData 
+        <MyProjectData
           compact
           filingsData={myFilings}
           projectsWithLastOpenData={projectsWithLastOpen}
