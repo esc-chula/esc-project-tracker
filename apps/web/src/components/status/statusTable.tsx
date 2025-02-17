@@ -81,7 +81,9 @@ export function StatusTable({
 
   return (
     <>
-      {!compact && <StatusTableToolBar table={table} />}
+      {!compact && (
+        <StatusTableToolBar table={table} filingFunc={redirectToFiling} />
+      )}
       <div className="flex flex-row space-x-5 mb-4">
         <DataTableFacetedFilter
           column={table.getColumn('projectType')}
