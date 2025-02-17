@@ -58,3 +58,43 @@ export enum DocumentActivity {
   REPLY = 'REPLY', // Admin Only
   EDIT = 'EDIT', // Both
 }
+
+export enum ObjectiveType {
+  KNOWLEDGE_BROAD = 'มีความรู้: รู้รอบ',
+  KNOWLEDGE_DEEP = 'มีความรู้: รู้ลึก',
+  ETHICS_PROFESSIONALISM = 'มีคุณธรรม: มีจรรยาบรรณ',
+  ETHICS_MORALITY = 'มีคุณธรรม: มีคุณธรรมและจริยธรรม',
+  CRITICAL_THINKING_CREATIVITY = 'คิดเป็น: สามารถคิดริเริ่มสร้างสรรค์',
+  CRITICAL_THINKING_ANALYTICAL = 'คิดเป็น: สามารถคิดอย่างมีวิจารณญาณ',
+  CRITICAL_THINKING_PROBLEM_SOLVING = 'คิดเป็น: มีทักษะในการคิดแก้ปัญหา',
+  SKILL_INFORMATION_TECHNOLOGY = 'ทำเป็น: มีทักษะทางเทคโนโลยีสารสนเทศ',
+  SKILL_MATH_STATS = 'ทำเป็น: มีทักษะทางคณิตศาสตร์และสถิติ',
+  SKILL_PROFESSIONAL_SKILLS = 'ทำเป็น: มีทักษะทางวิชาชีพ',
+  COMMUNICATION_SKILLS = 'ทำเป็น: มีทักษะทางการสื่อสาร',
+  MANAGEMENT_SKILLS = 'ทำเป็น: มีทักษะการบริหารจัดการ',
+  LIFELONG_LEARNING_CURIOSITY = 'ใฝ่รู้และรู้จักวิธีการเรียนรู้: ใฝ่รู้',
+  LIFELONG_LEARNING_METHODS = 'ใฝ่รู้และรู้จักวิธีการเรียนรู้: รู้จักวิธีการเรียนรู้',
+  LEADERSHIP = 'มีภาวะผู้นำ',
+  HEALTH_WELLBEING = 'มีสุขภาวะ',
+  VOLUNTEERISM_PUBLIC_AWARENESS = 'มีจิตอาสาและสำนึกสาธารณะ',
+  THAI_IDENTITY_GLOBALIZATION = 'ดำรงความเป็นไทยในกระแสโลกาภิวัฒน์',
+}
+
+export enum ActivityType {
+  ACADEMIC_GRADUATE_ATTRIBUTES = 'กิจกรรมวิชาการที่ส่งเสริมคุณลักษณะบัณฑิตที่พึงประสงค์',
+  SPORTS_HEALTH = 'กิจกรรมกีฬาหรือการส่งเสริมสุขภาพ',
+  VOLUNTEERING_ENVIRONMENT = 'กิจกรรมบำเพ็ญประโยชน์และรักษาสิ่งแวดล้อม',
+  CULTURAL_ARTS = 'กิจกรรมส่งเสริมศิลปวัฒนธรรม',
+  ETHICS_MORALITY = 'กิจกรรมเสริมสร้างคุณธรรมและจริยธรรม',
+}
+
+export enum GraduateAttribute {
+  KNOWLEDGE = 'Knowledge',
+  ETHICS = 'Ethics',
+  CRITICAL_THINKING = 'Critical Thinking',
+  SKILL = 'Skill',
+  LEADERSHIP = 'Leadership',
+  HEALTH = 'Health',
+  VOLUNTEER = 'Volunteer',
+  THAI_IDENTITY = 'Thai Identity',
+}
