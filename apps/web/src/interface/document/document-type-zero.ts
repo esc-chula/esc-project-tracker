@@ -1,35 +1,50 @@
-import type { ObjectiveType, ActivityType, GraduateAttribute } from "@/src/constant/enum";
+import type { ObjectiveType, ActivityType, GraduateAttribute, FilingType, ManagementRole, TQFStandard } from "@/src/constant/enum";
 
+/* ยังไม่มีการเก็บลายเซ็น */
 export interface DocumentTypeZero {
   id: string;
-  filing_code: string;
   project_code: string;
   project_name_th: string;
+  filing_type: FilingType;
+  filing_code: string;
+  filing_name: string;
   project_name_en: string;
-  student_id: string;
-  leader_name: string;
-  professor_name: string;
-  department: string; // esc fields, club
+  department: string | null; // esc fields, club, null
+  isOneDay: boolean;
   start_date: Date;
-  end_date: Date;
-  body_detail: string;
-  reason_detail: string;
+  end_date?: Date; // for project has more than 1 days
+  principle_and_rational_detail: string;
+  objective_summarize_detail: string;
+  signature: Signature[]; // เซ็นรับรอง
+  objectives: Objective[];
+  indicators: Indicator[];
+  objective_map_indicators: ObjectiveMapIndicator[];
+  participants: Participant[];
+  workers: Participant[];
   work_place: string;
-  type_of_activity: ActivityType;
+  activity_format: ActivityFormat[];
+  member: Member[]; // โครงสร้างบริหารและผู้ประสานโครงการ
+  improvement_plans: ImprovementPlan[];
+  expected_outcomes: ExpectedOutcomes[];
+  work_plans: WorkPlan[];
   actual_work_hours: number;
   actual_volunteer_hours: number;
+  budgets: Budget[];
+  graduate_attributes: GraduateAttributes[];
+  activity_map_graduates: ActivityMapGraduate[];
+  type_of_activity: ActivityType;
+  sdgs: SustainableDevelopmentGoals[];
+  tqf_standards: ActivityMapTQFStandards[];
 }
 
 export interface Signature {
   id: string;
-  project_id: string;
   name: string;
   signature: string; // base64
 }
 
 export interface Objective {
   id: string;
-  project_id: string;
   percent: number;
   type: ObjectiveType;
   detail: string;
@@ -37,18 +52,17 @@ export interface Objective {
 
 export interface Indicator {
   id: string;
-  project_id: string;
   detail: string;
   measurement: string;
 }
 
-export interface IndicatorObjective {
+export interface ObjectiveMapIndicator {
   id: string;
-  objective_id: string[];
+  indicator_id: string;
+  objective_id: string;
 }
 
 export interface Participant {
-  project_id: string;
   role: 'Worker' | 'Participant';
   year1: number;
   year2: number;
@@ -60,22 +74,22 @@ export interface Participant {
 
 export interface ActivityFormat {
   id: string;
-  project_id: string;
+  step: number;
+  name: string;
   detail: string;
 }
 
-export interface ManagementStructure {
+export interface Member {
   id: string;
-  project_id: string;
-  role: 'Advisor' | 'President' | 'Vice President' | 'Secretary' | 'Treasurer' | 'Division VP';
+  role: ManagementRole;
   division?: string;
   name: string;
+  student_id: string;
   tel: string;
 }
 
 export interface ImprovementPlan {
   id: string;
-  project_id: string;
   phase: 'Preparation' | 'Execution' | 'Conclusion';
   problem: string;
   solution: string;
@@ -83,23 +97,20 @@ export interface ImprovementPlan {
 
 export interface ExpectedOutcomes {
   id: string;
-  project_id: string;
   category: 'Participant' | 'Worker' | 'Faculty/University';
   detail: string;
 }
 
 export interface WorkPlan {
   id: string;
-  project_id: string;
   phase: 'Preparation' | 'Execution' | 'Conclusion';
-  activity_detail: string;
+  name: string;
   start_date: Date;
   end_date: Date;
 }
 
 export interface Budget {
   id: string;
-  project_id: string;
   source: 'Faculty' | 'Sponsor' | 'Other';
   category: 'Material' | 'Expense';
   name: string;
@@ -110,26 +121,27 @@ export interface Budget {
 
 export interface GraduateAttributes {
   id: string;
-  project_id: string;
   attribute: GraduateAttribute;
-  question: string;
+  question: ObjectiveType;
   response_leader: boolean;
   response_worker: boolean;
   response_attendee: boolean;
 }
 
+export interface ActivityMapGraduate {
+  id: string;
+  graduate_id: ObjectiveType;
+  activity_id: string;
+}
+
 export interface SustainableDevelopmentGoals {
   id: string;
-  project_id: string;
   goal: string;
   activity_type: string;
 }
 
-export interface TQFStandards {
-  project_id: string;
-  ethics_and_moral: boolean;
-  knowledge: boolean;
-  cognitive_skills: boolean;
-  interpersonal_skills: boolean;
-  numerical_analysis: boolean;
+export interface ActivityMapTQFStandards {
+  id: string;
+  tqf_standards: TQFStandard;
+  activity_id: string;
 }

@@ -45,6 +45,19 @@ export enum ProjectType {
   OFFICE_SUPPLY_AFFAIR = '90', // สำนักงานและพัสดุ
 }
 
+export enum FilingType {
+  PROJECT_OPENING = '0', // เอกสารเปิดโครงการ
+  FACILITY_REQUEST = '1', // เอกสารขอใช้งานกายภาพ
+  ADVANCE_PAYMENT = '2', // เอกสารขอยืมสำรองจ่าย
+  SPONSOR_REQUEST = '3', // เอกสารขอสปอนเซอร์
+  SPONSOR_THANK_YOU = '4', // เอกสารขอบคุณสปอนเซอร์
+  PROJECT_DOCUMENT = '5', // เอกสารในโครงการ
+  ACTIVITY_REPORT = '6', // เอกสารรายงานผลการดำเนินงาน (สรุปกิจกรรม)
+  EXPENSE_APPROVAL = '7', // เอกสารขออนุมัติเบิกจ่าย (สรุปค่าใช้จ่าย)
+  PAYMENT_REQUEST = '8', // เอกสารขอเบิกเงิน
+  EXTERNAL_DOCUMENT = '9', // เอกสารนอกโครงการ
+}
+
 export enum DocumentStatus {
   APPROVED = 'APPROVED',
   WAIT_FOR_STUDENT_AFFAIR = 'WAIT_FOR_STUDENT_AFFAIR',
@@ -97,4 +110,41 @@ export enum GraduateAttribute {
   HEALTH = 'Health',
   VOLUNTEER = 'Volunteer',
   THAI_IDENTITY = 'Thai Identity',
+}
+
+export enum ManagementRole {
+  ADVISOR = 'Advisor',
+  PRESIDENT = 'President',
+  VICE_PRESIDENT = 'Vice President',
+  SECRETARY = 'Secretary',
+  TREASURER = 'Treasurer',
+  DIVISION_VP = 'Division VP',
+}
+
+export enum SustainableDevelopmentGoal {
+  NO_POVERTY = "No Poverty",
+  ZERO_HUNGER = "Zero Hunger",
+  GOOD_HEALTH_AND_WELL_BEING = "Good Health and Well-being",
+  QUALITY_EDUCATION = "Quality Education",
+  GENDER_EQUALITY = "Gender Equality",
+  CLEAN_WATER_AND_SANITATION = "Clean Water and Sanitation",
+  AFFORDABLE_AND_CLEAN_ENERGY = "Affordable and Clean Energy",
+  DECENT_WORK_AND_ECONOMIC_GROWTH = "Decent Work and Economic Growth",
+  INDUSTRY_INNOVATION_AND_INFRASTRUCTURE = "Industry, Innovation, and Infrastructure",
+  REDUCED_INEQUALITIES = "Reduced Inequalities",
+  SUSTAINABLE_CITIES_AND_COMMUNITIES = "Sustainable Cities and Communities",
+  RESPONSIBLE_CONSUMPTION_AND_PRODUCTION = "Responsible Consumption and Production",
+  CLIMATE_ACTION = "Climate Action",
+  LIFE_BELOW_WATER = "Life Below Water",
+  LIFE_ON_LAND = "Life on Land",
+  PEACE_JUSTICE_AND_STRONG_INSTITUTIONS = "Peace, Justice, and Strong Institutions",
+  PARTNERSHIPS_FOR_THE_GOALS = "Partnerships for the Goals"
+}
+
+export enum TQFStandard {
+  ETHICS_AND_MORAL = 'ETHICS_AND_MORAL',
+  KNOWLEDGE = 'KNOWLEDGE',
+  COGNITIVE_SKILLS = 'COGNITIVE_SKILLS',
+  INTERPERSONAL_SKILLS_AND_RESPONSIBILITY = 'INTERPERSONAL_SKILLS_AND_RESPONSIBILITY',
+  NUMERICAL_ANALYSIS_COMMUNICATION_AND_INFORMATION_TECHNOLOGY_SKILLS = 'NUMERICAL_ANALYSIS_COMMUNICATION_AND_INFORMATION_TECHNOLOGY_SKILLS',
 }
