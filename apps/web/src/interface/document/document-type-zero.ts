@@ -1,6 +1,6 @@
 import type { ObjectiveType, ActivityType, GraduateAttribute, FilingType, ManagementRole, TQFStandard } from "@/src/constant/enum";
 
-export interface DocumentTypeZero {
+export interface DocumentTypeZero { // เอกสารเปิดโครง
   id: string;
   project_code: string;
   project_name_th: string;
@@ -12,31 +12,31 @@ export interface DocumentTypeZero {
   isOneDay: boolean;
   start_date: Date;
   end_date?: Date; // for project has more than 1 days
-  principle_and_rational_detail: string;
-  objective_summarize_detail: string;
+  principle_and_rational_detail: string; //หลักการและเหตุผล
+  objective_summarize_detail: string; // วัตถุประสงค์โครงการแบบย่อ
   signatures: Signature[]; // เซ็นรับรอง
-  objectives: Objective[];
-  indicators: Indicator[];
-  objective_map_indicators: ObjectiveMapIndicator[];
-  participants: Participant[];
-  workers: Participant[];
+  objectives: Objective[]; // วัตถุประสงค์โครงการ
+  indicators: Indicator[]; // ตัวชี้วัดความสำเร็จ
+  objective_map_indicators: ObjectiveMapIndicator[]; // จับคู่วัตถุประสงค์กับตัวชี้วัด
+  approximate_participants: Participant[]; // จำนวนผู้เข้าร่วมที่คาดว่าจะเข้าร่วมโครงการ
+  approximate_workers: Participant[]; // จำนวนผู้ปฏิบัติงานที่คาดว่าจะเข้าร่วมโครงการ
   work_place: string;
-  activity_format: ActivityFormat[];
+  activity_format: ActivityFormat[]; // รูปแบบกิจกรรม
   member: Member[]; // โครงสร้างบริหารและผู้ประสานโครงการ
-  improvement_plans: ImprovementPlan[];
-  expected_outcomes: ExpectedOutcomes[];
-  work_plans: WorkPlan[];
+  improvement_plans: ImprovementPlan[]; // แนวทางการพัฒนาโครงการจากที่ผ่านมา
+  expected_outcomes: ExpectedOutcomes[]; // ผลที่คาดว่าจะได้รับ รวม ผู้เข้าร่วมโครงการ ผู้ปฏิบัติงาน คณะ/มหาวิทยาลัย
+  work_plans: WorkPlan[]; // แผนการดำเนินงาน
   actual_work_hours: number;
   actual_volunteer_hours: number;
-  budgets: Budget[];
-  graduate_attributes: GraduateAttributes[];
-  activity_map_graduates: ActivityMapGraduate[];
+  budgets: Budget[]; // งบประมาณที่ใช้ในการดำเนินงาน เช่น งบจากคณะวิศวกรรมศาสตร์ งบจากสปอนเซอร์ งบอื่นๆ
+  graduate_attributes: GraduateAttributes[]; // คุณลักษณะบัณฑิตจุฬา ที่พึงประสงค์
+  activity_map_graduates: ActivityMapGraduate[]; // จับคู่กิจกรรมกับคุณลักษณะบัณฑิตจุฬา
   type_of_activity: ActivityType;
-  sdgs: SustainableDevelopmentGoals[];
-  tqf_standards: ActivityMapTQFStandards[];
+  sdgs: SustainableDevelopmentGoals[]; // เป้าหมายพัฒนายั่งยืน
+  tqf_standards: ActivityMapTQFStandards[]; // มาตรฐาน TQF กับกิจกรรมที่เกี่ยวข้อง
 }
 
-export interface Signature {
+export interface Signature { // ลายเซ็น
   id: string;
   name: string;
   signature: string; // base64
@@ -55,7 +55,7 @@ export interface Indicator {
   measurement: string;
 }
 
-export interface ObjectiveMapIndicator {
+export interface ObjectiveMapIndicator { // จับคู่วัตถุประสงค์กับตัวชี้วัด แบบ Many to many
   id: string;
   indicator_id: string;
   objective_id: string;
@@ -127,7 +127,7 @@ export interface GraduateAttributes {
   response_attendee: boolean;
 }
 
-export interface ActivityMapGraduate {
+export interface ActivityMapGraduate { // จับคู่กิจกรรมกับคุณลักษณะบัณฑิตจุฬา แบบ Many to many
   id: string;
   graduate_id: ObjectiveType;
   activity_id: string;
@@ -139,7 +139,7 @@ export interface SustainableDevelopmentGoals {
   activity_type: string;
 }
 
-export interface ActivityMapTQFStandards {
+export interface ActivityMapTQFStandards { // จับคู่กิจกรรมกับมาตรฐาน TQF แบบ Many to many
   id: string;
   tqf_standards: TQFStandard;
   activity_id: string;
