@@ -1,6 +1,5 @@
 import type { ObjectiveType, ActivityType, GraduateAttribute, FilingType, ManagementRole, TQFStandard } from "@/src/constant/enum";
 
-/* ยังไม่มีการเก็บลายเซ็น */
 export interface DocumentTypeZero {
   id: string;
   project_code: string;
@@ -15,7 +14,7 @@ export interface DocumentTypeZero {
   end_date?: Date; // for project has more than 1 days
   principle_and_rational_detail: string;
   objective_summarize_detail: string;
-  signature: Signature[]; // เซ็นรับรอง
+  signatures: Signature[]; // เซ็นรับรอง
   objectives: Objective[];
   indicators: Indicator[];
   objective_map_indicators: ObjectiveMapIndicator[];

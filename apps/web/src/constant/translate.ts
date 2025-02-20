@@ -1,4 +1,4 @@
-import { FilingSubType, ProjectStatus, SustainableDevelopmentGoal } from './enum';
+import { FilingSubType, ProjectStatus, SustainableDevelopmentGoal, ObjectiveType, ActivityType } from './enum';
 
 export const ProjectStatusToThai = new Map([
   [ProjectStatus.CLOSED, 'ปิดโครงการเรียบร้อย'],
@@ -27,7 +27,7 @@ export const SustainableDevelopmentGoalToThai = {
   [SustainableDevelopmentGoal.ZERO_HUNGER]: 'ขจัดความหิวโหย',
   [SustainableDevelopmentGoal.GOOD_HEALTH_AND_WELL_BEING]: 'การมีสุขภาพและความเป็นอยู่ที่ดี',
   [SustainableDevelopmentGoal.QUALITY_EDUCATION]: 'การศึกษาที่เท่าเทียม',
-[SustainableDevelopmentGoal.GENDER_EQUALITY]: 'ความเท่าเทียมทางเพศ',
+  [SustainableDevelopmentGoal.GENDER_EQUALITY]: 'ความเท่าเทียมทางเพศ',
   [SustainableDevelopmentGoal.CLEAN_WATER_AND_SANITATION]: 'การจัดการน้ำและสุขาภิบาล',
   [SustainableDevelopmentGoal.AFFORDABLE_AND_CLEAN_ENERGY]: 'พลังงานสะอาดที่ทุกคนเข้าถึงได้',
   [SustainableDevelopmentGoal.DECENT_WORK_AND_ECONOMIC_GROWTH]: 'การจ้างงานที่มีคุณค่าและการเติบโตทางเศรษฐกิจ',
@@ -40,4 +40,33 @@ export const SustainableDevelopmentGoalToThai = {
   [SustainableDevelopmentGoal.LIFE_ON_LAND]:'การใช้ประโยชน์จากระบบนิเวศทางบก',
   [SustainableDevelopmentGoal.PEACE_JUSTICE_AND_STRONG_INSTITUTIONS]: 'สังคมสงบสุข ยุติธรรม ไม่แบ่งแยก',
   [SustainableDevelopmentGoal.PARTNERSHIPS_FOR_THE_GOALS]: 'ความร่วมมือเพื่อการพัฒนาที่ยั่งยืน',
+};
+
+export const ObjectiveTypeToThai = {
+  [ObjectiveType.KNOWLEDGE_BROAD]: 'มีความรู้: รู้รอบ',
+  [ObjectiveType.KNOWLEDGE_DEEP]: 'มีความรู้: รู้ลึก',
+  [ObjectiveType.ETHICS_PROFESSIONALISM]: 'มีคุณธรรม: มีจรรยาบรรณ',
+  [ObjectiveType.ETHICS_MORALITY]: 'มีคุณธรรม: มีคุณธรรมและจริยธรรม',
+  [ObjectiveType.CRITICAL_THINKING_CREATIVITY]: 'คิดเป็น: สามารถคิดริเริ่มสร้างสรรค์',
+  [ObjectiveType.CRITICAL_THINKING_ANALYTICAL]: 'คิดเป็น: สามารถคิดอย่างมีวิจารณญาณ',
+  [ObjectiveType.CRITICAL_THINKING_PROBLEM_SOLVING]: 'คิดเป็น: มีทักษะในการคิดแก้ปัญหา',
+  [ObjectiveType.SKILL_INFORMATION_TECHNOLOGY]: 'ทำเป็น: มีทักษะทางเทคโนโลยีสารสนเทศ',
+  [ObjectiveType.SKILL_MATH_STATS]: 'ทำเป็น: มีทักษะทางคณิตศาสตร์และสถิติ',
+  [ObjectiveType.SKILL_PROFESSIONAL_SKILLS]: 'ทำเป็น: มีทักษะทางวิชาชีพ',
+  [ObjectiveType.COMMUNICATION_SKILLS]: 'ทำเป็น: มีทักษะทางการสื่อสาร',
+  [ObjectiveType.MANAGEMENT_SKILLS]: 'ทำเป็น: มีทักษะการบริหารจัดการ',
+  [ObjectiveType.LIFELONG_LEARNING_CURIOSITY]: 'ใฝ่รู้และรู้จักวิธีการเรียนรู้: ใฝ่รู้',
+  [ObjectiveType.LIFELONG_LEARNING_METHODS]: 'ใฝ่รู้และรู้จักวิธีการเรียนรู้: รู้จักวิธีการเรียนรู้',
+  [ObjectiveType.LEADERSHIP]: 'มีภาวะผู้นำ',
+  [ObjectiveType.HEALTH_WELLBEING]: 'มีสุขภาวะ',
+  [ObjectiveType.VOLUNTEERISM_PUBLIC_AWARENESS]: 'มีจิตอาสาและสำนึกสาธารณะ',
+  [ObjectiveType.THAI_IDENTITY_GLOBALIZATION]: 'ดำรงความเป็นไทยในกระแสโลกาภิวัฒน์',
+};
+
+export const ActivityTypeToThai = {
+  [ActivityType.ACADEMIC_GRADUATE_ATTRIBUTES]: 'กิจกรรมวิชาการที่ส่งเสริมคุณลักษณะบัณฑิตที่พึงประสงค์',
+  [ActivityType.SPORTS_HEALTH]: 'กิจกรรมกีฬาหรือการส่งเสริมสุขภาพ',
+  [ActivityType.VOLUNTEERING_ENVIRONMENT]: 'กิจกรรมบำเพ็ญประโยชน์และรักษาสิ่งแวดล้อม',
+  [ActivityType.CULTURAL_ARTS]: 'กิจกรรมส่งเสริมศิลปวัฒนธรรม',
+  [ActivityType.ETHICS_MORALITY]: 'กิจกรรมเสริมสร้างคุณธรรมและจริยธรรม',
 };
