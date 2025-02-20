@@ -1,12 +1,5 @@
-import { z } from 'zod';
-import { FilingType, ObjectiveType, ActivityType, GraduateAttribute, ManagementRole, TQFStandard } from '@/src/constant/enum';
-
-// Define sub-schemas
-export const SignatureSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  signature: z.string(), // base64
-});
+import { z } from "zod";
+import { ObjectiveType, ActivityType, GraduateAttributeType, FilingType, ManagementRole, TQFStandardType, SustainableDevelopmentGoalType } from "@/src/constant/enum";
 
 export const ObjectiveSchema = z.object({
   id: z.string(),
@@ -17,18 +10,13 @@ export const ObjectiveSchema = z.object({
 
 export const IndicatorSchema = z.object({
   id: z.string(),
-  detail: z.string(),
+  topic: z.string(),
   measurement: z.string(),
-});
-
-export const ObjectiveMapIndicatorSchema = z.object({
-  id: z.string(),
-  indicator_id: z.string(),
-  objective_id: z.string(),
+  related_objective: z.array(z.string()),
 });
 
 export const ParticipantSchema = z.object({
-  role: z.enum(['Worker', 'Participant']),
+  role: z.enum(["Worker", "Participant"]),
   year1: z.number(),
   year2: z.number(),
   year3: z.number(),
@@ -40,7 +28,7 @@ export const ParticipantSchema = z.object({
 export const ActivityFormatSchema = z.object({
   id: z.string(),
   step: z.number(),
-  name: z.string(),
+  topic: z.string(),
   detail: z.string(),
 });
 
@@ -53,85 +41,103 @@ export const MemberSchema = z.object({
   tel: z.string(),
 });
 
-export const ImprovementPlanSchema = z.object({
+export const ImprovementItemSchema = z.object({
   id: z.string(),
-  phase: z.enum(['Preparation', 'Execution', 'Conclusion']),
   problem: z.string(),
   solution: z.string(),
 });
 
+export const ImprovementPlanSchema = z.object({
+  id: z.string(),
+  phase: z.enum(["Preparation", "Execution", "Conclusion"]),
+  details: z.array(ImprovementItemSchema),
+});
+
 export const ExpectedOutcomesSchema = z.object({
   id: z.string(),
-  category: z.enum(['Participant', 'Worker', 'Faculty/University']),
+  category: z.enum(["Participant", "Worker", "Faculty/University"]),
+  detail: z.array(z.string()),
+});
+
+export const WorkPlanItemSchema = z.object({
+  id: z.string(),
   detail: z.string(),
+  start_date: z.string(),
+  end_date: z.string(),
 });
 
 export const WorkPlanSchema = z.object({
   id: z.string(),
-  phase: z.enum(['Preparation', 'Execution', 'Conclusion']),
+  phase: z.enum(["Preparation", "Execution", "Conclusion"]),
+  details: z.array(WorkPlanItemSchema),
+});
+
+const BaseBudgetDetailSchema = z.object({
+  id: z.string(),
+  type: z.enum(["Type 1", "Type 2"]),
   name: z.string(),
-  start_date: z.date(),
-  end_date: z.date(),
+  amount: z.number(),
+  unit: z.string(),
+  cost_per_unit: z.number(),
+});
+
+export const BudgetType1Schema = BaseBudgetDetailSchema.extend({
+  type: z.literal("Type 1"),
+});
+
+export const BudgetType2Schema = BaseBudgetDetailSchema.extend({
+  type: z.literal("Type 2"),
+  number_of_days: z.number(),
+  day_unit: z.string(),
 });
 
 export const BudgetSchema = z.object({
   id: z.string(),
-  source: z.enum(['Faculty', 'Sponsor', 'Other']),
-  category: z.enum(['Material', 'Expense']),
-  name: z.string(),
-  amount: z.number(),
-  cost_per_unit: z.number(),
-  total_cost: z.number(),
+  source: z.enum(["Faculty", "Sponsor", "Other"]),
+  category: z.enum(["Material", "Expense"]),
+  details: z.array(z.union([BudgetType1Schema, BudgetType2Schema])),
 });
 
-export const GraduateAttributesSchema = z.object({
+export const GraduateAttributeSchema = z.object({
   id: z.string(),
-  attribute: z.nativeEnum(GraduateAttribute),
+  attribute: z.nativeEnum(GraduateAttributeType),
   question: z.nativeEnum(ObjectiveType),
   response_leader: z.boolean(),
   response_worker: z.boolean(),
   response_attendee: z.boolean(),
+  activity_id: z.array(z.string()),
 });
 
-export const ActivityMapGraduateSchema = z.object({
+export const SustainableDevelopmentGoalSchema = z.object({
   id: z.string(),
-  graduate_id: z.nativeEnum(ObjectiveType),
-  activity_id: z.string(),
+  sdgs_goal: z.nativeEnum(SustainableDevelopmentGoalType),
+  activity_id: z.array(z.string()),
 });
 
-export const SustainableDevelopmentGoalsSchema = z.object({
+export const TQFStandardSchema = z.object({
   id: z.string(),
-  goal: z.string(),
-  activity_type: z.string(),
+  tqf_standards: z.nativeEnum(TQFStandardType),
+  activity_id: z.array(z.string()),
 });
 
-export const ActivityMapTQFStandardsSchema = z.object({
-  id: z.string(),
-  tqf_standards: z.nativeEnum(TQFStandard),
-  activity_id: z.string(),
-});
-
-// Main DocumentTypeZero schema
 export const DocumentTypeZeroSchema = z.object({
   id: z.string(),
   project_code: z.string(),
   project_name_th: z.string(),
+  project_name_en: z.string(),
   filing_type: z.nativeEnum(FilingType),
   filing_code: z.string(),
   filing_name: z.string(),
-  project_name_en: z.string(),
   department: z.string().nullable(),
   isOneDay: z.boolean(),
-  start_date: z.date(),
-  end_date: z.date().optional(),
+  start_date: z.string(),
+  end_date: z.string().optional(),
   principle_and_rational_detail: z.string(),
   objective_summarize_detail: z.string(),
-  signatures: z.array(SignatureSchema),
   objectives: z.array(ObjectiveSchema),
   indicators: z.array(IndicatorSchema),
-  objective_map_indicators: z.array(ObjectiveMapIndicatorSchema),
-  approximate_participants: z.array(ParticipantSchema),
-  approximate_workers: z.array(ParticipantSchema),
+  approximate_participants: ParticipantSchema,
+  approximate_workers: ParticipantSchema,
   work_place: z.string(),
   activity_format: z.array(ActivityFormatSchema),
   member: z.array(MemberSchema),
@@ -141,9 +147,12 @@ export const DocumentTypeZeroSchema = z.object({
   actual_work_hours: z.number(),
   actual_volunteer_hours: z.number(),
   budgets: z.array(BudgetSchema),
-  graduate_attributes: z.array(GraduateAttributesSchema),
-  activity_map_graduates: z.array(ActivityMapGraduateSchema),
+  graduate_attributes: z.array(GraduateAttributeSchema),
   type_of_activity: z.nativeEnum(ActivityType),
-  sdgs: z.array(SustainableDevelopmentGoalsSchema),
-  tqf_standards: z.array(ActivityMapTQFStandardsSchema),
+  sdgs: z.array(SustainableDevelopmentGoalSchema),
+  tqf_standards: z.array(TQFStandardSchema),
+  created_by: z.string(),
+  updated_by: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string().optional(),
 });

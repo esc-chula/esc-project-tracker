@@ -101,7 +101,7 @@ export enum ActivityType {
   ETHICS_MORALITY = 'ETHICS_MORALITY',
 }
 
-export enum GraduateAttribute {
+export enum GraduateAttributeType {
   KNOWLEDGE = 'KNOWLEDGE',
   ETHICS = 'ETHICS',
   CRITICAL_THINKING = 'CRITICAL_THINKING',
@@ -121,7 +121,7 @@ export enum ManagementRole {
   DIVISION_VP = 'DIVISION_VP',
 }
 
-export enum SustainableDevelopmentGoal {
+export enum SustainableDevelopmentGoalType {
   NO_POVERTY = 'NO_POVERTY',
   ZERO_HUNGER = 'ZERO_HUNGER',
   GOOD_HEALTH_AND_WELL_BEING = 'GOOD_HEALTH_AND_WELL_BEING',
@@ -141,7 +141,7 @@ export enum SustainableDevelopmentGoal {
   PARTNERSHIPS_FOR_THE_GOALS = 'PARTNERSHIPS_FOR_THE_GOALS',
 }
 
-export enum TQFStandard {
+export enum TQFStandardType {
   ETHICS_AND_MORAL = 'ETHICS_AND_MORAL',
   KNOWLEDGE = 'KNOWLEDGE',
   COGNITIVE_SKILLS = 'COGNITIVE_SKILLS',
