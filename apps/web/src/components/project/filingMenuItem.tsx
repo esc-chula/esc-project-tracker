@@ -4,7 +4,7 @@ import { BiSolidFilePdf } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
 import type { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import type { DocumentType } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/user/findUserByCondition';
@@ -22,7 +22,7 @@ export default function FilingMenuItem({
   isUpdateMode,
   setPrepareUpdatedDocument,
 }: {
-  filing: FilingType;
+  filing: Filing;
   isUpdateMode: boolean;
   setPrepareUpdatedDocument: (newDocument: CreateDocumentDTO) => void;
 }) {

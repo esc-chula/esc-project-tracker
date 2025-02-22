@@ -1,7 +1,7 @@
 import { User } from './user';
-import { FilingType } from './filing';
+import { Filing } from './filing';
 export interface UserFiling {
   userId: string;
-  filing: FilingType;
+  filing: Filing;
   lastOpen: string;
 }

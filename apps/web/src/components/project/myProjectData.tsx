@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 import type { Project, ProjectWithLastOpen } from '@/src/interface/project';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { getUserId } from '@/src/service/auth';
@@ -23,23 +23,23 @@ export default function MyProjectData({
   showLastOpen = false,
 }: {
   compact?: boolean;
-  filingsData?: FilingType[];
+  filingsData?: Filing[];
   projectsWithLastOpenData?: ProjectWithLastOpen[];
   searchedProjectId?: string | null;
   showLastOpen?: boolean;
 }) {
   const router = useRouter();
-  const redirectToProject = (project: Project | FilingType) => {
+  const redirectToProject = (project: Project | Filing) => {
     router.push(`/project/${project.id}`);
   };
-  const redirectToFiling = (filing: FilingType) => {
+  const redirectToFiling = (filing: Filing) => {
     router.push(`/project/${filing.projectId}/${filing.id}`);
   };
 
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpen[]
   >([]);
-  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [filings, setFilings] = useState<Filing[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
@@ -96,7 +96,11 @@ export default function MyProjectData({
 
   useEffect(() => {
     if (searchedProjectId) {
-      setProjects(projectsWithLastOpen.filter((p) => p.project.id === searchedProjectId).map((p) => p.project));
+      setProjects(
+        projectsWithLastOpen
+          .filter((p) => p.project.id === searchedProjectId)
+          .map((p) => p.project),
+      );
     } else {
       setProjects(projectsWithLastOpen.map((p) => p.project));
     }
@@ -104,32 +108,29 @@ export default function MyProjectData({
 
   return (
     <div className="w-full">
-      {
-        !compact && (
-          <div className="mb-5">
-            <SearchBar
-              filings={filings}
-              projects={projects}
-              placeholder="ค้นหาโครงการหรือเอกสาร"
-              projectFunc={redirectToProject}
-              filingFunc={redirectToFiling}
-            />
-          </div>
-        )}
+      {!compact && (
+        <div className="mb-5">
+          <SearchBar
+            filings={filings}
+            projects={projects}
+            placeholder="ค้นหาโครงการหรือเอกสาร"
+            projectFunc={redirectToProject}
+            filingFunc={redirectToFiling}
+          />
+        </div>
+      )}
       {isFetched ? (
         <>
           {projects.length === 0 ? (
             <NoProject />
           ) : (
             <>
-              {
-                showLastOpen ?
-                  <LastestPanel
-                    projectsWithLastOpen={projectsWithLastOpen}
-                    compact={compact}
-                  />
-                : null
-                }
+              {showLastOpen ? (
+                <LastestPanel
+                  projectsWithLastOpen={projectsWithLastOpen}
+                  compact={compact}
+                />
+              ) : null}
               <AllProjectPanel
                 projects={projects}
                 userId={userId}

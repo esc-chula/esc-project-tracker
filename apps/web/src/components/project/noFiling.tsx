@@ -2,14 +2,14 @@
 import { HiLightBulb } from 'react-icons/hi';
 import { FilePlus } from 'lucide-react';
 import PopoverAddFiling from './popoverAddFiling';
-import { FilingType } from '@/src/interface/filing';
+import { Filing } from '@/src/interface/filing';
 
 export default function NoFiling({
   projectId,
   setNewFilingToParent,
 }: {
   projectId: string;
-  setNewFilingToParent: (filing: FilingType) => void;
+  setNewFilingToParent: (filing: Filing) => void;
 }) {
   return (
     <div className="w-[50vw] flex flex-col items-center justify-center p-16">
@@ -21,7 +21,7 @@ export default function NoFiling({
       </div>
       <div>
         <PopoverAddFiling
-          addFilingToParent={(filing: FilingType) => {
+          addFilingToParent={(filing: Filing) => {
             setNewFilingToParent(filing);
           }}
           projectId={projectId}

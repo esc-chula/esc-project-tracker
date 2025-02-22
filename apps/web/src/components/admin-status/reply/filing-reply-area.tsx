@@ -2,7 +2,7 @@
 import { FaFolderOpen } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import type { DocumentType } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
@@ -21,7 +21,7 @@ export default function FilingReplyArea({
   selectedFilingId: string;
   setFilingReviewed: (value: string) => void;
 }) {
-  const [filingDetail, setFilingDetail] = useState<FilingType | null>(null);
+  const [filingDetail, setFilingDetail] = useState<Filing | null>(null);
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
   const [filingStatus, setFilingStatus] = useState<FilingStatus>(
     FilingStatus.DOCUMENT_CREATED,

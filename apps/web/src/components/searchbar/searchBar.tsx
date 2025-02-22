@@ -10,7 +10,7 @@ import { IoDocumentText } from 'react-icons/io5';
 import { InputAdornment } from '@mui/material';
 import { autocompleteStyles } from '@/src/styles/autocompleteStype';
 import { Project } from '@/src/interface/project';
-import { FilingType } from '@/src/interface/filing';
+import { Filing } from '@/src/interface/filing';
 
 export default function SearchBar({
   placeholder,
@@ -22,18 +22,18 @@ export default function SearchBar({
 }: {
   placeholder: string;
   projects: Project[];
-  filings: FilingType[];
+  filings: Filing[];
   projectFunc?: (project: Project) => void;
-  filingFunc?: (filing: FilingType) => void;
+  filingFunc?: (filing: Filing) => void;
   clearFunc?: () => void;
 }) {
-  const [value, setValue] = useState<Project | FilingType | null>(null);
+  const [value, setValue] = useState<Project | Filing | null>(null);
 
   useEffect(() => {
     console.log(value);
   }, [value]);
 
-  const handleSelect = (option: Project | FilingType | null) => {
+  const handleSelect = (option: Project | Filing | null) => {
     setValue(option);
     if (option !== null) {
       setValue(option);

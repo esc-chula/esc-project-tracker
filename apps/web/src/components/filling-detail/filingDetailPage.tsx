@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/statusStepper';
 import { FilingStatus } from '@/src/constant/enum';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
@@ -31,7 +31,7 @@ export default function FilingDetailPage({
   isAdmin?: boolean;
   userId: string;
 }) {
-  const [filing, setFiling] = useState<FilingType | null>(null);
+  const [filing, setFiling] = useState<Filing | null>(null);
   const [documents, setDocuments] = useState<DocumentType[]>([]);
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(
     searchParams.showCreateDocument === 'true',

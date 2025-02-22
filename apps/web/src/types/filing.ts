@@ -1,7 +1,7 @@
-import { DocumentType } from "../interface/document";
-import { FilingType } from "../interface/filing";
+import { DocumentType } from '../interface/document';
+import { Filing } from '../interface/filing';
 
 export interface FilingsWithDocument {
-    filing : FilingType
-    document: DocumentType
+  filing: Filing;
+  document: DocumentType;
 }

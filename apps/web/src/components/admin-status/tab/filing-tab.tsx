@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import type { ReactNode, SyntheticEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
@@ -74,7 +74,7 @@ export default function FilingTab({
   const [filingWithDocument, setFilingWithDocument] = useState<
     FilingsWithDocument[]
   >([]);
-  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [filings, setFilings] = useState<Filing[]>([]);
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'updatedAt', desc: true },
   ]);
@@ -111,7 +111,7 @@ export default function FilingTab({
 
       findFilingsWithFilter(newSelectedStatus, selectedType, selectedDepartment)
         .then((filingsData) => {
-          const filingsArray: FilingType[] = [];
+          const filingsArray: Filing[] = [];
           const filingsWithDocumentArray: FilingsWithDocument[] = [];
 
           return Promise.all(
@@ -233,7 +233,7 @@ export default function FilingTab({
           <SearchPanel
             filings={filings}
             placeHolder="ค้นหาเอกสาร"
-            filingFunc={(filing: FilingType) => {
+            filingFunc={(filing: Filing) => {
               setSelectedFilingId(filing.id);
             }}
           />

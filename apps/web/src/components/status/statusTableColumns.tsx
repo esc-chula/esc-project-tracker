@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { FilingStatus } from '@/src/constant/enum';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import { TextMyProject, textColors } from '@/src/styles/enumMap';
 import { DataTableColumnHeader } from './dataTableColumnHeader';
 import PDFButton from './pdfButton';
@@ -12,7 +12,7 @@ require('dayjs/locale/th');
 dayjs.extend(relativeTime);
 dayjs.locale('th');
 
-export const columns: ColumnDef<FilingType>[] = [
+export const columns: ColumnDef<Filing>[] = [
   {
     accessorKey: 'รหัสเอกสาร',
     size: 0,

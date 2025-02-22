@@ -4,7 +4,7 @@ import Header from '../../../components/header/header';
 import Title from '@/src/components/header/title';
 import MyProjectData from '@/src/components/project/myProjectData';
 import { StatusTable } from '@/src/components/status/statusTable';
-import { FilingType } from '@/src/interface/filing';
+import { Filing } from '@/src/interface/filing';
 import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const [filingsDataWithProject, setFilingsDataWithProject] = useState<
-    FilingType[]
+    Filing[]
   >([]);
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpen[]
@@ -30,7 +30,7 @@ export default function Page() {
       const [filingsDataWithProjectData, projectsWithLastOpenData] =
         await Promise.all([
           getFilingsByUserId(payload.sub).catch((err) => {
-            return [] as FilingType[];
+            return [] as Filing[];
           }),
           getProjectsByUserId(payload.sub).catch((err) => {
             return [] as ProjectWithLastOpen[];
@@ -47,10 +47,10 @@ export default function Page() {
     () => projectsWithLastOpen.map((project) => project.project),
     [projectsWithLastOpen],
   );
-  const redirectToProject = (project: Project | FilingType) => {
+  const redirectToProject = (project: Project | Filing) => {
     router.push(`/project/${project.id}`);
   };
-  const redirectToFiling = (filing: FilingType) => {
+  const redirectToFiling = (filing: Filing) => {
     router.push(`/project/${filing.projectId}/${filing.id}`);
   };
   return (

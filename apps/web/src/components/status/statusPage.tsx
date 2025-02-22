@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import { StatusTable } from './statusTable';
 
 export default function StatusPage({ userId }: { userId: string }) {
-  const [statuses, setStatuses] = useState<FilingType[]>([]);
+  const [statuses, setStatuses] = useState<Filing[]>([]);
 
   useEffect(() => {
     try {
