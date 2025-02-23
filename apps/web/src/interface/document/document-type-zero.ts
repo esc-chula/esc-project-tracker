@@ -4,8 +4,8 @@ import type { ObjectiveType, ActivityType, GraduateAttributeType, FilingType, Ma
 export interface DocumentTypeZero { // เอกสารเปิดโครง
   readonly id: string;
   projectCode: string;
-  projectNameTh: string;
-  projectNameEn: string;
+  projectNameTH: string;
+  projectNameEN: string;
   filingType: FilingType;
   filingCode: string;
   filingName: string;

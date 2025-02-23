@@ -125,8 +125,8 @@ export const TQFSchema = z.object({
 export const DocumentTypeZeroSchema = z.object({
   id: z.string().readonly(),
   projectCode: z.string(),
-  projectNameTh: z.string(),
-  projectNameEn: z.string(),
+  projectNameTH: z.string(),
+  projectNameEN: z.string(),
   filingType: z.nativeEnum(FilingType),
   filingCode: z.string(),
   filingName: z.string(),
