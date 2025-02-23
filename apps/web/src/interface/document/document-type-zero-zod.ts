@@ -17,7 +17,7 @@ export const IndicatorSchema = z.object({
 
 export const ParticipantSchema = z.object({
   id: z.string().readonly(),
-  role: z.enum(["Worker", "Participant"]),
+  role: z.enum(["Staff", "Participant"]),
   year1: z.number(),
   year2: z.number(),
   year3: z.number(),
@@ -56,7 +56,7 @@ export const ImprovementPlanSchema = z.object({
 
 export const ExpectedOutcomesSchema = z.object({
   id: z.string().readonly(),
-  category: z.enum(["Participant", "Worker", "Faculty/University"]),
+  category: z.enum(["Participant", "Staff", "Faculty/University"]),
   detail: z.array(z.string()),
 });
 

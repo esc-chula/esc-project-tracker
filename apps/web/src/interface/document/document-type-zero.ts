@@ -54,7 +54,7 @@ export interface Indicator {
 
 export interface Participant {
   readonly id: string;
-  role: 'Worker' | 'Participant';
+  role: 'Staff' | 'Participant';
   year1: number;
   year2: number;
   year3: number;
@@ -93,7 +93,7 @@ export interface ImprovementItem{
 
 export interface ExpectedOutcomes {
   readonly id: string;
-  category: 'Participant' | 'Worker' | 'Faculty/University';
+  category: 'Participant' | 'Staff' | 'Faculty/University';
   detail: string[];
 }
 
