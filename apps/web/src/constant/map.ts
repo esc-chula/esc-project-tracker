@@ -165,11 +165,11 @@ export const ObjectiveTypeMap = [
   },
   {
     label: 'ทำเป็น: มีทักษะทางการสื่อสาร',
-    value: ObjectiveType.COMMUNICATION_SKILLS,
+    value: ObjectiveType.SKILL_COMMUNICATION,
   },
   {
     label: 'ทำเป็น: มีทักษะการบริหารจัดการ',
-    value: ObjectiveType.MANAGEMENT_SKILLS,
+    value: ObjectiveType.SKILL_MANAGEMENT,
   },
   {
     label: 'ใฝ่รู้และรู้จักวิธีการเรียนรู้: ใฝ่รู้',
