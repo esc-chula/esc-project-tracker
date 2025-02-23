@@ -1,5 +1,5 @@
 'use client';
-import { DocumentType } from '@/src/interface/document';
+import { Document } from '@/src/interface/document';
 import { convertDate } from '@/src/lib/utils';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ export default function FilingReplyDetail({
   projectId: string;
   filingId: string;
   owner: string;
-  documentDetail: DocumentType | null;
+  documentDetail: Document | null;
 }) {
   return (
     <div className="w-full bg-lightgray p-5 rounded-xl space-y-2 ">

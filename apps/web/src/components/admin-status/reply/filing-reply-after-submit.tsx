@@ -1,4 +1,4 @@
-import { DocumentType } from '@/src/interface/document';
+import { Document } from '@/src/interface/document';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
 import { DocumentStatus } from '@/src/constant/enum';
@@ -16,7 +16,7 @@ export default function FilingReplyAfterSubmit({
 }: {
   documentStatus: DocumentStatus;
   folderName?: string;
-  document: DocumentType | null;
+  document: Document | null;
   isPendingReviewed: boolean;
   documentCode: string;
   setIsSubmitted: (value: boolean) => void;

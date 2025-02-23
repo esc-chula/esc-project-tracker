@@ -1,9 +1,9 @@
 import { User } from '@/src/interface/user';
 import { findUserByUserId } from './findUserByUserId';
-import { DocumentType } from '@/src/interface/document';
+import { Document } from '@/src/interface/document';
 
 export default async function getUsersMap(
-  documents: DocumentType[],
+  documents: Document[],
   userId: string,
 ) {
   const uniqueUserIds = new Set(

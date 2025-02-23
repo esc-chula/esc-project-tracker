@@ -9,7 +9,7 @@ import { CircleUserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import Note from './note';
 import NameDate from './nameDate';
 import FileDisplay from './fileDisplay';
-import { DocumentType } from '@/src/interface/document';
+import { Document } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
@@ -21,7 +21,7 @@ export default function DisplayWithNote({
   handleDeleteDocument,
   folderName,
 }: {
-  document: DocumentType;
+  document: Document;
   user?: User;
   handleDeleteDocument: (documentId: string) => Promise<void>;
   folderName: string;

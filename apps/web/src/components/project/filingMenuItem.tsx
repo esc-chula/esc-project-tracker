@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import type { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import type { Filing } from '@/src/interface/filing';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/user/findUserByCondition';
 import {
@@ -26,7 +26,7 @@ export default function FilingMenuItem({
   isUpdateMode: boolean;
   setPrepareUpdatedDocument: (newDocument: CreateDocumentDTO) => void;
 }) {
-  const [document, setDocuments] = useState<DocumentType | null>(null);
+  const [document, setDocuments] = useState<Document | null>(null);
   const [filingOwner, setFilingOwner] = useState<User | null>(null);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [detail, setDetail] = useState<string>(document?.detail || '');

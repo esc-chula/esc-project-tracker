@@ -3,7 +3,7 @@ import { FaFolderOpen } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
 import type { Filing } from '@/src/interface/filing';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import { FilingStatus } from '@/src/constant/enum';
@@ -32,7 +32,7 @@ export default function FilingReplyArea({
     useState<string>(selectedFilingId);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [latestPendingDocumentDetail, setLatestPendingDocumentDetail] =
-    useState<DocumentType | null>(null);
+    useState<Document | null>(null);
   const [projectId, setProjectId] = useState<string>('');
   const [documentCode, setDocumentCode] = useState<string>('');
 

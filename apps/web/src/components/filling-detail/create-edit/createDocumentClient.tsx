@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import { DocumentActivity, FilingStatus } from '@/src/constant/enum';
 import { createdFormSchema } from '@/src/constant/schema';
 import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';
@@ -28,7 +28,7 @@ export default function CreateDocumentClient({
   userId,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
-  afterCreateDocument: (createdDocument: DocumentType) => void;
+  afterCreateDocument: (createdDocument: Document) => void;
   filingId: string;
   projectId: string;
   status: FilingStatus;

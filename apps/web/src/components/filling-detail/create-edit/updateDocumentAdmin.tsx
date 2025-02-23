@@ -17,7 +17,7 @@ import { Select } from '../../ui/select';
 import ButtonPanel from './buttonPanel';
 import FileInputPanel from './fileInputPanel';
 import ActivityPanel from './activityPanel';
-import { DocumentType } from '@/src/interface/document';
+import { Document } from '@/src/interface/document';
 import { DocumentActivity } from '@/src/constant/enum';
 import { toast } from '../../ui/use-toast';
 import { createdFormSchema } from '@/src/constant/schema';
@@ -31,7 +31,7 @@ export default function UpdateDocumentAdmin({
   userId,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
-  afterCreateDocument: (createdDocument: DocumentType) => void;
+  afterCreateDocument: (createdDocument: Document) => void;
   filingId: string;
   projectId: string;
   userId: string;

@@ -1,5 +1,5 @@
 import { Clock } from 'lucide-react';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import type { FilingStatus } from '@/src/constant/enum';
 import type { User } from '@/src/interface/user';
 import DocumentCard from './documentCard';
@@ -14,7 +14,7 @@ export default function FilingTimeline({
   isAdmin = false,
   folderName,
 }: {
-  documents: DocumentType[];
+  documents: Document[];
   status: FilingStatus;
   showCreateDocument: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;

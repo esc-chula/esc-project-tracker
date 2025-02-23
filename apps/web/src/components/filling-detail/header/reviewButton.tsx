@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { IoIosAlert } from 'react-icons/io';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import {
   Select,
@@ -27,7 +27,7 @@ export default function ReviewButton({
   reviewDocument,
 }: {
   isSubmitting: boolean;
-  documents: DocumentType[];
+  documents: Document[];
   status: FilingStatus;
   reviewButton: string;
   setReviewButton: (_: string) => void;
