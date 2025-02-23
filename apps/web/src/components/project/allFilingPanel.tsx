@@ -2,7 +2,7 @@
 import AllFilingCard from './allFilingCard';
 import SelectType from '../filter/selectType';
 import { useState, useEffect, SetStateAction, Dispatch } from 'react';
-import { FilingType } from '@/src/interface/filing';
+import { Filing } from '@/src/interface/filing';
 import {
   statusFilingItems,
   typeFilingItems,
@@ -12,10 +12,10 @@ export default function AllFilingPanel({
   filings,
   setFilings,
 }: {
-  filings: FilingType[];
-  setFilings: Dispatch<SetStateAction<FilingType[]>>;
+  filings: Filing[];
+  setFilings: Dispatch<SetStateAction<Filing[]>>;
 }) {
-  const [filteredFilings, setFilteredFilings] = useState<FilingType[]>(filings);
+  const [filteredFilings, setFilteredFilings] = useState<Filing[]>(filings);
   const [status, setStatus] = useState<string>('ALL');
   const [type, setType] = useState<string>('ALL');
 

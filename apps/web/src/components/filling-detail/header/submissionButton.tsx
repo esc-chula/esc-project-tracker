@@ -1,6 +1,6 @@
 import { Send } from 'lucide-react';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import { Button } from '../../ui/button';
 
 export default function SubmissionButton({
@@ -12,7 +12,7 @@ export default function SubmissionButton({
 }: {
   isSubmitting: boolean;
   status: FilingStatus;
-  documents: DocumentType[];
+  documents: Document[];
   submitDocument: () => Promise<void>;
   isAdmin: boolean;
 }) {

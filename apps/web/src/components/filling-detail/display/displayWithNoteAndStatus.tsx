@@ -2,7 +2,7 @@
 
 import { CircleUserRound } from 'lucide-react';
 import { useState } from 'react';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import type { User } from '@/src/interface/user';
 import { convertDate } from '@/src/lib/utils';
@@ -21,7 +21,7 @@ export default function DisplayWithNoteAndStatus({
   folderName,
 }: {
   user?: User;
-  document: DocumentType;
+  document: Document;
   showReplyButton: boolean;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   handleDeleteDocument?: (documentId: string) => Promise<void>;

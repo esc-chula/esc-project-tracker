@@ -1,7 +1,7 @@
-import type { FilingType } from '../../interface/filing';
+import type { Filing } from '../../interface/filing';
 import { trpc } from '../../app/trpc';
 
-export default async function findLatestFilings(): Promise<FilingType[]> {
+export default async function findLatestFilings(): Promise<Filing[]> {
   try {
     const data = await trpc.filing.findLatestFilings.query();
     return data;

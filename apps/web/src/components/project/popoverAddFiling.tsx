@@ -10,7 +10,7 @@ import { HiDocumentAdd } from 'react-icons/hi';
 import { filingTypeMap } from '@/src/constant/map';
 import { useState } from 'react';
 import createFiling from '@/src/service/filing/createFiling';
-import { FilingType } from '@/src/interface/filing';
+import { Filing } from '@/src/interface/filing';
 import { toast } from '../ui/use-toast';
 import { getUserId } from '@/src/service/auth';
 
@@ -21,7 +21,7 @@ export default function PopoverAddFiling({
 }: {
   children?: React.ReactNode;
   projectId: string;
-  addFilingToParent: (filing: FilingType) => void;
+  addFilingToParent: (filing: Filing) => void;
 }) {
   const [filingType, setFilingType] = useState<number>(0);
   const [filingName, setFilingName] = useState<string>('');

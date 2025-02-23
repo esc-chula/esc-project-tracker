@@ -1,4 +1,4 @@
-import { FilingType } from '@/src/interface/filing';
+import { Filing } from '@/src/interface/filing';
 import SearchBar from '../searchbar/searchBar';
 import { Project } from '@/src/interface/project';
 
@@ -10,11 +10,11 @@ export default function SearchPanel({
   filingFunc,
   clearFunc,
 }: {
-  filings?: FilingType[];
+  filings?: Filing[];
   projects?: Project[];
   placeHolder: string;
   projectFunc?: (project: Project) => void;
-  filingFunc?: (filing: FilingType) => void;
+  filingFunc?: (filing: Filing) => void;
   clearFunc?: () => void;
 }) {
   return (

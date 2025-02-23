@@ -1,13 +1,13 @@
 import type { Table } from '@tanstack/react-table';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import SearchPanel from '../all-projects/searchPanel';
 
 export default function StatusTableToolBar({
   table,
   filingFunc,
 }: {
-  table: Table<FilingType>;
-  filingFunc: (filing: FilingType) => void;
+  table: Table<Filing>;
+  filingFunc: (filing: Filing) => void;
 }) {
   return (
     <div className="flex items-center gap-4 py-4">

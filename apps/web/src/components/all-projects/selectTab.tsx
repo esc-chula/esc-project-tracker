@@ -15,7 +15,7 @@ import {
   type Project,
   type ProjectWithLastOpen,
 } from '@/src/interface/project';
-import { type FilingType } from '@/src/interface/filing';
+import { type Filing } from '@/src/interface/filing';
 import findAllProject from '@/src/service/project/findAllProject';
 import findAllFiling from '@/src/service/filing/findAllFiling';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
@@ -65,7 +65,7 @@ export default function SelectTab({
 }) {
   const [value, setValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [filings, setFilings] = useState<Filing[]>([]);
   const [searchedProjectID, setSearchedProjectID] = useState<string | null>(
     null,
   );
@@ -76,9 +76,9 @@ export default function SelectTab({
     ProjectWithLastOpen[]
   >([]);
   const [myProjects, setMyProjects] = useState<Project[]>([]);
-  const [myFilings, setMyFilings] = useState<FilingType[]>([]);
+  const [myFilings, setMyFilings] = useState<Filing[]>([]);
   const router = useRouter();
-  const redirectToProject = (project: Project | FilingType) => {
+  const redirectToProject = (project: Project | Filing) => {
     if (isAdmin) router.push(`/admin/project/${project.id}/info`);
     else router.push(`/project/${project.id}`);
   };
@@ -159,7 +159,7 @@ export default function SelectTab({
           <SearchPanel
             projects={projects}
             placeHolder="ค้นหาโครงการทั้งหมด"
-            projectFunc={(project: Project | FilingType) => {
+            projectFunc={(project: Project | Filing) => {
               redirectToProject(project);
             }}
             clearFunc={() => {
@@ -176,7 +176,7 @@ export default function SelectTab({
           <SearchPanel
             filings={filings}
             placeHolder="ค้นหาเอกสารทั้งหมด"
-            filingFunc={(filing: FilingType | Project) => {
+            filingFunc={(filing: Filing | Project) => {
               setSearchedFilingID(filing.id);
             }}
             clearFunc={() => {

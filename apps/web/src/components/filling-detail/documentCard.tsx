@@ -3,7 +3,7 @@ import {
   DocumentStatus,
   FilingStatus,
 } from '@/src/constant/enum';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import DisplayWithNoteAndStatus from './display/displayWithNoteAndStatus';
 import DisplayWithStatus from './display/displayWithStatus';
@@ -22,13 +22,13 @@ export default function DocumentCard({
   setShowCreateDocument,
   showCreateDocument,
 }: {
-  document: DocumentType;
+  document: Document;
   index: number;
   user: User | undefined;
   isAdmin?: boolean;
   status: FilingStatus;
   folderName: string;
-  documents: DocumentType[];
+  documents: Document[];
   handleDeleteDocument: (documentId: string) => Promise<void>;
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   showCreateDocument: boolean;

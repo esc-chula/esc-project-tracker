@@ -11,7 +11,7 @@ import createDocument from '@/src/service/document/createDocument';
 import type { FilingStatus } from '@/src/constant/enum';
 import { DocumentActivity, DocumentStatus } from '@/src/constant/enum';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import updateDocument from '@/src/service/document/updateDocument';
 import { toast } from '../../ui/use-toast';
 import ButtonPanel from '../../filling-detail/create-edit/buttonPanel';
@@ -55,7 +55,7 @@ export default function FilingReplyComment({
   const [latestReplyDocumentId, setLatestReplyDocumentId] =
     useState<string>('');
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const [document, setDocument] = useState<DocumentType | null>(null);
+  const [document, setDocument] = useState<Document | null>(null);
   const [documentStatus, setDocumentStatus] = useState<DocumentStatus>(
     DocumentStatus.WAIT_FOR_SECRETARY,
   );

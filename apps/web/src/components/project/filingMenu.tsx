@@ -1,4 +1,4 @@
-import { FilingType } from '@/src/interface/filing';
+import { Filing } from '@/src/interface/filing';
 import NoData from '../all-projects/noData';
 import FilingMenuHeader from './filingMenuHeader';
 import FilingMenuItem from './filingMenuItem';
@@ -25,7 +25,7 @@ export default function FilingMenu({
   const [departmentFiling, setDepartmentFiling] = useState<string>('ALL');
   const [statusFiling, setStatusFiling] = useState<string>('ALL');
   const [typeFiling, setTypeFiling] = useState<string>('ALL');
-  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [filings, setFilings] = useState<Filing[]>([]);
   const [prepareUpdatedDocuments, setPrepareUpdatedDocuments] = useState<
     Map<string, CreateDocumentDTO>
   >(new Map());

@@ -3,7 +3,7 @@ import { CirclePlus, FileText } from 'lucide-react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/navigation';
 import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import { Button } from '../ui/button';
 import PopoverEditFiling from '../project/popoverEditFiling';
 import PopoverDeleteFiling from '../project/popoverDeleteFiling';
@@ -33,11 +33,11 @@ export default function FilingTimelineHeader({
   name: string;
   code: string;
   status: FilingStatus;
-  documents: DocumentType[];
-  latestDocument: DocumentType | null;
+  documents: Document[];
+  latestDocument: Document | null;
   setStatus: (_: FilingStatus) => void;
   setName: (_: string) => void;
-  setDocuments: Dispatch<SetStateAction<DocumentType[]>>;
+  setDocuments: Dispatch<SetStateAction<Document[]>>;
   filingId: string;
   projectId: string;
   showCreateDocument: boolean;
@@ -49,7 +49,7 @@ export default function FilingTimelineHeader({
   // const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
 
   // const updateDocumentStatuses = async (
-  //   prevDocuments: DocumentType[],
+  //   prevDocuments: Document[],
   //   fromStatus: DocumentStatus,
   //   toStatus: DocumentStatus,
   // ) => {

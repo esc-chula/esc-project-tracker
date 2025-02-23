@@ -4,14 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/statusStepper';
 import { FilingStatus } from '@/src/constant/enum';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
 import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
 import { toast } from '@/src/components/ui/use-toast';
 import FilingTimelineHeader from '@/src/components/filling-detail/filingTimelineHeader';
 import findDocumentsByFilingId from '@/src/service/document/findDocumentsByFilingId';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import deleteDocument from '@/src/service/document/deleteDocument';
@@ -31,15 +31,13 @@ export default function FilingDetailPage({
   isAdmin?: boolean;
   userId: string;
 }) {
-  const [filing, setFiling] = useState<FilingType | null>(null);
-  const [documents, setDocuments] = useState<DocumentType[]>([]);
+  const [filing, setFiling] = useState<Filing | null>(null);
+  const [documents, setDocuments] = useState<Document[]>([]);
   const [showCreateDocument, setShowCreateDocument] = useState<boolean>(
     searchParams.showCreateDocument === 'true',
   );
   const [usernameMap, setUsernameMap] = useState<Map<string, User>>(new Map());
-  const [latestDocument, setLatestDocument] = useState<DocumentType | null>(
-    null,
-  );
+  const [latestDocument, setLatestDocument] = useState<Document | null>(null);
   const setStatus = useMemo(
     () => (status: FilingStatus) => {
       setFiling((prev) => (prev ? { ...prev, status } : prev));

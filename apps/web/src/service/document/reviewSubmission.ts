@@ -1,12 +1,12 @@
 import { trpc } from '../../app/trpc';
-import { DocumentType } from '../../interface/document';
+import { Document } from '../../interface/document';
 export default async function reviewSubmission({
   id,
   updatedStatus,
 }: {
   id: string;
   updatedStatus: boolean;
-}): Promise<DocumentType> {
+}): Promise<Document> {
   try {
     const result = await trpc.document.reviewSubmission.mutate({
       id,

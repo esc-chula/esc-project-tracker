@@ -7,7 +7,7 @@ import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import { StatusTable } from '@/src/components/status/statusTable';
 import { FilingStatus } from '@/src/constant/enum';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import { Button } from '@/src/components/ui/button';
 import type { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
@@ -26,14 +26,14 @@ export default function Page() {
   const [isApproved, setIsApproved] = useState(false);
 
   const [filingsDataWithProject, setFilingsDataWithProject] = useState<
-    FilingType[]
+    Filing[]
   >([]);
   const [projectsWithLastOpenData, setProjectsWithLastOpenData] = useState<
     ProjectWithLastOpen[]
   >([]);
 
-  const [filingsRawData, setFilingsRawData] = useState<FilingType[]>([]);
-  const [latestFilings, setLatestFilings] = useState<FilingType[]>([]);
+  const [filingsRawData, setFilingsRawData] = useState<Filing[]>([]);
+  const [latestFilings, setLatestFilings] = useState<Filing[]>([]);
 
   const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
     [],
@@ -109,10 +109,10 @@ export default function Page() {
     (project: { project: Project }) => project.project,
   );
   const router = useRouter();
-  const redirectToProject = (project: Project | FilingType) => {
+  const redirectToProject = (project: Project | Filing) => {
     router.push(`/admin/project/${project.id}/info`);
   };
-  const redirectToFiling = (filing: FilingType) => {
+  const redirectToFiling = (filing: Filing) => {
     router.push(`/admin/project/${filing.projectId}/${filing.id}`);
   };
   return (

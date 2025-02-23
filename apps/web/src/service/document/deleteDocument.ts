@@ -1,9 +1,9 @@
 import { trpc } from '../../app/trpc';
-import type { DocumentType } from '../../interface/document';
+import type { Document } from '../../interface/document';
 
 export default async function deleteDocument(
   documentId: string,
-): Promise<DocumentType | null> {
+): Promise<Document | null> {
   try {
     const data = await trpc.document.deleteDocument.mutate({ id: documentId });
 

@@ -2,7 +2,7 @@
 import { FileText } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
 import type { Project } from '@/src/interface/project';
 import { toast } from '../ui/use-toast';
@@ -13,14 +13,14 @@ import AllFilingPanel from './allFilingPanel';
 import NoFiling from './noFiling';
 
 export default function MyFilingData({ projectId }: { projectId: string }) {
-  const [filings, setFilings] = useState<FilingType[]>([]);
+  const [filings, setFilings] = useState<Filing[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const router = useRouter();
 
-  const redirectToProject = (project: Project | FilingType) => {
+  const redirectToProject = (project: Project | Filing) => {
     router.push(`/project/${project.id}`);
   };
-  const redirectToFiling = (filing: FilingType) => {
+  const redirectToFiling = (filing: Filing) => {
     router.push(`/project/${filing.projectId}/${filing.id}`);
   };
 
@@ -65,7 +65,7 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
         <div className="">
           <PopoverAddFiling
             projectId={projectId}
-            addFilingToParent={(filing: FilingType) => {
+            addFilingToParent={(filing: Filing) => {
               setFilings((prevFilings) => [...prevFilings, filing]);
             }}
           />
@@ -76,7 +76,7 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
           {filings.length === 0 ? (
             <NoFiling
               projectId={projectId}
-              setNewFilingToParent={(filing: FilingType) => {
+              setNewFilingToParent={(filing: Filing) => {
                 setFilings((prevFilings) => [...prevFilings, filing]);
               }}
             />

@@ -1,4 +1,4 @@
-import { DocumentType } from '@/src/interface/document';
+import { Document } from '@/src/interface/document';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
 
@@ -9,7 +9,7 @@ export default function FilingReplyNoteAndFile({
 }: {
   projectId: string;
   filingId: string;
-  latestDocument: DocumentType | null;
+  latestDocument: Document | null;
 }) {
   return (
     <div className="border-t-2 py-4 font-bold flex flex-col space-y-4 ">

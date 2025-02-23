@@ -7,7 +7,7 @@ import styles from './document.module.css';
 import { convertToThaiDate } from './date';
 import { DocumentDataModel } from './document.model';
 
-export default async function Document() {
+export default async function DocumentGenPOC() {
   const filePath = path.join(process.cwd(), 'src/app/docgenpoc', `15.toml`);
   const rawToml = await readFile(filePath, 'utf-8');
   const data = DocumentDataModel.parse(toml.parse(rawToml));

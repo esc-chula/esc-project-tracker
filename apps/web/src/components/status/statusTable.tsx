@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/src/components/ui/table';
-import type { FilingType } from '@/src/interface/filing';
+import type { Filing } from '@/src/interface/filing';
 import {
   statusFilingItems,
   typeFilingItems,
@@ -38,7 +38,7 @@ export function StatusTable({
   data,
   compact = false,
 }: {
-  data: FilingType[];
+  data: Filing[];
   compact?: boolean;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -73,7 +73,7 @@ export function StatusTable({
   });
   const router = useRouter();
   const pathname = usePathname();
-  const redirectToFiling = (filing: FilingType) => {
+  const redirectToFiling = (filing: Filing) => {
     if (pathname.startsWith('/admin'))
       router.push(`/admin/project/${filing.projectId}/${filing.id}`);
     else router.push(`/project/${filing.projectId}/${filing.id}`);

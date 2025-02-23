@@ -9,7 +9,7 @@ import {
   DocumentStatus,
   FilingStatus,
 } from '@/src/constant/enum';
-import type { DocumentType } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import { createdDocumentAdminSchema } from '@/src/constant/schema';
 import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';
 import {
@@ -32,7 +32,7 @@ export default function CreateDocumentAdmin({
   userId,
 }: {
   setShowCreateDocument: (showCreateDocument: boolean) => void;
-  afterCreateDocument: (createdDocument: DocumentType) => void;
+  afterCreateDocument: (createdDocument: Document) => void;
   filingId: string;
   projectId: string;
   userId: string;

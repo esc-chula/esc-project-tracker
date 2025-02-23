@@ -1,9 +1,9 @@
 import { trpc } from '../../app/trpc';
-import { DocumentType } from '../../interface/document';
+import { Document } from '../../interface/document';
 
 export default async function findLatestPendingDocumentByFilingId(
   filingId: string,
-): Promise<DocumentType | null> {
+): Promise<Document | null> {
   try {
     const data = await trpc.document.findLatestPendingByFilingId.query({
       filingId,
