@@ -1,4 +1,4 @@
-import { ProjectType, DocumentActivity } from "./enum";
+import { ProjectType, DocumentActivity, ObjectiveType } from "./enum";
 
 export const filingTypeMap = [
   {
@@ -119,5 +119,80 @@ export const DocumentActivityMapForAdmin = [
   {
     label: "แก้ไขเอกสาร",
     value: DocumentActivity.EDIT,
+  },
+];
+
+export const ObjectiveTypeMap = [
+  {
+    label: 'มีความรู้: รู้รอบ',
+    value: ObjectiveType.KNOWLEDGE_BROAD,
+  },
+  {
+    label: 'มีความรู้: รู้ลึก',
+    value: ObjectiveType.KNOWLEDGE_DEEP,
+  },
+  {
+    label: 'มีคุณธรรม: มีจรรยาบรรณ',
+    value: ObjectiveType.ETHICS_PROFESSIONALISM,
+  },
+  {
+    label: 'มีคุณธรรม: มีคุณธรรมและจริยธรรม',
+    value: ObjectiveType.ETHICS_MORALITY,
+  },
+  {
+    label: 'คิดเป็น: สามารถคิดริเริ่มสร้างสรรค์',
+    value: ObjectiveType.CRITICAL_THINKING_CREATIVITY,
+  },
+  {
+    label: 'คิดเป็น: สามารถคิดอย่างมีวิจารณญาณ',
+    value: ObjectiveType.CRITICAL_THINKING_ANALYTICAL,
+  },
+  {
+    label: 'คิดเป็น: มีทักษะในการคิดแก้ปัญหา',
+    value: ObjectiveType.CRITICAL_THINKING_PROBLEM_SOLVING,
+  },
+  {
+    label: 'ทำเป็น: มีทักษะทางเทคโนโลยีสารสนเทศ',
+    value: ObjectiveType.SKILL_INFORMATION_TECHNOLOGY,
+  },
+  {
+    label: 'ทำเป็น: มีทักษะทางคณิตศาสตร์และสถิติ',
+    value: ObjectiveType.SKILL_MATH_STATS,
+  },
+  {
+    label: 'ทำเป็น: มีทักษะทางวิชาชีพ',
+    value: ObjectiveType.SKILL_PROFESSIONAL_SKILLS,
+  },
+  {
+    label: 'ทำเป็น: มีทักษะทางการสื่อสาร',
+    value: ObjectiveType.SKILL_COMMUNICATION,
+  },
+  {
+    label: 'ทำเป็น: มีทักษะการบริหารจัดการ',
+    value: ObjectiveType.SKILL_MANAGEMENT,
+  },
+  {
+    label: 'ใฝ่รู้และรู้จักวิธีการเรียนรู้: ใฝ่รู้',
+    value: ObjectiveType.LIFELONG_LEARNING_CURIOSITY,
+  },
+  {
+    label: 'ใฝ่รู้และรู้จักวิธีการเรียนรู้: รู้จักวิธีการเรียนรู้',
+    value: ObjectiveType.LIFELONG_LEARNING_METHODS,
+  },
+  {
+    label: 'มีภาวะผู้นำ',
+    value: ObjectiveType.LEADERSHIP,
+  },
+  {
+    label: 'มีสุขภาวะ',
+    value: ObjectiveType.HEALTH_WELLBEING,
+  },
+  {
+    label: 'มีจิตอาสาและสำนึกสาธารณะ',
+    value: ObjectiveType.VOLUNTEERISM_PUBLIC_AWARENESS,
+  },
+  {
+    label: 'ดำรงความเป็นไทยในกระแสโลกาภิวัฒน์',
+    value: ObjectiveType.THAI_IDENTITY_GLOBALIZATION,
   },
 ];
