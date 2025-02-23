@@ -1,12 +1,18 @@
 import type { Row } from '@tanstack/react-table';
 import { BiSolidFilePdf } from 'react-icons/bi';
+import type { MouseEvent } from 'react';
 import { FilingStatus } from '@/src/constant/enum';
 import type { Filing } from '@/src/interface/filing';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 
 export default function PDFButton({ row }: { row: Row<Filing> }) {
-  const handleClick = async (id: string, folderName: string) => {
+  const handleClick = async (
+    e: MouseEvent<HTMLButtonElement>,
+    id: string,
+    folderName: string,
+  ) => {
+    e.stopPropagation();
     const latestDocument = await findLatestDocumentByFilingId(id);
     console.log(latestDocument);
 
@@ -20,8 +26,8 @@ export default function PDFButton({ row }: { row: Row<Filing> }) {
   return (
     <button
       type="button"
-      onClick={() => {
-        void handleClick(row.original.id, row.getValue('detailsPath'));
+      onClick={(e) => {
+        void handleClick(e, row.original.id, row.getValue('detailsPath'));
       }}
       className={`w-6 text-red ${row.getValue('status') !== FilingStatus.DRAFT && row.getValue('status') !== FilingStatus.DOCUMENT_CREATED ? ' cursor-pointer' : 'opacity-50 pointer-events-none'}`}
     >

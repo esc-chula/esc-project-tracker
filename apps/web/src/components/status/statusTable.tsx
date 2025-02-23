@@ -73,10 +73,13 @@ export function StatusTable({
   });
   const router = useRouter();
   const pathname = usePathname();
+  const getRedirectPath = (filing: Filing) =>
+    pathname.startsWith('/admin')
+      ? `/admin/project/${filing.projectId}/${filing.id}`
+      : `/project/${filing.projectId}/${filing.id}`;
+
   const redirectToFiling = (filing: Filing) => {
-    if (pathname.startsWith('/admin'))
-      router.push(`/admin/project/${filing.projectId}/${filing.id}`);
-    else router.push(`/project/${filing.projectId}/${filing.id}`);
+    router.push(getRedirectPath(filing));
   };
 
   return (
@@ -130,16 +133,9 @@ export function StatusTable({
               <TableRow
                 key={row.id}
                 onClick={() => {
-                  if (row.getIsSelected()) {
-                    redirectToFiling(row.original);
-                  } else {
-                    table.resetRowSelection();
-                    row.toggleSelected();
-                  }
+                  redirectToFiling(row.original);
                 }}
-                className={`${
-                  row.getIsSelected() ? 'bg-gray-200 hover:bg-gray-200' : ''
-                } cursor-pointer transition-colors duration-150`}
+                className="hover:bg-gray-200 cursor-pointer transition-colors duration-150"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="py-0 px-1 h-12">
