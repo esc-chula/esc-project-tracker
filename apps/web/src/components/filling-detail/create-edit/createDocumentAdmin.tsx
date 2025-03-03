@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   DocumentActivity,
   DocumentStatus,
@@ -31,7 +31,7 @@ export default function CreateDocumentAdmin({
   projectId,
   userId,
 }: {
-  setShowCreateDocument: (showCreateDocument: boolean) => void;
+  setShowCreateDocument?: (showCreateDocument: boolean) => void;
   afterCreateDocument: (createdDocument: Document) => void;
   filingId: string;
   projectId: string;
@@ -76,6 +76,10 @@ export default function CreateDocumentAdmin({
       }
     }
   }
+
+  useEffect(() => {
+    form.reset();
+  }, [filingId]);
 
   return (
     <Form {...form}>
