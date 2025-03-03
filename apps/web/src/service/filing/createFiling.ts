@@ -1,3 +1,4 @@
+import type { FilingSubType } from '@/src/constant/enum';
 import { trpc } from '../../app/trpc';
 import type { Filing } from '../../interface/filing';
 
@@ -6,6 +7,7 @@ export default async function createFiling(
   filingName: string,
   filingType: number,
   userId: string,
+  subType: FilingSubType | null,
 ): Promise<Filing> {
   try {
     const data = await trpc.filing.createFiling.mutate({
@@ -13,6 +15,7 @@ export default async function createFiling(
       filingName,
       filingType,
       userId,
+      subType,
     });
 
     return data;

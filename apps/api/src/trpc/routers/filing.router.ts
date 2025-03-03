@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { FilingStatus } from '../../constant/enum';
+import { FilingStatus, FilingSubType } from '../../constant/enum';
 import { FilingService } from '../../filing/filing.service';
 import { TRPCError } from '@trpc/server';
 import { ProjectService } from '../../project_/project_.service';
@@ -39,6 +39,7 @@ export class FilingRouter {
           filingName: z.string(),
           filingType: z.number(),
           userId: z.string(),
+          subType: z.nativeEnum(FilingSubType).nullable(),
         }),
       )
       .mutation(async ({ input, ctx }) => {
@@ -57,6 +58,7 @@ export class FilingRouter {
           input.filingName,
           input.filingType,
           input.userId,
+          input.subType,
         );
       }),
 

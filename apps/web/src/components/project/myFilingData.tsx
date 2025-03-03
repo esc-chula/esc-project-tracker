@@ -82,7 +82,7 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
             />
           ) : (
             // <AllFilingPanel filings={filings} setFilings={setFilings} />
-            <StatusTable data={filings} />
+            <StatusTable data={filings} projectId={projectId} />
           )}
         </>
       ) : null}

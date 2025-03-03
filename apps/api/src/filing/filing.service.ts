@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
-import { FilingStatus } from '../constant/enum';
+import { FilingStatus, FilingSubType } from '../constant/enum';
 import { CountFilingService } from '../count-filing/count-filing.service';
 import { FilingFieldTranslate } from '../constant/translate';
 import { UserProjService } from '../user-proj/user-proj.service';
@@ -64,6 +64,7 @@ export class FilingService {
     filingName: string,
     filingType: number,
     userId: string,
+    subType: FilingSubType | null,
   ) {
     if (!isUUID(projectId) || !isUUID(userId))
       throw new BadRequestException('Ids are not in UUID format.');
@@ -89,6 +90,7 @@ export class FilingService {
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
     newFiling.userId = userId;
+    newFiling.subType = subType;
 
     this.countFilingService.incrementTypeCount(filingType);
 

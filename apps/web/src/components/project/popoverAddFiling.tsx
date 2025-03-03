@@ -1,4 +1,12 @@
 'use client';
+import { HiDocumentAdd } from 'react-icons/hi';
+import { useState } from 'react';
+import createFiling from '@/src/service/filing/createFiling';
+import type { Filing } from '@/src/interface/filing';
+import { getUserId } from '@/src/service/auth';
+import { typeFilingItemsV2 } from '@/src/constant/filterFiling';
+import type { FilingSubType } from '@/src/constant/enum';
+import { toast } from '../ui/use-toast';
 import {
   Dialog,
   DialogContent,
@@ -6,13 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { HiDocumentAdd } from 'react-icons/hi';
-import { filingTypeMap } from '@/src/constant/map';
-import { useState } from 'react';
-import createFiling from '@/src/service/filing/createFiling';
-import { Filing } from '@/src/interface/filing';
-import { toast } from '../ui/use-toast';
-import { getUserId } from '@/src/service/auth';
 
 export default function PopoverAddFiling({
   children,
@@ -23,19 +24,21 @@ export default function PopoverAddFiling({
   projectId: string;
   addFilingToParent: (filing: Filing) => void;
 }) {
-  const [filingType, setFilingType] = useState<number>(0);
+  const [filingTypeAndSubType, setFilingTypeAndSubType] = useState<string>('0');
   const [filingName, setFilingName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
 
   const submitCreate = async () => {
     try {
       const userId = await getUserId();
+      const [filingType, filingSubType] = filingTypeAndSubType.split('-');
       if (filingName !== '') {
         const data = await createFiling(
           projectId,
           filingName,
-          filingType,
+          parseInt(filingType),
           userId,
+          filingSubType ? (filingSubType as FilingSubType) : null,
         );
 
         addFilingToParent(data);
@@ -82,29 +85,29 @@ export default function PopoverAddFiling({
               setFilingName(e.target.value.trim());
             }}
             required
-          ></input>
+          />
 
           <div className="font-sukhumvit font-semibold">
             ประเภทเอกสาร *
             <select
               id="documentType"
               className="border-black border-2 w-full p-2 rounded-lg"
-              defaultValue={0}
-              value={filingType}
+              defaultValue="0"
+              value={filingTypeAndSubType}
               onChange={(e) => {
-                setFilingType(parseInt(e.target.value));
+                setFilingTypeAndSubType(e.target.value);
               }}
             >
-              {filingTypeMap.map((type) => (
+              {typeFilingItemsV2.map((type) => (
                 <option value={type.value} key={type.value}>
-                  {type.value.toString()}
-                  {'  '} {type.label}
+                  {type.label}
                 </option>
               ))}
             </select>
           </div>
           <div className="text-end">
             <button
+              type="submit"
               className="bg-red text-white rounded-lg py-1 px-4 font-sukhumvit font-semibold"
               onClick={submitCreate}
             >
