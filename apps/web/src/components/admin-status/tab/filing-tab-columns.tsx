@@ -35,6 +35,7 @@ export const filingTabColumns: ColumnDef<FilingWithDocument>[] = [
   },
   {
     accessorKey: 'type',
+    accessorFn: (row) => row.filing.type,
     filterFn: (row, id, value: string[]) =>
       value.includes(String(row.getValue(id))),
   },

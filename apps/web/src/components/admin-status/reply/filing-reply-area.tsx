@@ -1,14 +1,11 @@
 'use client';
 import { FaFolderOpen } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
-import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import { FilingStatus } from '@/src/constant/enum';
-import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
 import type { FilingWithDocument } from '@/src/types/filing';
 import { toast } from '../../ui/use-toast';
-import FilingReplyButtons from './filing-reply-buttons';
 import FilingReplyComment from './filing-reply-comment';
 import FilingReplyDetail from './filing-reply-detail';
 import FilingReplyHeader from './filing-reply-header';
@@ -22,17 +19,11 @@ export default function FilingReplyArea({
 }) {
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [isShowComment, setIsShowComment] = useState<boolean>(false);
-  const [targetFilingId, setTargetFilingId] = useState<string>(
-    selectedFilingWithDocument?.filing.id ?? '',
-  );
-  const [latestPendingDocumentDetail, setLatestPendingDocumentDetail] =
-    useState<Document | null>(null);
+  const [targetFilingId, setTargetFilingId] = useState<string>('');
   const [documentCode, setDocumentCode] = useState<string>('');
 
   useEffect(() => {
     setIsPending(false);
-    setIsShowComment(false);
 
     const fetchOwnerDetail = async (userId: string) => {
       try {
@@ -50,22 +41,6 @@ export default function FilingReplyArea({
       }
     };
 
-    // ใช้สำหรับแสดงข้อมูลเอกสารล่าสุดที่ไม่ใช่ reply
-    const fetchLatestPendingDocumentDetail = async (filingId: string) => {
-      try {
-        const data = await findLatestPendingDocumentByFilingId(filingId);
-        setLatestPendingDocumentDetail(data);
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: `ดึงข้อมูลเอกสาร ${documentCode} ไม่สำเร็จ`,
-            description: error.message,
-            isError: true,
-          });
-        }
-      }
-    };
-
     if (selectedFilingWithDocument) {
       setTargetFilingId(selectedFilingWithDocument.filing.id);
       setIsPending(
@@ -76,9 +51,6 @@ export default function FilingReplyArea({
         `${selectedFilingWithDocument.filing.projectCode}-${selectedFilingWithDocument.filing.filingCode}`,
       );
       void fetchOwnerDetail(selectedFilingWithDocument.filing.userId);
-      void fetchLatestPendingDocumentDetail(
-        selectedFilingWithDocument.filing.id,
-      );
     }
   }, [selectedFilingWithDocument]);
 
@@ -102,34 +74,19 @@ export default function FilingReplyArea({
             documentCode={documentCode}
           />
           <FilingReplyDetail
-            documentDetail={latestPendingDocumentDetail}
+            documentDetail={selectedFilingWithDocument.document}
             projectId={selectedFilingWithDocument.filing.projectId}
             filingId={selectedFilingWithDocument.filing.id}
             owner={ownerDetail?.username || 'Secretary ESC'}
           />
-          {!isPending || isShowComment ? (
-            <FilingReplyComment
-              isPending={isPending}
-              filingStatus={selectedFilingWithDocument.filing.status}
-              filingId={targetFilingId}
-              projectId={selectedFilingWithDocument.filing.projectId}
-              newDocumentDetail={latestPendingDocumentDetail?.detail || ''}
-              newDocumentName={latestPendingDocumentDetail?.name || ''}
-              documentCode={documentCode}
-              setShowComment={(value: boolean) => {
-                setIsShowComment(value);
-              }}
-              setFilingReviewed={setFilingReviewed}
-            />
-          ) : (
-            <FilingReplyButtons
-              filingId={targetFilingId}
-              projectId={selectedFilingWithDocument.filing.projectId}
-              setShowComment={(value: boolean) => {
-                setIsShowComment(value);
-              }}
-            />
-          )}
+          <FilingReplyComment
+            isPending={isPending}
+            filingStatus={selectedFilingWithDocument.filing.status}
+            filingId={targetFilingId}
+            projectId={selectedFilingWithDocument.filing.projectId}
+            documentCode={documentCode}
+            setFilingReviewed={setFilingReviewed}
+          />
         </div>
       )}
     </div>
