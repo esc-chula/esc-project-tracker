@@ -1,6 +1,6 @@
 'use client';
 import type { RowModel } from '@tanstack/react-table';
-import type { FilingsWithDocument } from '@/src/types/filing';
+import type { FilingWithDocument } from '@/src/types/filing';
 import FilingTabShowDetail from './filing-tab-show-detail';
 import FilingTabNotFound from './filing-tab-not-found';
 
@@ -13,9 +13,9 @@ export default function FilingTabShow({
   tabValue: number;
   selectedFilingId: string;
   setSelectedFilingWithDocument: (
-    filingWithDocument: FilingsWithDocument,
+    filingWithDocument: FilingWithDocument,
   ) => void;
-  rowModel: RowModel<FilingsWithDocument>;
+  rowModel: RowModel<FilingWithDocument>;
 }) {
   if (rowModel.rows.length === 0) {
     return <FilingTabNotFound value={tabValue} />;

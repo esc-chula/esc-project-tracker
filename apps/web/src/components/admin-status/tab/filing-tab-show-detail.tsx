@@ -1,6 +1,6 @@
 'use client';
 
-import type { FilingsWithDocument } from '@/src/types/filing';
+import type { FilingWithDocument } from '@/src/types/filing';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 
 export default function FilingTabShowDetail({
@@ -10,10 +10,10 @@ export default function FilingTabShowDetail({
   isActive,
   projectName,
 }: {
-  filingWithDocument: FilingsWithDocument;
+  filingWithDocument: FilingWithDocument;
   isActive: boolean;
   setSelectedFilingWithDocument: (
-    filingWithDocument: FilingsWithDocument,
+    filingWithDocument: FilingWithDocument,
   ) => void;
   updatedAt: string;
   projectName: string;

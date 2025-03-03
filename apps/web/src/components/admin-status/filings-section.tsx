@@ -1,12 +1,12 @@
 'use client';
 import { useState } from 'react';
-import type { FilingsWithDocument } from '@/src/types/filing';
+import type { FilingWithDocument } from '@/src/types/filing';
 import FilingTab from './tab/filing-tab';
 import FilingReplyArea from './reply/filing-reply-area';
 
 export default function FilingsSection() {
   const [selectedFilingWithDocument, setSelectedFilingWithDocument] = useState<
-    FilingsWithDocument | undefined
+    FilingWithDocument | undefined
   >();
   const [reviewedFilingId, setReviewedFilingId] = useState<string>('');
 

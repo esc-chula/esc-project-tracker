@@ -13,7 +13,7 @@ import type { Filing } from '@/src/interface/filing';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import { FilingStatus } from '@/src/constant/enum';
-import type { FilingsWithDocument } from '@/src/types/filing';
+import type { FilingWithDocument } from '@/src/types/filing';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
 import { projectTypeMap } from '@/src/constant/map';
 import { toast } from '../../ui/use-toast';
@@ -59,9 +59,9 @@ export default function FilingTab({
   reviewedFilingId,
 }: {
   setSelectedFilingWithDocument: (
-    filingWithDocument: FilingsWithDocument,
+    filingWithDocument: FilingWithDocument,
   ) => void;
-  selectedFilingWithDocument?: FilingsWithDocument;
+  selectedFilingWithDocument?: FilingWithDocument;
   reviewedFilingId: string;
 }) {
   const [tabsValue, setTabsValue] = useState<number>(0);
@@ -72,7 +72,7 @@ export default function FilingTab({
   const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [filingWithDocument, setFilingWithDocument] = useState<
-    FilingsWithDocument[]
+    FilingWithDocument[]
   >([]);
   const [filings, setFilings] = useState<Filing[]>([]);
   const [sorting, setSorting] = useState<SortingState>([
@@ -112,7 +112,7 @@ export default function FilingTab({
       findFilingsWithFilter(newSelectedStatus, selectedType, selectedDepartment)
         .then((filingsData) => {
           const filingsArray: Filing[] = [];
-          const filingsWithDocumentArray: FilingsWithDocument[] = [];
+          const filingsWithDocumentArray: FilingWithDocument[] = [];
 
           return Promise.all(
             (filingsData || []).map((filing) =>
@@ -161,14 +161,14 @@ export default function FilingTab({
   // กรณีที่มีการ review แล้ว เอาออกจาก list
   useEffect(() => {
     if (reviewedFilingId) {
-      const newFilingsWithDocuments = filingWithDocument.filter(
+      const newFilingWithDocuments = filingWithDocument.filter(
         (filingWithDoc) => filingWithDoc.filing.id !== reviewedFilingId,
       );
 
       const newFilings = filings.filter(
         (filing) => filing.id !== reviewedFilingId,
       );
-      setFilingWithDocument(newFilingsWithDocuments);
+      setFilingWithDocument(newFilingWithDocuments);
       setFilings(newFilings);
     }
   }, [reviewedFilingId]);

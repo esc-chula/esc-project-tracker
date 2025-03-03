@@ -1,14 +1,14 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { FilingsWithDocument } from '@/src/types/filing';
+import type { FilingWithDocument } from '@/src/types/filing';
 
 require('dayjs/locale/th');
 
 dayjs.extend(relativeTime);
 dayjs.locale('th');
 
-export const filingTabColumns: ColumnDef<FilingsWithDocument>[] = [
+export const filingTabColumns: ColumnDef<FilingWithDocument>[] = [
   {
     accessorKey: 'รหัสเอกสาร',
     accessorFn: (row) => `${row.filing.projectCode}-${row.filing.filingCode}`,

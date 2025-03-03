@@ -6,7 +6,7 @@ import type { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import { FilingStatus } from '@/src/constant/enum';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
-import type { FilingsWithDocument } from '@/src/types/filing';
+import type { FilingWithDocument } from '@/src/types/filing';
 import { toast } from '../../ui/use-toast';
 import FilingReplyButtons from './filing-reply-buttons';
 import FilingReplyComment from './filing-reply-comment';
@@ -17,7 +17,7 @@ export default function FilingReplyArea({
   selectedFilingWithDocument,
   setFilingReviewed,
 }: {
-  selectedFilingWithDocument?: FilingsWithDocument;
+  selectedFilingWithDocument?: FilingWithDocument;
   setFilingReviewed: (value: string) => void;
 }) {
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
