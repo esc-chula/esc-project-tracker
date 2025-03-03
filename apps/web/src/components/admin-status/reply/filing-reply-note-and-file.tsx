@@ -1,4 +1,4 @@
-import { Document } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
 
@@ -27,6 +27,7 @@ export default function FilingReplyNoteAndFile({
                   fileName={latestDocument?.docName || ''}
                   fileType="doc"
                   folderName={`${projectId}/${filingId}`}
+                  documentId={latestDocument?.id}
                 />
               )}
             {latestDocument?.pdfName !== '' &&
@@ -35,6 +36,7 @@ export default function FilingReplyNoteAndFile({
                   fileName={latestDocument?.pdfName || ''}
                   fileType="pdf"
                   folderName={`${projectId}/${filingId}`}
+                  documentId={latestDocument?.id}
                 />
               )}
           </div>

@@ -1,12 +1,12 @@
-import NameDate from './nameDate';
 import Image from 'next/image';
-import StatusButton from './statusButton';
+import type { Document } from '@/src/interface/document';
+import { TextDocumentActivity } from '@/src/styles/enumMap';
+import type { User } from '@/src/interface/user';
+import { convertDate } from '@/src/lib/utils';
 import { Collapsible } from '../../ui/collapsible';
 import FileDisplay from './fileDisplay';
-import { Document } from '@/src/interface/document';
-import { TextDocumentActivity } from '@/src/styles/enumMap';
-import { User } from '@/src/interface/user';
-import { convertDate } from '@/src/lib/utils';
+import StatusButton from './statusButton';
+import NameDate from './nameDate';
 import TextareaForDisplay from './textareaForDisplay';
 
 export default function DisplayWithStatus({
@@ -26,7 +26,7 @@ export default function DisplayWithStatus({
 }) {
   return (
     <Collapsible className="bg-gray-100 rounded-lg font-sukhumvit text-xl w-full">
-      {warning && (
+      {warning ? (
         <Image
           src="/icons/warning.svg"
           width={70}
@@ -34,11 +34,11 @@ export default function DisplayWithStatus({
           alt="warning-icon"
           className="transform -translate-x-8 -translate-y-6 absolute"
         />
-      )}
+      ) : null}
       <div className="flex flex-row px-8">
         <NameDate
           title={user?.username ?? 'Secretary ESC'}
-          date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}
+          date={`ส่งเอกสารเมื่อ ${convertDate(document.createdAt)}`}
           activity={TextDocumentActivity[document.activity]}
         >
           <Image
@@ -56,6 +56,7 @@ export default function DisplayWithStatus({
                 fileName={document.pdfName}
                 fileType="pdf"
                 folderName={folderName}
+                documentId={document.id}
               />
             ) : (
               <div className="text-sm">ไม่มีไฟล์แนบ</div>

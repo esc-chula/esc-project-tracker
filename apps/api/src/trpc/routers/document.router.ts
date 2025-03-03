@@ -138,5 +138,15 @@ export class DocumentRouter {
           input.updatedStatus,
         );
       }),
+
+    // Update Last Open Date of File
+    updateFileLastOpen: this.trpcService.adminProcedure
+      .input(z.object({ id: z.string().uuid(), fileType: z.string() }))
+      .mutation(({ input }) => {
+        return this.documentService.updateFileLastOpen(
+          input.id,
+          input.fileType,
+        );
+      }),
   });
 }

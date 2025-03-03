@@ -46,12 +46,14 @@ export default function DisplayWithNoteAndStatus({
               fileName={document.pdfName}
               fileType="pdf"
               folderName={folderName}
+              documentId={document.id}
             />
             {document.docName !== '' && document.docName !== '-' && (
               <FileDisplay
                 fileName={document.docName}
                 fileType="doc"
                 folderName={folderName}
+                documentId={document.id}
               />
             )}
           </div>
@@ -101,12 +103,14 @@ export default function DisplayWithNoteAndStatus({
                   fileName={document.pdfName}
                   fileType="pdf"
                   folderName={folderName}
+                  documentId={document.id}
                 />
                 {document.docName !== '' && document.docName !== '-' && (
                   <FileDisplay
                     fileName={document.docName}
                     fileType="doc"
                     folderName={folderName}
+                    documentId={document.id}
                   />
                 )}
               </div> */}

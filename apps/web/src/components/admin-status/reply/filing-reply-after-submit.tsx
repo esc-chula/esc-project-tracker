@@ -1,7 +1,7 @@
-import { Document } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
+import { DocumentStatus } from '@/src/constant/enum';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
-import { DocumentStatus } from '@/src/constant/enum';
 import StatusButton from '../../filling-detail/display/statusButton';
 import EditAndDeleteReply from './edit-and-delete-reply';
 
@@ -33,6 +33,7 @@ export default function FilingReplyAfterSubmit({
                 fileName={document?.pdfName || ''}
                 fileType="pdf"
                 folderName={folderName}
+                documentId={document?.id}
               />
             ) : (
               <div className="text-sm">ไม่มีไฟล์แนบ</div>

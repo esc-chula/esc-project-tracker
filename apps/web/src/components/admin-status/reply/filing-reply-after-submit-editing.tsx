@@ -1,7 +1,7 @@
-import { Document } from '@/src/interface/document';
+import type { Document } from '@/src/interface/document';
+import { DocumentStatus } from '@/src/constant/enum';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
-import { DocumentStatus } from '@/src/constant/enum';
 import StatusButton from '../../filling-detail/display/statusButton';
 
 export default function FilingReplyAfterSubmitEditing({
@@ -36,12 +36,14 @@ export default function FilingReplyAfterSubmitEditing({
                 fileName={document?.pdfName || '...'}
                 fileType="pdf"
                 folderName={folderName}
+                documentId={document?.id}
               />
               {document?.docName !== '' && document?.docName !== '-' && (
                 <FileDisplay
                   fileName={document?.docName || ''}
                   fileType="doc"
                   folderName={folderName}
+                  documentId={document?.id}
                 />
               )}
             </div>

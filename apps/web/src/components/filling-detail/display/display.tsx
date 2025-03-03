@@ -1,14 +1,14 @@
 'use client';
 
-import NameDate from './nameDate';
 import Image from 'next/image';
-import { Collapsible } from '../../ui/collapsible';
-import FileDisplay from './fileDisplay';
-import { Document } from '@/src/interface/document';
-import { TextDocumentActivity } from '@/src/styles/enumMap';
-import { User } from '@/src/interface/user';
-import { convertDate } from '@/src/lib/utils';
 import { useState } from 'react';
+import type { Document } from '@/src/interface/document';
+import { TextDocumentActivity } from '@/src/styles/enumMap';
+import type { User } from '@/src/interface/user';
+import { convertDate } from '@/src/lib/utils';
+import { Collapsible } from '../../ui/collapsible';
+import NameDate from './nameDate';
+import FileDisplay from './fileDisplay';
 import DraftDocumentPopover from './draftDocumentPopover';
 import TextareaForDisplay from './textareaForDisplay';
 
@@ -30,7 +30,7 @@ export default function Display({
       <div className="flex flex-row px-8">
         <NameDate
           title={user?.username ?? 'Secretary ESC'}
-          date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}
+          date={`ส่งเอกสารเมื่อ ${convertDate(document.createdAt)}`}
           activity={TextDocumentActivity[document.activity]}
         >
           <Image
@@ -48,6 +48,7 @@ export default function Display({
                 fileName={document.pdfName}
                 fileType="pdf"
                 folderName={folderName}
+                documentId={document.id}
               />
             ) : (
               <div className="text-sm">ไม่มีไฟล์แนบ</div>
@@ -61,7 +62,7 @@ export default function Display({
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             handleDeleteButton={() => {
-              handleDeleteDocument(document.id);
+              void handleDeleteDocument(document.id);
             }}
           />
         </div>

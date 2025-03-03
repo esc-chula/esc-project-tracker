@@ -1,18 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { CircleUserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import {
   Collapsible,
   CollapsibleTrigger,
 } from '@/src/components/ui/collapsible';
-import { CircleUserRound, ChevronDown, ChevronUp } from 'lucide-react';
+import type { Document } from '@/src/interface/document';
+import { TextDocumentActivity } from '@/src/styles/enumMap';
+import type { User } from '@/src/interface/user';
+import { convertDate } from '@/src/lib/utils';
+import FileDisplay from './fileDisplay';
 import Note from './note';
 import NameDate from './nameDate';
-import FileDisplay from './fileDisplay';
-import { Document } from '@/src/interface/document';
-import { TextDocumentActivity } from '@/src/styles/enumMap';
-import { User } from '@/src/interface/user';
-import { convertDate } from '@/src/lib/utils';
 import DraftDocumentPopover from './draftDocumentPopover';
 
 export default function DisplayWithNote({
@@ -34,7 +34,7 @@ export default function DisplayWithNote({
       <div className="flex flex-row px-8">
         <NameDate
           title={user?.username ?? 'ไม่มีชื่อผู้ใช้'}
-          date={'ส่งเอกสารเมื่อ ' + convertDate(document.createdAt)}
+          date={`ส่งเอกสารเมื่อ ${convertDate(document.createdAt)}`}
           activity={TextDocumentActivity[document.activity]}
         >
           <CircleUserRound size={30} className="shrink-0" />
@@ -52,12 +52,14 @@ export default function DisplayWithNote({
                 fileName={document.pdfName}
                 fileType="pdf"
                 folderName={folderName}
+                documentId={document.id}
               />
               {document.docName !== '' && document.docName !== '-' && (
                 <FileDisplay
                   fileName={document.docName}
                   fileType="doc"
                   folderName={folderName}
+                  documentId={document.id}
                 />
               )}
             </div>
@@ -68,7 +70,7 @@ export default function DisplayWithNote({
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             handleDeleteButton={() => {
-              handleDeleteDocument(document.id);
+              void handleDeleteDocument(document.id);
             }}
           />
           <CollapsibleTrigger

@@ -1,15 +1,20 @@
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { FaFile } from 'react-icons/fa6';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
+import { getJwtPayload } from '@/src/service/auth';
+import updateFileLastOpen from '@/src/service/document/updateFileLastOpen';
+import { toast } from '../../ui/use-toast';
 
 export default function FileDisplay({
   fileName,
   fileType,
   folderName,
+  documentId,
 }: {
   fileName?: string;
   fileType: string;
   folderName?: string;
+  documentId?: string;
 }) {
   if (!fileName) return null;
   const extractedFileName = fileName
@@ -23,6 +28,17 @@ export default function FileDisplay({
       folderName,
     });
     window.open(signedUrl, '_blank');
+
+    const payload = await getJwtPayload();
+    if (payload.role === 'admin' && documentId) {
+      updateFileLastOpen(documentId, fileType).catch(() => {
+        toast({
+          title: 'ไม่สามารถอัพเดทเวลาที่เปิดไฟล์ได้',
+          description: `ไม่สามารถอัพเดทเวลาที่เปิด ${extractedFileName} ได้`,
+          isError: true,
+        });
+      });
+    }
   };
   return (
     <button

@@ -212,4 +212,14 @@ export class DocumentService {
 
     return reviewedDocument;
   }
+
+  async updateFileLastOpen(docId: string, fileType: string) {
+    const foundDocument = await this.findByDocID(docId);
+    if (!foundDocument) throw new BadRequestException('Document Not Found!');
+
+    return await this.documentRepository.update(foundDocument.id, {
+      docLastOpen: fileType === 'doc' ? new Date() : foundDocument.docLastOpen,
+      pdfLastOpen: fileType === 'pdf' ? new Date() : foundDocument.pdfLastOpen,
+    });
+  }
 }

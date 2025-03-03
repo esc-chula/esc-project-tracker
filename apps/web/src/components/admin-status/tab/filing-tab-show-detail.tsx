@@ -19,8 +19,9 @@ export default function FilingTabShowDetail({
   projectName: string;
 }) {
   return (
-    <div
-      className={`hover:cursor-pointer w-full p-2 border-y-lightgray border-y-2 px-4 space-y-2 hover:bg-orange-50 ${
+    <button
+      type="button"
+      className={`hover:cursor-pointer w-full p-2 border-y-lightgray border-y-2 px-4 space-y-2 hover:bg-orange-50 text-start ${
         isActive ? 'bg-orange-50' : ''
       }`}
       onClick={() => {
@@ -51,11 +52,12 @@ export default function FilingTabShowDetail({
             fileName={filingWithDocument.document.pdfName || ''}
             fileType="pdf"
             folderName={`${filingWithDocument.filing.projectId}/${filingWithDocument.filing.id}`}
+            documentId={filingWithDocument.document.id}
           />
         </div>
       ) : (
         <div className="text-red">ไม่พบเอกสาร</div>
       )}
-    </div>
+    </button>
   );
 }
