@@ -12,7 +12,7 @@ export interface Filing {
   filingCode: string;
   status: FilingStatus;
   type: number;
-  subType: FilingSubType;
+  // subType: FilingSubType;
   projectCode: string;
   createdAt: string;
   updatedAt: string;
