@@ -1,29 +1,27 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import type { ReactNode, SyntheticEvent } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import type { Filing } from '@/src/interface/filing';
-import { departmentProjectItems } from '@/src/constant/filterProject';
 import { typeFilingItems } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import { FilingStatus } from '@/src/constant/enum';
 import type { FilingsWithDocument } from '@/src/types/filing';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
+import { projectTypeMap } from '@/src/constant/map';
 import { toast } from '../../ui/use-toast';
 import SelectType from '../../filter/selectType';
 import SearchPanel from '../../all-projects/searchPanel';
-import FilingTabShow from './filing-tab-show';
-import {
-  ColumnFiltersState,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from '@tanstack/react-table';
-import { filingTabColumns } from './filing-tab-columns';
 import { DataTableFacetedFilter } from '../../filter/dataTableFacetedFilter';
-import { projectTypeMap } from '@/src/constant/map';
+import FilingTabShow from './filing-tab-show';
+import { filingTabColumns } from './filing-tab-columns';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -56,12 +54,14 @@ function a11yProps(index: number) {
 }
 
 export default function FilingTab({
-  setSelectedFilingId,
-  selectedFilingId,
+  setSelectedFilingWithDocument,
+  selectedFilingWithDocument,
   reviewedFilingId,
 }: {
-  setSelectedFilingId: (id: string) => void;
-  selectedFilingId: string;
+  setSelectedFilingWithDocument: (
+    filingWithDocument: FilingsWithDocument,
+  ) => void;
+  selectedFilingWithDocument?: FilingsWithDocument;
   reviewedFilingId: string;
 }) {
   const [tabsValue, setTabsValue] = useState<number>(0);
@@ -234,7 +234,12 @@ export default function FilingTab({
             filings={filings}
             placeHolder="ค้นหาเอกสาร"
             filingFunc={(filing: Filing) => {
-              setSelectedFilingId(filing.id);
+              for (const filingWithDocumentItem of filingWithDocument) {
+                if (filingWithDocumentItem.filing.id === filing.id) {
+                  setSelectedFilingWithDocument(filingWithDocumentItem);
+                  break;
+                }
+              }
             }}
           />
         </div>
@@ -274,8 +279,8 @@ export default function FilingTab({
               <FilingTabShow
                 tabValue={i}
                 rowModel={table.getRowModel()}
-                setSelectedFilingId={setSelectedFilingId}
-                selectedFilingId={selectedFilingId}
+                setSelectedFilingWithDocument={setSelectedFilingWithDocument}
+                selectedFilingId={selectedFilingWithDocument?.filing.id ?? ''}
               />
             ) : null}
           </CustomTabPanel>

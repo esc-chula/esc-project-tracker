@@ -1,13 +1,12 @@
 'use client';
 import { FaFolderOpen } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
-import getFilingByFilingId from '@/src/service/filing/getFilingByFilingId';
-import type { Filing } from '@/src/interface/filing';
 import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
 import { FilingStatus } from '@/src/constant/enum';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
+import type { FilingsWithDocument } from '@/src/types/filing';
 import { toast } from '../../ui/use-toast';
 import FilingReplyButtons from './filing-reply-buttons';
 import FilingReplyComment from './filing-reply-comment';
@@ -15,46 +14,31 @@ import FilingReplyDetail from './filing-reply-detail';
 import FilingReplyHeader from './filing-reply-header';
 
 export default function FilingReplyArea({
-  selectedFilingId,
+  selectedFilingWithDocument,
   setFilingReviewed,
 }: {
-  selectedFilingId: string;
+  selectedFilingWithDocument?: FilingsWithDocument;
   setFilingReviewed: (value: string) => void;
 }) {
-  const [filingDetail, setFilingDetail] = useState<Filing | null>(null);
   const [ownerDetail, setOwnerDetail] = useState<User | null>(null);
-  const [filingStatus, setFilingStatus] = useState<FilingStatus>(
-    FilingStatus.DOCUMENT_CREATED,
-  );
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isShowComment, setIsShowComment] = useState<boolean>(false);
-  const [targetFilingId, setTargetFilingId] =
-    useState<string>(selectedFilingId);
-  const [isFetched, setIsFetched] = useState<boolean>(false);
+  const [targetFilingId, setTargetFilingId] = useState<string>(
+    selectedFilingWithDocument?.filing.id ?? '',
+  );
   const [latestPendingDocumentDetail, setLatestPendingDocumentDetail] =
     useState<Document | null>(null);
-  const [projectId, setProjectId] = useState<string>('');
   const [documentCode, setDocumentCode] = useState<string>('');
 
   useEffect(() => {
-    setIsFetched(false);
     setIsPending(false);
     setIsShowComment(false);
 
-    const fetchFilingDetail = async () => {
+    const fetchOwnerDetail = async (userId: string) => {
       try {
-        const data = await getFilingByFilingId(selectedFilingId);
-        setFilingDetail(data);
-        setFilingStatus(data?.status || FilingStatus.WAIT_FOR_SECRETARY);
-        setIsPending(data?.status === FilingStatus.WAIT_FOR_SECRETARY);
-        setProjectId(data?.projectId || '');
-        setDocumentCode(`${data?.projectCode}-${data?.filingCode}`);
-
         // Fetch owner หลังจากเรียกข้อมูลเอกสาร
-        if (data?.userId) {
-          const ownerData = await findUserByUserId(data.userId);
-          setOwnerDetail(ownerData);
-        }
+        const ownerData = await findUserByUserId(userId);
+        setOwnerDetail(ownerData);
       } catch (err) {
         if (err instanceof Error) {
           toast({
@@ -63,16 +47,13 @@ export default function FilingReplyArea({
             isError: true,
           });
         }
-      } finally {
-        setIsFetched(true);
       }
     };
 
     // ใช้สำหรับแสดงข้อมูลเอกสารล่าสุดที่ไม่ใช่ reply
-    const fetchLatestPendingDocumentDetail = async () => {
+    const fetchLatestPendingDocumentDetail = async (filingId: string) => {
       try {
-        const data =
-          await findLatestPendingDocumentByFilingId(selectedFilingId);
+        const data = await findLatestPendingDocumentByFilingId(filingId);
         setLatestPendingDocumentDetail(data);
       } catch (error) {
         if (error instanceof Error) {
@@ -85,20 +66,25 @@ export default function FilingReplyArea({
       }
     };
 
-    if (selectedFilingId !== '') {
-      setTargetFilingId(selectedFilingId);
-      fetchFilingDetail();
-      fetchLatestPendingDocumentDetail();
+    if (selectedFilingWithDocument) {
+      setTargetFilingId(selectedFilingWithDocument.filing.id);
+      setIsPending(
+        selectedFilingWithDocument.filing.status ===
+          FilingStatus.WAIT_FOR_SECRETARY,
+      );
+      setDocumentCode(
+        `${selectedFilingWithDocument.filing.projectCode}-${selectedFilingWithDocument.filing.filingCode}`,
+      );
+      void fetchOwnerDetail(selectedFilingWithDocument.filing.userId);
+      void fetchLatestPendingDocumentDetail(
+        selectedFilingWithDocument.filing.id,
+      );
     }
-  }, [selectedFilingId]);
-
-  if (!isFetched) {
-    return;
-  }
+  }, [selectedFilingWithDocument]);
 
   return (
     <div className="basis-2/3 pl-6 overflow flex justify-center overflow-hidden">
-      {selectedFilingId === '' ? (
+      {!selectedFilingWithDocument ? (
         <div className="h-full items-center flex flex-col justify-center text-3xl text-gray-300 space-y-2">
           <FaFolderOpen size={100} />
           <div className="text-center">
@@ -110,23 +96,23 @@ export default function FilingReplyArea({
       ) : (
         <div className="flex w-full flex-col space-y-4 py-4">
           <FilingReplyHeader
-            projectId={filingDetail?.projectId || ''}
-            filingId={selectedFilingId}
-            name={filingDetail?.name}
+            projectId={selectedFilingWithDocument.filing.projectId}
+            filingId={selectedFilingWithDocument.filing.id}
+            name={selectedFilingWithDocument.filing.name}
             documentCode={documentCode}
           />
           <FilingReplyDetail
             documentDetail={latestPendingDocumentDetail}
-            projectId={filingDetail?.projectId || ''}
-            filingId={selectedFilingId}
+            projectId={selectedFilingWithDocument.filing.projectId}
+            filingId={selectedFilingWithDocument.filing.id}
             owner={ownerDetail?.username || 'Secretary ESC'}
           />
           {!isPending || isShowComment ? (
             <FilingReplyComment
               isPending={isPending}
-              filingStatus={filingStatus}
+              filingStatus={selectedFilingWithDocument.filing.status}
               filingId={targetFilingId}
-              projectId={filingDetail?.projectId || ''}
+              projectId={selectedFilingWithDocument.filing.projectId}
               newDocumentDetail={latestPendingDocumentDetail?.detail || ''}
               newDocumentName={latestPendingDocumentDetail?.name || ''}
               documentCode={documentCode}
@@ -138,7 +124,7 @@ export default function FilingReplyArea({
           ) : (
             <FilingReplyButtons
               filingId={targetFilingId}
-              projectId={projectId}
+              projectId={selectedFilingWithDocument.filing.projectId}
               setShowComment={(value: boolean) => {
                 setIsShowComment(value);
               }}

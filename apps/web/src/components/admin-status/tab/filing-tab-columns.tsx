@@ -2,7 +2,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { FilingsWithDocument } from '@/src/types/filing';
-import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
 
 require('dayjs/locale/th');
 
@@ -16,10 +15,7 @@ export const filingTabColumns: ColumnDef<FilingsWithDocument>[] = [
   },
   {
     accessorKey: 'projectName',
-    accessorFn: async (row) => {
-      const project = await getProjectByProjectId(row.filing.projectId);
-      return project?.name ?? 'ไม่พบโครงการ';
-    },
+    accessorFn: (row) => row.filing.project?.name,
   },
   {
     accessorKey: 'name',

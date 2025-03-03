@@ -5,14 +5,16 @@ import FileDisplay from '../../filling-detail/display/fileDisplay';
 
 export default function FilingTabShowDetail({
   filingWithDocument,
-  setSelectedFilingId,
+  setSelectedFilingWithDocument,
   updatedAt,
   isActive,
   projectName,
 }: {
   filingWithDocument: FilingsWithDocument;
   isActive: boolean;
-  setSelectedFilingId: (id: string) => void;
+  setSelectedFilingWithDocument: (
+    filingWithDocument: FilingsWithDocument,
+  ) => void;
   updatedAt: string;
   projectName: string;
 }) {
@@ -22,7 +24,7 @@ export default function FilingTabShowDetail({
         isActive ? 'bg-orange-50' : ''
       }`}
       onClick={() => {
-        setSelectedFilingId(filingWithDocument.filing.id || '');
+        setSelectedFilingWithDocument(filingWithDocument);
       }}
     >
       <div className="flex flex-row justify-between items-center">

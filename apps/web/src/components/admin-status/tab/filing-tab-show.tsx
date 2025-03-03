@@ -7,12 +7,14 @@ import FilingTabNotFound from './filing-tab-not-found';
 export default function FilingTabShow({
   tabValue,
   selectedFilingId,
-  setSelectedFilingId,
+  setSelectedFilingWithDocument,
   rowModel,
 }: {
   tabValue: number;
   selectedFilingId: string;
-  setSelectedFilingId: (id: string) => void;
+  setSelectedFilingWithDocument: (
+    filingWithDocument: FilingsWithDocument,
+  ) => void;
   rowModel: RowModel<FilingsWithDocument>;
 }) {
   if (rowModel.rows.length === 0) {
@@ -24,7 +26,7 @@ export default function FilingTabShow({
         <FilingTabShowDetail
           key={filingWithDocument.id}
           filingWithDocument={filingWithDocument.original}
-          setSelectedFilingId={setSelectedFilingId}
+          setSelectedFilingWithDocument={setSelectedFilingWithDocument}
           updatedAt={filingWithDocument.getValue('updatedAt')}
           isActive={selectedFilingId === filingWithDocument.original.filing.id}
           projectName={filingWithDocument.getValue('projectName')}

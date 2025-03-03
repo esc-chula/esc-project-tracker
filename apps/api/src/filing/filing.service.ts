@@ -192,7 +192,9 @@ export class FilingService {
     id?: string;
   }): Promise<Filing[]> {
     try {
-      const query = await this.filingRepository.createQueryBuilder('filing');
+      const query = this.filingRepository
+        .createQueryBuilder('filing')
+        .innerJoinAndSelect('filing.project', 'project');
 
       if (filter.id) {
         query.andWhere('filing.id = :id', { id: filter.id });
