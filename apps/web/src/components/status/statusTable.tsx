@@ -27,7 +27,7 @@ import {
 import type { Filing } from '@/src/interface/filing';
 import {
   statusFilingItems,
-  typeFilingItems,
+  typeFilingItemsV2,
 } from '@/src/constant/filterFiling';
 import { projectTypeMap } from '@/src/constant/map';
 import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
@@ -37,9 +37,11 @@ import StatusTableToolBar from './statusTableToolBar';
 export function StatusTable({
   data,
   compact = false,
+  projectId,
 }: {
   data: Filing[];
   compact?: boolean;
+  projectId?: string;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -85,7 +87,11 @@ export function StatusTable({
   return (
     <>
       {!compact && (
-        <StatusTableToolBar table={table} filingFunc={redirectToFiling} />
+        <StatusTableToolBar
+          table={table}
+          filingFunc={redirectToFiling}
+          projectId={projectId}
+        />
       )}
       <div className="flex flex-row space-x-5 mb-4">
         <DataTableFacetedFilter
@@ -96,7 +102,7 @@ export function StatusTable({
         <DataTableFacetedFilter
           column={table.getColumn('type')}
           title="ประเภทเอกสาร"
-          options={typeFilingItems.filter((type) => type.value !== 'ALL')}
+          options={typeFilingItemsV2}
         />
         <DataTableFacetedFilter
           column={table.getColumn('status')}

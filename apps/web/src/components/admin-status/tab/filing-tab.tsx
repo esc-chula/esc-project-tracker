@@ -10,7 +10,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import type { Filing } from '@/src/interface/filing';
-import { typeFilingItems } from '@/src/constant/filterFiling';
+import { typeFilingItemsV2 } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import { FilingStatus } from '@/src/constant/enum';
 import type { FilingWithDocument } from '@/src/types/filing';
@@ -252,7 +252,7 @@ export default function FilingTab({
           <DataTableFacetedFilter
             column={table.getColumn('type')}
             title="ประเภทเอกสาร"
-            options={typeFilingItems.filter((type) => type.value !== 'ALL')}
+            options={typeFilingItemsV2}
           />
           <SelectType
             title="ล่าสุด"

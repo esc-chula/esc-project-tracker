@@ -142,6 +142,7 @@ export const columns: ColumnDef<Filing>[] = [
   },
   {
     accessorKey: 'type',
+    accessorFn: (row) => `${row.type}${row.subType ? `-${row.subType}` : ''}`,
     filterFn: (row, id, value: string[]) =>
       value.includes(String(row.getValue(id))),
   },
