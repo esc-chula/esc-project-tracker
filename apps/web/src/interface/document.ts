@@ -10,6 +10,8 @@ export interface Document {
   comment?: string;
   pdfName?: string;
   docName?: string;
+  pdfLastOpen?: string;
+  docLastOpen?: string;
   userId: string;
   createdAt: string;
   updatedAt?: string;

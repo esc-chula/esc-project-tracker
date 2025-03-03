@@ -5,12 +5,13 @@ import { useState } from 'react';
 import type { Document } from '@/src/interface/document';
 import { TextDocumentActivity } from '@/src/styles/enumMap';
 import type { User } from '@/src/interface/user';
-import { convertDate } from '@/src/lib/utils';
+import { convertDate, formatDateMoment } from '@/src/lib/utils';
 import FileDisplay from './fileDisplay';
 import StatusButton from './statusButton';
 import NameDate from './nameDate';
 import DraftDocumentPopover from './draftDocumentPopover';
 import TextareaForDisplay from './textareaForDisplay';
+import { convertToThaiDate } from '@/src/app/docgenpoc/date';
 
 export default function DisplayWithNoteAndStatus({
   user,
@@ -39,7 +40,7 @@ export default function DisplayWithNoteAndStatus({
         >
           <CircleUserRound size={30} className="shrink-0" />
         </NameDate>
-        <div className="px-8 py-4 font-bold space-y-4 w-[35vw] grow">
+        <div className="px-8 py-4 font-bold space-y-2 w-[35vw] grow">
           <div className="flex gap-6 items-center text-base">
             <div className="shrink-0">ไฟล์แนบ</div>
             <FileDisplay
@@ -57,6 +58,17 @@ export default function DisplayWithNoteAndStatus({
               />
             )}
           </div>
+          {document.pdfLastOpen ? (
+            <p className="text-xs text-end font-normal">
+              <span className="text-accepted">เลขาเปิดไฟล์นี้แล้ว </span>
+              {new Date(document.pdfLastOpen).toLocaleTimeString('th-TH', {
+                year: '2-digit',
+                month: 'short',
+                day: 'numeric',
+              })}
+            </p>
+          ) : null}
+
           <div className="font-bold text-sm">ความคิดเห็น</div>
           <TextareaForDisplay value={document.comment} />
         </div>
