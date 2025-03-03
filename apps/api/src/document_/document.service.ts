@@ -121,7 +121,7 @@ export class DocumentService {
     const data = await this.documentRepository.findOne({
       where: {
         filing: { id: filingId },
-        activity: DocumentActivity.CREATE || DocumentActivity.EDIT,
+        activity: In([DocumentActivity.CREATE, DocumentActivity.EDIT]),
         status: DocumentStatus.WAIT_FOR_SECRETARY,
       },
       order: { createdAt: 'DESC' },

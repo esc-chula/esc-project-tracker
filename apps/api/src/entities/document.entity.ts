@@ -48,6 +48,12 @@ export class Document {
   @Column({ nullable: true })
   docName: string;
 
+  @Column({ nullable: true })
+  pdfLastOpen: Date;
+
+  @Column({ nullable: true })
+  docLastOpen: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 
