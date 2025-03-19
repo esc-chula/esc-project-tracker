@@ -1,15 +1,18 @@
-import { Radio } from 'lucide-react';
+import { FileSearch } from 'lucide-react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
-import FilingsSection from '@/src/components/admin-status/filings-section';
+import { getUserId } from '@/src/service/auth';
+import StatusPage from '@/src/components/status/statusPage';
 
-export default function Page() {
+export default async function Page() {
+  const userId = await getUserId();
+
   return (
-    <main className="py-10 px-6 overflow-y-auto">
+    <main className="py-10 px-6">
       <Header>
-        <Title icon={<Radio size={40} />}>ติดตามสถานะ</Title>
+        <Title icon={<FileSearch size={40} />}>เอกสาร</Title>
       </Header>
-      <FilingsSection />
+      <StatusPage userId={userId} isAdmin />
     </main>
   );
 }
