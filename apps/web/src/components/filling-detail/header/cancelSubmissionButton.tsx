@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { SendHorizontal } from 'lucide-react';
 import {
   Dialog,
   DialogClose,
@@ -24,10 +24,10 @@ export default function CancelSubmissionButton({
         <Button
           disabled={isSubmitting}
           variant="outline"
-          className="mx-auto rounded-2xl text-2xl pl-3 pr-4 py-4 h-[52px] font-semibold border-black disabled:bg-disabled"
+          className="mx-auto rounded-xl text-base py-2 px-3.5 h-9 font-medium border-red text-red"
         >
-          <X className="h-8 w-8 mr-2" />
-          ยกเลิก
+          <SendHorizontal className="h-5 w-5 mr-2" />
+          ยกเลิกการส่ง
         </Button>
       </DialogTrigger>
       <DialogContent>

@@ -30,12 +30,14 @@ export default function CreateDocumentAdmin({
   filingId,
   projectId,
   userId,
+  updateMode = false,
 }: {
   setShowCreateDocument?: (showCreateDocument: boolean) => void;
   afterCreateDocument: (createdDocument: Document) => void;
   filingId: string;
   projectId: string;
   userId: string;
+  updateMode?: boolean;
 }) {
   const form = useForm<z.infer<typeof createdDocumentAdminSchema>>({
     resolver: zodResolver(createdDocumentAdminSchema),
@@ -191,9 +193,13 @@ export default function CreateDocumentAdmin({
         <ButtonPanel
           isDisabled={form.formState.isSubmitting}
           setShowCreateDocument={setShowCreateDocument}
-          handleAlternateSubmit={form.handleSubmit((values) =>
-            onSubmit(values, DocumentStatus.RETURNED),
-          )}
+          handleAlternateSubmit={
+            updateMode
+              ? undefined
+              : form.handleSubmit((values) =>
+                  onSubmit(values, DocumentStatus.RETURNED),
+                )
+          }
         />
       </form>
     </Form>

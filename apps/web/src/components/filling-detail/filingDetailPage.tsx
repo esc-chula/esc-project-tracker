@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/statusStepper';
-import { FilingStatus } from '@/src/constant/enum';
+import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import type { Filing } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';
@@ -94,23 +94,34 @@ export default function FilingDetailPage({
 
   const handleDeleteDocument = async (documentId: string) => {
     try {
+      let updatedStatus = FilingStatus.DRAFT;
+      for (const doc of documents) {
+        if (doc.id === documentId) continue;
+        if (doc.status === DocumentStatus.RETURNED) {
+          updatedStatus = FilingStatus.RETURNED;
+          break;
+        }
+        if (
+          doc.status === DocumentStatus.WAIT_FOR_SECRETARY &&
+          (doc.docLastOpen || doc.pdfLastOpen)
+        ) {
+          updatedStatus = FilingStatus.WAIT_FOR_SECRETARY;
+          break;
+        }
+      }
+
       await Promise.all([
-        filing?.status === FilingStatus.DOCUMENT_CREATED &&
-          documents.length === 1 &&
+        filing?.status === updatedStatus &&
           updateFilingName({
             filingId: filing.id,
-            filingStatus: FilingStatus.DRAFT,
+            filingStatus: updatedStatus,
           }),
         deleteDocument(documentId),
       ]);
 
       const updatedDocuments = documents.filter((doc) => doc.id !== documentId);
       setDocuments(updatedDocuments);
-      if (
-        filing?.status === FilingStatus.DOCUMENT_CREATED &&
-        documents.length === 1
-      )
-        setStatus(FilingStatus.DRAFT);
+      setStatus(updatedStatus);
       toast({
         title: 'ลบสำเร็จ',
         description: 'ลบเอกสารฉบับร่างสำเร็จ',
@@ -123,6 +134,7 @@ export default function FilingDetailPage({
           isError: true,
         });
       }
+      throw new Error('ไม่สามารถลบเอกสารได้');
     }
   };
   useEffect(() => {
@@ -164,6 +176,7 @@ export default function FilingDetailPage({
             setShowCreateDocument={setShowCreateDocument}
             userId={userId}
             isAdmin={isAdmin}
+            handleDeleteDocument={handleDeleteDocument}
           />
         ) : null}
       </section>

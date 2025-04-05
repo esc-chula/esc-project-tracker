@@ -7,12 +7,14 @@ import type { Document } from '@/src/interface/document';
 import { Button } from '../ui/button';
 import PopoverEditFiling from '../project/popoverEditFiling';
 import PopoverDeleteFiling from '../project/popoverDeleteFiling';
+import { toast } from '../ui/use-toast';
 import CreateDocumentClient from './create-edit/createDocumentClient';
 import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
 import UpdateDocumentAdmin from './create-edit/updateDocumentAdmin';
 import AddDocumentButton from './header/addDocumentButton';
 import FilingTemplateButton from './header/filingTemplateButton';
+import CancelSubmissionButton from './header/cancelSubmissionButton';
 
 export default function FilingTimelineHeader({
   name,
@@ -29,6 +31,7 @@ export default function FilingTimelineHeader({
   setShowCreateDocument,
   userId,
   isAdmin = false,
+  handleDeleteDocument,
 }: {
   name: string;
   code: string;
@@ -44,6 +47,7 @@ export default function FilingTimelineHeader({
   setShowCreateDocument: (showCreateDocument: boolean) => void;
   userId: string;
   isAdmin?: boolean;
+  handleDeleteDocument: (documentId: string) => Promise<void>;
 }) {
   // const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // const [reviewButton, setReviewButton] = useState<string>('อนุมัติ');
@@ -77,6 +81,28 @@ export default function FilingTimelineHeader({
   //   );
   //   return updatedDocuments;
   // };
+
+  const cancelDocumentSubmission = async () => {
+    try {
+      if (!documents[0]) throw new Error('ไม่พบเอกสารล่าสุด');
+
+      await handleDeleteDocument(documents[0].id);
+
+      toast({
+        title: 'ยกเลิกสำเร็จ',
+        description: `ยกเลิกการส่งเอกสาร ${name} แล้ว`,
+        isError: false,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: 'ยกเลิกไม่สำเร็จ',
+          description: error.message,
+          isError: true,
+        });
+      }
+    }
+  };
 
   // const cancelDocumentSubmission = async () => {
   //   setIsSubmitting(true);
@@ -268,11 +294,21 @@ export default function FilingTimelineHeader({
             )
           ) : (
             <>
-              <AddDocumentButton
-                isAdmin={isAdmin}
-                status={status}
-                setShowCreateDocument={setShowCreateDocument}
-              />
+              {!isAdmin &&
+              status === FilingStatus.WAIT_FOR_SECRETARY &&
+              !documents[0]?.pdfLastOpen &&
+              !documents[0]?.docLastOpen ? (
+                <CancelSubmissionButton
+                  isSubmitting={false}
+                  cancelDocumentSubmission={cancelDocumentSubmission}
+                />
+              ) : (
+                <AddDocumentButton
+                  isAdmin={isAdmin}
+                  status={status}
+                  setShowCreateDocument={setShowCreateDocument}
+                />
+              )}
               {/* {isAdmin ? (
                 <ReviewButton
                   isSubmitting={isSubmitting}
@@ -303,15 +339,17 @@ export default function FilingTimelineHeader({
       {showCreateDocument ? (
         <div className="my-10 w-full">
           {isAdmin && status === FilingStatus.APPROVED ? (
-            <UpdateDocumentAdmin
+            <CreateDocumentAdmin
               setShowCreateDocument={setShowCreateDocument}
               afterCreateDocument={(createdDocument) => {
                 setDocuments((prev) => [createdDocument, ...prev]);
+                setStatus(FilingStatus.APPROVED);
                 setShowCreateDocument(false);
               }}
               filingId={filingId}
               projectId={projectId}
               userId={userId}
+              updateMode
             />
           ) : isAdmin ? (
             <CreateDocumentAdmin

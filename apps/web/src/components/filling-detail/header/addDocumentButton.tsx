@@ -24,7 +24,7 @@ export default function AddDocumentButton({
       className="mx-auto rounded-xl text-base py-2 px-3.5 h-9 text-red font-medium disabled:bg-lightgray disabled:text-white disabled:border-none bg-red text-white"
     >
       <Undo2 className="h-5 w-5 mr-2" />
-      ตอบกลับเอกสาร
+      ตอบกลับ
     </Button>
   ) : (
     <Button
