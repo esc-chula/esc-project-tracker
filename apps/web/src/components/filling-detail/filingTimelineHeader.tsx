@@ -11,7 +11,6 @@ import { toast } from '../ui/use-toast';
 import CreateDocumentClient from './create-edit/createDocumentClient';
 import FilingTimelineHeaderApproved from './filingTimelineHeaderApproved';
 import CreateDocumentAdmin from './create-edit/createDocumentAdmin';
-import UpdateDocumentAdmin from './create-edit/updateDocumentAdmin';
 import AddDocumentButton from './header/addDocumentButton';
 import FilingTemplateButton from './header/filingTemplateButton';
 import CancelSubmissionButton from './header/cancelSubmissionButton';
