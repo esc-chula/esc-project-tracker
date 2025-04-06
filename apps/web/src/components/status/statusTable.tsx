@@ -46,7 +46,6 @@ export function StatusTable({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    updatedAt: !compact,
     type: false,
     projectType: false,
     subType: false,

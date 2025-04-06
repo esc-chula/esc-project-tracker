@@ -43,7 +43,6 @@ export default function Page() {
             getProjectsByUserId(userId),
             findLatestFilings(),
           ]);
-        console.log(filingsData, projectsData, latestFilingsData);
 
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);

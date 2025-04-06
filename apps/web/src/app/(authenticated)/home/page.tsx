@@ -1,19 +1,20 @@
 'use client';
-import { ArrowRight, Folders, Home, Radio } from 'lucide-react';
-import Header from '../../../components/header/header';
-import Title from '@/src/components/header/title';
-import MyProjectData from '@/src/components/project/myProjectData';
-import { StatusTable } from '@/src/components/status/statusTable';
-import { Filing } from '@/src/interface/filing';
+import { ArrowRight, FileSearch, Folders, Home } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Title from '@/src/components/header/title';
+import { StatusTable } from '@/src/components/status/statusTable';
+import type { Filing } from '@/src/interface/filing';
 import { Button } from '@/src/components/ui/button';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
-import { Project, ProjectWithLastOpen } from '@/src/interface/project';
+import type { Project, ProjectWithLastOpen } from '@/src/interface/project';
 import SearchPanel from '@/src/components/all-projects/searchPanel';
-import { getJwtPayload } from '@/src/service/auth';
-import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { getUserId } from '@/src/service/auth';
+import LatestPanel from '@/src/components/project/latestPanel';
+import { toast } from '@/src/components/ui/use-toast';
+import Header from '../../../components/header/header';
 
 export default function Page() {
   const [filingsDataWithProject, setFilingsDataWithProject] = useState<
@@ -22,25 +23,31 @@ export default function Page() {
   const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
     ProjectWithLastOpen[]
   >([]);
-  const [username, setUsername] = useState('');
   const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
-      const payload = await getJwtPayload();
-      const [filingsDataWithProjectData, projectsWithLastOpenData] =
-        await Promise.all([
-          getFilingsByUserId(payload.sub).catch((err) => {
-            return [] as Filing[];
-          }),
-          getProjectsByUserId(payload.sub).catch((err) => {
-            return [] as ProjectWithLastOpen[];
-          }),
-        ]);
-      setFilingsDataWithProject(filingsDataWithProjectData);
-      setProjectsWithLastOpen(projectsWithLastOpenData);
-      setUsername(payload.username);
+      try {
+        const userId = await getUserId();
+        const [filingsDataWithProjectData, projectsWithLastOpenData] =
+          await Promise.all([
+            getFilingsByUserId(userId),
+            getProjectsByUserId(userId),
+          ]);
+
+        setFilingsDataWithProject(filingsDataWithProjectData);
+        setProjectsWithLastOpen(projectsWithLastOpenData);
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            title: 'ไม่สำเร็จ',
+            description: err.message,
+            isError: true,
+          });
+        }
+      }
     };
-    fetchData();
+
+    void fetchData();
   }, []);
 
   const projectsData = useMemo(
@@ -55,7 +62,7 @@ export default function Page() {
   };
   return (
     <main className="py-10 px-6">
-      <Header username={username}>
+      <Header>
         <Title icon={<Home size={40} />}>หน้าหลัก</Title>
       </Header>
       <section className="mt-8">
@@ -68,46 +75,42 @@ export default function Page() {
         />
       </section>
       <section className="w-full mt-7">
-        <div className="flex items-center justify-between gap-3 h-10">
-          <span className="flex items-center gap-2 w-0 grow">
-            <Radio className="w-5 h-5 shrink-0" />
-            <div className="font-bold">สถานะเอกสารล่าสุด</div>
-          </span>
-          <Link href="/status">
-            <Button variant="link">
-              <span className="flex items-center gap-1">
-                ดูสถานะทั้งหมด
-                <ArrowRight className="w-5 h-5 shrink-0" />
-              </span>
-            </Button>
-          </Link>
-        </div>
-      </section>
-      <section className="mt-5 shadow-lg rounded-xl">
-        <StatusTable data={filingsDataWithProject} compact />
-      </section>
-      <section className="w-full mt-12">
-        <div className="flex items-center justify-between gap-3 h-10">
+        <div className="flex items-center justify-between gap-3 h-6">
           <span className="flex items-center gap-2 w-0 grow">
             <Folders className="w-5 h-5 shrink-0" />
-            <div className="font-bold">โครงการของฉัน</div>
+            <div className="font-bold">โครงการล่าสุด</div>
           </span>
           <Link href="/projects">
             <Button variant="link">
               <span className="flex items-center gap-1">
-                ดูโครงการทั้งหมด
+                โครงการทั้งหมด
                 <ArrowRight className="w-5 h-5 shrink-0" />
               </span>
             </Button>
           </Link>
         </div>
       </section>
-      <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <MyProjectData
-          compact
-          filingsData={filingsDataWithProject}
-          projectsWithLastOpenData={projectsWithLastOpen}
-        />
+      <section className="mt-6">
+        <LatestPanel projectsWithLastOpen={projectsWithLastOpen} compact />
+      </section>
+      <section className="w-full mt-8">
+        <div className="flex items-center justify-between gap-3 h-6">
+          <span className="flex items-center gap-2 w-0 grow">
+            <FileSearch className="w-5 h-5 shrink-0" />
+            <div className="font-bold">เอกสารล่าสุด</div>
+          </span>
+          <Link href="/status">
+            <Button variant="link">
+              <span className="flex items-center gap-1">
+                เอกสารทั้งหมด
+                <ArrowRight className="w-5 h-5 shrink-0" />
+              </span>
+            </Button>
+          </Link>
+        </div>
+      </section>
+      <section className="mt-5">
+        <StatusTable data={filingsDataWithProject} compact />
       </section>
     </main>
   );
