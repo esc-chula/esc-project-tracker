@@ -1,13 +1,12 @@
 'use client';
+import { FilePlus } from 'lucide-react';
+import type { z } from 'zod';
+import { IoCheckmarkSharp } from 'react-icons/io5';
+import { useMemo } from 'react';
+import type { UseFormReturn } from 'react-hook-form';
+import type { newProjectFormSchema } from '@/src/constant/schema';
 import { projectFormAction } from '@/src/constant/formAction';
 import { Button } from '../ui/button';
-import { FilePlus } from 'lucide-react';
-import { newProjectFormSchema } from '@/src/constant/schema';
-import { z } from 'zod';
-import { IoCheckmarkSharp } from 'react-icons/io5';
-import { useEffect, useMemo } from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import { useState } from 'react';
 
 export default function SubmitButtonGroup({
   formAction,
@@ -20,7 +19,7 @@ export default function SubmitButtonGroup({
 }) {
   const isDisabled = useMemo(
     () => form.formState.isSubmitting || !form.formState.isValid,
-    [(form.formState.isSubmitting, form.formState.isValid)],
+    [form.formState.isSubmitting, form.formState.isValid],
   );
 
   const isUpdateDisable = useMemo(() => {
@@ -40,11 +39,12 @@ export default function SubmitButtonGroup({
       {formAction === projectFormAction.ADMIN_CREATE ||
       formAction === projectFormAction.USER_CREATE ? (
         <Button
-          type="submit"
-          className="my-8 mx-auto rounded-lg px-6 h-12 bg-red font-bold text-xl"
           disabled={isDisabled}
+          variant="outline"
+          type="submit"
+          className="disabled:bg-lightgray rounded-xl text-base px-4 py-2 my-6 h-9 ml-auto font-medium bg-red text-white"
         >
-          <FilePlus className="h-8 w-8 mr-3" />
+          <FilePlus className="h-5 w-5 mr-3" />
           เปิดโครงการ
         </Button>
       ) : null}

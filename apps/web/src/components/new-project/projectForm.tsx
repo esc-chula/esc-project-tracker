@@ -315,23 +315,23 @@ export default function ProjectForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col max-w-3xl text-sm"
+        className="flex flex-col max-w-2xl text-sm"
       >
         <div className="space-y-6 bg-lightgray px-6 py-5 rounded-lg ">
           <div className="flex flex-row justify-between">
-            <div className="space-y-6 w-[50%]">
+            <div className="space-y-6 w-full">
               <FormField
                 control={form.control}
                 name="projectName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabelWithCondition
-                      label="ชื่อโครงการ"
+                      label="ชื่อโครงการ (TH)"
                       action={action}
                     />
                     <FormControl>
                       <Input
-                        placeholder="ใส่ชื่อโครงการ"
+                        placeholder="ชื่อโครงการภาษาไทย"
                         {...field}
                         disabled={action === projectFormAction.INFO}
                         className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-black text-sm border-black"
@@ -360,7 +360,7 @@ export default function ProjectForm({
                           className="text-sm border-black"
                           disabled={action === projectFormAction.INFO}
                         >
-                          <SelectValue placeholder="ฝ่ายวิชาการ, ฝ่ายกิจกรรมภายในคณะ, ฝ่ายเทคโนโลยี" />
+                          <SelectValue placeholder="เลือกฝ่าย" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent {...field}>
@@ -380,7 +380,7 @@ export default function ProjectForm({
             </div>
             {action === projectFormAction.INFO ||
             action === projectFormAction.UPDATE ? (
-              <div className="font-sukhumvit font-bold">
+              <div className="font-sukhumvit font-bold ml-6">
                 <div className="text-center">รหัสโครงการ</div>
                 <div className="text-center text-4xl">
                   {project?.projectCode || 'ไม่มีรหัสโครงการ'}
@@ -401,7 +401,7 @@ export default function ProjectForm({
                     placeholder="รายละเอียดเพิ่มเติม"
                     disabled={action === projectFormAction.INFO}
                     {...field}
-                    className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-black text-sm border-black"
+                    className="disabled:bg-white disabled:opacity-100 disabled:cursor-default text-black text-sm border-black min-h-32"
                   />
                 </FormControl>
                 <FormMessage />
@@ -411,7 +411,7 @@ export default function ProjectForm({
           <div className="flex flex-row justify-between gap-3">
             <div className="flex flex-col space-y-3 font-bold text-sm">
               ผู้ร่วมโครงการ
-              <ol className="list-decimal pl-5 py-2 space-y-3 font-extrabold">
+              <ol className="list-decimal pl-5 py-3 space-y-4 font-extrabold">
                 {action === projectFormAction.USER_CREATE ||
                 action === projectFormAction.ADMIN_CREATE ? (
                   <li>
@@ -447,7 +447,8 @@ export default function ProjectForm({
             </div>
             {action === projectFormAction.INFO && canEdit ? (
               <div className="text-end flex items-end space-x-4">
-                <div
+                <button
+                  type="button"
                   className="p-2 rounded-full bg-white flex items-center justify-center hover:cursor-pointer hover:scale-105 duration-75"
                   onClick={() => {
                     setAction(projectFormAction.UPDATE);
@@ -455,7 +456,7 @@ export default function ProjectForm({
                   }}
                 >
                   <AiFillEdit size={20} className="text-red" />
-                </div>
+                </button>
                 <DeleteProjectDialog projectId={project?.id || ''} />
               </div>
             ) : null}
