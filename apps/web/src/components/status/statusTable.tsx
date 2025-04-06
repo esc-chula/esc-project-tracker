@@ -87,29 +87,34 @@ export function StatusTable({
   return (
     <>
       {!compact && (
-        <StatusTableToolBar
-          table={table}
-          filingFunc={redirectToFiling}
-          projectId={projectId}
-        />
+        <>
+          <StatusTableToolBar
+            table={table}
+            filingFunc={redirectToFiling}
+            projectId={projectId}
+          />
+          <div className="flex flex-row space-x-5 mb-4">
+            <DataTableFacetedFilter
+              column={table.getColumn('projectType')}
+              title="ฝ่าย"
+              options={projectTypeMap}
+            />
+            <DataTableFacetedFilter
+              column={table.getColumn('type')}
+              title="ประเภทเอกสาร"
+              options={typeFilingItemsV2}
+            />
+            <DataTableFacetedFilter
+              column={table.getColumn('status')}
+              title="สถานะเอกสาร"
+              options={statusFilingItems.filter(
+                (status) => status.value !== 'ALL',
+              )}
+            />
+          </div>
+        </>
       )}
-      <div className="flex flex-row space-x-5 mb-4">
-        <DataTableFacetedFilter
-          column={table.getColumn('projectType')}
-          title="ฝ่าย"
-          options={projectTypeMap}
-        />
-        <DataTableFacetedFilter
-          column={table.getColumn('type')}
-          title="ประเภทเอกสาร"
-          options={typeFilingItemsV2}
-        />
-        <DataTableFacetedFilter
-          column={table.getColumn('status')}
-          title="สถานะเอกสาร"
-          options={statusFilingItems.filter((status) => status.value !== 'ALL')}
-        />
-      </div>
+
       <Table className="rounded-xl text-base w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

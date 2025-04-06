@@ -253,25 +253,31 @@ export class FilingService {
   async findLatestFilings() {
     const approvedFilings = this.filingRepository
       .createQueryBuilder('filing')
+      .innerJoinAndSelect('filing.project', 'project')
+      .innerJoinAndSelect('filing.user', 'user')
       .where('filing.status = :status', { status: FilingStatus.APPROVED })
       .orderBy('filing.updatedAt', 'DESC')
-      .limit(3)
+      .limit(10)
       .getMany();
 
     const returnedFilings = this.filingRepository
       .createQueryBuilder('filing')
+      .innerJoinAndSelect('filing.project', 'project')
+      .innerJoinAndSelect('filing.user', 'user')
       .where('filing.status = :status', { status: FilingStatus.RETURNED })
       .orderBy('filing.updatedAt', 'DESC')
-      .limit(3)
+      .limit(10)
       .getMany();
 
     const pendingFilings = this.filingRepository
       .createQueryBuilder('filing')
+      .innerJoinAndSelect('filing.project', 'project')
+      .innerJoinAndSelect('filing.user', 'user')
       .where('filing.status = :status', {
         status: FilingStatus.WAIT_FOR_SECRETARY,
       })
       .orderBy('filing.updatedAt', 'DESC')
-      .limit(3)
+      .limit(10)
       .getMany();
 
     const filings = await Promise.all([

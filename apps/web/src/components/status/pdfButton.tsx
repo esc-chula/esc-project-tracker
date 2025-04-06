@@ -29,7 +29,7 @@ export default function PDFButton({ row }: { row: Row<Filing> }) {
       onClick={(e) => {
         void handleClick(e, row.original.id, row.getValue('detailsPath'));
       }}
-      className={`w-6 text-red ${row.getValue('status') !== FilingStatus.DRAFT && row.getValue('status') !== FilingStatus.DOCUMENT_CREATED ? ' cursor-pointer' : 'opacity-50 pointer-events-none'}`}
+      className={`w-6 mx-2 text-red ${row.getValue('status') !== FilingStatus.DRAFT && row.getValue('status') !== FilingStatus.DOCUMENT_CREATED ? ' cursor-pointer' : 'opacity-50 pointer-events-none'}`}
     >
       <BiSolidFilePdf size={24} />
     </button>

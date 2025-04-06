@@ -65,9 +65,10 @@ export default function LatestPanel({
 
   return (
     <div className={`flex flex-col w-${compact ? 'full' : '[60vw]'}`}>
-      <div className="font-bold text-lg">ล่าสุด</div>
       <ScrollContainer
-        className={`bg-[#D9D9D9] bg-opacity-20 py-4 px-8 rounded-lg overflow-hidden ${expanded ? 'w-[calc(100vw-390px)]' : 'w-[calc(100vw-236px)]'}`}
+        // 206 = 110 (Sidebar) + 48 (Margin) + 48 (Padding)
+        // 360 = 264 (Sidebar) + 48 (Margin) + 48 (Padding)
+        className={`bg-opacity-20 rounded-lg overflow-hidden ${expanded ? 'w-[calc(100vw-360px)]' : 'w-[calc(100vw-206px)]'}`}
       >
         {isFetched ? (
           isProject ? (

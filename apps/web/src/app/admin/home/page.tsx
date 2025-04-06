@@ -1,5 +1,5 @@
 'use client';
-import { ArrowRight, Home, Radio, FileSearch } from 'lucide-react';
+import { ArrowRight, Home, FileSearch, Folders } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -15,8 +15,6 @@ import LatestPanel from '@/src/components/project/latestPanel';
 import { getUserId } from '@/src/service/auth';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
-import type { UserFiling } from '@/src/interface/user-filing';
-import findUserFilingOrderByLastOpen from '@/src/service/user-filing/findUserFilingOrderByLastOpen';
 import findLatestFilings from '@/src/service/filing/findLatestFilings';
 import { toast } from '@/src/components/ui/use-toast';
 
@@ -35,27 +33,20 @@ export default function Page() {
   const [filingsRawData, setFilingsRawData] = useState<Filing[]>([]);
   const [latestFilings, setLatestFilings] = useState<Filing[]>([]);
 
-  const [filingsWithLastOpen, setFilingsWithLastOpen] = useState<UserFiling[]>(
-    [],
-  );
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userId = await getUserId();
-        const [
-          filingsData,
-          projectsData,
-          filingsDataWithLastOpen,
-          latestFilingsData,
-        ] = await Promise.all([
-          getFilingsByUserId(userId),
-          getProjectsByUserId(userId),
-          findUserFilingOrderByLastOpen(userId),
-          findLatestFilings(),
-        ]);
+        const [filingsData, projectsData, latestFilingsData] =
+          await Promise.all([
+            getFilingsByUserId(userId),
+            getProjectsByUserId(userId),
+            findLatestFilings(),
+          ]);
+        console.log(filingsData, projectsData, latestFilingsData);
+
         setFilingsDataWithProject(filingsData);
         setProjectsWithLastOpenData(projectsData);
-        setFilingsWithLastOpen(filingsDataWithLastOpen);
         setFilingsRawData(latestFilingsData);
         const filteredFilings = latestFilingsData.filter(
           (filing) => filing.status === FilingStatus.WAIT_FOR_SECRETARY,
@@ -130,22 +121,41 @@ export default function Page() {
         />
       </section>
       <section className="w-full mt-7">
-        <div className="flex items-center justify-between gap-3 h-10">
+        <div className="flex items-center justify-between gap-3 h-6">
           <span className="flex items-center gap-2 w-0 grow">
-            <Radio className="w-5 h-5 shrink-0" />
-            <div className="font-bold">สถานะเอกสารล่าสุด</div>
+            <Folders className="w-5 h-5 shrink-0" />
+            <div className="font-bold">โครงการล่าสุด</div>
           </span>
-          <Link href="/admin/status">
+          <Link href="/admin/projects">
             <Button variant="link">
               <span className="flex items-center gap-1">
-                ดูสถานะทั้งหมด
+                โครงการทั้งหมด
                 <ArrowRight className="w-5 h-5 shrink-0" />
               </span>
             </Button>
           </Link>
         </div>
       </section>
-      <section className="flex items-end mt-5 w-full text-gray-500">
+      <section className="mt-6">
+        <LatestPanel projectsWithLastOpen={projectsWithLastOpenData} compact />
+      </section>
+      <section className="w-full mt-8">
+        <div className="flex items-center justify-between gap-3 h-6">
+          <span className="flex items-center gap-2 w-0 grow">
+            <FileSearch className="w-5 h-5 shrink-0" />
+            <div className="font-bold">เอกสารล่าสุด</div>
+          </span>
+          <Link href="/admin/status">
+            <Button variant="link">
+              <span className="flex items-center gap-1">
+                เอกสารทั้งหมด
+                <ArrowRight className="w-5 h-5 shrink-0" />
+              </span>
+            </Button>
+          </Link>
+        </div>
+      </section>
+      <section className="flex items-end mt-6 w-full text-black">
         <div className={`border-b-2 ${isContinued ? 'border-black' : ''}`}>
           <Button
             variant="ghost"
@@ -177,27 +187,8 @@ export default function Page() {
         </div>
         <hr className="border-t-2 w-full" />
       </section>
-      <section className="mt-5 shadow-lg rounded-xl">
+      <section className="mt-5">
         <StatusTable data={latestFilings} compact />
-      </section>
-      <section className="w-full mt-12">
-        <div className="flex items-center justify-between gap-3 h-10">
-          <span className="flex items-center gap-2 w-0 grow">
-            <FileSearch className="w-5 h-5 shrink-0" />
-            <div className="font-bold">การตรวจสอบล่าสุด</div>
-          </span>
-          <Link href="/admin/projects">
-            <Button variant="link">
-              <span className="flex items-center gap-1">
-                ดูโครงการทั้งหมด
-                <ArrowRight className="w-5 h-5 shrink-0" />
-              </span>
-            </Button>
-          </Link>
-        </div>
-      </section>
-      <section className="rounded-xl bg-gray-200 px-7 pt-9 mb-4 pb-5 mt-4">
-        <LatestPanel filingsWithLastOpen={filingsWithLastOpen} compact />
       </section>
     </main>
   );

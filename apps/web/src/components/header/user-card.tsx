@@ -1,6 +1,7 @@
 'use client';
 import { Bell } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import {
   Avatar,
   AvatarFallback,
@@ -11,6 +12,7 @@ import UserCardMenu from './user-card-menu';
 
 export default function UserCard({ usernameData }: { usernameData?: string }) {
   const [username, setUsername] = useState(usernameData || '');
+  const path = usePathname();
   useEffect(() => {
     if (usernameData) return;
     void getUsername().then((fetchedUsername) => {
@@ -25,7 +27,14 @@ export default function UserCard({ usernameData }: { usernameData?: string }) {
       </div>
       <div className="flex items-center gap-4">
         <Avatar className="h-[46px] w-[46px]">
-          <AvatarImage src="/icons/circle-user-round.svg" />
+          <AvatarImage
+            src={
+              path.startsWith('/admin')
+                ? '/icons/esc-red.svg'
+                : '/icons/circle-user-round.svg'
+            }
+            className={path.startsWith('/admin') ? 'h-[25px] m-auto' : ''}
+          />
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
         <UserCardMenu username={username} />

@@ -16,15 +16,15 @@ export default function LatestItem({
 }) {
   const router = useRouter();
   return (
-    <div
-      className="bg-card text-card-foreground rounded-md flex flex-row py-1 px-8 space-x-5 border-2 border-black hover:cursor-pointer hover:scale-105 duration-200"
+    <button
+      type="button"
+      className="bg-gray-100 text-card-foreground rounded-md flex flex-row py-1 px-8 space-x-5 hover:cursor-pointer hover:scale-105 duration-200"
       onClick={() => {
         if (isAdmin) {
           router.push(`/admin/project/${projectId}/${filingId}`);
         } else if (filingId) {
-          router.push(`/project/${projectId}/${filingId}`)
-        } 
-        else router.push(`/project/${projectId}`);
+          router.push(`/project/${projectId}/${filingId}`);
+        } else router.push(`/project/${projectId}`);
       }}
     >
       <div className="flex items-center justify-center">
@@ -36,6 +36,6 @@ export default function LatestItem({
           {projectName}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
