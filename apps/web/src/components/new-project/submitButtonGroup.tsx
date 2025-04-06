@@ -22,7 +22,7 @@ export default function SubmitButtonGroup({
     [form.formState.isSubmitting, form.formState.isValid],
   );
 
-  const isUpdateDisable = useMemo(() => {
+  const isUpdateDisabled = useMemo(() => {
     return (
       !form.formState.isValid ||
       form.formState.isSubmitting ||
@@ -42,16 +42,16 @@ export default function SubmitButtonGroup({
           disabled={isDisabled}
           variant="outline"
           type="submit"
-          className="disabled:bg-lightgray rounded-xl text-base px-4 py-2 my-6 h-9 ml-auto font-medium bg-red text-white"
+          className="disabled:bg-lightgray rounded-lg text-base px-4 py-2 my-6 h-9 ml-auto font-medium bg-red text-white"
         >
           <FilePlus className="h-5 w-5 mr-3" />
           เปิดโครงการ
         </Button>
       ) : null}
       {formAction === projectFormAction.UPDATE ? (
-        <div className="w-full flex justify-between px-5">
+        <div className="w-full flex justify-end gap-2">
           <Button
-            className="my-8 rounded-lg px-6 h-12 text-black bg-transparent font-bold text-xl hover:bg-transparent"
+            className="disabled:bg-lightgray text-base text-gray-500 border-gray-500 border-1 bg-transparent px-4 py-2 my-6 h-9 font-medium hover:bg-slate-200 rounded-lg transition duration-300"
             onClick={() => {
               changeFormActionToParent(projectFormAction.CANCEL_UPDATE);
             }}
@@ -60,10 +60,10 @@ export default function SubmitButtonGroup({
           </Button>
           <Button
             type="submit"
-            className="my-8 rounded-lg px-6 h-12 bg-red font-bold text-xl"
-            disabled={isUpdateDisable}
+            className="disabled:bg-lightgray rounded-lg text-base px-4 py-2 my-6 h-9 font-medium bg-red text-white"
+            disabled={isUpdateDisabled}
           >
-            <IoCheckmarkSharp className="h-8 w-8 mr-3" />
+            <IoCheckmarkSharp className="h-5 w-5 mr-3" />
             ยืนยัน
           </Button>
         </div>
