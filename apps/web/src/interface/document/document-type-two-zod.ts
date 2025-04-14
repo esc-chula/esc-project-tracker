@@ -11,7 +11,6 @@ export const DocumentTypeOneSchema = z.object({
   filingCode: z.string(),
   filingName: z.string(),
   department: z.string().nullable(),
-  isOneDay: z.boolean(),
   startDate: z.string(),
   endDate: z.string().optional(),
   objectiveSummarizeDetail: z.string(),

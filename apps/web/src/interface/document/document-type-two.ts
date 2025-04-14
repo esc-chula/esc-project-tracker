@@ -11,7 +11,6 @@ export interface DocumentTypeZero { // เอกสารเปิดโคร�
   filingCode: string;
   filingName: string;
   department: string | null; // esc fields, club, null
-  isOneDay: boolean;
   startDate: string;
   endDate?: string; // For projects lasting more than 1 day
   objectiveSummarizeDetail: string; // วัตถุประสงค์โครงการแบบย่อ
