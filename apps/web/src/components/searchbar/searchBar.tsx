@@ -29,9 +29,9 @@ export default function SearchBar({
 }) {
   const [value, setValue] = useState<Project | Filing | null>(null);
 
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
+  // useEffect(() => {
+  //   console.log(value);
+  // }, [value]);
 
   const handleSelect = (option: Project | Filing | null) => {
     setValue(option);
@@ -42,7 +42,7 @@ export default function SearchBar({
       } else if (filingFunc && 'filingCode' in option) {
         filingFunc(option);
       } else {
-        console.log('No function to call');
+        // console.log('No function to call');
       }
     } else {
       if (clearFunc) {

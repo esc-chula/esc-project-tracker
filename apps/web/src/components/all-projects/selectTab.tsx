@@ -3,25 +3,16 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { TbEdit } from 'react-icons/tb';
 import {
   type ReactNode,
   type SyntheticEvent,
   useEffect,
   useState,
 } from 'react';
-import { BiSolidSave } from 'react-icons/bi';
-import {
-  type Project,
-  type ProjectWithLastOpen,
-} from '@/src/interface/project';
+import { type Project } from '@/src/interface/project';
 import { type Filing } from '@/src/interface/filing';
 import findAllProject from '@/src/service/project/findAllProject';
-import findAllFiling from '@/src/service/filing/findAllFiling';
-import getProjectsByUserId from '@/src/service/project/getProjectsByUserId';
-import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
-import ProjectMenu from '../project/projectMenu';
-import FilingMenu from '../project/filingMenu';
+import findJoinedProjectsByUserId from '@/src/service/user-proj/findJoinedProjectsByUserId';
 import { toast } from '../ui/use-toast';
 import MyProjectData from '../project/myProjectData';
 import AddNewProjectButton from './addNewProjectButton';
@@ -44,7 +35,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ py: 2 }}>{children}</Box>}
     </div>
   );
 }
@@ -63,20 +54,18 @@ export default function SelectTab({
   isAdmin: boolean;
   userId: string;
 }) {
-  const [value, setValue] = useState<number>(0);
+  const [value, setValue] = useState<number>(Number(isAdmin));
+
+  // Fetch all projects and filings
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filings, setFilings] = useState<Filing[]>([]);
-  const [searchedProjectID, setSearchedProjectID] = useState<string | null>(
+
+  const [searchedProjectId, setSearchedProjectId] = useState<string | null>(
     null,
   );
-  const [searchedFilingID, setSearchedFilingID] = useState<string | null>(null);
-  const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
 
-  const [projectsWithLastOpen, setProjectsWithLastOpen] = useState<
-    ProjectWithLastOpen[]
-  >([]);
+  // Fetch by userId
+  const [joinedProjects, setJoinedProjects] = useState<Set<string>>(new Set());
   const [myProjects, setMyProjects] = useState<Project[]>([]);
-  const [myFilings, setMyFilings] = useState<Filing[]>([]);
   const router = useRouter();
   const redirectToProject = (project: Project | Filing) => {
     if (isAdmin) router.push(`/admin/project/${project.id}/info`);
@@ -85,43 +74,25 @@ export default function SelectTab({
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
-    setSearchedProjectID(null);
-    setSearchedFilingID(null);
+    setSearchedProjectId(null);
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [fetchedProject, fetchedFiling] = await Promise.all([
+        const [fetchedProject, joinedProjectsData] = await Promise.all([
           findAllProject(),
-          findAllFiling(),
+          findJoinedProjectsByUserId(userId),
         ]);
-
-        setFilings(fetchedFiling);
-        setProjects(fetchedProject);
-      } catch (error) {
-        if (error instanceof Error) {
-          toast({
-            title: 'ไม่สำเร็จ',
-            description: error.message,
-            isError: true,
-          });
-        }
-      }
-    }
-
-    async function fetchByUserId() {
-      try {
-        const [projectsWithLastOpenByUserIdData, myFilingsData] =
-          await Promise.all([
-            getProjectsByUserId(userId),
-            getFilingsByUserId(userId),
-          ]);
-        setProjectsWithLastOpen(projectsWithLastOpenByUserIdData);
-        setMyProjects(
-          projectsWithLastOpenByUserIdData.map((project) => project.project),
+        fetchedProject.sort((a, b) =>
+          a.projectCode.localeCompare(b.projectCode),
         );
-        setMyFilings(myFilingsData);
+        const joinedProjectsSet = new Set(joinedProjectsData);
+        setJoinedProjects(joinedProjectsSet);
+        setProjects(fetchedProject);
+        setMyProjects(
+          fetchedProject.filter((project) => joinedProjectsSet.has(project.id)),
+        );
       } catch (error) {
         if (error instanceof Error) {
           toast({
@@ -134,7 +105,6 @@ export default function SelectTab({
     }
 
     void fetchData();
-    void fetchByUserId();
   }, [userId]);
 
   return (
@@ -146,7 +116,7 @@ export default function SelectTab({
             placeHolder="ค้นหาโครงการของฉัน"
             projectFunc={redirectToProject}
             clearFunc={() => {
-              setSearchedProjectID(null);
+              setSearchedProjectId(null);
             }}
           />
           <div className="items-center flex text-center">
@@ -163,7 +133,7 @@ export default function SelectTab({
               redirectToProject(project);
             }}
             clearFunc={() => {
-              setSearchedProjectID(null);
+              setSearchedProjectId(null);
             }}
           />
           <div className="items-center flex text-center">
@@ -171,94 +141,55 @@ export default function SelectTab({
           </div>
         </div>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <div className="flex flex-row space-x-4 w-full items-center">
-          <SearchPanel
-            filings={filings}
-            placeHolder="ค้นหาเอกสารทั้งหมด"
-            filingFunc={(filing: Filing | Project) => {
-              setSearchedFilingID(filing.id);
-            }}
-            clearFunc={() => {
-              setSearchedFilingID(null);
-            }}
-          />
-          {isAdmin ? (
-            isUpdateMode ? (
-              <BiSolidSave
-                size={25}
-                className="font-bold hover:cursor-pointer"
-                onClick={() => {
-                  setIsUpdateMode(false);
-                }}
-              />
-            ) : (
-              <TbEdit
-                size={25}
-                className="font-bold hover:cursor-pointer"
-                onClick={() => {
-                  setIsUpdateMode(true);
-                }}
-              />
-            )
-          ) : null}
-
-          <div className="items-center flex text-center">
-            <AddNewProjectButton />
-          </div>
-        </div>
-      </CustomTabPanel>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          sx={{
-            '& .MuiTabs-indicator': {
-              backgroundColor: 'red',
-            },
-            '& .MuiTab-root': {
-              '&.Mui-selected': {
-                color: 'red',
+      {!isAdmin ? (
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            sx={{
+              '& .MuiTabs-indicator': {
+                backgroundColor: 'red',
               },
-              '&:hover': {
-                backgroundColor: 'transparent',
+              '& .MuiTab-root': {
+                '&.Mui-selected': {
+                  color: 'red',
+                },
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                },
               },
-            },
-          }}
-        >
-          <Tab
-            label="โครงการของฉัน"
-            {...a11yProps(0)}
-            className="font-sukhumvit"
-          />
-          <Tab
-            label="โครงการทั้งหมด"
-            {...a11yProps(1)}
-            className="font-sukhumvit"
-          />
-          <Tab label="เอกสาร" {...a11yProps(2)} className="font-sukhumvit" />
-        </Tabs>
-      </Box>
+            }}
+          >
+            <Tab
+              label="โครงการของฉัน"
+              {...a11yProps(0)}
+              className="font-sukhumvit"
+            />
+            <Tab
+              label="โครงการทั้งหมด"
+              {...a11yProps(1)}
+              className="font-sukhumvit"
+            />
+          </Tabs>
+        </Box>
+      ) : null}
       <CustomTabPanel value={value} index={0}>
         <MyProjectData
           compact
-          filingsData={myFilings}
-          projectsWithLastOpenData={projectsWithLastOpen}
-          searchedProjectId={searchedProjectID || null}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <ProjectMenu
-          searchedProjectId={searchedProjectID}
-          isAdmin={isAdmin}
+          projects={myProjects}
+          joinedProjects={joinedProjects}
+          searchedProjectId={searchedProjectId}
           userId={userId}
         />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <FilingMenu
-          searchedFilingId={searchedFilingID}
-          isUpdateMode={isUpdateMode}
+      <CustomTabPanel value={value} index={1}>
+        <MyProjectData
+          compact
+          projects={projects}
+          joinedProjects={joinedProjects}
+          searchedProjectId={searchedProjectId}
+          userId={userId}
         />
       </CustomTabPanel>
     </Box>

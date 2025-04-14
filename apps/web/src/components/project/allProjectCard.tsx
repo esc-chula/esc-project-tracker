@@ -67,7 +67,7 @@ export default function AllProjectCard({
         <div className="text-4xl font-bold text-center">
           {projectCode}
           <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
-            {projectName}
+            {projectName} {isJoined ? '(เข้าร่วมแล้ว)' : '(ยังไม่เข้าร่วม)'}
           </div>
         </div>
       </div>

@@ -23,11 +23,13 @@ export default function AllProjectPanel({
   userId,
   setProjects,
   showTitle = false,
+  joinedProjects = new Set(),
 }: {
   projects: Project[];
   userId: string;
   setProjects: Dispatch<SetStateAction<Project[]>>;
   showTitle?: boolean;
+  joinedProjects?: Set<string>;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -65,30 +67,25 @@ export default function AllProjectPanel({
       columnFilters,
     },
   });
-  // Mock joined projects
-  const joinedProjects = new Set([
-    '2ac28761-83ee-41f7-80a9-c0a8560f048f',
-    'eb660d51-da16-4fa6-920d-b44564ef740e',
-  ]);
 
   return (
-    <div className={cn(`space-y-5 pb-10`, showTitle ? 'pt-5' : 'pt-0')}>
+    <div className={cn(`space-y-4 pb-10`, showTitle ? 'pt-5' : 'pt-0')}>
       {showTitle ? (
         <div className="font-sukhumvit font-bold text-lg">ทั้งหมด</div>
       ) : null}
       <div className="flex flex-row space-x-5">
         <DataTableFacetedFilter
-          title="สถานะ"
-          options={filterProjectStatus}
-          column={table.getColumn('status')}
-        />
-        <DataTableFacetedFilter
-          title="ประเภท"
+          title="ฝ่าย"
           options={projectTypeMap}
           column={table.getColumn('type')}
         />
+        <DataTableFacetedFilter
+          title="สถานะโครงการ"
+          options={filterProjectStatus}
+          column={table.getColumn('status')}
+        />
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-col-2 grid-row-2 gap-x-8 gap-y-10 ">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-row-2 gap-x-8 gap-y-10 ">
         {table.getRowModel().rows.map((project) => (
           <AllProjectCard
             key={project.id}

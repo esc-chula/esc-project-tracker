@@ -9,7 +9,7 @@ export default async function Page() {
   return (
     <main className="space-y-5 py-10 px-6">
       <Header>
-        <Title icon={<Folders size={40} />}>โครงการทั้งหมด</Title>
+        <Title icon={<Folders size={40} />}>โครงการ</Title>
       </Header>
       <SelectTab isAdmin userId={userId} />
     </main>
