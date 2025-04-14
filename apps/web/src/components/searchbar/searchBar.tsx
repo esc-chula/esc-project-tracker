@@ -52,7 +52,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="max-w-full">
+    <div className="max-w-full font-sukhumvit">
       <Autocomplete
         value={value}
         options={[...filings, ...projects]}
@@ -65,6 +65,20 @@ export default function SearchBar({
             ? option
             : `${'filingCode' in option ? option.projectCode + '-' + option.filingCode : option.projectCode}     ${option.name}`
         }
+        slotProps={{
+          popper: {
+            className: 'font-sukhumvit',
+          },
+          paper: {
+            className: 'font-sukhumvit',
+          },
+          popupIndicator: {
+            className: 'font-sukhumvit',
+          },
+          clearIndicator: {
+            className: 'font-sukhumvit',
+          },
+        }}
         renderOption={(props, option) => (
           <li {...props}>
             {/* <Link
@@ -98,7 +112,7 @@ export default function SearchBar({
             InputProps={{
               ...params.InputProps,
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" className="font-sukhumvit">
                   <Search size={20} strokeWidth={2} color="black" />
                 </InputAdornment>
               ),
