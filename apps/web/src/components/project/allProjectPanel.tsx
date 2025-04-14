@@ -37,21 +37,19 @@ export default function AllProjectPanel({
     { accessorKey: 'name' },
     {
       accessorKey: 'type',
-      filterFn: (row, id, value: string[]) => {
-        return value.includes(row.getValue(id));
-      },
+      filterFn: (row, id, value: string[]) => value.includes(row.getValue(id)),
     },
     { accessorKey: 'id' },
     { accessorKey: 'projectCode' },
     {
       accessorKey: 'isJoined',
       accessorFn: (row) => joinedProjects.has(row.id),
+      filterFn: (row, id, value: string[]) =>
+        value.includes(String(row.getValue(id))),
     },
     {
       accessorKey: 'status',
-      filterFn: (row, id, value: string[]) => {
-        return value.includes(row.getValue(id));
-      },
+      filterFn: (row, id, value: string[]) => value.includes(row.getValue(id)),
     },
   ];
   const table = useReactTable({
@@ -83,6 +81,14 @@ export default function AllProjectPanel({
           title="สถานะโครงการ"
           options={filterProjectStatus}
           column={table.getColumn('status')}
+        />
+        <DataTableFacetedFilter
+          title="การเข้าร่วม"
+          options={[
+            { label: 'เข้าร่วม', value: 'true' },
+            { label: 'ไม่เข้าร่วม', value: 'false' },
+          ]}
+          column={table.getColumn('isJoined')}
         />
       </div>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-row-2 gap-x-8 gap-y-10 ">
