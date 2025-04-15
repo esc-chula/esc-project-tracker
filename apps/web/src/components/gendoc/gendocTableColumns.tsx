@@ -1,18 +1,16 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { FilingStatus } from '@/src/constant/enum';
 import type { Filing } from '@/src/interface/filing';
-import { TextMyProject, textColors } from '@/src/styles/enumMap';
-import { DataTableColumnHeader } from './dataTableColumnHeader';
-import PDFButton from './pdfButton';
+import { DataTableColumnHeader } from '../status/dataTableColumnHeader';
+import PDFButton from '../status/pdfButton';
 
 require('dayjs/locale/th');
 
 dayjs.extend(relativeTime);
 dayjs.locale('th');
 
-export const statusColumns: ColumnDef<Filing>[] = [
+export const gendocColumns: ColumnDef<Filing>[] = [
   {
     accessorKey: 'รหัสเอกสาร',
     size: 0,
@@ -51,70 +49,6 @@ export const statusColumns: ColumnDef<Filing>[] = [
     cell: ({ row }) => (
       <div className="line-clamp-1 w-[200px]">{row.getValue('name')}</div>
     ),
-  },
-  {
-    accessorKey: 'ownerName',
-    accessorFn: (row) => row.user?.username,
-    header: ({ column }) => {
-      return (
-        <DataTableColumnHeader
-          className="justify-center"
-          column={column}
-          title="นิสิตผู้รับผิดชอบ"
-        />
-      );
-    },
-    cell: ({ row }) => (
-      <div className="line-clamp-1 text-center">
-        {row.getValue('ownerName')}
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'ownerTel',
-    size: 0,
-    enableResizing: false,
-    accessorFn: (row) => row.user?.tel,
-    header: ({ column }) => {
-      return (
-        <DataTableColumnHeader
-          className="justify-center"
-          column={column}
-          title="เบอร์โทรศัพท์"
-        />
-      );
-    },
-    cell: ({ row }) => (
-      <div className="line-clamp-1 text-center">{row.getValue('ownerTel')}</div>
-    ),
-  },
-  {
-    accessorKey: 'status',
-    size: 120,
-    enableResizing: false,
-    filterFn: (row, id, value: string[]) => {
-      return value.includes(row.getValue(id));
-    },
-    header: ({ column }) => {
-      return (
-        <DataTableColumnHeader
-          className="justify-center"
-          column={column}
-          title="สถานะ"
-        />
-      );
-    },
-    cell: ({ row }) => {
-      const status = row.getValue('status') as FilingStatus;
-
-      return (
-        <div
-          className={`w-full inline-block text-center text-sm font-medium ${textColors[status]}`}
-        >
-          {TextMyProject[status]}
-        </div>
-      );
-    },
   },
   {
     accessorKey: 'updatedAt',

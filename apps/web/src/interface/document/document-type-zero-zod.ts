@@ -1,5 +1,14 @@
-import { z } from "zod";
-import { ObjectiveType, ActivityType, GraduateAttributeType, FilingType, ManagementRole, TQFType, SDGType, PlanPhase } from "@/src/constant/enum";
+import { z } from 'zod';
+import {
+  ObjectiveType,
+  ActivityType,
+  GraduateAttributeType,
+  FilingType,
+  ManagementRole,
+  TQFType,
+  SDGType,
+  PlanPhase,
+} from '@/src/constant/enum';
 
 export const ObjectiveSchema = z.object({
   id: z.string().readonly(),
@@ -17,7 +26,7 @@ export const IndicatorSchema = z.object({
 
 export const ParticipantSchema = z.object({
   id: z.string().readonly(),
-  role: z.enum(["Staff", "Participant"]),
+  role: z.enum(['Staff', 'Participant']),
   year1: z.number(),
   year2: z.number(),
   year3: z.number(),
@@ -56,7 +65,7 @@ export const ImprovementPlanSchema = z.object({
 
 export const ExpectedOutcomesSchema = z.object({
   id: z.string().readonly(),
-  category: z.enum(["Participant", "Staff", "Faculty/University"]),
+  category: z.enum(['Participant', 'Staff', 'Faculty/University']),
   detail: z.array(z.string()),
 });
 
@@ -75,7 +84,7 @@ export const WorkPlanSchema = z.object({
 
 export const BudgetType1Schema = z.object({
   id: z.string().readonly(),
-  type: z.literal("Type 1"),
+  type: z.literal('Type 1'),
   name: z.string(),
   amount: z.number(),
   unit: z.string(),
@@ -84,7 +93,7 @@ export const BudgetType1Schema = z.object({
 
 export const BudgetType2Schema = z.object({
   id: z.string().readonly(),
-  type: z.literal("Type 2"),
+  type: z.literal('Type 2'),
   name: z.string(),
   amount: z.number(),
   unit: z.string(),
@@ -95,9 +104,11 @@ export const BudgetType2Schema = z.object({
 
 export const BudgetSchema = z.object({
   id: z.string().readonly(),
-  source: z.enum(["Faculty", "Sponsor", "Other"]),
-  category: z.enum(["Material", "Expense"]),
-  details: z.array(z.discriminatedUnion("type", [BudgetType1Schema, BudgetType2Schema])),
+  source: z.enum(['Faculty', 'Sponsor', 'Other']),
+  category: z.enum(['Material', 'Expense']),
+  details: z.array(
+    z.discriminatedUnion('type', [BudgetType1Schema, BudgetType2Schema]),
+  ),
 });
 
 export const GraduateAttributeSchema = z.object({
@@ -131,7 +142,6 @@ export const DocumentTypeZeroSchema = z.object({
   filingCode: z.string(),
   filingName: z.string(),
   department: z.string().nullable(),
-  isOneDay: z.boolean(),
   startDate: z.string(),
   endDate: z.string().optional(),
   principleAndRationalDetail: z.string(),

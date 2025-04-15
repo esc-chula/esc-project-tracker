@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Title from '@/src/components/header/title';
-import { StatusTable } from '@/src/components/status/statusTable';
+import { DataTable } from '@/src/components/status/dataTable';
 import type { Filing } from '@/src/interface/filing';
 import { Button } from '@/src/components/ui/button';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
@@ -110,7 +110,7 @@ export default function Page() {
         </div>
       </section>
       <section className="mt-5">
-        <StatusTable data={filingsDataWithProject} compact />
+        <DataTable data={filingsDataWithProject} compact />
       </section>
     </main>
   );

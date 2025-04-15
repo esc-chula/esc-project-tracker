@@ -1,7 +1,17 @@
-import type { ObjectiveType, ActivityType, GraduateAttributeType, FilingType, ManagementRole, TQFType, SDGType, PlanPhase } from "@/src/constant/enum";
+import type {
+  ObjectiveType,
+  ActivityType,
+  GraduateAttributeType,
+  FilingType,
+  ManagementRole,
+  TQFType,
+  SDGType,
+  PlanPhase,
+} from '@/src/constant/enum';
 
 // design by following figma: https://www.figma.com/design/Dz6HOGk6pFbHFLdsra05Fh/ESC-Project-Tracker--%5BPhase-2%5D?node-id=0-1&p=f&t=fT3aiSmCE6oX1NMj-0
-export interface DocumentTypeZero { // เอกสารเปิดโครง
+export interface DocumentTypeZero {
+  // เอกสารเปิดโครง
   readonly id: string;
   projectCode: string;
   projectNameTH: string;
@@ -10,7 +20,6 @@ export interface DocumentTypeZero { // เอกสารเปิดโคร�
   filingCode: string;
   filingName: string;
   department: string | null; // esc fields, club, null
-  isOneDay: boolean;
   startDate: string;
   endDate?: string; // For projects lasting more than 1 day
   principleAndRationalDetail: string; // หลักการและเหตุ
@@ -85,7 +94,7 @@ export interface ImprovementPlan {
   details: ImprovementItem[];
 }
 
-export interface ImprovementItem{
+export interface ImprovementItem {
   readonly id: string;
   problem: string;
   solution: string;
@@ -100,7 +109,7 @@ export interface ExpectedOutcomes {
 export interface WorkPlan {
   readonly id: string;
   phase: PlanPhase;
-  details :WorkPlanItem[];
+  details: WorkPlanItem[];
 }
 
 export interface WorkPlanItem {
@@ -152,7 +161,8 @@ export interface SDG {
   activityId: string[]; // id of activities
 }
 
-export interface TQF { // จับคู่กิจกรรมกับมาตรฐาน TQF
+export interface TQF {
+  // จับคู่กิจกรรมกับมาตรฐาน TQF
   readonly id: string;
   tqfStandard: TQFType;
   activityId: string[]; // id of activities

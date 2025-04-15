@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import type { Filing } from '@/src/interface/filing';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import findAllFiling from '@/src/service/filing/findAllFiling';
-import { DataTable } from './dataTable';
+import { DataTable } from '../status/dataTable';
 
-export default function StatusPage({
+export default function GendocPage({
   userId,
   isAdmin = false,
 }: {
@@ -31,5 +31,5 @@ export default function StatusPage({
       }
     }
   }, [userId]);
-  return <DataTable data={statuses} />;
+  return <DataTable data={statuses} isStatusTable={false} />;
 }

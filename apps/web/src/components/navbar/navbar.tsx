@@ -83,7 +83,6 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           />
           {!isAdmin && (
             <NavbarItem
-              disabled
               icon={<FilePlus size={20} />}
               text="Gen Doc"
               expanded={expanded}

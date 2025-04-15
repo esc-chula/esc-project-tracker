@@ -31,17 +31,20 @@ import {
 } from '@/src/constant/filterFiling';
 import { projectTypeMap } from '@/src/constant/map';
 import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
-import { columns } from './statusTableColumns';
+import { gendocColumns } from '../gendoc/gendocTableColumns';
+import { statusColumns } from './statusTableColumns';
 import StatusTableToolBar from './statusTableToolBar';
 
-export function StatusTable({
+export function DataTable({
   data,
   compact = false,
   projectId,
+  isStatusTable = true,
 }: {
   data: Filing[];
   compact?: boolean;
   projectId?: string;
+  isStatusTable?: boolean;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -53,7 +56,7 @@ export function StatusTable({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: isStatusTable ? statusColumns : gendocColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -103,13 +106,15 @@ export function StatusTable({
               title="ประเภทเอกสาร"
               options={typeFilingItemsV2}
             />
-            <DataTableFacetedFilter
-              column={table.getColumn('status')}
-              title="สถานะเอกสาร"
-              options={statusFilingItems.filter(
-                (status) => status.value !== 'ALL',
-              )}
-            />
+            {isStatusTable ? (
+              <DataTableFacetedFilter
+                column={table.getColumn('status')}
+                title="สถานะเอกสาร"
+                options={statusFilingItems.filter(
+                  (status) => status.value !== 'ALL',
+                )}
+              />
+            ) : null}
           </div>
         </>
       )}
@@ -143,7 +148,7 @@ export function StatusTable({
               <TableRow
                 key={row.id}
                 onClick={() => {
-                  redirectToFiling(row.original);
+                  redirectToFiling(row.original); // Fix
                 }}
                 className="hover:bg-gray-200 cursor-pointer transition-colors duration-150"
               >
@@ -156,7 +161,10 @@ export function StatusTable({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell
+                colSpan={statusColumns.length}
+                className="h-24 text-center"
+              >
                 ไม่พบข้อมูล
               </TableCell>
             </TableRow>

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
-import { StatusTable } from '@/src/components/status/statusTable';
+import { DataTable } from '@/src/components/status/dataTable';
 import { FilingStatus } from '@/src/constant/enum';
 import type { Filing } from '@/src/interface/filing';
 import { Button } from '@/src/components/ui/button';
@@ -187,7 +187,7 @@ export default function Page() {
         <hr className="border-t-2 w-full" />
       </section>
       <section className="mt-5">
-        <StatusTable data={latestFilings} compact />
+        <DataTable data={latestFilings} compact />
       </section>
     </main>
   );
