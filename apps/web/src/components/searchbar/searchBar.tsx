@@ -2,52 +2,53 @@
 
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { FaFolder } from 'react-icons/fa6';
 import { IoDocumentText } from 'react-icons/io5';
-
 import { InputAdornment } from '@mui/material';
 import { autocompleteStyles } from '@/src/styles/autocompleteStype';
-import { Project } from '@/src/interface/project';
-import { Filing } from '@/src/interface/filing';
+import type { Project } from '@/src/interface/project';
+import type { Filing } from '@/src/interface/filing';
+import type { Gendoc } from '@/src/interface/gendoc';
+import { isFiling, isGendoc, isProject } from '@/src/lib/typeCheck';
 
 export default function SearchBar({
   placeholder,
   projects,
   filings,
+  gendocs,
   projectFunc,
   filingFunc,
+  gendocFunc,
   clearFunc,
 }: {
   placeholder: string;
   projects: Project[];
   filings: Filing[];
+  gendocs: Gendoc[];
   projectFunc?: (project: Project) => void;
   filingFunc?: (filing: Filing) => void;
+  gendocFunc?: (gendoc: Gendoc) => void;
   clearFunc?: () => void;
 }) {
-  const [value, setValue] = useState<Project | Filing | null>(null);
+  const [value, setValue] = useState<Project | Filing | Gendoc | null>(null);
 
-  // useEffect(() => {
-  //   console.log(value);
-  // }, [value]);
-
-  const handleSelect = (option: Project | Filing | null) => {
+  const handleSelect = (option: Project | Filing | Gendoc | null) => {
     setValue(option);
     if (option !== null) {
       setValue(option);
-      if (projectFunc && 'reserveDate' in option) {
+      if (projectFunc && isProject(option)) {
         projectFunc(option);
-      } else if (filingFunc && 'filingCode' in option) {
+      } else if (filingFunc && isFiling(option)) {
         filingFunc(option);
+      } else if (gendocFunc && isGendoc(option)) {
+        gendocFunc(option);
       } else {
         // console.log('No function to call');
       }
-    } else {
-      if (clearFunc) {
-        clearFunc();
-      }
+    } else if (clearFunc) {
+      clearFunc();
     }
   };
 
@@ -55,7 +56,7 @@ export default function SearchBar({
     <div className="max-w-full font-sukhumvit">
       <Autocomplete
         value={value}
-        options={[...filings, ...projects]}
+        options={[...filings, ...projects, ...gendocs]}
         noOptionsText="ไม่พบข้อมูล"
         onChange={(event, newValue) => {
           handleSelect(newValue);
@@ -63,7 +64,7 @@ export default function SearchBar({
         getOptionLabel={(option) =>
           typeof option === 'string'
             ? option
-            : `${'filingCode' in option ? option.projectCode + '-' + option.filingCode : option.projectCode}     ${option.name}`
+            : `${'filingCode' in option ? `${option.projectCode}-${option.filingCode}` : option.projectCode}     ${option.name}`
         }
         slotProps={{
           popper: {
@@ -96,7 +97,7 @@ export default function SearchBar({
               )}
               <span className="w-20">
                 {'filingCode' in option
-                  ? option.projectCode + '-' + option.filingCode
+                  ? `${option.projectCode}-${option.filingCode}`
                   : option.projectCode}
               </span>
               <span>{option.name}</span>
