@@ -1,5 +1,5 @@
 import { trpc } from '../../app/trpc';
-import type { ProjectType } from '../../constant/enum';
+import type { ProjectType } from '@repo/shared';
 import type { Project } from '../../interface/project';
 
 export default async function createProject(

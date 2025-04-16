@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ProjectService } from '../../project_/project_.service';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { ProjectType } from '../../constant/enum';
-import { ProjectStatus } from '@repo/enum';
+import { ProjectType } from '@repo/shared';
+import { ProjectStatus } from '@repo/shared';
 import { TRPCError } from '@trpc/server';
 
 @Injectable()

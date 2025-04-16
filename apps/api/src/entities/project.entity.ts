@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProjectStatus, ProjectType } from '../constant/enum';
+import { ProjectStatus, ProjectType } from '@repo/shared';
 import { User } from './user.entity';
 
 @Entity()

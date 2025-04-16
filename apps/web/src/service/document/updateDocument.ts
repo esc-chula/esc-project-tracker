@@ -1,7 +1,4 @@
-import {
-  DocumentActivity,
-  DocumentStatus,
-} from '../../../../api/src/constant/enum';
+import { DocumentActivity, DocumentStatus } from '@repo/shared';
 import { trpc } from '../../app/trpc';
 import { Document } from '../../interface/document';
 export default async function updateDocument({

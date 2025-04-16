@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
-import { FilingSubType } from '../constant/enum';
+import { FilingSubType } from '@repo/shared';
 import { Gendoc } from '../entities/gendoc.entity';
 
 @Injectable()

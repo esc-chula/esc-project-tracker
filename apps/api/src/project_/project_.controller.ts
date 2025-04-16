@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProjectService } from './project_.service';
-import { ProjectType } from '../constant/enum';
+import { ProjectType } from '@repo/shared';
 import { createProjectDTO } from './project_.dto';
 import { Project } from '../entities/project.entity';
 

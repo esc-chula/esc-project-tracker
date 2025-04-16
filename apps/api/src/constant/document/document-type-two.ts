@@ -1,4 +1,4 @@
-import { FilingType } from '../enum';
+import { FilingType } from '@repo/shared';
 import type { Budget } from './document-type-zero';
 
 export interface DocumentTypeTwo {

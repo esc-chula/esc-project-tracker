@@ -10,7 +10,7 @@ import {
 import Stepper from '@mui/joy/Stepper';
 import Step, { stepClasses } from '@mui/joy/Step';
 import StepIndicator from '@mui/joy/StepIndicator';
-import { FilingStatus } from '../../constant/enum';
+import { FilingStatus } from '@repo/shared';
 import { FilingStatusToStepper } from '@/src/styles/enumMap';
 
 const steps = [

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
 import { optional, z } from 'zod';
 import { DocumentService } from '../../document_/document.service';
-import { DocumentActivity, DocumentStatus } from '../../constant/enum';
+import { DocumentActivity, DocumentStatus } from '@repo/shared';
 import { TRPCError } from '@trpc/server';
 
 @Injectable()

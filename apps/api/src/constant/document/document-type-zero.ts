@@ -7,7 +7,7 @@ import type {
   TQFType,
   SDGType,
   PlanPhase,
-} from '../enum';
+} from '@repo/shared';
 
 // design by following figma: https://www.figma.com/design/Dz6HOGk6pFbHFLdsra05Fh/ESC-Project-Tracker--%5BPhase-2%5D?node-id=0-1&p=f&t=fT3aiSmCE6oX1NMj-0
 export interface DocumentTypeZero {

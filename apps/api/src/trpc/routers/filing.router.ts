@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { FilingStatus, FilingSubType } from '../../constant/enum';
+import { FilingStatus, FilingSubType } from '@repo/shared';
 import { FilingService } from '../../filing/filing.service';
 import { TRPCError } from '@trpc/server';
 import { ProjectService } from '../../project_/project_.service';

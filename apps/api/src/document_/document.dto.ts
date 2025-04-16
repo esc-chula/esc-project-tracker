@@ -1,4 +1,4 @@
-import { DocumentActivity, DocumentStatus } from '../constant/enum';
+import { DocumentActivity, DocumentStatus } from '@repo/shared';
 
 export class CreateDocumentDTO {
   filingId: string;

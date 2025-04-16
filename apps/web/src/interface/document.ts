@@ -1,4 +1,4 @@
-import type { DocumentActivity, DocumentStatus } from '../constant/enum';
+import type { DocumentActivity, DocumentStatus } from '@repo/shared';
 
 export interface Document {
   id: string;

@@ -1,4 +1,4 @@
-import type { FilingStatus, FilingSubType } from '../constant/enum';
+import type { FilingStatus, FilingSubType } from '@repo/shared';
 import type { Project } from './project';
 import type { User } from './user';
 

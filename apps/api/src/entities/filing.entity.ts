@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Project } from './project.entity';
-import { FilingStatus, FilingSubType } from '../constant/enum';
+import { FilingStatus, FilingSubType } from '@repo/shared';
 import { User } from './user.entity';
 
 @Entity()

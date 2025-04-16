@@ -14,11 +14,7 @@ import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
 import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
-import {
-  DocumentActivity,
-  DocumentStatus,
-  FilingStatus,
-} from '../constant/enum';
+import { DocumentActivity, DocumentStatus, FilingStatus } from '@repo/shared';
 
 @Injectable()
 export class DocumentService {

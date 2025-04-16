@@ -1,5 +1,5 @@
 import { trpc } from '../../app/trpc';
-import { ProjectStatus, ProjectType } from '../../constant/enum';
+import { ProjectStatus, ProjectType } from '@repo/shared';
 import { Project } from '../../interface/project';
 
 export default async function updateProject({

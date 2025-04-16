@@ -1,6 +1,6 @@
 import type { z } from 'zod';
-import type { DocumentActivity, FilingStatus } from '../constant/enum';
-import { DocumentStatus } from '../constant/enum';
+import type { DocumentActivity, FilingStatus } from '@repo/shared';
+import { DocumentStatus } from '@repo/shared';
 import type { createdFormSchema } from '../constant/schema';
 import uploadFileToS3 from '../service/aws/uploadFileToS3';
 import createDocument from '../service/document/createDocument';

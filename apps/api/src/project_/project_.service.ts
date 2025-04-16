@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { UserService } from '../user_/user.service';
 import { UserProj } from '../entities/userProj.entity';
 import { createProjectDTO, ProjectWithLastOpenDTO } from './project_.dto';
-import { ProjectType } from '../constant/enum';
+import { ProjectType } from '@repo/shared';
 import { validate as isUUID } from 'uuid';
 
 @Injectable()

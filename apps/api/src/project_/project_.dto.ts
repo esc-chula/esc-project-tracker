@@ -1,4 +1,4 @@
-import { ProjectType } from '../constant/enum';
+import { ProjectType } from '@repo/shared';
 import { Project } from '../entities/project.entity';
 
 export class ProjectWithLastOpenDTO {

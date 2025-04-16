@@ -1,5 +1,5 @@
-import type { ProjectStatus } from '@repo/enum';
-import type { ProjectType } from '../constant/enum';
+import type { ProjectStatus } from '@repo/shared';
+import type { ProjectType } from '@repo/shared';
 
 export interface Project {
   id: string;
