@@ -12,6 +12,7 @@ import { UserFilingRouter } from './routers/user-filing.router';
 import { AuthRouter } from './routers/auth.router';
 import { AwsRouter } from './routers/aws.router';
 import { createContext } from '../common/context/extractTokens';
+import { GendocRouter } from './routers/gendoc.router';
 
 @Injectable()
 export class TrpcRouter {
@@ -26,6 +27,7 @@ export class TrpcRouter {
     private readonly userFilingRouter: UserFilingRouter,
     private readonly authRouter: AuthRouter,
     private readonly awsRouter: AwsRouter,
+    private readonly gendocRouter: GendocRouter,
   ) {}
   appRouter = this.trpc.router({
     project: this.projectRouter.appRouter,
@@ -37,6 +39,7 @@ export class TrpcRouter {
     userFiling: this.userFilingRouter.appRouter,
     authRouter: this.authRouter.appRouter,
     aws: this.awsRouter.appRouter,
+    gendoc: this.gendocRouter.appRouter,
   });
 
   async applyMiddleware(app: INestApplication) {

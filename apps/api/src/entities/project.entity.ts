@@ -23,7 +23,7 @@ export class Project {
   @Column()
   ownerId: string;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, { onDelete: 'RESTRICT' })
   owner: User;
 
   @Column({

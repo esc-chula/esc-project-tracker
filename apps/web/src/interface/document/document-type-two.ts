@@ -1,8 +1,8 @@
-import type {FilingType} from "@/src/constant/enum";
-import type { Budget } from "./document-type-zero";
+import type { FilingType } from '@/src/constant/enum';
+import type { Budget } from './document-type-zero';
 
-
-export interface DocumentTypeZero { // เอกสารเปิดโครง
+export interface DocumentTypeTwo {
+  // เอกสารเปิดโครง
   readonly id: string;
   projectCode: string;
   projectNameTH: string;

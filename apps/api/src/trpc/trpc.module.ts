@@ -21,6 +21,8 @@ import { AuthModule } from '../auth/auth.module';
 import { AuthRouter } from './routers/auth.router';
 import { AwsModule } from '../aws/aws.module';
 import { AwsRouter } from './routers/aws.router';
+import { GendocModule } from '../gendoc/gendoc.module';
+import { GendocRouter } from './routers/gendoc.router';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { AwsRouter } from './routers/aws.router';
     UserFilingModule,
     AuthModule,
     AwsModule,
+    GendocModule,
   ],
   providers: [
     TrpcService,
@@ -47,6 +50,7 @@ import { AwsRouter } from './routers/aws.router';
     UserFilingRouter,
     AuthRouter,
     AwsRouter,
+    GendocRouter,
   ],
   controllers: [],
   exports: [TrpcService],

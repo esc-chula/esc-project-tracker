@@ -16,6 +16,7 @@ import { AwsModule } from './aws/aws.module';
 import { NotificationModule } from './notification/notification.module';
 import { UserFilingModule } from './user-filing/user-filing.module';
 import { AuthModule } from './auth/auth.module';
+import { GendocModule } from './gendoc/gendoc.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AuthModule } from './auth/auth.module';
     UserFilingModule,
     AuthModule,
     AwsModule,
+    GendocModule,
   ],
   controllers: [AppController],
   providers: [AppService],

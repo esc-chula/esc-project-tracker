@@ -7,6 +7,7 @@ import { UserProjService } from '../user-proj/user-proj.service';
 import { DocumentService } from '../document_/document.service';
 import { CookieOptions } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { GendocService } from '../gendoc/gendoc.service';
 
 @Injectable()
 export class TrpcService {
@@ -15,6 +16,7 @@ export class TrpcService {
     private readonly filingService: FilingService,
     private readonly userProjService: UserProjService,
     private readonly documentService: DocumentService,
+    private readonly gendocService: GendocService,
     private configService: ConfigService,
   ) {}
   readonly jwtCookieOptions: CookieOptions = {
@@ -97,7 +99,7 @@ export class TrpcService {
   async isProjectMember(
     userId: string,
     id: string,
-    idType: 'project' | 'filing' | 'document',
+    idType: 'project' | 'filing' | 'document' | 'gendoc',
   ) {
     try {
       let projectId = null;
@@ -109,6 +111,11 @@ export class TrpcService {
           const filing = await this.filingService.findByFilingID(id);
           if (!filing) throw new Error('Filing not found');
           projectId = filing.projectId;
+          break;
+        case 'gendoc':
+          const gendoc = await this.gendocService.findByGendocID(id);
+          if (!gendoc) throw new Error('Gendoc not found');
+          projectId = gendoc.projectId;
           break;
         case 'document':
           const doc = await this.documentService.findByDocID(id);
