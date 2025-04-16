@@ -17,7 +17,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@repo/enum": "workspace:*",
+    "@repo/shared": "workspace:*",
     "@aws-sdk/client-s3": "^3.670.0",
     "@aws-sdk/s3-request-presigner": "^3.651.1",
     "@nestjs/axios": "^3.0.3",
