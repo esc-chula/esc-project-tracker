@@ -1,5 +1,4 @@
-import { FilingType } from '@repo/shared';
-import type { Budget } from './document-type-zero';
+import { FilingType, Budget } from '@repo/shared';
 
 export interface DocumentTypeTwo {
   // เอกสารเปิดโครง

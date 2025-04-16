@@ -1,7 +1,9 @@
+export type AuthRole = 'student' | 'esc' | 'admin';
+
 export interface JwtPayload {
   sub: string;
   username: string;
-  role: 'student' | 'esc' | 'admin';
+  role: AuthRole;
   iat: number;
   exp: number;
 }

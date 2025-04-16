@@ -5,7 +5,7 @@ import { UserService } from '../user_/user.service';
 import * as argon2 from 'argon2';
 import { User } from '../entities/user.entity';
 import { HttpService } from '@nestjs/axios';
-import type { IntaniaAuthResponse, JwtPayload } from '../common/types/auth';
+import type { IntaniaAuthResponse, JwtPayload } from '@repo/shared';
 
 @Injectable()
 export class AuthService {

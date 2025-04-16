@@ -4,7 +4,7 @@ import { SignInDTO } from './dto/auth.dto';
 import { AccessTokenGuard } from '../common/guards/accessToken.guard';
 import { Request } from 'express';
 import { RefreshTokenGuard } from '../common/guards/refreshToken.guard';
-import { JwtPayload } from '../common/types/auth';
+import { JwtPayload } from '@repo/shared';
 
 interface UserRequest extends Request {
   user?: JwtPayload;

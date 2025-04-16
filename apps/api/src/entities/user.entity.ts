@@ -1,3 +1,4 @@
+import { AuthRole } from '@repo/shared';
 import {
   Column,
   CreateDateColumn,
@@ -23,7 +24,7 @@ export class User {
     default: 'student',
     nullable: false,
   })
-  role: 'student' | 'esc' | 'admin';
+  role: AuthRole;
 
   @Column({ nullable: true, default: null })
   refreshToken: string;

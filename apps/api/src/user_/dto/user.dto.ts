@@ -1,3 +1,5 @@
+import { AuthRole } from '@repo/shared';
+
 export class CreateUserDTO {
   username: string;
   studentId: string;
@@ -6,6 +8,6 @@ export class CreateUserDTO {
 export class UpdateUserDTO {
   username?: string;
   studentId?: string;
-  role?: 'student' | 'esc' | 'admin';
+  role?: AuthRole;
   refreshToken?: string;
 }

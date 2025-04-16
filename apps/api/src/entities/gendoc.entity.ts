@@ -7,10 +7,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Project } from './project.entity';
-import { FilingSubType } from '@repo/shared';
+import { FilingSubType, DocumentTypeZero, DocumentTypeTwo } from '@repo/shared';
 import { User } from './user.entity';
-import { DocumentTypeTwo } from '../constant/document/document-type-two';
-import { DocumentTypeZero } from '../constant/document/document-type-zero';
 
 @Entity()
 export class Gendoc {

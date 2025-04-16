@@ -1,5 +1,4 @@
-import type { ProjectStatus } from '@repo/shared';
-import type { ProjectType } from '@repo/shared';
+import type { ProjectStatus, ProjectType } from '@repo/shared';
 
 export interface Project {
   id: string;
