@@ -16,6 +16,6 @@ export interface Gendoc {
   subType: FilingSubType | null;
   projectCode: string;
   data: DocumentTypeZero | DocumentTypeTwo;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

@@ -1,9 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
-import type { Filing } from '@/src/interface/filing';
-import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
-import findAllFiling from '@/src/service/filing/findAllFiling';
-import { DataTable } from '../status/dataTable';
+import findAllGendoc from '@/src/service/gendoc/findAllGendoc';
+import type { Gendoc } from '@/src/interface/gendoc';
+import { GendocTable } from './gendocTable';
 
 export default function GendocPage({
   userId,
@@ -12,24 +11,18 @@ export default function GendocPage({
   userId: string;
   isAdmin?: boolean;
 }) {
-  const [statuses, setStatuses] = useState<Filing[]>([]);
+  const [gendocs, setGendocs] = useState<Gendoc[]>([]);
 
   useEffect(() => {
     try {
-      if (isAdmin) {
-        void findAllFiling().then((statusesData) => {
-          setStatuses(statusesData);
-        });
-      } else {
-        void getFilingsByUserId(userId).then((statusesData) => {
-          setStatuses(statusesData);
-        });
-      }
+      void findAllGendoc().then((gendocsData) => {
+        setGendocs(gendocsData);
+      });
     } catch (err) {
       if (err instanceof Error) {
         console.error('Error fetching filings:', err.message);
       }
     }
   }, [userId]);
-  return <DataTable data={statuses} isStatusTable={false} />;
+  return <GendocTable data={gendocs} />;
 }

@@ -31,20 +31,17 @@ import {
 } from '@/src/constant/filterFiling';
 import { projectTypeMap } from '@/src/constant/map';
 import { DataTableFacetedFilter } from '../filter/dataTableFacetedFilter';
-import { gendocColumns } from '../gendoc/gendocTableColumns';
 import { statusColumns } from './statusTableColumns';
 import StatusTableToolBar from './statusTableToolBar';
 
-export function DataTable({
+export function StatusTable({
   data,
   compact = false,
   projectId,
-  isStatusTable = true,
 }: {
   data: Filing[];
   compact?: boolean;
   projectId?: string;
-  isStatusTable?: boolean;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -56,7 +53,7 @@ export function DataTable({
 
   const table = useReactTable({
     data,
-    columns: isStatusTable ? statusColumns : gendocColumns,
+    columns: statusColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -106,15 +103,13 @@ export function DataTable({
               title="ประเภทเอกสาร"
               options={typeFilingItemsV2}
             />
-            {isStatusTable ? (
-              <DataTableFacetedFilter
-                column={table.getColumn('status')}
-                title="สถานะเอกสาร"
-                options={statusFilingItems.filter(
-                  (status) => status.value !== 'ALL',
-                )}
-              />
-            ) : null}
+            <DataTableFacetedFilter
+              column={table.getColumn('status')}
+              title="สถานะเอกสาร"
+              options={statusFilingItems.filter(
+                (status) => status.value !== 'ALL',
+              )}
+            />
           </div>
         </>
       )}
@@ -148,7 +143,7 @@ export function DataTable({
               <TableRow
                 key={row.id}
                 onClick={() => {
-                  redirectToFiling(row.original); // Fix
+                  redirectToFiling(row.original);
                 }}
                 className="hover:bg-gray-200 cursor-pointer transition-colors duration-150"
               >

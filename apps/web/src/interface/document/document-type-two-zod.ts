@@ -1,8 +1,8 @@
-import { z } from "zod";
-import {FilingType} from "@/src/constant/enum";
-import { BudgetSchema } from "./document-type-zero-zod";
+import { z } from 'zod';
+import { FilingType } from '@/src/constant/enum';
+import { BudgetSchema } from './document-type-zero-zod';
 
-export const DocumentTypeOneSchema = z.object({
+export const DocumentTypeTwoSchema = z.object({
   id: z.string().readonly(),
   projectCode: z.string(),
   projectNameTH: z.string(),
@@ -22,4 +22,4 @@ export const DocumentTypeOneSchema = z.object({
   updatedBy: z.string(),
   createdAt: z.string(),
   updatedAt: z.string().optional(),
-})
+});

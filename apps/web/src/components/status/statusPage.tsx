@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { Filing } from '@/src/interface/filing';
 import getFilingsByUserId from '@/src/service/filing/getFilingsByUserId';
 import findAllFiling from '@/src/service/filing/findAllFiling';
-import { DataTable } from './dataTable';
+import { StatusTable } from './statusTable';
 
 export default function StatusPage({
   userId,
@@ -31,5 +31,5 @@ export default function StatusPage({
       }
     }
   }, [userId]);
-  return <DataTable data={statuses} />;
+  return <StatusTable data={statuses} />;
 }

@@ -1,16 +1,16 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { Filing } from '@/src/interface/filing';
+import type { Gendoc } from '@/src/interface/gendoc';
 import { DataTableColumnHeader } from '../status/dataTableColumnHeader';
-import PDFButton from '../status/pdfButton';
+import PDFButton from './pdfButton';
 
 require('dayjs/locale/th');
 
 dayjs.extend(relativeTime);
 dayjs.locale('th');
 
-export const gendocColumns: ColumnDef<Filing>[] = [
+export const gendocColumns: ColumnDef<Gendoc>[] = [
   {
     accessorKey: 'รหัสเอกสาร',
     size: 0,

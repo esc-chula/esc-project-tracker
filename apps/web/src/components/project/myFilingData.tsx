@@ -7,7 +7,7 @@ import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
 import type { Project } from '@/src/interface/project';
 import { toast } from '../ui/use-toast';
 import SearchBar from '../searchbar/searchBar';
-import { DataTable } from '../status/dataTable';
+import { StatusTable } from '../status/statusTable';
 import PopoverAddFiling from './popoverAddFiling';
 import AllFilingPanel from './allFilingPanel';
 import NoFiling from './noFiling';
@@ -82,7 +82,7 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
             />
           ) : (
             // <AllFilingPanel filings={filings} setFilings={setFilings} />
-            <DataTable data={filings} projectId={projectId} />
+            <StatusTable data={filings} projectId={projectId} />
           )}
         </>
       ) : null}
