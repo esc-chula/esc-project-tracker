@@ -1,0 +1,7 @@
+export enum ProjectStatus {
+  CONTINUE = 'CONTINUE',
+  WAIT_FOR_CLOSE = 'WAIT_FOR_CLOSE',
+  WAIT_FOR_APPROVE = 'WAIT_FOR_APPROVE',
+  CLOSING = 'CLOSING',
+  CLOSED = 'CLOSED',
+}

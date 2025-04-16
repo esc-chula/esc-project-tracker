@@ -53,6 +53,7 @@ export default function MyProjectData({
           <SearchBar
             filings={filings}
             projects={filteredProjects}
+            gendocs={[]}
             placeholder="ค้นหาโครงการหรือเอกสาร"
             projectFunc={redirectToProject}
             filingFunc={redirectToFiling}
