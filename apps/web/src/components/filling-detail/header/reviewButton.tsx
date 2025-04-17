@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { IoIosAlert } from 'react-icons/io';
+import { DocumentStatus, FilingStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
-import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import {
   Select,
   SelectContent,

@@ -1,7 +1,7 @@
 import type { Row } from '@tanstack/react-table';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import type { MouseEvent } from 'react';
-import { FilingStatus } from '@/src/constant/enum';
+import { FilingStatus } from '@repo/shared';
 import type { Filing } from '@/src/interface/filing';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';

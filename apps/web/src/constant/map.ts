@@ -1,4 +1,4 @@
-import { ProjectType, DocumentActivity, ObjectiveType } from "./enum";
+import { ProjectType, DocumentActivity, ObjectiveType } from '@repo/shared';
 
 export const projectTypeMap = [
   {

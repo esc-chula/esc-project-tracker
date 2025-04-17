@@ -1,8 +1,4 @@
-import {
-  DocumentActivity,
-  DocumentStatus,
-  FilingStatus,
-} from '@/src/constant/enum';
+import { DocumentActivity, DocumentStatus, FilingStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import DisplayWithNoteAndStatus from './display/displayWithNoteAndStatus';

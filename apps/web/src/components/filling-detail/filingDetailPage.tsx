@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { DocumentStatus, FilingStatus } from '@repo/shared';
 import Header from '@/src/components/header/header';
 import DocumentStatusStepper from '@/src/components/status/statusStepper';
-import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
 import type { Filing } from '@/src/interface/filing';
 import FilingTimeline from '@/src/components/filling-detail/filingTimeline';
 import Subtitle from '@/src/components/header/subtitle';

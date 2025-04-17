@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { DocumentActivity } from '@repo/shared';
 import { getFileType } from '../lib/utils';
 import { projectTypeMap } from './map';
-import { DocumentActivity } from './enum';
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString());
 

@@ -1,9 +1,9 @@
 'use client';
 import { FaFolderOpen } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
+import { FilingStatus } from '@repo/shared';
 import type { User } from '@/src/interface/user';
 import { findUserByUserId } from '@/src/service/user/findUserByUserId';
-import { FilingStatus } from '@/src/constant/enum';
 import type { FilingWithDocument } from '@/src/types/filing';
 import { toast } from '../../ui/use-toast';
 import FilingReplyComment from './filing-reply-comment';

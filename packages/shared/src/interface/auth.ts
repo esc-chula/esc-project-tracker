@@ -8,6 +8,8 @@ export interface JwtPayload {
   exp: number;
 }
 
+export interface Payload extends JwtPayload {}
+
 export interface IntaniaAuthResponse {
   studentId: string;
   name: {

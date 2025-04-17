@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FilingType } from '@/src/constant/enum';
+import { FilingType } from '@repo/shared';
 import { BudgetSchema } from './document-type-zero-zod';
 
 export const DocumentTypeTwoSchema = z.object({

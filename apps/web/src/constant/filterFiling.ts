@@ -1,4 +1,4 @@
-import { FilingStatus, FilingSubType } from './enum';
+import { FilingStatus, FilingSubType } from '@repo/shared';
 
 // DOCUMENT_CREATED is no longer used
 export const statusFilingItems = [

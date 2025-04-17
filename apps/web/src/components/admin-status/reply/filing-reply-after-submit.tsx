@@ -1,5 +1,5 @@
+import { DocumentStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
-import { DocumentStatus } from '@/src/constant/enum';
 import FileDisplay from '../../filling-detail/display/fileDisplay';
 import TextareaForDisplay from '../../filling-detail/display/textareaForDisplay';
 import StatusButton from '../../filling-detail/display/statusButton';

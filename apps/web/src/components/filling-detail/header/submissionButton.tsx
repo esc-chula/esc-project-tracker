@@ -1,5 +1,5 @@
 import { Send } from 'lucide-react';
-import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
+import { DocumentStatus, FilingStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
 import { Button } from '../../ui/button';
 

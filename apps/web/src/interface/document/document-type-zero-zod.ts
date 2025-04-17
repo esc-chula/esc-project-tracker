@@ -8,7 +8,7 @@ import {
   TQFType,
   SDGType,
   PlanPhase,
-} from '@/src/constant/enum';
+} from '@repo/shared';
 
 export const ObjectiveSchema = z.object({
   id: z.string().readonly(),

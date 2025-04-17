@@ -1,4 +1,4 @@
-import { FilingStatus, ProjectStatus } from '@/src/constant/enum.ts';
+import { FilingStatus, ProjectStatus } from '@repo/shared';
 
 export const buttonColors = {
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: 'bg-accepted text-white',

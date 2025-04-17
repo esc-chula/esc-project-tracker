@@ -1,16 +1,16 @@
 'use client';
+import { projectFormAction } from '@repo/shared';
+import { Folders } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Header from '@/src/components/header/header';
 import Title from '@/src/components/header/title';
 import ProjectForm from '@/src/components/new-project/projectForm';
 import { toast } from '@/src/components/ui/use-toast';
-import { projectFormAction } from '@/src/constant/formAction';
-import { Project } from '@/src/interface/project';
-import { User } from '@/src/interface/user';
+import type { Project } from '@/src/interface/project';
+import type { User } from '@/src/interface/user';
 import findJoinedUsersByProjectId from '@/src/service/user-proj/findJoinedUsersByProjectId';
 import getProjectByProjectId from '@/src/service/project/getProjectByProjectId';
-import { Folders } from 'lucide-react';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 export default function ProjectInfoPage() {
   const params = useParams();
@@ -46,25 +46,23 @@ export default function ProjectInfoPage() {
   }, [projectId]);
 
   return (
-    <>
-      <main className="py-10 px-6 space-y-5">
-        <Header>
-          <Title icon={<Folders size={40} />} href="/admin/projects">
-            รายละเอียดโครงการ
-          </Title>
-        </Header>
+    <main className="py-10 px-6 space-y-5">
+      <Header>
+        <Title icon={<Folders size={40} />} href="/admin/projects">
+          รายละเอียดโครงการ
+        </Title>
+      </Header>
 
-        <div className="">
-          {!loading && members.length > 0 && project && (
-            <ProjectForm
-              project={project}
-              formAction={projectFormAction.INFO}
-              joinUsers={members}
-              isAdmin
-            />
-          )}
-        </div>
-      </main>
-    </>
+      <div className="">
+        {!loading && members.length > 0 && project ? (
+          <ProjectForm
+            project={project}
+            formAction={projectFormAction.INFO}
+            joinUsers={members}
+            isAdmin
+          />
+        ) : null}
+      </div>
+    </main>
   );
 }

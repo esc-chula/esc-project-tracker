@@ -1,5 +1,5 @@
 import { FilePlus, Undo2 } from 'lucide-react';
-import { FilingStatus } from '@/src/constant/enum';
+import { FilingStatus } from '@repo/shared';
 import { Button } from '../../ui/button';
 
 export default function AddDocumentButton({

@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
+import type { Payload } from '@repo/shared';
+import { env } from 'next-runtime-env';
 import { trpc } from './app/trpc';
 import { parseJwt } from './service/auth';
-import { Payload } from './interface/auth';
-import { env } from 'next-runtime-env';
 
 function redirect(req: NextRequest, payload: Payload): NextResponse {
   const path = req.nextUrl.pathname;

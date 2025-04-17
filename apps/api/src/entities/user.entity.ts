@@ -1,4 +1,4 @@
-import { AuthRole, AuthRoleEnum } from '@repo/shared';
+import { type AuthRole, AuthRoleEnum } from '@repo/shared';
 import {
   Column,
   CreateDateColumn,

@@ -1,10 +1,10 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { trpc } from '../app/trpc';
-import type { Payload, Tokens } from '../interface/auth';
-import { authErrors } from '../errors/auth';
+import type { Payload, Tokens } from '@repo/shared';
 import { env } from 'next-runtime-env';
+import { trpc } from '../app/trpc';
+import { authErrors } from '../errors/auth';
 
 export async function getCookies(): Promise<Tokens> {
   try {

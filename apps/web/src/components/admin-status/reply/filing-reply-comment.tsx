@@ -1,7 +1,7 @@
 'use client';
 import { IoReturnUpBack } from 'react-icons/io5';
 import { useEffect, useState } from 'react';
-import { FilingStatus, DocumentStatus } from '@/src/constant/enum';
+import { FilingStatus, DocumentStatus } from '@repo/shared';
 import findLatestReplyDocumentByFilingId from '@/src/service/document/findLatestReplyDocumentByFilingId';
 import type { Document } from '@/src/interface/document';
 import { getUserId } from '@/src/service/auth';

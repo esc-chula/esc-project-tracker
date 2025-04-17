@@ -1,6 +1,6 @@
 import { Clock } from 'lucide-react';
+import type { FilingStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
-import type { FilingStatus } from '@/src/constant/enum';
 import type { User } from '@/src/interface/user';
 import DocumentCard from './documentCard';
 

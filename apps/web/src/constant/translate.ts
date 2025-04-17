@@ -1,4 +1,4 @@
-import { FilingSubType, ProjectStatus, SDGType, ObjectiveType, ActivityType } from './enum';
+import { FilingSubType, ProjectStatus, SDGType, ObjectiveType, ActivityType } from '@repo/shared';
 
 export const ProjectStatusToThai = new Map([
   [ProjectStatus.CLOSED, 'ปิดโครงการเรียบร้อย'],

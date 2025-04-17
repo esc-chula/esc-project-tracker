@@ -2,7 +2,7 @@
 import { CirclePlus, FileText } from 'lucide-react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/navigation';
-import { DocumentStatus, FilingStatus } from '@/src/constant/enum';
+import { DocumentStatus, FilingStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
 import { Button } from '../ui/button';
 import PopoverEditFiling from '../project/popoverEditFiling';

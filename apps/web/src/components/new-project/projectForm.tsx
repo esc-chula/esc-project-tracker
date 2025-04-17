@@ -5,6 +5,7 @@ import type { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
+import { projectFormAction, type ProjectType } from '@repo/shared';
 import { newProjectFormSchema } from '@/src/constant/schema';
 import {
   Form,
@@ -31,10 +32,8 @@ import leaveProjectByStudentId from '@/src/service/user-proj/leaveProjectByStude
 import { findUserByCondition } from '@/src/service/user/findUserByCondition';
 import updateProject from '@/src/service/project/updateProject';
 import type { User } from '@/src/interface/user';
-import type { ProjectType } from '@/src/constant/enum';
 import joinProjectByStudentId from '@/src/service/user-proj/joinProjectByStudentId';
 import type { Project } from '@/src/interface/project';
-import { projectFormAction } from '@/src/constant/formAction';
 import { Textarea } from '../ui/textarea';
 import { toast } from '../ui/use-toast';
 import MembersInput from './membersInput';

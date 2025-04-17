@@ -3,8 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
+import { DocumentActivity, FilingStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
-import { DocumentActivity, FilingStatus } from '@/src/constant/enum';
 import { createdFormSchema } from '@/src/constant/schema';
 import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';
 import {

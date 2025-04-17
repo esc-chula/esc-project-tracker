@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { FilingStatus } from '@/src/constant/enum';
+import type { FilingStatus } from '@repo/shared';
 import type { Filing } from '@/src/interface/filing';
 import { TextMyProject, textColors } from '@/src/styles/enumMap';
 import { DataTableColumnHeader } from './dataTableColumnHeader';

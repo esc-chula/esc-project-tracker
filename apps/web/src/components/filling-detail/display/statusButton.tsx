@@ -1,8 +1,7 @@
-import { DocumentStatus } from '@/src/constant/enum';
-import { buttonColors } from '@/src/styles/enumMap';
-import { TextMyFilingStatus } from '@/src/styles/enumMap';
+import type { DocumentStatus } from '@repo/shared';
 import { Undo2 } from 'lucide-react';
 import { FaEdit } from 'react-icons/fa';
+import { buttonColors, TextMyFilingStatus } from '@/src/styles/enumMap';
 
 export default function StatusButton({
   status,

@@ -9,10 +9,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { FilingStatus } from '@repo/shared';
 import type { Filing } from '@/src/interface/filing';
 import { typeFilingItemsV2 } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
-import { FilingStatus } from '@/src/constant/enum';
 import type { FilingWithDocument } from '@/src/types/filing';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
 import { projectTypeMap } from '@/src/constant/map';

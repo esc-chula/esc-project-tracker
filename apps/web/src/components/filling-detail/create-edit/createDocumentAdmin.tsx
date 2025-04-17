@@ -4,11 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 import React, { useEffect } from 'react';
-import {
-  DocumentActivity,
-  DocumentStatus,
-  FilingStatus,
-} from '@/src/constant/enum';
+import { DocumentActivity, DocumentStatus, FilingStatus } from '@repo/shared';
 import type { Document } from '@/src/interface/document';
 import { createdDocumentAdminSchema } from '@/src/constant/schema';
 import submitCreatedFormSchema from '@/src/lib/submitCreatedFormSchema';

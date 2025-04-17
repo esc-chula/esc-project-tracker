@@ -2,19 +2,15 @@
 
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
-import type { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
+import { DocumentActivity, DocumentStatus, FilingStatus } from '@repo/shared';
 import { TextMyProject, buttonColors } from '@/src/styles/enumMap';
 import type { Filing } from '@/src/interface/filing';
 import type { Document } from '@/src/interface/document';
 import type { User } from '@/src/interface/user';
 import { findUserByCondition } from '@/src/service/user/findUserByCondition';
-import {
-  DocumentActivity,
-  DocumentStatus,
-  FilingStatus,
-} from '@/src/constant/enum';
 import findLatestDocumentByFilingId from '@/src/service/document/findLatestDocumentByFilingId';
 import getUrlToFile from '@/src/service/aws/getUrlToFile';
+import type { CreateDocumentDTO } from '../../../../api/src/document_/document.dto';
 import { toast } from '../ui/use-toast';
 
 export default function FilingMenuItem({

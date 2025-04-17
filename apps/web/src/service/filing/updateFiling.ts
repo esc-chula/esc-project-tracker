@@ -1,4 +1,4 @@
-import { FilingStatus } from '@/src/constant/enum';
+import type { FilingStatus } from '@repo/shared';
 import { trpc } from '../../app/trpc';
 import type { Filing } from '../../interface/filing';
 

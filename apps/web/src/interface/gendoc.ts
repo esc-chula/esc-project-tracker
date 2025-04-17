@@ -1,6 +1,8 @@
-import type { FilingSubType } from '@repo/shared';
-import type { DocumentTypeTwo } from './document/document-type-two';
-import type { DocumentTypeZero } from './document/document-type-zero';
+import type {
+  FilingSubType,
+  DocumentTypeZero,
+  DocumentTypeTwo,
+} from '@repo/shared';
 import type { Project } from './project';
 import type { User } from './user';
 

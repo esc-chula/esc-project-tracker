@@ -1,5 +1,5 @@
-import { projectFormAction } from "@/src/constant/formAction";
-import { FormLabel } from "../ui/form";
+import { projectFormAction } from '@repo/shared';
+import { FormLabel } from '../ui/form';
 
 export default function FormLabelWithCondition({
   label,

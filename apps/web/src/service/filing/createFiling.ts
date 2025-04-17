@@ -1,4 +1,4 @@
-import type { FilingSubType } from '@/src/constant/enum';
+import type { FilingSubType } from '@repo/shared';
 import { trpc } from '../../app/trpc';
 import type { Filing } from '../../interface/filing';
 
