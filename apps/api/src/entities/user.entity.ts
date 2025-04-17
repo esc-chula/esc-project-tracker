@@ -1,4 +1,4 @@
-import type { AuthRole } from '@repo/shared';
+import { AuthRole, AuthRoleEnum } from '@repo/shared';
 import {
   Column,
   CreateDateColumn,
@@ -20,7 +20,7 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: ['student', 'esc', 'admin'],
+    enum: AuthRoleEnum,
     default: 'student',
     nullable: false,
   })

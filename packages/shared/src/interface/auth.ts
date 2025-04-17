@@ -1,4 +1,4 @@
-export type AuthRole = 'student' | 'esc' | 'admin';
+import { AuthRole } from '..';
 
 export interface JwtPayload {
   sub: string;
@@ -20,4 +20,9 @@ export interface IntaniaAuthResponse {
       lastName: string;
     };
   };
+}
+
+export interface Tokens {
+  accessToken: string;
+  refreshToken: string;
 }

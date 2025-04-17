@@ -5,7 +5,7 @@ import { UserService } from '../user_/user.service';
 import * as argon2 from 'argon2';
 import { User } from '../entities/user.entity';
 import { HttpService } from '@nestjs/axios';
-import type { IntaniaAuthResponse, JwtPayload } from '@repo/shared';
+import type { IntaniaAuthResponse, JwtPayload, Tokens } from '@repo/shared';
 
 @Injectable()
 export class AuthService {
@@ -50,9 +50,7 @@ export class AuthService {
     }
   }
 
-  async signIn(
-    token: string,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async signIn(token: string): Promise<Tokens> {
     const validatedUser = await this.validateUser(token).catch((error) => {
       throw new ForbiddenException(error.message);
     });
@@ -137,7 +135,7 @@ export class AuthService {
     userId: string,
     username: string,
     role: string,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  ): Promise<Tokens> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
