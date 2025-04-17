@@ -1,4 +1,4 @@
-import { AuthRole } from '@repo/shared';
+import type { AuthRole } from '@repo/shared';
 import {
   Column,
   CreateDateColumn,
