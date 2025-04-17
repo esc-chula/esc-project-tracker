@@ -3,8 +3,8 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "module": "es2020",
-    "moduleResolution": "bundler"
+    "module": "NodeNext",
+    "moduleResolution": "nodenext"
   },
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }

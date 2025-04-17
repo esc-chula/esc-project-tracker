@@ -2,5 +2,5 @@
 module.exports = {
   output: 'standalone',
   reactStrictMode: true,
-  transpilePackages: ["@repo/ui"],
+  // transpilePackages: ['@repo/shared'],
 };
