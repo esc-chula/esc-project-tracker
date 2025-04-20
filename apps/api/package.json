@@ -30,7 +30,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "@trpc/server": "^10.45.2",
     "argon2": "^0.40.3",
-    "axios": "^1.7.7",
+    "axios": "^1.8.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "passport-jwt": "^4.0.1",
