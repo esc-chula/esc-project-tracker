@@ -21,6 +21,9 @@ export class Gendoc {
   @Column({ nullable: true })
   projectId: string;
 
+  @Column({ nullable: true })
+  customProjectName: string;
+
   @ManyToOne(() => User, { onDelete: 'SET NULL' })
   user: User;
 

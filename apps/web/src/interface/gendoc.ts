@@ -9,9 +9,10 @@ import type { User } from './user';
 export interface Gendoc {
   id: string;
   project?: Project;
-  projectId: string;
+  projectId?: string;
+  customProjectName?: string;
   user?: User;
-  userId: string;
+  userId?: string;
   name: string;
   filingCode: string;
   type: number;
