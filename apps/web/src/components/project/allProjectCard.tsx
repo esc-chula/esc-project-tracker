@@ -79,7 +79,7 @@ export default function AllProjectCard({
         </Popover>
       </div>
 
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-center gap-2">
         <div className="text-neutral-500 font-normal text-sm">
           โครงการฝ่าย{projectTypeCodeMap[projectType]}
         </div>
