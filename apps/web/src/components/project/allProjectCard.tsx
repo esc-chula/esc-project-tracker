@@ -4,6 +4,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import PopoverExitProject from './popoverExitProject';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { projectTypeCodeMap } from '@/src/constant/map';
 
 export default function AllProjectCard({
   projectId,
@@ -26,17 +28,30 @@ export default function AllProjectCard({
 
   return (
     <div
-      className="bg-background border-black border-2 rounded-lg space-y-14 p-5 hover:cursor-pointer hover:shadow-2xl duration-300"
+      className={cn(
+        'bg-gray-100',
+        'rounded-lg p-5 flex flex-col gap-6',
+        'hover:cursor-pointer hover:shadow-2xl duration-300 transition-all',
+      )}
       onClick={() => {
         router.push(`/project/${projectId}`);
       }}
     >
       <div
-        className="flex justify-end"
+        className="flex justify-between items-start"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
+        <div className="flex flex-col">
+          <div className="text-xl font-semibold text-left">
+            {projectCode}
+            <div className="text-sm font-normal overflow-hidden whitespace-break-spaces text-ellipsis">
+              {projectName}
+            </div>
+          </div>
+        </div>
+
         <Popover>
           <PopoverTrigger>
             <EllipsisVertical />
@@ -63,12 +78,17 @@ export default function AllProjectCard({
           </PopoverContent>
         </Popover>
       </div>
-      <div>
-        <div className="text-4xl font-bold text-center">
-          {projectCode}
-          <div className="font-medium text-base overflow-hidden whitespace-nowrap text-ellipsis">
-            {projectName} {isJoined ? '(เข้าร่วมแล้ว)' : '(ยังไม่เข้าร่วม)'}
-          </div>
+
+      <div className="flex flex-row justify-between items-center gap-2">
+        <div className="text-neutral-500 font-normal text-sm">
+          โครงการฝ่าย{projectTypeCodeMap[projectType]}
+        </div>
+        <div className="font-normal text-sm">
+          {isJoined ? (
+            <span className="text-green-500">เข้าร่วมแล้ว</span>
+          ) : (
+            <span className="text-rose-500">ยังไม่เข้าร่วม</span>
+          )}
         </div>
       </div>
     </div>
