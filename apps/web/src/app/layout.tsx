@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import { PublicEnvScript } from 'next-runtime-env';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 const sukhumvitSet = localFont({
@@ -56,7 +57,13 @@ export default function RootLayout({
         <link rel="icon" type="x-icon" href="/icons/esc.svg" />
         <PublicEnvScript />
       </head>
-      <body className={inter.className + ' ' + sukhumvitSet.className}>
+      <body
+        className={cn(
+          inter.className,
+          sukhumvitSet.className,
+          sukhumvitSet.variable,
+        )}
+      >
         {children}
       </body>
     </html>
