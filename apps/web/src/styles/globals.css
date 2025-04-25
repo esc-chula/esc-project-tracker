@@ -130,31 +130,3 @@
     font-weight: 700;
   }
 }
-
-@font-face {
-  font-family: 'TH SarabunPSK';
-  font-style: normal;
-  font-weight: normal;
-  src: url('../../public/fonts/THSarabun.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'TH SarabunPSK';
-  font-style: normal;
-  font-weight: bold;
-  src: url('../../public/fonts/THSarabun Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'TH SarabunPSK';
-  font-style: italic;
-  font-weight: normal;
-  src: url('../../public/fonts/THSarabun Italic.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'TH SarabunPSK';
-  font-style: italic;
-  font-weight: bold;
-  src: url('../../public/fonts/THSarabun Bold Italic.woff2') format('woff2');
-}
