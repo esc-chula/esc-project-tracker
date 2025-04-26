@@ -1,5 +1,9 @@
 'use client';
 
+import Stepper from '@mui/joy/Stepper';
+import Step, { stepClasses } from '@mui/joy/Step';
+import StepIndicator from '@mui/joy/StepIndicator';
+import type { FilingStatus } from '@repo/shared';
 import {
   Step1,
   Step2,
@@ -7,17 +11,12 @@ import {
   Step4,
   Step5,
 } from '@/src/components/status/statusSvg';
-import Stepper from '@mui/joy/Stepper';
-import Step, { stepClasses } from '@mui/joy/Step';
-import StepIndicator from '@mui/joy/StepIndicator';
-import { FilingStatus } from '@repo/shared';
 import { FilingStatusToStepper } from '@/src/styles/enumMap';
 
 const steps = [
   { no: '1', children: <>ขอเลขรัน</> },
-  { no: '2', children: <>ทำเอกสาร</> },
   {
-    no: '3',
+    no: '2',
     children: (
       <>
         ส่งให้ฝ่ายเลขานุการ
@@ -27,7 +26,7 @@ const steps = [
     ),
   },
   {
-    no: '4',
+    no: '3',
     children: (
       <>
         หัวหน้านิสิต &
@@ -39,12 +38,22 @@ const steps = [
     ),
   },
   {
-    no: '5',
+    no: '4',
     children: (
       <>
         ส่งเอกสาร
         <br />
         ให้กิจการนิสิต
+      </>
+    ),
+  },
+  {
+    no: '5',
+    children: (
+      <>
+        เอกสารได้รับ
+        <br />
+        การอนุมัติแล้ว
       </>
     ),
   },

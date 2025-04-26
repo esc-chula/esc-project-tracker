@@ -73,31 +73,31 @@ export const FilingStatusToStepper = {
   ],
   [FilingStatus.DOCUMENT_CREATED]: [
     ['accepted', 'accepted'],
-    ['accepted', 'disabled'],
+    ['disabled', 'disabled'],
     ['disabled', 'disabled'],
     ['disabled', 'disabled'],
     ['disabled'],
   ],
   [FilingStatus.RETURNED]: [
-    ['accepted', 'accepted'],
     ['accepted', 'rejected'],
     ['rejected', 'disabled'],
+    ['disabled', 'disabled'],
     ['disabled', 'disabled'],
     ['disabled'],
   ],
   [FilingStatus.WAIT_FOR_SECRETARY]: [
-    ['accepted', 'accepted'],
     ['accepted', 'pending'],
     ['pending', 'disabled'],
+    ['disabled', 'disabled'],
     ['disabled', 'disabled'],
     ['disabled'],
   ],
   [FilingStatus.WAIT_FOR_STUDENT_AFFAIR]: [
     ['accepted', 'accepted'],
     ['accepted', 'accepted'],
-    ['accepted', 'accepted'],
     ['accepted', 'pending'],
-    ['pending'],
+    ['pending', 'disabled'],
+    ['disabled'],
   ],
 };
 
