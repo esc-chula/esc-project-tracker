@@ -55,23 +55,36 @@ export class AwsService {
     return newFileName;
   }
 
-  async getUrlToFile(fileName: string, folderName?: string): Promise<string> {
+  async getUrlToFile(
+    fileName: string,
+    folderName?: string,
+    isDownload = false,
+  ): Promise<string> {
     const isPdf = fileName.slice(-4) == '.pdf';
     const bucketName = process.env.BUCKET_NAME;
     const pathToFile = folderName ? `${folderName}/${fileName}` : fileName;
     let command: GetObjectCommand;
+    const extractedFileName = fileName
+      .replace(/\{\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\}-/, '')
+      .split('.')
+      .slice(0, -1)
+      .join('.');
     if (isPdf) {
       command = new GetObjectCommand({
         Bucket: bucketName,
         Key: pathToFile,
-        ResponseContentDisposition: 'inline', // Force the PDF to be displayed in the browser
+        ResponseContentDisposition: isDownload
+          ? `attachment; filename="${extractedFileName}.pdf"`
+          : 'inline', // Force the PDF to be displayed in the browser
         ResponseContentType: 'application/pdf', // Ensure it's treated as a PDF
       });
     } else {
       command = new GetObjectCommand({
         Bucket: bucketName,
         Key: pathToFile,
-        ResponseContentDisposition: 'inline', // Force the PDF to be displayed in the browser
+        ResponseContentDisposition: isDownload
+          ? `attachment; filename="${extractedFileName}.docx"`
+          : 'inline', // Force the PDF to be displayed in the browser
         ResponseContentType:
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Ensure it's treated as a .docx
       });

@@ -3,6 +3,7 @@ import { trpc } from '../../app/trpc';
 export default async function getUrlToFile(obj: {
   fileName: string;
   folderName?: string;
+  isDownload?: boolean;
 }): Promise<string> {
   try {
     const res = await trpc.aws.getUrlToFile.query(obj);

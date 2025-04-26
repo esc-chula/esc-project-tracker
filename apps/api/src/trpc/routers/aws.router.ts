@@ -29,10 +29,18 @@ export class AwsRouter {
 
     getUrlToFile: this.trpcService.protectedProcedure
       .input(
-        z.object({ fileName: z.string(), folderName: optional(z.string()) }),
+        z.object({
+          fileName: z.string(),
+          folderName: optional(z.string()),
+          isDownload: optional(z.boolean()),
+        }),
       )
       .query(({ input }) => {
-        return this.awsService.getUrlToFile(input.fileName, input.folderName);
+        return this.awsService.getUrlToFile(
+          input.fileName,
+          input.folderName,
+          input.isDownload,
+        );
       }),
   });
 }

@@ -1,7 +1,11 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import type { ReactNode, SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
-import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import type {
+  ColumnFiltersState,
+  RowSelectionState,
+  SortingState,
+} from '@tanstack/react-table';
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -10,12 +14,15 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { FilingStatus } from '@repo/shared';
+import { Download } from 'lucide-react';
 import type { Filing } from '@/src/interface/filing';
 import { typeFilingItemsV2 } from '@/src/constant/filterFiling';
 import findFilingsWithFilter from '@/src/service/filing/findFilingsWithFilter';
 import type { FilingWithDocument } from '@/src/types/filing';
 import findLatestPendingDocumentByFilingId from '@/src/service/document/findLatestPendingByFilingId';
 import { projectTypeMap } from '@/src/constant/map';
+import getUrlToFile from '@/src/service/aws/getUrlToFile';
+import updateFileLastOpen from '@/src/service/document/updateFileLastOpen';
 import { toast } from '../../ui/use-toast';
 import SelectType from '../../filter/selectType';
 import SearchPanel from '../../all-projects/searchPanel';
@@ -66,6 +73,7 @@ export default function FilingTab({
 }) {
   const [tabsValue, setTabsValue] = useState<number>(0);
   const handleChange = (event: SyntheticEvent, newValue: number) => {
+    table.resetRowSelection();
     setTabsValue(newValue);
   };
   const [selectedType, setSelectedType] = useState<string>('ALL');
@@ -79,18 +87,24 @@ export default function FilingTab({
     { id: 'updatedAt', desc: true },
   ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const table = useReactTable({
     data: filingWithDocument,
     columns: filingTabColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getRowId: (row) =>
+      `${row.filing.projectId}/${row.filing.id}<->${row.document.id}<->${row.document.pdfName}`,
+    enableMultiRowSelection: true,
     state: {
       sorting,
       columnFilters,
+      rowSelection,
     },
   });
 
@@ -172,6 +186,36 @@ export default function FilingTab({
       setFilings(newFilings);
     }
   }, [reviewedFilingId]);
+
+  const downloadPdfs = async () => {
+    const fileNames: string[] = [];
+    const promiseUrls = [];
+    for (const pdf of Object.keys(rowSelection)) {
+      const split = pdf.split('<->');
+      const folderName = split.shift();
+      const documentId = split.shift();
+      const fileName = split.join('<->');
+      fileNames.push(fileName);
+      promiseUrls.push(
+        getUrlToFile({
+          fileName,
+          folderName,
+          isDownload: true,
+        }),
+      );
+      documentId && void updateFileLastOpen(documentId, 'pdf');
+    }
+
+    const urls = await Promise.all(promiseUrls);
+    for (let i = 0; i < urls.length; ++i) {
+      setTimeout(() => {
+        const a = document.createElement('a');
+        a.setAttribute('href', urls[i]);
+        a.setAttribute('download', fileNames[i]);
+        a.click();
+      }, 500 * i);
+    }
+  };
 
   return (
     <div className="border-lightgray border-2 rounded-xl basis-1/3 pt-3 flex flex-col h-[80vh]">
@@ -286,6 +330,17 @@ export default function FilingTab({
           </CustomTabPanel>
         ))}
       </div>
+      {Object.keys(rowSelection).length > 0 ? (
+        <button
+          className="p-3.5 flex flex-row justify-center gap-1 border-lightgray border-t-2"
+          type="button"
+          onClick={() => {
+            void downloadPdfs();
+          }}
+        >
+          <Download className="size-6" /> ดาวน์โหลดเอกสารที่เลือก
+        </button>
+      ) : null}
     </div>
   );
 }

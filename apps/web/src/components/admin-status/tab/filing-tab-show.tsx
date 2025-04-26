@@ -24,6 +24,7 @@ export default function FilingTabShow({
     <div className="w-full h-full flex flex-col font-sukhumvit pt-2">
       {rowModel.rows.map((filingWithDocument) => (
         <FilingTabShowDetail
+          row={filingWithDocument}
           key={filingWithDocument.id}
           filingWithDocument={filingWithDocument.original}
           setSelectedFilingWithDocument={setSelectedFilingWithDocument}
