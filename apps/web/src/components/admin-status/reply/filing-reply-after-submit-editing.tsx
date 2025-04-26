@@ -14,8 +14,8 @@ export default function FilingReplyAfterSubmitEditing({
   document: Document | null;
 }) {
   return (
-    <div className="bg-lightgray rounded-xl font-sukhumvit w-full px-5 pt-5 pb-3 flex text-start flex-col space-y-3">
-      <div className="px-8 py-4 font-bold space-y-4 w-full grow">
+    <div className="bg-lightgray rounded-xl font-sukhumvit w-full p-5 flex text-start flex-col space-y-3">
+      <div className="font-bold space-y-4 w-full grow">
         <div className="flex flex-row justify-between">
           <div className="w-[60%] truncate">
             <span>รายละเอียดเอกสาร: </span>

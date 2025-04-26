@@ -13,10 +13,10 @@ export default function FilingReplyNoteAndFile({
 }) {
   return (
     <div className="border-t-2 py-4 font-bold flex flex-col space-y-4 ">
-      <div>
+      {/* <div>
         <span className="font-bold">รายละเอียดเอกสาร: </span>
         <span className="font-normal">{latestDocument?.name}</span>
-      </div>
+      </div> */}
       <div className="flex flex-col space-y-4">
         <div className="">
           <div className="text-sm">ไฟล์แนบ</div>
@@ -43,7 +43,7 @@ export default function FilingReplyNoteAndFile({
         </div>
         <div className="space-y-2">
           <div>หมายเหตุ</div>
-          <TextareaForDisplay value={latestDocument?.detail} />
+          <TextareaForDisplay value={latestDocument?.comment} />
         </div>
       </div>
     </div>
