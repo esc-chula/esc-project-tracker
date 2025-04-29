@@ -121,7 +121,7 @@ export default function PopoverAddFiling({
       const [filingType, filingSubType] = filingTypeAndSubType.split("-")
       const data = await createFiling(
         selectedProjectId,
-        filingName,
+        filingName.trim(),
         parseInt(filingType),
         userId,
         filingSubType ? (filingSubType as FilingSubType) : null,
@@ -239,7 +239,7 @@ export default function PopoverAddFiling({
               className="border-1 w-full px-4 rounded-lg border-black"
               value={filingName}
               onChange={(e) => {
-                setFilingName(e.target.value.trim())
+                setFilingName(e.target.value)
                 if (e.target.value.trim() !== "") {
                   setErrors({ ...errors, filingName: false })
                 }
