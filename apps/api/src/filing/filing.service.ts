@@ -91,7 +91,7 @@ export class FilingService {
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
     newFiling.userId = userId;
-    newFiling.tel = tel
+    // newFiling.tel = tel
     if (subType) newFiling.subType = subType;
 
     this.countFilingService.incrementTypeCount(filingType);

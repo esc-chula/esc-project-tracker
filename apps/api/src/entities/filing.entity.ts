@@ -52,8 +52,8 @@ export class Filing {
   @Column()
   projectCode: string;
 
-  @Column()
-  tel: string;
+  // @Column()
+  // tel: string;
 
   @CreateDateColumn()
   createdAt: Date;
