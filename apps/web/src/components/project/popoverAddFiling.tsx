@@ -14,13 +14,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { findUserByUserId } from "@/src/service/user/findUserByUserId"
-import getProjectsByUserId from "@/src/service/project/getProjectsByUserId"
-import type { Project } from "@/src/interface/project"
-import { Button } from "../ui/button"
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "../ui/select";
+import { findUserByUserId } from "@/src/service/user/findUserByUserId";
+import getProjectsByUserId from "@/src/service/project/getProjectsByUserId";
+import type { Project } from "@/src/interface/project";
+import { Button } from "../ui/button";
 
 export default function PopoverAddFiling({
   children,
@@ -55,18 +61,18 @@ export default function PopoverAddFiling({
   })
 
   const fetchUser = async () => {
-    const userId = await getUserId()
-    const userData = await findUserByUserId(userId)
-    setUserId(userId)
+    const id = await getUserId()
+    const userData = await findUserByUserId(id)
+    setUserId(id)
     if (userData) {
       setResponsibleStudent(userData.username)
       setPhoneNumber(userData.tel ?? "")
     }
-    return userId
+    return id
   }
 
-  const fetchProject = async (userId: string) => {
-    const allJoinedProject = await getProjectsByUserId(userId)
+  const fetchProject = async (id: string) => {
+    const allJoinedProject = await getProjectsByUserId(id)
     const projects = allJoinedProject.map((project) => project.project)
     setJoinedProjects(projects)
     return projects
@@ -293,7 +299,7 @@ export default function PopoverAddFiling({
           <div className="flex flex-row justify-end gap-2 py-2">
             <Button
               className="disabled:bg-lightgray text-base text-gray-500 border-gray-500 border-1 bg-transparent px-4 h-10 hover:bg-slate-200 rounded-lg transition duration-300"
-              onClick={() => setOpen(!open)}
+              onClick={() => {setOpen(!open)}}
             >
               ยกเลิก
             </Button>
