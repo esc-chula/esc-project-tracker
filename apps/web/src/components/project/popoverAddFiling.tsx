@@ -43,7 +43,7 @@ export default function PopoverAddFiling({
   const [selectedProjectId, setSelectedProjectId] = useState<string>("")
   const [responsibleStudent, setResponsibleStudent] = useState<string>("")
   const [userId, setUserId] = useState<string>("")
-  const [phoneNumber, setPhoneNumber] = useState<string>("")
+  const [tel, setTel] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   
   const [errors, setErrors] = useState<{
@@ -51,13 +51,13 @@ export default function PopoverAddFiling({
     filingType: boolean
     filingName: boolean
     responsibleStudent: boolean
-    phoneNumber: boolean
+    tel: boolean
   }>({
     projectId: false,
     filingType: false,
     filingName: false,
     responsibleStudent: false,
-    phoneNumber: false,
+    tel: false,
   })
 
   const fetchUser = async () => {
@@ -66,7 +66,7 @@ export default function PopoverAddFiling({
     setUserId(id)
     if (userData) {
       setResponsibleStudent(userData.username)
-      setPhoneNumber(userData.tel ?? "")
+      setTel(userData.tel ?? "")
     }
     return id
   }
@@ -86,7 +86,7 @@ export default function PopoverAddFiling({
         filingType: false,
         filingName: false,
         responsibleStudent: false,
-        phoneNumber: false,
+        tel: false,
       })
     }
     if (joinedProjects.length === 0) {
@@ -108,7 +108,7 @@ export default function PopoverAddFiling({
       filingType: filingTypeAndSubType === "",
       filingName: filingName === "",
       responsibleStudent: responsibleStudent === "",
-      phoneNumber: phoneNumber === "",
+      tel: tel === "",
     }
 
     setErrors(newErrors)
@@ -125,7 +125,7 @@ export default function PopoverAddFiling({
         parseInt(filingType),
         userId,
         filingSubType ? (filingSubType as FilingSubType) : null,
-        phoneNumber,
+        tel,
       );
 
       addFilingToParent(data);
@@ -274,7 +274,7 @@ export default function PopoverAddFiling({
           </div>
 
           <div className="grid gap-2">
-            <Label className={errors.phoneNumber ? "text-red" : ""}>
+            <Label className={errors.tel ? "text-red" : ""}>
               เบอร์โทรศัพท์
               <span className="text-red">*</span>
             </Label>
@@ -283,16 +283,16 @@ export default function PopoverAddFiling({
               id="phone-number"
               placeholder="เบอร์โทรศัพท์ 0xx-xxx-xxxx"
               className="border-1 w-full px-4 rounded-lg border-black"
-              value={phoneNumber}
+              value={tel}
               onChange={(e) => {
-                setPhoneNumber(e.target.value.trim())
+                setTel(e.target.value.trim())
                 if (e.target.value.trim() !== "") {
-                  setErrors({ ...errors, phoneNumber: false })
+                  setErrors({ ...errors, tel: false })
                 }
               }}
               required
             />
-            {errors.phoneNumber && <p className="text-xs text-red pt-1">กรุณากรอกเบอร์โทรศัพท์</p>}
+            {errors.tel && <p className="text-xs text-red pt-1">กรุณากรอกเบอร์โทรศัพท์</p>}
             </div>
           </div>
 
