@@ -35,29 +35,35 @@ export class GendocService {
   }
 
   async createGendoc(
-    projectId: string,
+    customProjectName: string,
     name: string,
     type: number,
     userId: string,
     filingCode: string,
     subType: FilingSubType | null,
+    projectCode: string,
+    projectId?: string,
   ) {
-    if (!isUUID(projectId) || !isUUID(userId))
+    if ((projectId && !isUUID(projectId)) || !isUUID(userId))
       throw new BadRequestException('Ids are not in UUID format.');
-    const foundProject = await this.projectService.findByProjectID(projectId);
-    if (!foundProject) throw new BadRequestException('Project Not Found');
+    const foundProject = projectId
+      ? await this.projectService.findByProjectID(projectId)
+      : undefined;
+    if (projectId && !foundProject)
+      throw new BadRequestException('Project Not Found');
 
     const foundUser = await this.userService.findByUserID(userId);
     if (!foundUser) throw new BadRequestException('User Not Found');
 
     const newGendoc = new Gendoc();
-    newGendoc.project = foundProject;
     newGendoc.name = name;
+    newGendoc.customProjectName = customProjectName;
     newGendoc.filingCode = filingCode;
     newGendoc.type = type;
-    newGendoc.projectCode = foundProject.projectCode;
+    newGendoc.projectCode = projectCode;
     newGendoc.userId = userId;
     newGendoc.user = foundUser;
+    if (foundProject) newGendoc.project = foundProject;
     if (subType) newGendoc.subType = subType;
 
     return this.gendocRepository.save(newGendoc);

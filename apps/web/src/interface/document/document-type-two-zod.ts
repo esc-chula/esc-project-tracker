@@ -3,7 +3,6 @@ import { FilingType } from '@repo/shared';
 import { BudgetSchema } from './document-type-zero-zod';
 
 export const DocumentTypeTwoSchema = z.object({
-  id: z.string().readonly(),
   projectCode: z.string(),
   projectNameTH: z.string(),
   projectNameEN: z.string(),
@@ -18,8 +17,5 @@ export const DocumentTypeTwoSchema = z.object({
   budgets: z.array(BudgetSchema),
   procurementBudgets: z.number().positive(),
 
-  createdBy: z.string(),
   updatedBy: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string().optional(),
 });
