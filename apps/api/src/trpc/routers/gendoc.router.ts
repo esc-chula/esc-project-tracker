@@ -29,12 +29,14 @@ export class GendocRouter {
     createGendoc: this.trpcService.protectedProcedure
       .input(
         z.object({
-          projectId: z.string(),
+          customProjectName: z.string(),
           name: z.string(),
           type: z.number(),
           userId: z.string(),
           filingCode: z.string(),
           subType: z.nativeEnum(FilingSubType).nullable(),
+          projectCode: z.string(),
+          projectId: z.string().optional(),
         }),
       )
       .mutation(async ({ input, ctx }) => {
@@ -49,12 +51,14 @@ export class GendocRouter {
             message: 'User is not a member of the project',
           });
         return this.gendocService.createGendoc(
-          input.projectId,
+          input.customProjectName,
           input.name,
           input.type,
           input.userId,
           input.filingCode,
           input.subType,
+          input.projectCode,
+          input.projectId,
         );
       }),
 

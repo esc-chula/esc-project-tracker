@@ -12,13 +12,7 @@ import type {
 // design by following figma: https://www.figma.com/design/Dz6HOGk6pFbHFLdsra05Fh/ESC-Project-Tracker--%5BPhase-2%5D?node-id=0-1&p=f&t=fT3aiSmCE6oX1NMj-0
 export interface DocumentTypeZero {
   // เอกสารเปิดโครง
-  readonly id: string;
-  projectCode: string;
-  projectNameTH: string;
   projectNameEN: string;
-  filingType: FilingType;
-  filingCode: string;
-  filingName: string;
   department: string | null; // esc fields, club, null
   startDate: string;
   endDate?: string; // For projects lasting more than 1 day
@@ -41,10 +35,7 @@ export interface DocumentTypeZero {
   typeOfActivity: ActivityType;
   sdgs: SDG[]; // เป้าหมายพัฒนายั่งยืน
   tqfStandards: TQF[]; // มาตรฐาน TQF
-  createdBy: string;
   updatedBy: string;
-  createdAt: string;
-  updatedAt?: string;
 }
 
 export interface Objective {

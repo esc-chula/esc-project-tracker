@@ -134,7 +134,6 @@ export const TQFSchema = z.object({
 });
 
 export const DocumentTypeZeroSchema = z.object({
-  id: z.string().readonly(),
   projectCode: z.string(),
   projectNameTH: z.string(),
   projectNameEN: z.string(),
@@ -163,8 +162,6 @@ export const DocumentTypeZeroSchema = z.object({
   typeOfActivity: z.nativeEnum(ActivityType),
   sdgs: z.array(SDGSchema),
   tqfStandards: z.array(TQFSchema),
-  createdBy: z.string(),
+
   updatedBy: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string().optional(),
 });
