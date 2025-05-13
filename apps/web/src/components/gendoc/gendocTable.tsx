@@ -34,11 +34,13 @@ import { gendocColumns } from './gendocTableColumns';
 export function GendocTable({
   data,
   compact = false,
-  projectId,
+  userId,
+  appendGendoc,
 }: {
   data: Gendoc[];
   compact?: boolean;
-  projectId?: string;
+  userId?: string;
+  appendGendoc: (gendocs: Gendoc) => void;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -80,8 +82,10 @@ export function GendocTable({
         <>
           <StatusTableToolBar
             table={table}
+            isGendocPage
             gendocFunc={redirectToGendoc}
-            projectId={projectId}
+            userId={userId}
+            appendGendoc={appendGendoc}
           />
           <div className="flex flex-row space-x-5 mb-4">
             <DataTableFacetedFilter

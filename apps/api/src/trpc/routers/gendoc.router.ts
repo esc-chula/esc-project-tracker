@@ -39,17 +39,7 @@ export class GendocRouter {
           projectId: z.string().optional(),
         }),
       )
-      .mutation(async ({ input, ctx }) => {
-        const { isMember } = await this.trpcService.isProjectMember(
-          ctx.payload.sub,
-          input.projectId,
-          'project',
-        );
-        if (!isMember)
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'User is not a member of the project',
-          });
+      .mutation(async ({ input }) => {
         return this.gendocService.createGendoc(
           input.customProjectName,
           input.name,

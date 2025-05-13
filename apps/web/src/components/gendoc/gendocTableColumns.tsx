@@ -31,7 +31,7 @@ export const gendocColumns: ColumnDef<Gendoc>[] = [
   },
   {
     accessorKey: 'ชื่อโครงการ',
-    accessorFn: (row) => row.project?.name,
+    accessorFn: (row) => row.customProjectName,
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="ชื่อโครงการ" />;
     },
