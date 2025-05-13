@@ -2,6 +2,7 @@ import type { Table } from '@tanstack/react-table';
 import type { Filing } from '@/src/interface/filing';
 import type { Gendoc } from '@/src/interface/gendoc';
 import SearchPanel from '../all-projects/searchPanel';
+import PopoverAddGendoc from '../gendoc/popoverAddGendoc';
 import PopoverAddFiling from '../project/popoverAddFiling';
 
 export default function StatusTableToolBar({
@@ -9,11 +10,17 @@ export default function StatusTableToolBar({
   filingFunc,
   gendocFunc,
   projectId,
+  userId,
+  isGendocPage = false,
+  appendGendoc,
 }: {
   table: Table<Filing> | Table<Gendoc>;
   filingFunc?: (filing: Filing) => void;
   gendocFunc?: (gendoc: Gendoc) => void;
   projectId?: string;
+  userId?: string;
+  isGendocPage?: boolean;
+  appendGendoc?: (gendoc: Gendoc) => void;
 }) {
   return (
     <div className="flex items-center gap-4 py-4">
@@ -27,12 +34,24 @@ export default function StatusTableToolBar({
           table.resetColumnFilters();
         }}
       />
-      <PopoverAddFiling
-        projectId={projectId ?? ''}
-        addFilingToParent={(filing) => {
-          console.log(filing);
-        }}
-      />
+      {isGendocPage ? (
+        <PopoverAddGendoc
+          userId={userId ?? ''}
+          addGendocToParent={
+            appendGendoc ??
+            (() => {
+              console.log('No function provided');
+            })
+          }
+        />
+      ) : (
+        <PopoverAddFiling
+          projectId={projectId ?? ''}
+          addFilingToParent={(filing) => {
+            console.log(filing);
+          }}
+        />
+      )}
     </div>
   );
 }

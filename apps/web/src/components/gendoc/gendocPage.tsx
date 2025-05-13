@@ -12,6 +12,9 @@ export default function GendocPage({
   isAdmin?: boolean;
 }) {
   const [gendocs, setGendocs] = useState<Gendoc[]>([]);
+  const appendGendoc = (gendoc: Gendoc) => {
+    setGendocs((prevGendocs) => [...prevGendocs, gendoc]);
+  };
 
   useEffect(() => {
     try {
@@ -24,5 +27,7 @@ export default function GendocPage({
       }
     }
   }, [userId]);
-  return <GendocTable data={gendocs} />;
+  return (
+    <GendocTable data={gendocs} userId={userId} appendGendoc={appendGendoc} />
+  );
 }
