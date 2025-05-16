@@ -40,7 +40,7 @@ export class FilingRouter {
           filingType: z.number(),
           userId: z.string(),
           subType: z.nativeEnum(FilingSubType).nullable(),
-          tel: z.string(),
+          // tel: z.string(),
         }),
       )
       .mutation(async ({ input, ctx }) => {
@@ -60,7 +60,7 @@ export class FilingRouter {
           input.filingType,
           input.userId,
           input.subType,
-          input.tel,
+          // input.tel,
         );
       }),
 

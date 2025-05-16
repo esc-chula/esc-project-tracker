@@ -65,7 +65,7 @@ export class FilingService {
     filingType: number,
     userId: string,
     subType: FilingSubType | null,
-    tel: string,
+    // tel: string,
   ) {
     if (!isUUID(projectId) || !isUUID(userId))
       throw new BadRequestException('Ids are not in UUID format.');
