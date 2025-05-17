@@ -38,6 +38,7 @@ import { findUserByUserId } from "@/src/service/user/findUserByUserId";
 import getProjectsByUserId from "@/src/service/project/getProjectsByUserId";
 import type { Project } from "@/src/interface/project";
 import { Button } from "../ui/button";
+import { User } from '@/src/interface/user';
 
 export default function PopoverAddFiling({
   children,
@@ -50,6 +51,7 @@ export default function PopoverAddFiling({
 }) {
   const [joinedProjects, setJoinedProjects] = useState<Project[]>([])
   const [userId, setUserId] = useState<string>("")
+  const [user, setUser] = useState<User | null>(null)
   const [open, setOpen] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof addFilingFormSchema>>({
@@ -68,6 +70,7 @@ export default function PopoverAddFiling({
     const id = await getUserId()
     const userData = await findUserByUserId(id)
     setUserId(id)
+    setUser(userData)
     if (userData) {
       form.setValue("responsibleStudent", userData.username)
       form.setValue("tel", userData.tel ?? "")
@@ -119,7 +122,12 @@ export default function PopoverAddFiling({
         // tel,
       );
 
-      addFilingToParent(data);
+      const newFiling = {
+        ...data,
+        ...(user && { user }),
+      };
+
+      addFilingToParent(newFiling);
       toast({
         title: "สร้างสำเร็จ",
         description: `เอกสาร ${data.projectCode} - ${data.filingCode} ถูกสร้างเรียบร้อยแล้ว`,

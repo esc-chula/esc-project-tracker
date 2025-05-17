@@ -45,6 +45,10 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
     void fetchFilings();
   }, [projectId]);
 
+  const updateFiling = (filing: Filing) => {
+    setFilings((prevFilings) => [filing, ...prevFilings]);
+  };
+
   return (
     <div className="w-full">
       {/* <div className="flex flex-row justify-between items-center">
@@ -82,7 +86,7 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
             />
           ) : (
             // <AllFilingPanel filings={filings} setFilings={setFilings} />
-            <StatusTable data={filings} projectId={projectId} />
+            <StatusTable data={filings} projectId={projectId} updateFiling={updateFiling} />
           )}
         </>
       ) : null}
