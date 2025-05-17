@@ -2,10 +2,10 @@ import { z } from 'zod';
 import { DocumentActivity } from '@repo/shared';
 import { getFileType } from '../lib/utils';
 import { projectTypeMap } from './map';
-// import { typeFilingItemsV2 } from './filterFiling';
+import { typeFilingItemsV2 } from './filterFiling';
 
 const projectTypes = projectTypeMap.map((item) => item.value.toString());
-// const filingTypes = typeFilingItemsV2.map((item) => item.value.toString())
+const filingTypes = typeFilingItemsV2.map((item) => item.value.toString())
 
 export const newProjectFormSchema = z.object({
   projectName: z
@@ -129,8 +129,10 @@ export const createdDocumentAdminSchema = z
 
 export const addFilingFormSchema = z.object({
   projectId: z.string().min(1, "โปรดเลือกโครงการ"),
-  filingTypeAndSubType: z.string().min(1, "โปรดเลือกประเภทเอกสาร"),
+  filingTypeAndSubType: z.enum([filingTypes[0], ...filingTypes] as const, {
+    message: "โปรดเลือกประเภทเอกสาร",
+  }),
   filingName: z.string().min(1, "โปรดกรอกชื่อเอกสาร"),
   responsibleStudent: z.string().min(1, "โปรดกรอกชื่อนิสิตที่รับผิดชอบ"),
-  tel: z.string()
+  tel: z.string().min(1, "โปรดกรอกเบอร์โทรศัพท์"),
 });

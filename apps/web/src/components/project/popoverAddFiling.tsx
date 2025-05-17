@@ -271,6 +271,7 @@ export default function PopoverAddFiling({
                   </FormLabel>
                   <FormControl>
                     <Input
+                      readOnly
                       placeholder="สมชาย สายชล"
                       className="border-1 w-full px-4 rounded-lg border-black"
                       {...field}
@@ -311,8 +312,9 @@ export default function PopoverAddFiling({
                 ยกเลิก
               </Button>
               <Button
+                disabled={form.formState.isSubmitting || !form.formState.isValid}
                 type="submit"
-                className="rounded-lg text-base px-4 h-10 font-medium bg-red text-white"
+                className="disabled:bg-lightgray rounded-lg text-base px-4 h-10 font-medium bg-red text-white"
               >
                 <HiDocumentAdd size={20} className="inline-block mr-2" />
                 สร้างเอกสาร
