@@ -38,10 +38,12 @@ export function StatusTable({
   data,
   compact = false,
   projectId,
+  updateFiling,
 }: {
   data: Filing[];
   compact?: boolean;
   projectId?: string;
+  updateFiling?: (filing: Filing) => void;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -91,6 +93,7 @@ export function StatusTable({
             table={table}
             filingFunc={redirectToFiling}
             projectId={projectId}
+            updateFiling={updateFiling}
           />
           <div className="flex flex-row space-x-5 mb-4">
             <DataTableFacetedFilter

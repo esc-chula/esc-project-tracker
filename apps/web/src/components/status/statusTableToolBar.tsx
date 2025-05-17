@@ -9,11 +9,13 @@ export default function StatusTableToolBar({
   filingFunc,
   gendocFunc,
   projectId,
+  updateFiling,
 }: {
   table: Table<Filing> | Table<Gendoc>;
   filingFunc?: (filing: Filing) => void;
   gendocFunc?: (gendoc: Gendoc) => void;
   projectId?: string;
+  updateFiling?: (filing: Filing) => void;
 }) {
   return (
     <div className="flex items-center gap-4 py-4">
@@ -30,7 +32,9 @@ export default function StatusTableToolBar({
       <PopoverAddFiling
         projectId={projectId ?? ''}
         addFilingToParent={(filing) => {
-          console.log(filing);
+          if (updateFiling) {
+            updateFiling(filing);
+          }
         }}
       />
     </div>
