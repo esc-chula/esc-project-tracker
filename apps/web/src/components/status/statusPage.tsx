@@ -31,5 +31,10 @@ export default function StatusPage({
       }
     }
   }, [userId]);
-  return <StatusTable data={statuses} />;
+
+  const updateFiling = (filing: Filing) => {
+    setStatuses((prevFilings) => [filing, ...prevFilings]);
+  };
+
+  return <StatusTable data={statuses} updateFiling={updateFiling} />;
 }
