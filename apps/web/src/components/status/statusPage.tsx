@@ -36,5 +36,17 @@ export default function StatusPage({
     setStatuses((prevFilings) => [filing, ...prevFilings]);
   };
 
-  return <StatusTable data={statuses} updateFiling={updateFiling} />;
+  const updateTel = (tel: string) => {
+    setStatuses((prevFilings) =>
+      prevFilings.map((f) => (f.user ? { ...f, user: { ...f.user, tel } } : f)),
+    );
+  };
+
+  return (
+    <StatusTable
+      data={statuses}
+      updateFiling={updateFiling}
+      updateTel={updateTel}
+    />
+  );
 }

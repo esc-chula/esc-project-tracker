@@ -8,7 +8,7 @@ export default async function createFiling(
   filingType: number,
   userId: string,
   subType: FilingSubType | null,
-  // tel: string,
+  tel: string,
 ): Promise<Filing> {
   try {
     const data = await trpc.filing.createFiling.mutate({
@@ -17,7 +17,7 @@ export default async function createFiling(
       filingType,
       userId,
       subType,
-      // tel,
+      tel,
     });
 
     return data;

@@ -10,6 +10,10 @@ import type { Filing } from '@/src/interface/filing';
 import { getUserId } from '@/src/service/auth';
 import { typeFilingItemsV2 } from '@/src/constant/filterFiling';
 import { addFilingFormSchema } from '@/src/constant/schema';
+import { findUserByUserId } from "@/src/service/user/findUserByUserId";
+import getProjectsByUserId from "@/src/service/project/getProjectsByUserId";
+import type { Project } from "@/src/interface/project";
+import type { User } from '@/src/interface/user';
 import { toast } from '../ui/use-toast';
 import {
   Dialog,
@@ -34,11 +38,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "../ui/select";
-import { findUserByUserId } from "@/src/service/user/findUserByUserId";
-import getProjectsByUserId from "@/src/service/project/getProjectsByUserId";
-import type { Project } from "@/src/interface/project";
 import { Button } from "../ui/button";
-import { User } from '@/src/interface/user';
 
 export default function PopoverAddFiling({
   children,
@@ -47,7 +47,7 @@ export default function PopoverAddFiling({
 }: {
   children?: React.ReactNode;
   projectId: string;
-  addFilingToParent: (filing: Filing) => void;
+  addFilingToParent: (filing: Filing, tel: string) => void;
 }) {
   const [joinedProjects, setJoinedProjects] = useState<Project[]>([])
   const [userId, setUserId] = useState<string>("")
@@ -119,7 +119,7 @@ export default function PopoverAddFiling({
         parseInt(filingType),
         userId,
         filingSubType ? (filingSubType as FilingSubType) : null,
-        // tel,
+        values.tel.trim()
       );
 
       const newFiling = {
@@ -127,14 +127,14 @@ export default function PopoverAddFiling({
         ...(user && { user }),
       };
 
-      addFilingToParent(newFiling);
+      addFilingToParent(newFiling, values.tel.trim());
       toast({
         title: "สร้างสำเร็จ",
         description: `เอกสาร ${data.projectCode} - ${data.filingCode} ถูกสร้างเรียบร้อยแล้ว`,
       })
       setOpen(false)
       form.reset({
-        projectId: projectId,
+        projectId,
         filingTypeAndSubType: "",
         filingName: "",
         responsibleStudent: form.getValues("responsibleStudent"),

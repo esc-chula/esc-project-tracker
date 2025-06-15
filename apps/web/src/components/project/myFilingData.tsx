@@ -1,28 +1,22 @@
 'use client';
-import { FileText } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import type { Filing } from '@/src/interface/filing';
 import getFilingByProjectId from '@/src/service/filing/getFilingByProjectId';
-import type { Project } from '@/src/interface/project';
 import { toast } from '../ui/use-toast';
-import SearchBar from '../searchbar/searchBar';
 import { StatusTable } from '../status/statusTable';
-import PopoverAddFiling from './popoverAddFiling';
-import AllFilingPanel from './allFilingPanel';
 import NoFiling from './noFiling';
 
 export default function MyFilingData({ projectId }: { projectId: string }) {
   const [filings, setFilings] = useState<Filing[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const router = useRouter();
+  // const router = useRouter();
 
-  const redirectToProject = (project: Project | Filing) => {
-    router.push(`/project/${project.id}`);
-  };
-  const redirectToFiling = (filing: Filing) => {
-    router.push(`/project/${filing.projectId}/${filing.id}`);
-  };
+  // const redirectToProject = (project: Project | Filing) => {
+  //   router.push(`/project/${project.id}`);
+  // };
+  // const redirectToFiling = (filing: Filing) => {
+  //   router.push(`/project/${filing.projectId}/${filing.id}`);
+  // };
 
   useEffect(() => {
     const fetchFilings = async () => {
@@ -47,6 +41,12 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
 
   const updateFiling = (filing: Filing) => {
     setFilings((prevFilings) => [filing, ...prevFilings]);
+  };
+
+  const updateTel = (tel: string) => {
+    setFilings((prevFilings) =>
+      prevFilings.map((f) => (f.user ? { ...f, user: { ...f.user, tel } } : f)),
+    );
   };
 
   return (
@@ -86,7 +86,12 @@ export default function MyFilingData({ projectId }: { projectId: string }) {
             />
           ) : (
             // <AllFilingPanel filings={filings} setFilings={setFilings} />
-            <StatusTable data={filings} projectId={projectId} updateFiling={updateFiling} />
+            <StatusTable
+              data={filings}
+              projectId={projectId}
+              updateFiling={updateFiling}
+              updateTel={updateTel}
+            />
           )}
         </>
       ) : null}

@@ -65,7 +65,7 @@ export class FilingService {
     filingType: number,
     userId: string,
     subType: FilingSubType | null,
-    // tel: string,
+    tel: string,
   ) {
     if (!isUUID(projectId) || !isUUID(userId))
       throw new BadRequestException('Ids are not in UUID format.');
@@ -91,10 +91,10 @@ export class FilingService {
     newFiling.type = filingType;
     newFiling.projectCode = foundProject.projectCode;
     newFiling.userId = userId;
-    // newFiling.tel = tel
     if (subType) newFiling.subType = subType;
 
     this.countFilingService.incrementTypeCount(filingType);
+    this.userService.update(userId, { tel });
 
     return this.filingRepository.save(newFiling);
   }

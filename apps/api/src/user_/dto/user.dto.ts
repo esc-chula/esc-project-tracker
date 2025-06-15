@@ -10,4 +10,5 @@ export class UpdateUserDTO {
   studentId?: string;
   role?: AuthRole;
   refreshToken?: string;
+  tel?: string;
 }
