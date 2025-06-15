@@ -119,6 +119,9 @@ export const statusColumns: ColumnDef<Filing>[] = [
   {
     accessorKey: 'updatedAt',
     accessorFn: (row) => dayjs(row.updatedAt).fromNow(),
+    sortingFn: (rowA, rowB) =>
+      dayjs(rowB.original.updatedAt).unix() -
+      dayjs(rowA.original.updatedAt).unix(),
     header: ({ column }) => {
       return (
         <DataTableColumnHeader

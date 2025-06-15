@@ -30,8 +30,8 @@ export const filingTabColumns: ColumnDef<FilingWithDocument>[] = [
     accessorKey: 'updatedAt',
     accessorFn: (row) => dayjs(row.document.updatedAt).fromNow(),
     sortingFn: (rowA, rowB) =>
-      dayjs(rowA.original.document.updatedAt).unix() -
-      dayjs(rowB.original.document.updatedAt).unix(),
+      dayjs(rowB.original.document.updatedAt).unix() -
+      dayjs(rowA.original.document.updatedAt).unix(),
   },
   {
     accessorKey: 'type',
