@@ -9,6 +9,7 @@ import {
   FilePlus,
   Trash2,
   MessageSquareWarning,
+  Inbox,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -67,7 +68,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           />
           <NavbarItem
             icon={<FileSearch size={20} />}
-            text="โครงการทั้งหมด"
+            text="โครงการ"
             active={pathname.startsWith(
               isAdmin ? '/admin/projects' : '/projects',
             )}
@@ -76,7 +77,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           />
           <NavbarItem
             icon={<Radio size={20} />}
-            text="ติดตามสถานะ"
+            text="เอกสาร"
             expanded={expanded}
             active={pathname.startsWith(isAdmin ? '/admin/status' : '/status')}
             href={isAdmin ? '/admin/status' : '/status'}
@@ -90,6 +91,15 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
               href="/gendoc"
             />
           )}
+          {isAdmin ? (
+            <NavbarItem
+              icon={<Inbox size={20} />}
+              text="จัดการเอกสาร"
+              expanded={expanded}
+              active={pathname.startsWith('/admin/shortcuts')}
+              href="/admin/shortcuts"
+            />
+          ) : null}
         </ul>
 
         <div className="flex flex-col">
