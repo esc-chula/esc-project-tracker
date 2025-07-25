@@ -3,7 +3,6 @@ import {
   ObjectiveType,
   ActivityType,
   GraduateAttributeType,
-  FilingType,
   ManagementRole,
   TQFType,
   SDGType,
@@ -134,12 +133,7 @@ export const TQFSchema = z.object({
 });
 
 export const DocumentTypeZeroSchema = z.object({
-  projectCode: z.string(),
-  projectNameTH: z.string(),
   projectNameEN: z.string(),
-  filingType: z.nativeEnum(FilingType),
-  filingCode: z.string(),
-  filingName: z.string(),
   department: z.string().nullable(),
   startDate: z.string(),
   endDate: z.string().optional(),
