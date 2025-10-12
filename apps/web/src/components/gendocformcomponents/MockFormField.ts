@@ -1,5 +1,7 @@
 // formFields.ts
 
+import FallBackComponent from './FallBackComponent';
+
 export const MockFormField = {
   sections: {
     รายละเอียดทั่วไป: {
@@ -110,6 +112,14 @@ export const MockFormField = {
             constraints: [],
           },
         },
+      },
+    },
+    ทดสอบระบบ_FallBackComponent: {
+      use_date: {
+        name: 'ทดสอบระบบ',
+        label: 'ทดสอบระบบจ๊า',
+        description: 'ทดสอบระบบน้าาาาาาาาา',
+        type: 'aaaa',
       },
     },
   },
