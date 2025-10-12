@@ -1,9 +1,13 @@
 import React from 'react';
 import FormQuestionString from './FormQuestionString';
+import FormQuestionStringShort from './FormQuestionStringShort';
+import FormQuestionStringLong from './FormQuestionStringLong';
 import FormQuestionDate from './FormQuestionDate';
 import FormQuestionTel from './FormQuestionTel';
 import FormQuestionTimeRange from './FormQuestionTimeRange';
 import FormQuestionObject from './FormQuestionObject';
+import FormQuestionEstimatePeople from './FormQuestionEstimatePeople';
+import FormQuestionString2Part from './FormQuestionString2Part';
 import FallBackComponent from './FallBackComponent';
 
 interface FormFieldDefinition {
@@ -14,6 +18,7 @@ interface FormFieldDefinition {
   constraints?: { rule: string; args?: unknown; message?: string }[];
   isMultiple?: boolean;
   columns?: Record<string, FormFieldDefinition>;
+  variant?: 'staff' | 'participants'; // For estimate-people type
 }
 
 interface FormQuestionProps {
@@ -32,6 +37,24 @@ export default function FormQuestion({
     case 'string':
       return (
         <FormQuestionString
+          field={field}
+          value={value as string}
+          onChange={(newValue) => onChange?.(newValue)}
+        />
+      );
+
+    case 'string-short':
+      return (
+        <FormQuestionStringShort
+          field={field}
+          value={value as string}
+          onChange={(newValue) => onChange?.(newValue)}
+        />
+      );
+
+    case 'string-long':
+      return (
+        <FormQuestionStringLong
           field={field}
           value={value as string}
           onChange={(newValue) => onChange?.(newValue)}
@@ -62,6 +85,62 @@ export default function FormQuestion({
           field={field}
           value={value as { start?: string; end?: string }}
           onChange={(newValue) => onChange?.(newValue)}
+        />
+      );
+
+    case 'estimate-people':
+      return (
+        <FormQuestionEstimatePeople
+          field={
+            field as {
+              name: string;
+              label: string;
+              description?: string;
+              type: 'estimate-people';
+              variant: 'staff' | 'participants';
+              constraints?: {
+                rule: string;
+                args?: unknown;
+                message?: string;
+              }[];
+            }
+          }
+          value={
+            value as
+              | {
+                  staff?: number;
+                  participants?: number;
+                  [key: string]: number | undefined;
+                }
+              | undefined
+          }
+          onChange={onChange}
+        />
+      );
+
+    case 'string-2part':
+      return (
+        <FormQuestionString2Part
+          field={
+            field as {
+              name: string;
+              label: string;
+              description?: string;
+              type: 'string-2part';
+              isMultiple: true;
+              constraints?: {
+                rule: string;
+                args?: unknown;
+                message?: string;
+              }[];
+            }
+          }
+          value={
+            value as
+              | { id: string; topic: string; description: string }[]
+              | undefined
+          }
+          onChange={onChange}
         />
       );
 

@@ -25,7 +25,7 @@ export default function GenDocMockPage() {
       ([sectionTitle, sectionFields]) => {
         Object.entries(sectionFields).forEach(([fieldName, field]) => {
           questionAnswers.push({
-            question: `${sectionTitle} - ${field.label}`,
+            question: `${sectionTitle}-${field}`,
             answer: formValues[fieldName] || 'No answer provided',
           });
         });
