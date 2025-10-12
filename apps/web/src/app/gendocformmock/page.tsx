@@ -17,6 +17,25 @@ export default function GenDocMockPage() {
     }));
   };
 
+  const handleSubmit = () => {
+    // Create question-answer pairs for logging
+    const questionAnswers: { question: string; answer: unknown }[] = [];
+
+    Object.entries(MockFormField.sections).forEach(
+      ([sectionTitle, sectionFields]) => {
+        Object.entries(sectionFields).forEach(([fieldName, field]) => {
+          questionAnswers.push({
+            question: `${sectionTitle} - ${field.label}`,
+            answer: formValues[fieldName] || 'No answer provided',
+          });
+        });
+      },
+    );
+
+    console.log('Form Data - Question & Answers:', questionAnswers);
+    console.log('Raw Form Values:', formValues);
+  };
+
   return (
     <div className="h-screen bg-neutral-100 text-neutral-900 flex">
       <div className="flex w-full max-w-[1200px] mx-auto gap-5 p-4 h-full">
@@ -39,13 +58,6 @@ export default function GenDocMockPage() {
                 ),
               )}
 
-              {/* <FormSection
-                key="เทสระบบ"
-                title="เทสระบบ title"
-                fields={undefined}
-                values={undefined}
-                onChange={undefined}
-              /> */}
               <div className="mt-4 flex items-center justify-end gap-2 pt-4 border-t">
                 <button
                   type="button"
@@ -56,6 +68,7 @@ export default function GenDocMockPage() {
                 <button
                   type="button"
                   className="rounded-lg bg-[#b51a1a] px-4 py-2 text-sm text-white hover:bg-[#9b1616]"
+                  onClick={handleSubmit}
                 >
                   ส่งตรวจสอบ
                 </button>
