@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Document } from '../entities/document.entity';
 import { In, Not, Repository } from 'typeorm';
@@ -14,7 +15,7 @@ import { validate as isUUID } from 'uuid';
 import { Filing } from '../entities/filing.entity';
 import { CreateDocumentDTO } from './document.dto';
 import { FilingService } from '../filing/filing.service';
-import { DocumentActivity, DocumentStatus, FilingStatus } from '@repo/shared';
+import { AuthRole, DocumentActivity, DocumentStatus, FilingStatus } from '@repo/shared';
 
 @Injectable()
 export class DocumentService {
@@ -25,6 +26,7 @@ export class DocumentService {
     private readonly userService: UserService,
     @Inject(forwardRef(() => FilingService))
     private readonly filingService: FilingService,
+    private readonly configService: ConfigService,
   ) {}
 
   async findByDocID(id: string): Promise<Document | null> {
@@ -48,7 +50,21 @@ export class DocumentService {
 
   async findByUserID(id: string): Promise<Document[]> {
     if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
-    const foundUser = await this.userService.findByUserID(id);
+
+    let foundUser = await this.userService.findByUserID(id);
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      foundUser = {
+        id: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
+        studentId: '6630000021',
+        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
+        tel: '0812345678',
+        refreshToken: 'mock-refresh-token',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    }
+    
     if (!foundUser) throw new BadRequestException('User Not Found!');
 
     const projects = await this.projectService.findByUserID(id);
