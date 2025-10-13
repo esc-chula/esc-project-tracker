@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Filing } from '../entities/filing.entity';
 import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
-import { FilingStatus, FilingSubType } from '@repo/shared';
+import { AuthRole, FilingStatus, FilingSubType } from '@repo/shared';
 import { CountFilingService } from '../count-filing/count-filing.service';
 import { FilingFieldTranslate } from '../constant/translate';
 import { UserProjService } from '../user-proj/user-proj.service';
@@ -19,6 +20,7 @@ export class FilingService {
     private readonly userService: UserService,
     private readonly countFilingService: CountFilingService,
     private readonly userProjService: UserProjService,
+    private readonly configService: ConfigService,
   ) {}
 
   findByFilingID(id: string) {
@@ -43,7 +45,21 @@ export class FilingService {
 
   async findByUserID(id: string): Promise<Filing[]> {
     if (!isUUID(id)) throw new BadRequestException('Id is not in UUID format.');
-    const foundUser = await this.userService.findByUserID(id);
+
+    let foundUser = await this.userService.findByUserID(id);
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      foundUser = {
+        id: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
+        studentId: '6630000021',
+        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
+        tel: '0812345678',
+        refreshToken: 'mock-refresh-token',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    }
+    
     if (!foundUser) throw new BadRequestException('User Not Found!');
     const projectIds =
       await this.userProjService.findJoinedProjectsByUserId(id);
