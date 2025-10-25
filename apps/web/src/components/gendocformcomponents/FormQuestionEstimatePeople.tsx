@@ -1,8 +1,13 @@
 import React from 'react';
 
 interface EstimatePeopleValue {
-  staff?: number;
-  participants?: number;
+  year1?: number;
+  year2?: number;
+  year3?: number;
+  year4?: number;
+  teacher?: number;
+  officer?: number;
+  external?: number;
   [key: string]: number | undefined;
 }
 
@@ -19,69 +24,82 @@ interface FormQuestionEstimatePeopleProps {
   onChange?: (value: EstimatePeopleValue) => void;
 }
 
-/**
- * FormQuestionEstimatePeople - Component for estimating number of people
- * Variants: staff, participants
- * TODO: Style according to the design picture provided
- */
 export default function FormQuestionEstimatePeople({
   field,
-  value,
+  value = {},
   onChange,
 }: FormQuestionEstimatePeopleProps) {
-  const isRequired = field.constraints?.some(
-    (constraint) => constraint.rule === 'required',
+  const isRequired = field.constraints?.some((c) => c.rule === 'required');
+
+  const PeopleCountField = ({
+    k,
+    label,
+    val,
+  }: {
+    k: string;
+    label: string;
+    val?: number;
+  }) => (
+    <div
+      className="
+        grid w-full text-xs gap-1
+        grid-cols-1 sm:grid-cols-1
+        lg:grid-cols-[max-content_auto]
+        items-start lg:items-center
+      "
+    >
+      <span className="whitespace-nowrap">{label}</span>
+
+      <div className="inline-flex items-center gap-2 justify-self-end sm:justify-self-start w-full sm:w-full lg:w-[6rem]">
+        <input
+          id={k}
+          type="number"
+          inputMode="numeric"
+          min="0"
+          className="w-full rounded-xl border border-gray-300 bg-white p-2 outline-none transition focus:border-gray-400"
+          placeholder="จำนวน"
+          value={val ?? ''}
+          onChange={(e) => {
+            const raw = e.target.value;
+            if (raw === '') return onChange?.({ ...value, [k]: undefined });
+            const parsed = Number.parseInt(raw, 10);
+            onChange?.({
+              ...value,
+              [k]: Number.isNaN(parsed) ? undefined : Math.max(0, parsed),
+            });
+          }}
+        />
+        <span>คน</span>
+      </div>
+    </div>
   );
 
-  // TODO: Implement different layouts for staff vs participants variants
-  const renderStaffVariant = () => {
-    return (
-      <div className="grid grid-cols-2 gap-4">
-        {/* TODO: Add specific staff categories */}
-        <div>
-          <label
-            htmlFor="staff"
-            className="block text-xs font-medium text-gray-600 mb-1"
-          >
-            จำนวนเจ้าหน้าที่
-          </label>
-          <input
-            type="number"
-            min="0"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            value={value?.staff || ''}
-            onChange={(e) =>
-              onChange?.({ ...value, staff: parseInt(e.target.value) || 0 })
-            }
-          />
-        </div>
-      </div>
-    );
-  };
+  const PeopleEstimateAll = () => {
+    const leftLabel =
+      field.variant === 'staff' ? 'ผู้ปฏิบัติงาน :' : 'ผู้เข้าร่วม :';
 
-  const renderParticipantsVariant = () => {
+    const base = [
+      { k: 'year1', l: 'นิสิตชั้นปีที่ 1' },
+      { k: 'year2', l: 'นิสิตชั้นปีที่ 2' },
+      { k: 'year3', l: 'นิสิตชั้นปีที่ 3' },
+      { k: 'year4', l: 'นิสิตชั้นปีที่ 4' },
+      { k: 'teacher', l: 'อาจารย์' },
+      { k: 'officer', l: 'เจ้าหน้าที่' },
+    ];
+
+    const items =
+      field.variant === 'participants'
+        ? [...base, { k: 'external', l: 'บุคคลภายนอก' } as const]
+        : base;
+
     return (
-      <div className="grid grid-cols-2 gap-4">
-        {/* TODO: Add specific participant categories */}
-        <div>
-          <label
-            htmlFor="participant"
-            className="block text-xs font-medium text-gray-600 mb-1"
-          >
-            จำนวนผู้เข้าร่วม
-          </label>
-          <input
-            type="number"
-            min="0"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            value={value?.participants || ''}
-            onChange={(e) =>
-              onChange?.({
-                ...value,
-                participants: parseInt(e.target.value) || 0,
-              })
-            }
-          />
+      <div className="grid grid-cols-[max-content_1fr] items-start gap-x-4">
+        <div className="pt-2 text-xs">{leftLabel}</div>
+
+        <div className="grid grid-cols-4 gap-x-6 gap-y-3">
+          {items.map(({ k, l }) => (
+            <PeopleCountField key={k} k={k} label={l} val={value[k]} />
+          ))}
         </div>
       </div>
     );
@@ -89,21 +107,16 @@ export default function FormQuestionEstimatePeople({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-gray-800">
         {field.label}
-        {isRequired ? <span className="text-red-500 ml-1">*</span> : null}
+        {isRequired && <span className="ml-1 text-red-500">*</span>}
       </label>
 
-      {field.description ? (
-        <div className="text-xs text-gray-500">{field.description}</div>
-      ) : null}
+      {field.description && (
+        <p className="text-xs text-gray-500">{field.description}</p>
+      )}
 
-      <div className="rounded-lg border p-4">
-        {/* TODO: Style this container to match the design picture */}
-        {field.variant === 'staff'
-          ? renderStaffVariant()
-          : renderParticipantsVariant()}
-      </div>
+      <PeopleEstimateAll />
     </div>
   );
 }
