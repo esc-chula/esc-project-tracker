@@ -5,6 +5,7 @@ import type { AuthRole, Payload, Tokens } from '@repo/shared';
 import { env } from 'next-runtime-env';
 import { trpc } from '../app/trpc';
 import { authErrors } from '../errors/auth';
+import { SignJWT } from 'jose';
 
 export async function getCookies(): Promise<Tokens> {
   try {
@@ -42,14 +43,28 @@ export async function signIn(
   const cookieStore = cookies();
 
   if (env('DEV_MODE') === 'true') {
-    cookieStore.set('accessToken', 'mock-access-token', {
+    const nowSecond = Math.floor(Date.now() / 1000)
+
+    const payload = {
+      sub: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+      username: 'mock' + (env('DEV_MODE_ROLE') || 'esc'),
+      role: (env('DEV_MODE_ROLE') || 'esc') as AuthRole,
+        iat: nowSecond,
+        exp: nowSecond + 60 * 60 * 24 * 7
+    }
+
+    const mock_access_jwt = await new SignJWT(payload).setProtectedHeader({alg: 'HS256'}).sign(new TextEncoder().encode(env('JWT_SECRET')))
+
+    const mock_refresh_jwt = await new SignJWT({...payload, exp: nowSecond + 60 * 60 * 24 * 30}).setProtectedHeader({alg: 'HS256'}).sign(new TextEncoder().encode(env('JWT_SECRET')))
+
+    cookieStore.set('accessToken', mock_access_jwt, {
       httpOnly: false,
       secure: false,
       sameSite: 'lax',
       domain: env('JWT_DOMAIN'),
     });
 
-    cookieStore.set('refreshToken', 'mock-refresh-token', {
+    cookieStore.set('refreshToken', mock_refresh_jwt, {
       httpOnly: false,
       secure: false,
       sameSite: 'lax',
@@ -57,15 +72,9 @@ export async function signIn(
     });
 
     return {
-      accessToken: "mock-access-token",
-      refreshToken: 'mock-refresh-token',
-      payload: {
-        sub: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
-        username: 'mock' + (env('DEV_MODE_ROLE') || 'esc') as AuthRole,
-        role: (env('DEV_MODE_ROLE') || 'esc') as AuthRole,
-        iat: 12345678,
-        exp: 12345678
-      }
+      accessToken: mock_access_jwt,
+      refreshToken: mock_refresh_jwt,
+      payload: payload
     } as Tokens & { payload: Payload }
   }
 
@@ -129,10 +138,6 @@ export async function getUsername(): Promise<string> {
     return 'Guest';
   }
 
-  if (env('DEV_MODE') === 'true') {
-    return 'mock' + (env('DEV_MODE_ROLE') || 'esc') as AuthRole
-  }
-
   const jwtPayload = await parseJwt(accessTokenCookie);
   return jwtPayload.username;
 }
@@ -142,10 +147,6 @@ export async function getUserId(): Promise<string> {
 
   if (!accessTokenCookie) {
     throw new Error(authErrors.notAuthenticated);
-  }
-
-  if (env('DEV_MODE') === 'true') {
-    return 'bb64e6eb-ad7e-4a21-a879-d0612b218996'
   }
 
   const jwtPayload = await parseJwt(accessTokenCookie);
@@ -159,30 +160,11 @@ export async function getJwtPayload(): Promise<Payload> {
     throw new Error(authErrors.notAuthenticated);
   }
 
-  if (env('DEV_MODE') === 'true') {
-    return {
-      sub: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
-      username: 'mock' + (env('DEV_MODE_ROLE') || 'esc') as AuthRole,
-      role: (env('DEV_MODE_ROLE') || 'esc') as AuthRole,
-      iat: 12345678,
-      exp: 12345678
-    }
-  }
-
   const jwtPayload = await parseJwt(accessTokenCookie);
   return jwtPayload;
 }
 
 export async function parseJwt(token: string): Promise<Payload> {
-  if (env('DEV_MODE') === 'true') {
-    return {
-      sub: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
-      username: 'mock' + (env('DEV_MODE_ROLE') || 'esc') as AuthRole,
-      role: (env('DEV_MODE_ROLE') || 'esc') as AuthRole,
-      iat: 12345678,
-      exp: 12345678
-    }
-  }
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

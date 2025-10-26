@@ -55,15 +55,6 @@ export class AuthService {
   }
 
   async validateJWT(token: string): Promise<JwtPayload> {
-    if (this.configService.get<string>('DEV_MODE') === 'true') {
-      return {
-        sub: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
-        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
-        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
-        iat: 12345678,
-        exp: 12345678
-      }
-    }
 
     try {
       const validatedUser = this.jwtService.verify(token, {
@@ -77,12 +68,6 @@ export class AuthService {
   }
 
   async signIn(token: string): Promise<Tokens> {
-    if (this.configService.get<string>('DEV_MODE') === 'true') {
-      return {
-        accessToken: 'mock-access-token',
-        refreshToken: 'mock-refresh-token',
-      }
-    }
 
     const validatedUser = await this.validateUser(token).catch((error) => {
       throw new ForbiddenException(error.message);
@@ -90,6 +75,21 @@ export class AuthService {
 
     const studentId = validatedUser.studentId;
     let username = `${validatedUser.name.th.firstName} ${validatedUser.name.th.lastName}`;
+
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      const mockUser = {
+        id: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
+        studentId: '6630000021',
+        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
+      }
+
+      const tokens = await this.getTokens(mockUser.id,
+        mockUser.username, mockUser.role
+      )
+
+      return tokens
+    }
 
     const existedUser = await this.userService.findByStudentID(studentId);
 
@@ -115,26 +115,12 @@ export class AuthService {
   }
 
   async signOut(accessToken: string) {
-    if (this.configService.get<string>('DEV_MODE') === 'true') {
-      await this.userService.update('bb64e6eb-ad7e-4a21-a879-d0612b218996', { refreshToken: '' })
-      return
-    }
 
     const payload = await this.validateJWT(accessToken);
     await this.userService.update(payload.sub, { refreshToken: '' });
   }
 
   async me(userId: string) {
-    if (this.configService.get<string>('DEV_MODE') === 'true') {
-      return {
-        id: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
-        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
-        studentId: '6630000021',
-        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
-        tel: '0812345678',
-        createdAt: new Date()
-      }
-    }
     const user = await this.userService.findByUserID(userId);
     return user;
   }
@@ -144,13 +130,17 @@ export class AuthService {
   }
 
   async refreshToken(userId: string, refreshToken: string) {
-    if (this.configService.get<string>('DEV_MODE') === 'true') {
-      return {
-        accessToken: 'mock-access-token',
-        refreshToken: 'mock-refresh-token',
-      }
-    }
 
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      const mockUser = {
+        id: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
+        studentId: '6630000021',
+        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
+      }
+
+      return await this.getTokens(mockUser.id, mockUser.username, mockUser.role)
+    }
 
     const user = await this.userService.findByUserID(userId);
     if (!user) {
@@ -182,7 +172,9 @@ export class AuthService {
 
   async updateRefreshToken(userId: string, refreshToken: string) {
     if (this.configService.get<string>('DEV_MODE') === 'true') {
+      return
     }
+
     const hashedRefreshToken = await this.hashData(refreshToken);
     await this.userService.update(userId, {
       refreshToken: hashedRefreshToken,
@@ -194,12 +186,6 @@ export class AuthService {
     username: string,
     role: string,
   ): Promise<Tokens> {
-    if (this.configService.get<string>('DEV_MODE') === 'true') {
-      return {
-        accessToken: 'mock-access-token',
-        refreshToken: 'mock-refresh-token',
-      }
-    }
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
@@ -239,8 +225,8 @@ export class AuthService {
         sub: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
         username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
         role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
-        iat: 12345678,
-        exp: 12345678
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
       }
     }
     try {
