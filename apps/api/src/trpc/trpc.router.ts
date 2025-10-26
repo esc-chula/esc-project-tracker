@@ -13,6 +13,11 @@ import { AuthRouter } from './routers/auth.router';
 import { AwsRouter } from './routers/aws.router';
 import { createContext } from '../common/context/extractTokens';
 import { GendocRouter } from './routers/gendoc.router';
+import { toORPCRouter } from '@orpc/trpc';
+import { OpenAPIGenerator } from '@orpc/openapi'
+import {
+  ZodToJsonSchemaConverter
+} from '@orpc/zod' // <-- zod v3
 
 @Injectable()
 export class TrpcRouter {
@@ -42,6 +47,14 @@ export class TrpcRouter {
     gendoc: this.gendocRouter.appRouter,
   });
 
+  orpcRouter = toORPCRouter(this.appRouter);
+
+  private openAPIGenerator = new OpenAPIGenerator({
+    schemaConverters: [
+      new ZodToJsonSchemaConverter(), // For Zod schemas
+    ],
+  });
+
   async applyMiddleware(app: INestApplication) {
     app.use(
       `/trpc`,
@@ -50,6 +63,23 @@ export class TrpcRouter {
         createContext,
       }),
     );
+
+    app.use('/openapi.json', async (req, res) => {
+      const spec = await this.openAPIGenerator.generate(this.orpcRouter, {
+        info: {
+          title: 'ESC Project Tracker API',
+          version: '0.0.0',
+          description: 'API documentation for ESC Project Tracker',
+        },
+        servers: [
+          {
+            url: process.env.NEXT_PUBLIC_API_SERVER_URL || 'http://localhost:4000',
+            description: 'API Server',
+          },
+        ],
+      });
+      res.json(spec);
+    });
   }
 }
 

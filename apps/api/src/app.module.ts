@@ -4,7 +4,11 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TrpcModule } from './trpc/trpc.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 import { UserModule } from './user_/user.module';
 import { DocumentModule } from './document_/document.module';
