@@ -11,6 +11,7 @@ export class NotificationRouter {
   ) {}
   appRouter = this.trpcService.router({
     findNotificationsByUserId: this.trpcService.trpc.procedure
+      .meta({ route: { tags: ['Notifications'], summary: 'Get notifications for a user' } })
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         this.notificationService.findNotificationsByUserId(input.userId);

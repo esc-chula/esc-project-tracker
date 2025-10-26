@@ -78,6 +78,16 @@ export class TrpcRouter {
             description: 'API Server',
           },
         ],
+        tags: [
+          { name: 'Authentication', description: 'Authentication and authorization endpoints' },
+          { name: 'Projects', description: 'Project management operations' },
+          { name: 'Filings', description: 'Filing system endpoints' },
+          { name: 'Documents', description: 'Document management' },
+          { name: 'Users', description: 'User management and profiles' },
+          { name: 'Notifications', description: 'Notification system' },
+          { name: 'AWS', description: 'AWS S3 file operations' },
+          { name: 'Document Generation', description: 'Document generation from templates' },
+        ],
       });
       res.json(spec);
     });
@@ -86,7 +96,7 @@ export class TrpcRouter {
       '/reference',
       apiReference({
         url: '/openapi.json',
-        theme: 'default',
+        theme: 'none',
       }),
     );
   }

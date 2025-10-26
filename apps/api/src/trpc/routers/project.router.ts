@@ -15,18 +15,22 @@ export class ProjectRouter {
 
   appRouter = this.trpcService.router({
     //Get All Project
-    findAllProject: this.trpcService.protectedProcedure.query(() => {
-      return this.projectService.findAllProjects();
-    }),
+    findAllProject: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Projects'], summary: 'Get all projects' } })
+      .query(() => {
+        return this.projectService.findAllProjects();
+      }),
 
     // Get Projects By UserID -> Project[]
     findProjectsByUserId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Projects', 'Users'], summary: 'Get projects by user ID' } })
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.projectService.findByUserID(input.userId);
       }),
 
     getProjectByProjectId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Projects'], summary: 'Get project by ID' } })
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.projectService.findByProjectID(input.projectId);
@@ -34,6 +38,22 @@ export class ProjectRouter {
 
     //Create a new Project
     createProject: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Projects'], summary: 'Create a new project', description: `Creates a new project with a specified type.
+
+**Project Types:**
+- \`10\` - INTERNAL_AFFAIR (กิจการภายใน)
+- \`11\` - ARTS_CULTURE_AFFAIR (ศิลปะและวัฒนธรรม)
+- \`12\` - SPORTS_AFFAIR (กีฬา)
+- \`13\` - SOCIAL_SERVICE_AFFAIR (พัฒนาสังคมและบำเพ็ญประโยชน์)
+- \`14\` - STUDENTS_WELFARE_ENV_AFFAIR (สวัสดิการนิสิตและสิ่งแวดล้อม)
+- \`20\` - EXTERNAL_AFFAIR (กิจการภายนอก)
+- \`30\` - NISITSUMPAN_AFFAIR (นิสิตสัมพันธ์)
+- \`40\` - TECH_AFFAIR (เทคโนโลยี)
+- \`50\` - ORGANIZATION_AFFAIR (พัฒนาองค์กร)
+- \`60\` - PR_MARGETING_AFFAIR (ประชาสัมพันธ์และการตลาด)
+- \`70\` - ACADEMICS_AFFAIR (วิชาการ)
+- \`80\` - OTHER_ESC (อื่นๆของกวศ)
+- \`90\` - OFFICE_SUPPLY_AFFAIR (สำนักงานและพัสดุ)` } })
       .input(
         z.object({
           name: z.string(),
@@ -52,6 +72,22 @@ export class ProjectRouter {
       }),
     //Create a new Outside Project
     createOutsideProject: this.trpcService.trpc.procedure
+      .meta({ route: { tags: ['Projects'], summary: 'Create an outside project (public endpoint)', description: `Creates a new outside project with a specified type. (--Puifaii, I'm not sure what this actually do, will ask p'little later.)
+
+**Project Types:**
+- \`10\` - INTERNAL_AFFAIR (กิจการภายใน)
+- \`11\` - ARTS_CULTURE_AFFAIR (ศิลปะและวัฒนธรรม)
+- \`12\` - SPORTS_AFFAIR (กีฬา)
+- \`13\` - SOCIAL_SERVICE_AFFAIR (พัฒนาสังคมและบำเพ็ญประโยชน์)
+- \`14\` - STUDENTS_WELFARE_ENV_AFFAIR (สวัสดิการนิสิตและสิ่งแวดล้อม)
+- \`20\` - EXTERNAL_AFFAIR (กิจการภายนอก)
+- \`30\` - NISITSUMPAN_AFFAIR (นิสิตสัมพันธ์)
+- \`40\` - TECH_AFFAIR (เทคโนโลยี)
+- \`50\` - ORGANIZATION_AFFAIR (พัฒนาองค์กร)
+- \`60\` - PR_MARGETING_AFFAIR (ประชาสัมพันธ์และการตลาด)
+- \`70\` - ACADEMICS_AFFAIR (วิชาการ)
+- \`80\` - OTHER_ESC (อื่นๆของกวศ)
+- \`90\` - OFFICE_SUPPLY_AFFAIR (สำนักงานและพัสดุ)` } })
       .input(
         z.object({
           name: z.string(),
@@ -69,6 +105,7 @@ export class ProjectRouter {
         });
       }),
     findProjectsWithFilter: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Projects'], summary: 'Find projects with status and department filters' } })
       .input(z.object({ status: z.string(), department: z.string() }))
       .query(({ input }) => {
         return this.projectService.findProjectsWithFilter({
@@ -78,6 +115,7 @@ export class ProjectRouter {
       }),
 
     deleteProject: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Projects'], summary: 'Delete a project (owner or admin only)' } })
       .input(z.object({ projectId: z.string().uuid() }))
       .mutation(async ({ input, ctx }) => {
         const project = await this.projectService.findByProjectID(
@@ -92,6 +130,7 @@ export class ProjectRouter {
         return await this.projectService.deleteProject(input.projectId);
       }),
     updateProject: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Projects'], summary: 'Update project details (owner or admin only)' } })
       .input(
         z.object({
           projectId: z.string().uuid(),
