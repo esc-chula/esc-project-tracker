@@ -38,12 +38,32 @@ pnpm install
 
 3. Create .env and paste the env in /api and /web folder
 
-4. Run the app at /api for backend, /web for frontend, or root for both at the same time
+4. Create database (Migration will automatically be done when the app start up. (TypeORM `synchronize: true`))
+
+```bash
+docker run -d --name postgres-admin -e POSTGRES_USER=admin -e POSTGRES_PASSWORD='AdminPass123!' -e POSTGRES_DB=admin_db -p 5432:5432 -v postgres_data:/var/lib/postgresql/data postgres:17
+```
+
+5. Run the app at /api for backend, /web for frontend, or root for both at the same time
    _make sure that you are not connected to ChulaWiFi_
 
 ```bash
 turbo dev
 ```
+
+### Development mode
+
+For local development without Intania Auth, set these variables in **ALL THREE ENV FILES**
+
+```env
+DEV_MODE=true
+DEV_MODE_ROLE=admin # Options: admin | esc | student
+JWT_SECRET=secret
+```
+
+When you're in this mode, Intania Auth is bypassed. Real JWT are generated, but no data is stored in DB.
+
+Logging out have not been implemented yet for mock auth.
 
 ## Test
 
@@ -57,4 +77,25 @@ turbo build
 
 ```bash
 pnpm install --force
+```
+
+## Troubleshooting
+
+### `@repo/shared` module not found
+
+If your IDE give you red squiggly line on `import ... from '@repo/shared';`:
+
+**Solution:**
+
+Run this command at the repo root.
+
+```bash
+cd packages/shared
+pnpm build
+```
+
+Alternatively, rebuild all packages.
+
+```
+turbo build
 ```

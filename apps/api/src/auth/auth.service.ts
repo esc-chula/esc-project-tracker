@@ -5,7 +5,7 @@ import { UserService } from '../user_/user.service';
 import * as argon2 from 'argon2';
 import { User } from '../entities/user.entity';
 import { HttpService } from '@nestjs/axios';
-import type { IntaniaAuthResponse, JwtPayload, Tokens } from '@repo/shared';
+import type { AuthRole, IntaniaAuthResponse, JwtPayload, Tokens } from '@repo/shared';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +14,25 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
   async validateUser(token: string): Promise<IntaniaAuthResponse> {
+
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      return {
+        studentId: '6630000021',
+        name: {
+          th: {
+            firstName: 'ชื่อ',
+            lastName: 'นามสกุล'
+          },
+          en: {
+            firstName: 'FirstName',
+            lastName: 'LastName'
+          }
+        }
+      }
+    }
     try {
       const validatedResponse = await this.httpService.axiosRef.post(
         'https://account.intania.org/api/v1/auth/app/validate',
@@ -39,6 +55,7 @@ export class AuthService {
   }
 
   async validateJWT(token: string): Promise<JwtPayload> {
+
     try {
       const validatedUser = this.jwtService.verify(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
@@ -51,12 +68,28 @@ export class AuthService {
   }
 
   async signIn(token: string): Promise<Tokens> {
+
     const validatedUser = await this.validateUser(token).catch((error) => {
       throw new ForbiddenException(error.message);
     });
 
     const studentId = validatedUser.studentId;
     let username = `${validatedUser.name.th.firstName} ${validatedUser.name.th.lastName}`;
+
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      const mockUser = {
+        id: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
+        studentId: '6630000021',
+        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
+      }
+
+      const tokens = await this.getTokens(mockUser.id,
+        mockUser.username, mockUser.role
+      )
+
+      return tokens
+    }
 
     const existedUser = await this.userService.findByStudentID(studentId);
 
@@ -82,6 +115,7 @@ export class AuthService {
   }
 
   async signOut(accessToken: string) {
+
     const payload = await this.validateJWT(accessToken);
     await this.userService.update(payload.sub, { refreshToken: '' });
   }
@@ -96,6 +130,18 @@ export class AuthService {
   }
 
   async refreshToken(userId: string, refreshToken: string) {
+
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      const mockUser = {
+        id: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
+        studentId: '6630000021',
+        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
+      }
+
+      return await this.getTokens(mockUser.id, mockUser.username, mockUser.role)
+    }
+
     const user = await this.userService.findByUserID(userId);
     if (!user) {
       throw new ForbiddenException('User not found');
@@ -125,6 +171,10 @@ export class AuthService {
   }
 
   async updateRefreshToken(userId: string, refreshToken: string) {
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      return
+    }
+
     const hashedRefreshToken = await this.hashData(refreshToken);
     await this.userService.update(userId, {
       refreshToken: hashedRefreshToken,
@@ -136,6 +186,7 @@ export class AuthService {
     username: string,
     role: string,
   ): Promise<Tokens> {
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
@@ -168,6 +219,16 @@ export class AuthService {
   }
 
   parseJwt(token: string): JwtPayload {
+
+    if (this.configService.get<string>('DEV_MODE') === 'true') {
+      return {
+        sub: 'bb64e6eb-ad7e-4a21-a879-d0612b218996',
+        username: 'mock' + (this.configService.get<string>('DEV_MODE_ROLE') || 'esc'),
+        role: (this.configService.get<string>('DEV_MODE_ROLE') || 'esc') as AuthRole,
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
+      }
+    }
     try {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
