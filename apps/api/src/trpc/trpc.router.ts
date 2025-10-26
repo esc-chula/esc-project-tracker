@@ -18,6 +18,7 @@ import { OpenAPIGenerator } from '@orpc/openapi'
 import {
   ZodToJsonSchemaConverter
 } from '@orpc/zod' // <-- zod v3
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 @Injectable()
 export class TrpcRouter {
@@ -80,6 +81,14 @@ export class TrpcRouter {
       });
       res.json(spec);
     });
+
+    app.use(
+      '/reference',
+      apiReference({
+        url: '/openapi.json',
+        theme: 'default',
+      }),
+    );
   }
 }
 
