@@ -16,17 +16,21 @@ export class GendocRouter {
 
   appRouter = this.trpcService.router({
     //Get All Gendoc
-    findAllGendoc: this.trpcService.protectedProcedure.query(() => {
-      return this.gendocService.findAllGendoc();
-    }),
+    findAllGendoc: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Document Generation'], summary: 'Get all generated documents' } })
+      .query(() => {
+        return this.gendocService.findAllGendoc();
+      }),
     // Get Gendocs By ProjectID -> Gendoc[]
     findGendocsByProjectId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Document Generation'], summary: 'Get generated documents by project ID' } })
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.gendocService.findByProjectID(input.projectId);
       }),
     // Create a new Gendoc
     createGendoc: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Document Generation'], summary: 'Generate a new document from template' } })
       .input(
         z.object({
           customProjectName: z.string(),
@@ -55,6 +59,7 @@ export class GendocRouter {
     //Update gendoc
 
     updateGendocName: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Document Generation'], summary: 'Update generated document name (members or admin)' } })
       .input(
         z.object({
           gendocId: z.string(),
@@ -79,6 +84,7 @@ export class GendocRouter {
 
     //Delete Gendoc
     deleteGendoc: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Document Generation'], summary: 'Delete a generated document (project owner only)' } })
       .input(z.object({ gendocId: z.string() }))
       .mutation(async ({ input, ctx }) => {
         const gendocRaw = await this.gendocService.findByGendocID(
@@ -97,6 +103,7 @@ export class GendocRouter {
       }),
     // Get Gendoc By GendocID -> Gendoc
     getGendocByGendocId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Document Generation'], summary: 'Get generated document by ID' } })
       .input(z.object({ gendocId: z.string() }))
       .query(({ input }) => {
         return this.gendocService.findByGendocID(input.gendocId);

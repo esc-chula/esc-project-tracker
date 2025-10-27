@@ -12,6 +12,7 @@ export class UserRouter {
 
   appRouter = this.trpcService.router({
     findUserByCondition: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users'], summary: 'Find user by ID, username, or student ID' } })
       .input(
         z.object({
           id: z.string().optional(),
@@ -28,6 +29,7 @@ export class UserRouter {
       }),
 
     findUserByUserId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users'], summary: 'Get user by user ID' } })
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.userService.findByUserID(input.userId);
