@@ -6,6 +6,9 @@ import { RiDeleteBinLine } from "react-icons/ri";
 export default function TopBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
+  const [projectID, setprojectID] = useState('3002-0003');
+  const [projectName, setprojectName] = useState('ขออนุมัติโครงการ');
+  const [userName, setuserName] = useState('สมชาย สายชล');
 
   return (
     <div className="flex flex-col items-center gap-3 border-b px-[3.125rem] pt-[3.125rem] pb-6 h-15/100">
@@ -21,7 +24,7 @@ export default function TopBar() {
               </li>
               <li>›</li>
               <li className="font-medium text-[#B91C1C]">
-                3002-0003 ขออนุมัติโครงการ
+                {projectID} {projectName}
               </li>
             </ol>
           </nav>
@@ -61,7 +64,7 @@ export default function TopBar() {
               onClick={() => setIsOpen(!isOpen)}
             >
               <div className="hidden text-sm font-medium whitespace-nowrap md:block">
-                สมชาย สายชล
+                {userName}
               </div>
               <IoIosArrowDown
                 size={16}
