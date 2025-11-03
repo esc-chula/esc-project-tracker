@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { IconType } from 'react-icons';
 import { TiHome } from "react-icons/ti";
