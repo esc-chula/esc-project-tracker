@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { IoNotifications, IoPersonCircleSharp } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
