@@ -15,11 +15,13 @@ export class DocumentRouter {
   appRouter = this.trpcService.router({
     //get Documents by filingId
     findDocumentsByFilingId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Get documents by filing ID' } })
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.documentService.findDocumentsByFilingId(input.filingId);
       }),
     findLatestDocumentByFilingId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Get latest document by filing ID' } })
       .input(z.object({ filingId: z.string().uuid() }))
       .query(({ input }) => {
         return this.documentService.findLatestDocumentByFilingId(
@@ -28,6 +30,7 @@ export class DocumentRouter {
       }),
     // Used in admin section Only for now
     findLatestReplyByFilingId: this.trpcService.adminProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Get latest reply document by filing ID (admin only)' } })
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.documentService.findLatestReplyDocumentByFilingId(
@@ -36,6 +39,7 @@ export class DocumentRouter {
       }),
     // Used in admin section Only for now
     findLatestPendingByFilingId: this.trpcService.adminProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Get latest pending document by filing ID (admin only)' } })
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.documentService.findLatestPendingDocumentByFilingId(
@@ -45,6 +49,7 @@ export class DocumentRouter {
 
     // Create Document -> Document
     createDocument: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Create a new document (project members or admin)' } })
       .input(
         z.object({
           filingId: z.string().uuid(),
@@ -84,6 +89,7 @@ export class DocumentRouter {
 
     //edit document
     updateDocument: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Update document details (project members or admin)' } })
       .input(
         z.object({
           docId: z.string(),
@@ -114,6 +120,7 @@ export class DocumentRouter {
       }),
     // Delete Document -> Document
     deleteDocument: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Delete a document (project members only)' } })
       .input(z.object({ id: z.string() }))
       .mutation(async ({ input, ctx }) => {
         const { isMember } = await this.trpcService.isProjectMember(
@@ -131,6 +138,7 @@ export class DocumentRouter {
 
     // Used in admin section Only for now
     reviewSubmission: this.trpcService.adminProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Review document submission (admin only)' } })
       .input(z.object({ id: z.string().uuid(), updatedStatus: z.boolean() }))
       .mutation(({ input }) => {
         return this.documentService.reviewDocumentSubmission(
@@ -141,6 +149,7 @@ export class DocumentRouter {
 
     // Update Last Open Date of File
     updateFileLastOpen: this.trpcService.adminProcedure
+      .meta({ route: { tags: ['Documents'], summary: 'Update file last open timestamp (admin only)' } })
       .input(z.object({ id: z.string().uuid(), fileType: z.string() }))
       .mutation(({ input }) => {
         return this.documentService.updateFileLastOpen(

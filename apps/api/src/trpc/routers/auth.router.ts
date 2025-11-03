@@ -12,6 +12,7 @@ export class AuthRouter {
 
   appRouter = this.trpcService.router({
     signin: this.trpcService.trpc.procedure
+      .meta({ route: { tags: ['Authentication'], summary: 'Sign in with Intania Auth token' } })
       .input(
         z.object({
           token: z.string(),
@@ -21,6 +22,7 @@ export class AuthRouter {
         return this.authService.signIn(input.token);
       }),
     validateToken: this.trpcService.trpc.procedure
+      .meta({ route: { tags: ['Authentication'], summary: 'Validate JWT access token' } })
       .input(
         z.object({
           accessToken: z.string(),
@@ -30,6 +32,7 @@ export class AuthRouter {
         return this.authService.validateJWT(input.accessToken);
       }),
     refreshToken: this.trpcService.trpc.procedure
+      .meta({ route: { tags: ['Authentication'], summary: 'Refresh access token' } })
       .input(
         z.object({
           userId: z.string(),
@@ -40,6 +43,7 @@ export class AuthRouter {
         return this.authService.refreshToken(input.userId, input.refreshToken);
       }),
     signOut: this.trpcService.trpc.procedure
+      .meta({ route: { tags: ['Authentication'], summary: 'Sign out user' } })
       .input(
         z.object({
           accessToken: z.string(),

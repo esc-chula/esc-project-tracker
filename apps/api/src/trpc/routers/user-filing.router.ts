@@ -13,6 +13,7 @@ export class UserFilingRouter {
   appRouter = this.trpcService.router({
     // Now: Use in admin section only
     findUserFilingOrderByLastOpen: this.trpcService.adminProcedure
+      .meta({ route: { tags: ['Users', 'Filings'], summary: 'Get user filings ordered by last open (admin only)' } })
       .input(
         z.object({
           userId: z.string().uuid(),
@@ -26,6 +27,7 @@ export class UserFilingRouter {
         );
       }),
     userOpenFiling: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Filings'], summary: 'Record user opening a filing' } })
       .input(
         z.object({
           userId: z.string().uuid(),

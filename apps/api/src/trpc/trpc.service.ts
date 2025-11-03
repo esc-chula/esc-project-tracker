@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { initTRPC, TRPCError } from '@trpc/server';
+import { ORPCMeta } from '@orpc/trpc'
 import { Context } from '../common/context/extractTokens';
 import { AuthService } from '../auth/auth.service';
 import { FilingService } from '../filing/filing.service';
@@ -25,7 +26,7 @@ export class TrpcService {
     sameSite: 'strict',
     domain: this.configService.get<string>('JWT_DOMAIN'),
   };
-  trpc = initTRPC.context<Context>().create();
+  trpc = initTRPC.context<Context>().meta<ORPCMeta>().create();
   router = this.trpc.router;
   mergeRouters = this.trpc.mergeRouters;
   protectedProcedure = this.trpc.procedure.use(async (opts) => {

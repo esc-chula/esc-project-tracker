@@ -16,23 +16,28 @@ export class FilingRouter {
 
   appRouter = this.trpcService.router({
     //Get All Filing
-    findAllFiling: this.trpcService.protectedProcedure.query(() => {
-      return this.filingService.findAllFiling();
-    }),
+    findAllFiling: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings'], summary: 'Get all filings' } })
+      .query(() => {
+        return this.filingService.findAllFiling();
+      }),
     // Get Filings By UserID -> Filing[]
     findFilingsByUserId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings', 'Users'], summary: 'Get filings by user ID' } })
       .input(z.object({ userId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByUserID(input.userId);
       }),
     // Get Filings By ProjectID -> Filing[]
     findFilingsByProjectId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings', 'Projects'], summary: 'Get filings by project ID' } })
       .input(z.object({ projectId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByProjectID(input.projectId);
       }),
     // Create a new Filing
     createFiling: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings'], summary: 'Create a new filing (project members only)' } })
       .input(
         z.object({
           projectId: z.string(),
@@ -67,6 +72,7 @@ export class FilingRouter {
     //Update filing name
 
     updateFilingName: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings'], summary: 'Update filing name and status (members or admin)' } })
       .input(
         z.object({
           filingId: z.string(),
@@ -92,6 +98,7 @@ export class FilingRouter {
       }),
     //Delete filing
     deleteFiling: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings'], summary: 'Delete a filing (project owner only)' } })
       .input(z.object({ filingId: z.string() }))
       .mutation(async ({ input, ctx }) => {
         const filingRaw = await this.filingService.findByFilingID(
@@ -110,6 +117,7 @@ export class FilingRouter {
       }),
     // Get Filing By FilingID -> Filing
     getFilingByFilingId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings'], summary: 'Get filing by ID' } })
       .input(z.object({ filingId: z.string() }))
       .query(({ input }) => {
         return this.filingService.findByFilingID(input.filingId);
@@ -117,6 +125,7 @@ export class FilingRouter {
 
     //findFilingWithFilter
     findFilingsWithFilter: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Filings'], summary: 'Find filings with filters (status, type, department)' } })
       .input(
         z.object({
           status: z.string(),
@@ -134,8 +143,10 @@ export class FilingRouter {
         });
       }),
 
-    findLatestFilings: this.trpcService.adminProcedure.query(() => {
-      return this.filingService.findLatestFilings();
-    }),
+    findLatestFilings: this.trpcService.adminProcedure
+      .meta({ route: { tags: ['Filings'], summary: 'Get latest filings (admin only)' } })
+      .query(() => {
+        return this.filingService.findLatestFilings();
+      }),
   });
 }

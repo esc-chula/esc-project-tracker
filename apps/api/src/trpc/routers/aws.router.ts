@@ -12,6 +12,7 @@ export class AwsRouter {
 
   appRouter = this.trpcService.router({
     uploadFileToS3: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['AWS'], summary: 'Upload a file to AWS S3' } })
       .input(
         z.object({
           file: z.instanceof(Buffer),
@@ -28,6 +29,7 @@ export class AwsRouter {
       }),
 
     getUrlToFile: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['AWS'], summary: 'Get presigned URL to access a file in S3' } })
       .input(
         z.object({
           fileName: z.string(),

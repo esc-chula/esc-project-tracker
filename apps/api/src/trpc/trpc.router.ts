@@ -13,6 +13,12 @@ import { AuthRouter } from './routers/auth.router';
 import { AwsRouter } from './routers/aws.router';
 import { createContext } from '../common/context/extractTokens';
 import { GendocRouter } from './routers/gendoc.router';
+import { toORPCRouter } from '@orpc/trpc';
+import { OpenAPIGenerator } from '@orpc/openapi'
+import {
+  ZodToJsonSchemaConverter
+} from '@orpc/zod' // <-- zod v3
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 @Injectable()
 export class TrpcRouter {
@@ -42,12 +48,55 @@ export class TrpcRouter {
     gendoc: this.gendocRouter.appRouter,
   });
 
+  orpcRouter = toORPCRouter(this.appRouter);
+
+  private openAPIGenerator = new OpenAPIGenerator({
+    schemaConverters: [
+      new ZodToJsonSchemaConverter(), // For Zod schemas
+    ],
+  });
+
   async applyMiddleware(app: INestApplication) {
     app.use(
       `/trpc`,
       trpcExpress.createExpressMiddleware({
         router: this.appRouter,
         createContext,
+      }),
+    );
+
+    app.use('/openapi.json', async (req, res) => {
+      const spec = await this.openAPIGenerator.generate(this.orpcRouter, {
+        info: {
+          title: 'ESC Project Tracker API',
+          version: '0.0.0',
+          description: 'API documentation for ESC Project Tracker',
+        },
+        servers: [
+          {
+            url: process.env.NEXT_PUBLIC_API_SERVER_URL || 'http://localhost:4000',
+            description: 'API Server',
+          },
+        ],
+        tags: [
+          { name: 'Authentication', description: 'Authentication and authorization endpoints' },
+          { name: 'Projects', description: 'Project management operations' },
+          { name: 'Filings', description: 'Filing system endpoints' },
+          { name: 'Documents', description: 'Document management' },
+          { name: 'Users', description: 'User management and profiles' },
+          { name: 'Notifications', description: 'Notification system' },
+          { name: 'AWS', description: 'AWS S3 file operations' },
+          { name: 'Document Generation', description: 'Document generation from templates' },
+        ],
+      });
+      res.json(spec);
+    });
+
+    app.use(
+      '/reference',
+      apiReference({
+        url: '/openapi.json',
+        theme: 'none',
       }),
     );
   }

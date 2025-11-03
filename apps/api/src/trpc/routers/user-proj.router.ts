@@ -15,6 +15,7 @@ export class UserProjRouter {
 
   appRouter = this.trpcService.router({
     updateUserProjLastOpen: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Update user-project last open timestamp' } })
       .input(
         z.object({
           userId: z.string(),
@@ -30,6 +31,7 @@ export class UserProjRouter {
 
     //Create User Project (User join Project)
     createUserProject: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Join a project (create user-project relationship)' } })
       .input(
         z.object({
           userId: z.string(),
@@ -45,6 +47,7 @@ export class UserProjRouter {
 
     //Delete User Project (User leave Project)
     deleteUserProject: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Leave a project (delete user-project relationship)' } })
       .input(
         z.object({
           userId: z.string(),
@@ -72,6 +75,7 @@ export class UserProjRouter {
       }),
 
     hasUserProj: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Check if user is a project member' } })
       .input(z.object({ userId: z.string(), projectId: z.string() }))
       .query(({ input }) => {
         return this.userProjService.hasUserProj({
@@ -82,6 +86,7 @@ export class UserProjRouter {
 
     //Join Project By StudentId
     joinProjectByStudentId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Join project by student ID' } })
       .input(
         z.object({
           studentId: z
@@ -104,6 +109,7 @@ export class UserProjRouter {
 
     //Leave Project By StudentId
     leaveProjectByStudentId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Leave project by student ID' } })
       .input(
         z.object({
           studentId: z
@@ -125,12 +131,14 @@ export class UserProjRouter {
       }),
 
     findJoinedUsersByProjectId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Get all users in a project' } })
       .input(z.object({ projectId: z.string().uuid() }))
       .query(({ input }) => {
         return this.userProjService.findJoinedUsersByProjectId(input.projectId);
       }),
 
     findJoinedProjectsByUserId: this.trpcService.protectedProcedure
+      .meta({ route: { tags: ['Users', 'Projects'], summary: 'Get all projects a user has joined' } })
       .input(z.object({ userId: z.string().uuid() }))
       .query(({ input }) => {
         return this.userProjService.findJoinedProjectsByUserId(input.userId);
