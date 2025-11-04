@@ -71,7 +71,9 @@ export default function FormSection({
             <div
               key={fieldName}
               className={
-                field.type === 'object' && field.isMultiple
+                (field.type === 'object' && field.isMultiple) ||
+                field.type === 'estimate-people' ||
+                'string-2part'
                   ? 'md:col-span-2'
                   : ''
               }
