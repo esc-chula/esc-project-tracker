@@ -24,7 +24,7 @@ export class GendocRouter {
     // Get Gendocs By ProjectID -> Gendoc[]
     findGendocsByProjectId: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Document Generation'], summary: 'Get generated documents by project ID' } })
-      .input(z.object({ projectId: z.string() }))
+      .input(z.object({ projectId: z.string().uuid() }))
       .query(({ input }) => {
         return this.gendocService.findByProjectID(input.projectId);
       }),
