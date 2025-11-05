@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { FilingSubType } from '@repo/shared';
+import { FilingSubType, FilingType } from '@repo/shared';
 import { TRPCError } from '@trpc/server';
 import { ProjectService } from '../../project_/project_.service';
 import { GendocService } from '../../gendoc/gendoc.service';
@@ -35,7 +35,7 @@ export class GendocRouter {
         z.object({
           customProjectName: z.string(),
           name: z.string(),
-          type: z.number(),
+          type: z.nativeEnum(FilingType), // Decided to change to enum to match subType 
           userId: z.string().uuid(),
           filingCode: z.string(),
           subType: z.nativeEnum(FilingSubType).nullable(),
