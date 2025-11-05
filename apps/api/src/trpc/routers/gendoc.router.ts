@@ -36,7 +36,7 @@ export class GendocRouter {
           customProjectName: z.string(),
           name: z.string(),
           type: z.number(),
-          userId: z.string(),
+          userId: z.string().uuid(),
           filingCode: z.string(),
           subType: z.nativeEnum(FilingSubType).nullable(),
           projectCode: z.string(),
