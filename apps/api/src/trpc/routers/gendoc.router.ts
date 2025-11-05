@@ -62,7 +62,7 @@ export class GendocRouter {
       .meta({ route: { tags: ['Document Generation'], summary: 'Update generated document name (members or admin)' } })
       .input(
         z.object({
-          gendocId: z.string(),
+          gendocId: z.string().uuid(),
           name: z.string().optional(),
         }),
       )
