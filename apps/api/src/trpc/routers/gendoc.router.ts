@@ -85,7 +85,7 @@ export class GendocRouter {
     //Delete Gendoc
     deleteGendoc: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Document Generation'], summary: 'Delete a generated document (project owner only)' } })
-      .input(z.object({ gendocId: z.string() }))
+      .input(z.object({ gendocId: z.string().uuid() }))
       .mutation(async ({ input, ctx }) => {
         const gendocRaw = await this.gendocService.findByGendocID(
           input.gendocId,
