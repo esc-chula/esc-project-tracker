@@ -40,7 +40,7 @@ export class GendocRouter {
           filingCode: z.string(),
           subType: z.nativeEnum(FilingSubType).nullable(),
           projectCode: z.string(),
-          projectId: z.string().optional(),
+          projectId: z.string().uuid().optional(),
         }),
       )
       .mutation(async ({ input }) => {
