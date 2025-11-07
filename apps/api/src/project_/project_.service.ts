@@ -165,16 +165,16 @@ export class ProjectService {
 
   async findProjectsWithFilter(filter: {
     status: string;
-    department: string;
+    department?: string;
   }): Promise<Project[]> {
     try {
       const query = await this.projectRepository.createQueryBuilder('project');
-      if (filter.department !== 'ALL') {
+      if (filter.department && filter.department !== 'ALL') {
         query.andWhere('project.type = :department', {
           department: filter.department,
         });
       }
-      if (filter.status !== 'ALL') {
+      if (filter.status && filter.status !== 'ALL') {
         query.andWhere('project.status = :status', { status: filter.status });
       }
       return await query.getMany();
