@@ -35,7 +35,7 @@ export class AuthRouter {
       .meta({ route: { tags: ['Authentication'], summary: 'Refresh access token' } })
       .input(
         z.object({
-          userId: z.string(),
+          userId: z.string().uuid(),
           refreshToken: z.string(),
         }),
       )
