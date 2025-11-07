@@ -13,7 +13,7 @@ export class ProjectRouter {
     private readonly trpcService: TrpcService,
   ) {}
 
-  appRouter = this.trpcService.router({
+  appRouter: ReturnType<TrpcService['router']> = this.trpcService.router({
     //Get All Project
     findAllProject: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Projects'], summary: 'Get all projects' } })
@@ -24,14 +24,14 @@ export class ProjectRouter {
     // Get Projects By UserID -> Project[]
     findProjectsByUserId: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Projects', 'Users'], summary: 'Get projects by user ID' } })
-      .input(z.object({ userId: z.string() }))
+      .input(z.object({ userId: z.string().uuid() }))
       .query(({ input }) => {
         return this.projectService.findByUserID(input.userId);
       }),
 
     getProjectByProjectId: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Projects'], summary: 'Get project by ID' } })
-      .input(z.object({ projectId: z.string() }))
+      .input(z.object({ projectId: z.string().uuid() }))
       .query(({ input }) => {
         return this.projectService.findByProjectID(input.projectId);
       }),
@@ -59,7 +59,7 @@ export class ProjectRouter {
           name: z.string(),
           type: z.nativeEnum(ProjectType),
           detail: z.string().optional(),
-          owner: z.string(),
+          owner: z.string().uuid(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -93,7 +93,7 @@ export class ProjectRouter {
           name: z.string(),
           type: z.nativeEnum(ProjectType),
           detail: z.string().optional(),
-          owner: z.string(),
+          owner: z.string().uuid(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -106,7 +106,7 @@ export class ProjectRouter {
       }),
     findProjectsWithFilter: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Projects'], summary: 'Find projects with status and department filters' } })
-      .input(z.object({ status: z.string(), department: z.string() }))
+      .input(z.object({ status: z.string(), department: z.nativeEnum(ProjectType).optional() }))
       .query(({ input }) => {
         return this.projectService.findProjectsWithFilter({
           status: input.status,
