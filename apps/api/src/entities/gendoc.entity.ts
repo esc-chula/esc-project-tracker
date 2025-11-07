@@ -7,7 +7,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Project } from './project.entity';
-import { FilingSubType, DocumentTypeZero, DocumentTypeTwo } from '@repo/shared';
+import {
+  FilingSubType,
+  DocumentTypeZero,
+  DocumentTypeTwo,
+  FilingType,
+} from '@repo/shared';
 import { User } from './user.entity';
 
 @Entity()
@@ -36,8 +41,12 @@ export class Gendoc {
   @Column()
   filingCode: string;
 
-  @Column()
-  type: number;
+  @Column({
+    type: 'enum',
+    enum: FilingType,
+    nullable: false,
+  })
+  type: FilingType;
 
   @Column({
     type: 'enum',

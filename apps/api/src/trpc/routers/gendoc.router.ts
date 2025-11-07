@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc.service';
 import { z } from 'zod';
-import { FilingSubType } from '@repo/shared';
+import { FilingSubType, FilingType } from '@repo/shared';
 import { TRPCError } from '@trpc/server';
 import { ProjectService } from '../../project_/project_.service';
 import { GendocService } from '../../gendoc/gendoc.service';
@@ -24,7 +24,7 @@ export class GendocRouter {
     // Get Gendocs By ProjectID -> Gendoc[]
     findGendocsByProjectId: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Document Generation'], summary: 'Get generated documents by project ID' } })
-      .input(z.object({ projectId: z.string() }))
+      .input(z.object({ projectId: z.string().uuid() }))
       .query(({ input }) => {
         return this.gendocService.findByProjectID(input.projectId);
       }),
@@ -35,12 +35,12 @@ export class GendocRouter {
         z.object({
           customProjectName: z.string(),
           name: z.string(),
-          type: z.number(),
-          userId: z.string(),
+          type: z.nativeEnum(FilingType), // Decided to change to enum to match subType 
+          userId: z.string().uuid(),
           filingCode: z.string(),
           subType: z.nativeEnum(FilingSubType).nullable(),
           projectCode: z.string(),
-          projectId: z.string().optional(),
+          projectId: z.string().uuid().optional(),
         }),
       )
       .mutation(async ({ input }) => {
@@ -62,7 +62,7 @@ export class GendocRouter {
       .meta({ route: { tags: ['Document Generation'], summary: 'Update generated document name (members or admin)' } })
       .input(
         z.object({
-          gendocId: z.string(),
+          gendocId: z.string().uuid(),
           name: z.string().optional(),
         }),
       )
@@ -85,7 +85,7 @@ export class GendocRouter {
     //Delete Gendoc
     deleteGendoc: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Document Generation'], summary: 'Delete a generated document (project owner only)' } })
-      .input(z.object({ gendocId: z.string() }))
+      .input(z.object({ gendocId: z.string().uuid() }))
       .mutation(async ({ input, ctx }) => {
         const gendocRaw = await this.gendocService.findByGendocID(
           input.gendocId,
@@ -104,7 +104,7 @@ export class GendocRouter {
     // Get Gendoc By GendocID -> Gendoc
     getGendocByGendocId: this.trpcService.protectedProcedure
       .meta({ route: { tags: ['Document Generation'], summary: 'Get generated document by ID' } })
-      .input(z.object({ gendocId: z.string() }))
+      .input(z.object({ gendocId: z.string().uuid() }))
       .query(({ input }) => {
         return this.gendocService.findByGendocID(input.gendocId);
       }),

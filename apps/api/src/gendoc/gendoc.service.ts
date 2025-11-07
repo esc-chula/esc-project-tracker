@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 import { ProjectService } from '../project_/project_.service';
 import { UserService } from '../user_/user.service';
-import { FilingSubType } from '@repo/shared';
+import { FilingSubType, FilingType } from '@repo/shared';
 import { Gendoc } from '../entities/gendoc.entity';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class GendocService {
   async createGendoc(
     customProjectName: string,
     name: string,
-    type: number,
+    type: FilingType,
     userId: string,
     filingCode: string,
     subType: FilingSubType | null,
